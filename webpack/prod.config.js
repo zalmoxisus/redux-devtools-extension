@@ -5,7 +5,7 @@ export default {
   entry: {
     background: [ path.join(__dirname, '../src/browser/extension/background/index') ],
     window: [ path.join(__dirname, '../src/browser/window/index') ],
-    popup: [ path.join(__dirname, '../src/browser/extension/inject/index') ]
+    inject: [ path.join(__dirname, '../src/browser/extension/inject/index') ]
   },
   output: {
     path: path.join(__dirname, '../build/extension/js'),

@@ -17,7 +17,7 @@
   "background": {
     "page": "background.html"
   },
-  "web_accessible_resources": ["js/inject.bundle.js"],
+  "web_accessible_resources": ["http://localhost:3000/js/inject.bundle.js"],
   "permissions": [ "contextMenus", "tabs", "storage", "<all_urls>" ],
   "content_security_policy": "default-src 'self'; script-src 'self' http://localhost:3000 'unsafe-eval'; connect-src http://localhost:3000 ws://localhost:3000 ws://localhost:35729; style-src * 'unsafe-inline'; img-src 'self' data:;"
 }

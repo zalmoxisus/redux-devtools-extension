@@ -13,12 +13,12 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 
     chrome.tabs.executeScript(tabId, { code: 
         'var s = document.createElement(\'script\');' +
-        's.src = chrome.extension.getURL(\'inject.js\');' +
+        's.src = ' + (process.env.NODE_ENV === 'production' ? chrome.extension.getURL('inject.bundle.js') : '\'http://localhost:3000/js/inject.bundle.js\'') + ';' +
         's.onload = function() {' +
         'this.parentNode.removeChild(this);' +
         '};' + 
         '(document.head || document.documentElement).appendChild(s);',
-      runAt: 'document_end' });
+      runAt: 'document_start' });
 
   });
 });
