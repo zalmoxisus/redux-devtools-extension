@@ -1,0 +1,64 @@
+{
+  "name": "redux-devtools-extension",
+  "version": "0.0.1",
+  "description": "DevTools extension for Redux",
+  "scripts": {
+    "start": "gulp",
+    "build:extension": "BABEL_ENV=production gulp build:extension",
+    "build:firefox": "BABEL_ENV=production gulp build:firefox",
+    "compress:extension": "npm run build:extension && gulp compress:extension",
+    "compress:firefox": "npm run build:firefox && gulp compress:firefox",
+    "clean": "rm -rf build/ && rm -rf dev/",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zalmoxisus/redux-devtools-extension"
+  },
+  "homepage": "https://github.com/zalmoxisus/redux-devtools-extension",
+  "authors": [
+    "Mihail Diordiev <zalmoxisus@gmail.com> (https://github.com/zalmoxisus)",
+    "Dan Abramov <dan.abramov@me.com> (http://github.com/gaearon)"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "babel-core": "^5.8.25",
+    "babel-eslint": "^4.1.3",
+    "babel-loader": "^5.3.2",
+    "babel-plugin-react-transform": "^1.1.1",
+    "chromedriver": "^2.19.0",
+    "eslint": "^1.7.1",
+    "eslint-config-airbnb": "^0.1.0",
+    "eslint-plugin-react": "^3.2.3",
+    "expect": "^1.12.2",
+    "gulp": "^3.9.0",
+    "gulp-jade": "1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-util": "^3.0.6",
+    "gulp-zip": "^3.0.2",
+    "legit-tests": "^0.6.1",
+    "mocha": "^2.3.3",
+    "raw-loader": "^0.5.1",
+    "react-transform-catch-errors": "^1.0.0",
+    "react-transform-hmr": "^1.0.1",
+    "redbox-react": "^1.0.1",
+    "redux-devtools": "^3.0.0-beta-3",
+    "redux-devtools-dock-monitor": "^1.0.0-beta-3",
+    "redux-devtools-log-monitor": "^1.0.0-beta-3",
+    "redux-immutable-state-invariant": "^1.1.0",
+    "redux-logger": "^2.0.4",
+    "selenium-webdriver": "^2.48.0",
+    "style-loader": "^0.12.4",
+    "webpack": "^1.12.2",
+    "webpack-dev-server": "^1.12.1"
+  },
+  "dependencies": {
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
+    "react-redux": "^4.0.0",
+    "redux": "^3.0.0",
+    "redux-persist": "^1.1.0",
+    "redux-thunk": "^1.0.0"
+  }
+}
