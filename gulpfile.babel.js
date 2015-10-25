@@ -5,8 +5,6 @@ import jade from 'gulp-jade';
 import rename from 'gulp-rename';
 import zip from 'gulp-zip';
 import webpack from 'webpack';
-import devConfig from './webpack/dev.config';
-import prodConfig from './webpack/prod.config';
 
 /*
  * common tasks
@@ -27,7 +25,7 @@ gulp.task('replace-webpack-code', () => {
  */
 
 gulp.task('webpack:dev', (callback) => {
-  let myConfig = Object.create(devConfig);
+  let myConfig = Object.create(require('./webpack/dev.config'));
   webpack(myConfig, (err, stats) => {
     if (err) {
       throw new gutil.PluginError('webpack:dev', err);
@@ -56,7 +54,7 @@ gulp.task('copy:dev', () => {
  */
 
 gulp.task('webpack:build:extension', (callback) => {
-  let myConfig = Object.create(prodConfig);
+  let myConfig = Object.create(require('./webpack/prod.config'));
   webpack(myConfig, (err, stats) => {
     if (err) {
       throw new gutil.PluginError('webpack:build', err);

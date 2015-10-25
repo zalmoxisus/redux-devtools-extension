@@ -7,7 +7,8 @@ export default {
     window: [ path.join(__dirname, '../src/browser/window/index') ],
     devpanel: [ path.join(__dirname, '../src/browser/devpanel/index') ],
     devtools: [ path.join(__dirname, '../src/browser/extension/devtools/index') ],
-    inject: [ path.join(__dirname, '../src/browser/extension/inject/index') ]
+    content: [ path.join(__dirname, '../src/browser/extension/inject/contentScript') ],
+    page: [ path.join(__dirname, '../src/browser/extension/inject/pageScript') ]
   },
   output: {
     filename: '[name].bundle.js',
