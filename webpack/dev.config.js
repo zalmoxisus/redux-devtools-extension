@@ -9,9 +9,9 @@ config.plugins = [
       NODE_ENV: '"development"'
     }
   }),
-  new webpack.optimize.DedupePlugin()
+  new webpack.optimize.OccurenceOrderPlugin(),
+  new webpack.NoErrorsPlugin()
 ];
-config.devtool = 'eval';
 config.watch = true;
 
 export default config;
