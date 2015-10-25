@@ -5,11 +5,8 @@ import jade from 'gulp-jade';
 import rename from 'gulp-rename';
 import zip from 'gulp-zip';
 import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
 import devConfig from './webpack/dev.config';
 import prodConfig from './webpack/prod.config';
-
-const port = 3000;
 
 /*
  * common tasks
@@ -29,20 +26,15 @@ gulp.task('replace-webpack-code', () => {
  * dev tasks
  */
 
-gulp.task('webpack-dev-server', () => {
+gulp.task('webpack:dev', (callback) => {
   let myConfig = Object.create(devConfig);
-  new WebpackDevServer(webpack(myConfig), {
-    contentBase: `http://localhost:${port}`,
-    publicPath: myConfig.output.publicPath,
-    stats: {colors: true},
-    hot: true,
-    historyApiFallback: true
-  }).listen(port, 'localhost', (err) => {
+  webpack(myConfig, (err, stats) => {
     if (err) {
-      throw new gutil.PluginError('webpack-dev-server', err);
+      throw new gutil.PluginError('webpack:dev', err);
     }
-    gutil.log('[webpack-dev-server]', `listening at port ${port}`);
+    gutil.log('[webpack:dev]', stats.toString({ colors: true }));
   });
+  callback();
 });
 
 gulp.task('views:dev', () => {
@@ -54,7 +46,7 @@ gulp.task('views:dev', () => {
 });
 
 gulp.task('copy:dev', () => {
-  gulp.src('./src/browser/extension/manifest.dev.json')
+  gulp.src('./src/browser/extension/manifest.json')
     .pipe(rename('manifest.json'))
     .pipe(gulp.dest('./dev'));
 });
@@ -85,7 +77,7 @@ gulp.task('views:build:extension', () => {
 });
 
 gulp.task('copy:build:extension', () => {
-  gulp.src('./src/browser/extension/manifest.prod.json')
+  gulp.src('./src/browser/extension/manifest.json')
     .pipe(rename('manifest.json'))
     .pipe(gulp.dest('./build/extension'));
 });
@@ -114,6 +106,6 @@ gulp.task('compress:firefox', () => {
     .pipe(gulp.dest('./build'));
 });
 
-gulp.task('default', ['replace-webpack-code', 'webpack-dev-server', 'views:dev', 'copy:dev']);
+gulp.task('default', ['replace-webpack-code', 'webpack:dev', 'views:dev', 'copy:dev']);
 gulp.task('build:extension', ['replace-webpack-code', 'webpack:build:extension', 'views:build:extension', 'copy:build:extension']);
 gulp.task('build:firefox', ['copy:build:firefox']);

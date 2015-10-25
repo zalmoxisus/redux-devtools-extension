@@ -50,8 +50,7 @@
     "redux-logger": "^2.0.4",
     "selenium-webdriver": "^2.48.0",
     "style-loader": "^0.12.4",
-    "webpack": "^1.12.2",
-    "webpack-dev-server": "^1.12.1"
+    "webpack": "^1.12.2"
   },
   "dependencies": {
     "react": "^0.14.0",
