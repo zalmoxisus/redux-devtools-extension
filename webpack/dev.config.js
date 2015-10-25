@@ -12,6 +12,8 @@ export default {
   entry: {
     background: [ path.join(__dirname, '../src/browser/extension/background/index'), ...entry ],
     window: [ path.join(__dirname, '../src/browser/window/index'), ...entry ],
+    devpanel: [ path.join(__dirname, '../src/browser/devpanel/index'), ...entry ],
+    devtools: [ path.join(__dirname, '../src/browser/extension/devtools/index'), ...entry ],
     inject: [ path.join(__dirname, '../src/browser/extension/inject/index'), ...entry ]
   },
   output: {

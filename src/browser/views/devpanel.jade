@@ -1,0 +1,16 @@
+doctype html
+
+html
+    head
+        meta(charset='UTF-8')
+    title Redux DevTools
+    style.
+        body {
+            background-color: black;
+            color: white;
+            font-size: 17px;
+        }
+
+    body
+        #root
+        script(src=env == 'prod' ? '/js/devpanel.bundle.js' : 'http://localhost:3000/js/devpanel.bundle.js')

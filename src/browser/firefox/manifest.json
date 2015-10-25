@@ -22,6 +22,7 @@
   "background": {
     "page": "background.html"
   },
+  "devtools_page": "devtools.html",
   "web_accessible_resources": ["js/inject.bundle.js"],
   "permissions": [ "contextMenus", "tabs", "storage", "<all_urls>" ],
   "content_security_policy": "script-src 'self'; object-src 'self'; style-src * 'unsafe-inline'; img-src 'self' data:;"
