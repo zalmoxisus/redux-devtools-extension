@@ -17,6 +17,13 @@
   "background": {
     "page": "background.html"
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["js/content.bundle.js"],
+      "run_at": "document_start"
+    }
+  ],
   "devtools_page": "devtools.html",
   "web_accessible_resources": ["js/page.bundle.js"],
   "permissions": [ "contextMenus", "tabs", "storage", "<all_urls>" ],
