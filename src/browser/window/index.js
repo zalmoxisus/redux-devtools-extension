@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import { createDevTools } from 'redux-devtools';
+import Provider from '../../app/containers/Provider';
 import DevTools from '../../app/containers/DevTools';
 
 chrome.runtime.getBackgroundPage( background => {

@@ -33,8 +33,8 @@ function popWindow(action, url, type, customOptions, store) {
   }
 }
 
-function createMenu(store) {
-  addToMenu(MENU_DEVTOOLS, 'Redux DevTools', ['all'], () => popWindow('open', 'window.html', 'devtools', {width: 320}, store));
+function createMenu() {
+  addToMenu(MENU_DEVTOOLS, 'Redux DevTools', ['all'], () => popWindow('open', 'window.html', 'devtools', {width: 320}));
 }
 
 export default createMenu;

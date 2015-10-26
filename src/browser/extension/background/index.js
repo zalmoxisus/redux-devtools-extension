@@ -1,7 +1,10 @@
-import configureStore from '../../../app/store/configureStore';
+import createDevStore from '../../../app/store/createDevStore.js';
 import createMenu from './contextMenus';
 
+var store = createDevStore((action) => {
+  console.log('action', action);
+});
 
-createMenu(store);
+createMenu();
 
 window.store = store;
