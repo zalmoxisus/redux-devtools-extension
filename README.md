@@ -45,6 +45,8 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
  - Built with our [browser-redux](https://github.com/zalmoxisus/browser-redux) boilerplate.
  - Includes [Dan Abramov](https://github.com/gaearon)'s [redux-devtools](https://github.com/gaearon/redux-devtools).
  - Inspired from [Taylor Hakes](https://github.com/taylorhakes)' [work](https://github.com/taylorhakes/redux-devtools/tree/chrome-devtools).
+ - Uses [Keith Yong](https://github.com/keithyong)'s [icon](https://github.com/rackt/redux/issues/151#issuecomment-150060367).
+ - Examples from [Redux](https://github.com/rackt/redux/tree/master/examples).
 
 ## Roadmap
 
