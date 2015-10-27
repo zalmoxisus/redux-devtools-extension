@@ -7,7 +7,7 @@ const createStoreWithMiddleware = applyMiddleware(
 )(createStore);
 
 export default function configureStore(initialState) {
-  const store = createStoreWithMiddleware(reducer, initialState);
+  const store = (window.devToolsExtension ? window.devToolsExtension(createStoreWithMiddleware) : createStoreWithMiddleware)(reducer, initialState);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
