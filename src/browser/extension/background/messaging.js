@@ -1,4 +1,5 @@
-var connections = {};
+import { MENU_DEVTOOLS } from '../../../app/constants/ContextMenus.js';
+let connections = {};
 
 // Listen to messages sent from the DevTools page
 chrome.runtime.onConnect.addListener(function (port) {
@@ -32,6 +33,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
   if (sender.tab) {
     var tabId = sender.tab.id;
     store.tabId = tabId;
+    chrome.contextMenus.update(MENU_DEVTOOLS, {documentUrlPatterns: [sender.url], enabled: true});
     chrome.pageAction.show(tabId);
     if (tabId in connections) {
       connections[ tabId ].postMessage(request);

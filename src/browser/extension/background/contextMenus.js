@@ -1,11 +1,12 @@
+import { MENU_DEVTOOLS } from '../../../app/constants/ContextMenus.js';
 let windows = {devtools: 0};
-const MENU_DEVTOOLS = 'MENU_DEVTOOLS';
 
 function addToMenu(id, title, contexts, onClick) {
   chrome.contextMenus.create({
     id: id,
     title: title,
     contexts: contexts,
+    enabled: false,
     onclick: onClick
   });
 }
