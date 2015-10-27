@@ -47,6 +47,7 @@ gulp.task('copy:dev', () => {
   gulp.src('./src/browser/extension/manifest.json')
     .pipe(rename('manifest.json'))
     .pipe(gulp.dest('./dev'));
+  gulp.src('./src/assets/**/*').pipe(gulp.dest('./dev'));
 });
 
 /*
@@ -78,6 +79,7 @@ gulp.task('copy:build:extension', () => {
   gulp.src('./src/browser/extension/manifest.json')
     .pipe(rename('manifest.json'))
     .pipe(gulp.dest('./build/extension'));
+  gulp.src('./src/assets/**/*').pipe(gulp.dest('./build/extension'));
 });
 
 gulp.task('copy:build:firefox', ['build:extension'], () => {

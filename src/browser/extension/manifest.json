@@ -4,7 +4,7 @@
   "manifest_version": 2,
   "description": "",
   "browser_action": {
-    "default_icon": "img/logo/48x48.png",
+    "default_icon": "img/logo/38x38.png",
     "default_title": "Redux DevTools",
     "default_popup": "window.html"
   },
@@ -12,7 +12,7 @@
     "16": "img/logo/16x16.png",
     "48": "img/logo/48x48.png",
     "128": "img/logo/128x128.png",
-    "scalable": "img/logo/scalable.ico"
+    "scalable": "img/logo/scalable.png"
   },
   "background": {
     "page": "background.html"
