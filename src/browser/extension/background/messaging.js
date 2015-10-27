@@ -31,7 +31,10 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
   store.liftedStore.setState(request.payload);
   if (sender.tab) {
     var tabId = sender.tab.id;
-    store.tabId = tabId;
+    if (store.tabId !== tabId) {
+      store.tabId = tabId;
+      chrome.pageAction.show(tabId);
+    }
     if (tabId in connections) {
       connections[ tabId ].postMessage(request);
     }

@@ -7,7 +7,7 @@ s.onload = function() {
 };
 (document.head || document.documentElement).appendChild(s);
 
-// Communicate with the devtool
+// Communicate with background script
 window.addEventListener('message', function(event) {
   if (event && event.source !== window) {
     return;

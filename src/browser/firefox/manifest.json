@@ -8,7 +8,7 @@
       "id": "extension@redux.devtools"
     }
   },
-  "browser_action": {
+  "page_action": {
     "default_icon": "img/logo/38x38.png",
     "default_title": "Redux DevTools",
     "default_popup": "window.html"
