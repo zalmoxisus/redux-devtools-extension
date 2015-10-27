@@ -9,7 +9,7 @@ export default function createDevToolsStore(onDispatch) {
   var listeners = [];
 
   function dispatch(action) {
-    onDispatch(action);
+    if (action.type[0]!=='@') onDispatch(action);
     return action;
   }
 
