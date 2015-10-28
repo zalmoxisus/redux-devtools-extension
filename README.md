@@ -1,6 +1,6 @@
 # Redux DevTools Extension
 
-![Demo](extension-demo.gif)
+![Demo](demo/v0.1.0.gif)
 
 If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtools) is, [see Dan's React Europe talk](https://www.youtube.com/watch?v=xsSnOQynTHs)!
 
@@ -14,7 +14,7 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
 
 ## Implementation
 
-1. [Load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./build/extension`.
+1. [Get the extension from Chrome Web Store](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) (or run `npm i & npm build` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./build/extension`).
 2. Update your [configureStore](https://github.com/zalmoxisus/redux-devtools-extension/commit/ffa804594008c585d28b3319bfcd4b87d5df384d):
     ```javascript
     const store = createStore(rootReducer, initialState);
@@ -45,15 +45,14 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
  - Built with our [browser-redux](https://github.com/zalmoxisus/browser-redux) boilerplate.
  - Includes [Dan Abramov](https://github.com/gaearon)'s [redux-devtools](https://github.com/gaearon/redux-devtools).
  - Inspired from [Taylor Hakes](https://github.com/taylorhakes)' [work](https://github.com/taylorhakes/redux-devtools/tree/chrome-devtools).
- - Uses [Keith Yong](https://github.com/keithyong)'s [icon](https://github.com/rackt/redux/issues/151#issuecomment-150060367).
+ - [The logo icon](https://github.com/rackt/redux/issues/151#issuecomment-150060367) made by [Keith Yong](https://github.com/keithyong) .
  - Examples from [Redux](https://github.com/rackt/redux/tree/master/examples).
 
 ## Roadmap
 
-- [ ] Show popup icon, context menu and dev panel only when there’s a redux script in the tab.
-- [ ] Persist state.
-- [ ] Publish the extension to the Chrome Web Store.
+- [x] Chrome extension.
 - [ ] Firefox extension.
+- [ ] Safari extension (simplified).
 
 ## LICENSE
 
