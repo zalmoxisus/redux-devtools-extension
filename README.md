@@ -14,7 +14,7 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
 
 ## Implementation
 
-1. [Get the extension from Chrome Web Store](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) (or run `npm i & npm build` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./build/extension`).
+1. [Get the extension from Chrome Web Store](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) (or run `npm i & npm run build:extension` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./build/extension`).
 2. Update your [configureStore](https://github.com/zalmoxisus/redux-devtools-extension/commit/ffa804594008c585d28b3319bfcd4b87d5df384d):
     ```javascript
     const store = createStore(rootReducer, initialState);
