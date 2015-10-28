@@ -95,7 +95,7 @@ gulp.task('copy:build:firefox', ['build:extension'], () => {
  */
 
 gulp.task('compress:extension', () => {
-  gulp.src('build/extension/*')
+  gulp.src('build/extension/**')
     .pipe(zip('extension.zip'))
     .pipe(gulp.dest('./build'));
 });
