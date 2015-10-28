@@ -1,8 +1,9 @@
 {
-  "version": "0.0.1",
+  "version": "0.1.0",
   "name": "Redux DevTools",
+  "short_name": "Redux DevTools",
+  "description": "DevTools for Redux with actions history, undo and replay.",
   "manifest_version": 2,
-  "description": "",
   "page_action": {
     "default_icon": "img/logo/38x38.png",
     "default_title": "Redux DevTools",
@@ -27,5 +28,6 @@
   "devtools_page": "devtools.html",
   "web_accessible_resources": ["js/page.bundle.js"],
   "permissions": [ "contextMenus", "tabs", "storage", "<all_urls>" ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; style-src * 'unsafe-inline'; img-src 'self' data:;"
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; style-src * 'unsafe-inline'; img-src 'self' data:;",
+  "update_url": "https://clients2.google.com/service/update2/crx"
 }
