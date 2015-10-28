@@ -32,9 +32,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
   store.liftedStore.setState(request.payload);
   if (sender.tab) {
     var tabId = sender.tab.id;
-    store.tabId = tabId;
-    chrome.contextMenus.update(MENU_DEVTOOLS, {documentUrlPatterns: [sender.url], enabled: true});
-    chrome.pageAction.show(tabId);
+    if (request.init) {
+      store.tabId = tabId;
+      chrome.contextMenus.update(MENU_DEVTOOLS, {documentUrlPatterns: [sender.url], enabled: true});
+      chrome.pageAction.show(tabId);
+    }
     if (tabId in connections) {
       connections[ tabId ].postMessage(request);
     }

@@ -1,5 +1,5 @@
 import { ACTION, UPDATE } from '../../../app/constants/ActionTypes';
-let message;
+let payload;
 
 let s = document.createElement('script');
 s.src = chrome.extension.getURL('js/page.bundle.js');
@@ -11,8 +11,8 @@ s.onload = function() {
 // Resend messages from the page to the background script
 window.addEventListener('message', function(event) {
   if (event && event.source === window && typeof event.data === 'object' && event.data.source === 'redux-page') {
-    message = event.data;
-    chrome.runtime.sendMessage(message);
+    payload = event.data.payload;
+    chrome.runtime.sendMessage(event.data);
   }
 });
 
@@ -46,7 +46,11 @@ window.addEventListener('beforeunload', function() {
 
 // Detect when the tab is reactivated
 document.addEventListener('visibilitychange', function() {
-  if (document.visibilityState === 'visible' && message) {
-    chrome.runtime.sendMessage(message);
+  if (document.visibilityState === 'visible' && payload) {
+    chrome.runtime.sendMessage({
+      payload: payload,
+      source: 'redux-page',
+      init: true
+    });
   }
 });

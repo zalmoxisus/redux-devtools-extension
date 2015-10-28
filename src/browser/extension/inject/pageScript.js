@@ -3,10 +3,11 @@ import DevTools from '../../../app/containers/DevTools';
 import { ACTION, UPDATE } from '../../../app/constants/ActionTypes';
 
 window.devToolsInit = function(store) {
-  function onChange() {
+  function onChange(init) {
     window.postMessage({
       payload: store.liftedStore.getState(),
-      source: 'redux-page'
+      source: 'redux-page',
+      init: init || false
     }, '*')
   }
 
@@ -35,7 +36,7 @@ window.devToolsInit = function(store) {
   store.liftedStore.subscribe(onChange);
   window.addEventListener('message', onMessage);
 
-  onChange();
+  onChange(true);
 };
 
 window.devToolsExtension = function(next) {
