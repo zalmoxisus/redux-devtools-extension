@@ -10,10 +10,11 @@ s.onload = function() {
 
 // Resend messages from the page to the background script
 window.addEventListener('message', function(event) {
-  if (event && event.source === window && typeof event.data === 'object' && event.data.source === 'redux-page') {
-    payload = event.data.payload;
-    chrome.runtime.sendMessage(event.data);
-  }
+  if (!event || event.source !== window || typeof event.data !== 'string') return;
+  const message = JSON.parse(event.data);
+  if (message.source !== 'redux-page') return;
+  payload = message.payload;
+  chrome.runtime.sendMessage(message);
 });
 
 // Send actions to the page

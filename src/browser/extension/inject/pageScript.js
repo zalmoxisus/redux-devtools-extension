@@ -4,11 +4,11 @@ import { ACTION, UPDATE } from '../../../app/constants/ActionTypes';
 
 window.devToolsInit = function(store) {
   function onChange(init) {
-    window.postMessage({
+    window.postMessage(JSON.stringify({
       payload: store.liftedStore.getState(),
       source: 'redux-page',
       init: init || false
-    }, '*')
+    }), '*')
   }
 
   function onMessage(event) {
