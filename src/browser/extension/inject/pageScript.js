@@ -1,10 +1,10 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import stringify from 'json-stringify-safe';
 import DevTools from '../../../app/containers/DevTools';
 import { ACTION, UPDATE } from '../../../app/constants/ActionTypes';
 
 window.devToolsInit = function(store) {
   function onChange(init) {
-    window.postMessage(JSON.stringify({
+    window.postMessage(stringify({
       payload: store.liftedStore.getState(),
       source: 'redux-page',
       init: init || false
