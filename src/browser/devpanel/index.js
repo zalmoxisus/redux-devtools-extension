@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { createDevTools } from 'redux-devtools';
 import Provider from '../../app/containers/Provider';
 import DevTools from '../../app/containers/DevTools';
 import createDevStore from './../../app/store/createDevStore';

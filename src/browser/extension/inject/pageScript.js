@@ -1,5 +1,5 @@
 import stringify from 'json-stringify-safe';
-import DevTools from '../../../app/containers/DevTools';
+import configureStore from '../../../app/store/configureStore';
 import { ACTION, UPDATE } from '../../../app/constants/ActionTypes';
 
 window.devToolsInit = function(store) {
@@ -41,7 +41,7 @@ window.devToolsInit = function(store) {
 
 window.devToolsExtension = function(next) {
   return (reducer, initialState) => {
-    const store = DevTools.instrument()(next)(reducer, initialState);
+    const store = configureStore(next)(reducer, initialState);
     devToolsInit(store);
     return store;
   }
