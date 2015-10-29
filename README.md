@@ -14,7 +14,10 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
 
 ## Implementation
 
-1. [Get the extension from Chrome Web Store](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) (or run `npm i & npm run build:extension` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./build/extension`).
+1. Get the extension
+    - from [Chrome Web Store](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
+    - or build it with `npm i & npm run build:extension` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./build/extension`
+    - or run it in dev mode with `npm i & npm start` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./dev`.
 2. Update your [configureStore](https://github.com/zalmoxisus/redux-devtools-extension/commit/ffa804594008c585d28b3319bfcd4b87d5df384d):
     ```javascript
     const store = createStore(rootReducer, initialState);
@@ -39,6 +42,14 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
       window.devToolsExtension || (f => f)
     )(createStore);
     ```
+
+## Examples
+Open these urls to test the extension:
+
+ - [Counter](http://zalmoxisus.github.io/redux-devtools-extension/examples/counter/)
+ - [TodoMVC](http://zalmoxisus.github.io/redux-devtools-extension/examples/todomvc/)
+
+Also you may run them from `./examples` folder (on port 4001 and 4002 by default).
     
 ## Credits
 
