@@ -6,6 +6,7 @@
     "start": "gulp",
     "build:extension": "BABEL_ENV=production gulp build:extension",
     "build:firefox": "BABEL_ENV=production gulp build:firefox",
+    "build:examples": "babel-node examples/buildAll.js",
     "compress:extension": "npm run build:extension && gulp compress:extension",
     "compress:firefox": "npm run build:firefox && gulp compress:firefox",
     "clean": "rm -rf build/ && rm -rf dev/",
