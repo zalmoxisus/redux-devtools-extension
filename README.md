@@ -55,6 +55,8 @@ Also you may run them from `./examples` folder (on port 4001 and 4002 by default
 
  - **How to open Redux DevTools in a new window?**<br />
    Right click on the page and open it from the context menu.
+ - **How to persist debug sessions across page reloads?**<br />
+   Just add `?debug_session=<session_name>` to the url.
     
 ## Credits
 
