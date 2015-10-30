@@ -50,6 +50,11 @@ Open these urls to test the extension:
  - [TodoMVC](http://zalmoxisus.github.io/redux-devtools-extension/examples/todomvc/)
 
 Also you may run them from `./examples` folder (on port 4001 and 4002 by default).
+
+## FAQ
+
+ - **How to open Redux DevTools in a new window?**<br />
+   Right click on the page and open it from the context menu.
     
 ## Credits
 
