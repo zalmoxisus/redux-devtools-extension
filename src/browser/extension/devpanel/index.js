@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Provider from '../../app/containers/Provider';
-import DevTools from '../../app/containers/DevTools';
-import createDevStore from './../../app/store/createDevStore';
+import Provider from '../../../app/containers/Provider';
+import DevTools from '../../../app/containers/DevTools';
+import createDevStore from '../../../app/store/createDevStore';
 
 const store = createDevStore((action) => {
   chrome.devtools.inspectedWindow.eval('dispatch(' + JSON.stringify(action) + ')', {
