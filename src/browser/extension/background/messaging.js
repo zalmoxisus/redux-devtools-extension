@@ -2,10 +2,10 @@ import { MENU_DEVTOOLS } from '../../../app/constants/ContextMenus.js';
 let connections = {};
 
 // Listen to messages sent from the DevTools page
-chrome.runtime.onConnect.addListener(function (port) {
+chrome.runtime.onConnect.addListener(function(port) {
 
   function extensionListener(message) {
-    if (message.name == 'init') {
+    if (message.name === 'init') {
       connections[message.tabId] = port;
       connections[message.tabId].postMessage({
         payload: store.liftedStore.getState(),
@@ -16,22 +16,22 @@ chrome.runtime.onConnect.addListener(function (port) {
 
   port.onMessage.addListener(extensionListener);
 
-  port.onDisconnect.addListener(function (port) {
-    port.onMessage.removeListener(extensionListener);
+  port.onDisconnect.addListener(function(portDiscon) {
+    portDiscon.onMessage.removeListener(extensionListener);
 
-    Object.keys(connections).forEach(function (id) {
-      if (connections[id] == port) {
+    Object.keys(connections).forEach(function(id) {
+      if (connections[id] === portDiscon) {
         delete connections[id];
       }
-    })
-  })
+    });
+  });
 });
 
 // Receive message from content script and relay to the devTools page
-chrome.runtime.onMessage.addListener(function (request, sender) {
+chrome.runtime.onMessage.addListener(function(request, sender) {
   store.liftedStore.setState(request.payload);
   if (sender.tab) {
-    var tabId = sender.tab.id;
+    const tabId = sender.tab.id;
     if (request.init) {
       store.tabId = tabId;
       chrome.contextMenus.update(MENU_DEVTOOLS, {documentUrlPatterns: [sender.url], enabled: true});

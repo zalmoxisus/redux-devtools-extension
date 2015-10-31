@@ -1,15 +1,15 @@
 export default function createDevToolsStore(onDispatch) {
-  var currentState = {
+  let currentState = {
     committedState: {},
     stagedActions: [],
     computedStates: [],
     skippedActions: {},
     currentStateIndex: 0
   };
-  var listeners = [];
+  let listeners = [];
 
   function dispatch(action) {
-    if (action.type[0]!=='@') onDispatch(action);
+    if (action.type[0] !== '@') onDispatch(action);
     return action;
   }
 

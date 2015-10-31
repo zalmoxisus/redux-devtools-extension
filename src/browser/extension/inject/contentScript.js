@@ -23,7 +23,7 @@ window.dispatch = function(action) {
     type: ACTION,
     payload: action,
     source: 'redux-cs'
-  }, '*')
+  }, '*');
 };
 
 // Ask for updates from the page
@@ -31,7 +31,7 @@ window.update = function() {
   window.postMessage({
     type: UPDATE,
     source: 'redux-cs'
-  }, '*')
+  }, '*');
 };
 
 // Request from the background script to send actions to the page
@@ -42,7 +42,7 @@ chrome.runtime.onMessage.addListener((message) => {
 window.addEventListener('beforeunload', function() {
   chrome.runtime.sendMessage({
     type: 'PAGE_UNLOADED'
-  })
+  });
 });
 
 // Detect when the tab is reactivated

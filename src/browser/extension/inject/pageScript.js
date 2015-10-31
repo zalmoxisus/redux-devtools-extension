@@ -8,14 +8,14 @@ window.devToolsInit = function(store) {
       payload: store.liftedStore.getState(),
       source: 'redux-page',
       init: init || false
-    }), '*')
+    }), '*');
   }
 
   function onMessage(event) {
     let message;
 
     if (event && event.source !== window) {
-      return
+      return;
     }
 
     message = event.data;
@@ -44,5 +44,5 @@ window.devToolsExtension = function(next) {
     const store = configureStore(next)(reducer, initialState);
     devToolsInit(store);
     return store;
-  }
+  };
 };

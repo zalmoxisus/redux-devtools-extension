@@ -6,10 +6,15 @@ class Provider extends Component {
   };
   getChildContext() {
     return {store: this.props.store};
-  };
+  }
   render() {
     return <div>{this.props.children}</div>;
-  };
+  }
 }
+
+Provider.propTypes = {
+  store: PropTypes.object.isRequired,
+  children: PropTypes.element.isRequired
+};
 
 export default Provider;

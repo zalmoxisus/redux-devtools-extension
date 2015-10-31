@@ -12,7 +12,7 @@ const store = createDevStore((action) => {
 
 let rendered = false;
 
-function showDevTools(){
+function showDevTools() {
   if (!rendered) {
     render(
       <Provider store={store}>
@@ -25,7 +25,7 @@ function showDevTools(){
 }
 
 const backgroundPageConnection = chrome.runtime.connect({
-  name: "panel"
+  name: 'panel'
 });
 
 backgroundPageConnection.onMessage.addListener((message) => {
