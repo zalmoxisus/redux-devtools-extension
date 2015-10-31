@@ -38,17 +38,13 @@
     "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.6",
     "gulp-zip": "^3.0.2",
-    "legit-tests": "^0.6.1",
     "mocha": "^2.3.3",
     "raw-loader": "^0.5.1",
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.1",
-    "redbox-react": "^1.0.1",
     "redux-devtools": "^3.0.0-beta-3",
     "redux-devtools-dock-monitor": "^1.0.0-beta-3",
     "redux-devtools-log-monitor": "^1.0.0-beta-3",
-    "redux-immutable-state-invariant": "^1.1.0",
-    "redux-logger": "^2.0.4",
     "selenium-webdriver": "^2.48.0",
     "style-loader": "^0.12.4",
     "webpack": "^1.12.2"
@@ -58,8 +54,6 @@
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",
-    "redux": "^3.0.0",
-    "redux-persist": "^1.1.0",
-    "redux-thunk": "^1.0.0"
+    "redux": "^3.0.0"
   }
 }
