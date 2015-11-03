@@ -8,10 +8,19 @@ s.onload = function() {
 };
 (document.head || document.documentElement).appendChild(s);
 
+function parseJSON(data) {
+  try {
+    return JSON.parse(data);
+  } catch (e) {
+    // console.error(data + 'is not a valid JSON', e);
+    return {};
+  }
+}
+
 // Resend messages from the page to the background script
 window.addEventListener('message', function(event) {
   if (!event || event.source !== window || typeof event.data !== 'string') return;
-  const message = JSON.parse(event.data);
+  const message = parseJSON(event.data);
   if (message.source !== 'redux-page') return;
   payload = message.payload;
   chrome.runtime.sendMessage(message);
