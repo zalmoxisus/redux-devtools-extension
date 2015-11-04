@@ -37,7 +37,3 @@ backgroundPageConnection.postMessage({
   name: 'init',
   tabId: chrome.devtools.inspectedWindow.tabId
 });
-
-chrome.devtools.inspectedWindow.eval('update()', {
-  useContentScriptContext: true
-});

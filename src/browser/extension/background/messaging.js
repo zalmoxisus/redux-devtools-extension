@@ -29,9 +29,9 @@ chrome.runtime.onConnect.addListener(function(port) {
 
 // Receive message from content script and relay to the devTools page
 chrome.runtime.onMessage.addListener(function(request, sender) {
-  store.liftedStore.setState(request.payload);
   if (sender.tab) {
     const tabId = sender.tab.id;
+    if (request.payload) store.liftedStore.setState(request.payload);
     if (request.init) {
       store.tabId = tabId;
       chrome.contextMenus.update(MENU_DEVTOOLS, {documentUrlPatterns: [sender.url], enabled: true});
