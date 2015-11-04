@@ -1,11 +1,22 @@
 import { MENU_DEVTOOLS } from '../../../app/constants/ContextMenus.js';
 let connections = {};
 
+function sendNAMessage(port) {
+  port.postMessage({
+    na: true,
+    source: 'redux-page'
+  });
+}
+
 // Listen to messages sent from the DevTools page
 chrome.runtime.onConnect.addListener(function(port) {
 
   function extensionListener(message) {
     if (message.name === 'init') {
+      if (message.tabId !== store.tabId) {
+        sendNAMessage(port);
+        return;
+      }
       connections[message.tabId] = port;
       connections[message.tabId].postMessage({
         payload: store.liftedStore.getState(),
@@ -31,6 +42,10 @@ chrome.runtime.onConnect.addListener(function(port) {
 chrome.runtime.onMessage.addListener(function(request, sender) {
   if (sender.tab) {
     const tabId = sender.tab.id;
+    if (request.type === 'PAGE_UNLOADED') {
+      if (connections[ tabId ]) sendNAMessage(connections[ tabId ]);
+      return true;
+    }
     if (request.payload) store.liftedStore.setState(request.payload);
     if (request.init) {
       store.tabId = tabId;
