@@ -13,11 +13,11 @@ chrome.runtime.onConnect.addListener(function(port) {
 
   function extensionListener(message) {
     if (message.name === 'init') {
+      connections[message.tabId] = port;
       if (message.tabId !== store.tabId) {
         sendNAMessage(port);
         return;
       }
-      connections[message.tabId] = port;
       connections[message.tabId].postMessage({
         payload: store.liftedStore.getState(),
         source: 'redux-page'
@@ -39,7 +39,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 });
 
 // Receive message from content script and relay to the devTools page
-chrome.runtime.onMessage.addListener(function(request, sender) {
+function messaging(request, sender) {
   if (sender.tab) {
     const tabId = sender.tab.id;
     if (request.type === 'PAGE_UNLOADED') {
@@ -57,7 +57,10 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
     }
   }
   return true;
-});
+}
+
+chrome.runtime.onMessage.addListener(messaging);
+chrome.runtime.onMessageExternal.addListener(messaging);
 
 export function toContentScript(action) {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
