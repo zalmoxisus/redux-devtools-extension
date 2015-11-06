@@ -1,8 +1,20 @@
 import { ACTION, UPDATE } from '../../../app/constants/ActionTypes';
 let payload;
 
+const sendMessage = (
+  window.devToolsExtensionID ?
+    function(message) {
+      chrome.runtime.sendMessage(window.devToolsExtensionID, message);
+    }
+    : chrome.runtime.sendMessage
+);
+
 let s = document.createElement('script');
-s.src = chrome.extension.getURL('js/page.bundle.js');
+s.src = (
+  window.devToolsExtensionID ?
+    'chrome-extension://' + window.devToolsExtensionID + '/js/page.bundle.js'
+    : chrome.extension.getURL('js/page.bundle.js')
+);
 s.onload = function() {
   this.parentNode.removeChild(this);
 };
@@ -23,7 +35,7 @@ window.addEventListener('message', function(event) {
   const message = parseJSON(event.data);
   if (message.source !== 'redux-page') return;
   payload = message.payload;
-  chrome.runtime.sendMessage(message);
+  sendMessage(message);
 });
 
 // Send actions to the page
@@ -49,7 +61,7 @@ chrome.runtime.onMessage.addListener((message) => {
 });
 
 window.addEventListener('beforeunload', function() {
-  chrome.runtime.sendMessage({
+  sendMessage({
     type: 'PAGE_UNLOADED'
   });
 });
@@ -57,7 +69,7 @@ window.addEventListener('beforeunload', function() {
 // Detect when the tab is reactivated
 document.addEventListener('visibilitychange', function() {
   if (document.visibilityState === 'visible' && payload) {
-    chrome.runtime.sendMessage({
+    sendMessage({
       payload: payload,
       source: 'redux-page',
       init: true
