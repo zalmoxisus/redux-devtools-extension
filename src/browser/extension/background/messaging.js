@@ -40,8 +40,8 @@ chrome.runtime.onConnect.addListener(function(port) {
 
 // Receive message from content script and relay to the devTools page
 function messaging(request, sender) {
-  if (sender.tab) {
-    const tabId = sender.tab.id;
+  const tabId = sender.tab ? sender.tab.id : sender.id;
+  if (tabId) {
     if (request.type === 'PAGE_UNLOADED') {
       if (connections[ tabId ]) sendNAMessage(connections[ tabId ]);
       return true;
