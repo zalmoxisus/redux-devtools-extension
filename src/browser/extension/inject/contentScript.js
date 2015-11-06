@@ -1,4 +1,3 @@
-import { ACTION, UPDATE } from '../../../app/constants/ActionTypes';
 let payload;
 
 const sendMessage = (
@@ -38,27 +37,18 @@ window.addEventListener('message', function(event) {
   sendMessage(message);
 });
 
-// Send actions to the page
-window.dispatch = function(action) {
-  window.postMessage({
-    type: ACTION,
-    payload: action,
-    source: 'redux-cs'
-  }, '*');
-};
-
-// Ask for updates from the page
-window.update = function() {
-  window.postMessage({
-    type: UPDATE,
-    source: 'redux-cs'
-  }, '*');
-};
-
 // Request from the background script to send actions to the page
-chrome.runtime.onMessage.addListener((message) => {
-  if (message.action) window.dispatch(message.action);
-});
+if (chrome.runtime.onMessage) {
+  chrome.runtime.onMessage.addListener((message) => {
+    if (message.action) {
+      window.postMessage({
+        type: 'ACTION',
+        payload: message.action,
+        source: 'redux-cs'
+      }, '*');
+    }
+  });
+}
 
 window.addEventListener('beforeunload', function() {
   sendMessage({

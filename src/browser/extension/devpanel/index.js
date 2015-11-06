@@ -5,9 +5,14 @@ import DevTools from '../../../app/containers/DevTools';
 import createDevStore from '../../../app/store/createDevStore';
 
 const store = createDevStore((action) => {
-  chrome.devtools.inspectedWindow.eval('dispatch(' + JSON.stringify(action) + ')', {
-    useContentScriptContext: true
-  });
+  chrome.devtools.inspectedWindow.eval(
+    'window.postMessage({' +
+    'type: \'ACTION\',' +
+    'payload: ' + JSON.stringify(action) + ',' +
+    'source: \'redux-cs\'' +
+    '}, \'*\');',
+    { useContentScriptContext: false }
+  );
 });
 
 let rendered = false;
