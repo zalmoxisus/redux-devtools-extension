@@ -49,20 +49,16 @@ backgroundPageConnection.onMessage.addListener((message) => {
   showDevTools();
 });
 
-function init(defaultID) {
-  backgroundPageConnection.postMessage({
-    name: 'init',
-    tabId: chrome.devtools.inspectedWindow.tabId || defaultID
-  });
+function init(id) {
+  backgroundPageConnection.postMessage({ name: 'init', tabId: id });
 }
 
-// If devToolsExtension wasn't injected in an extension page, reload the page and inject it
-chrome.devtools.inspectedWindow.eval(
-  '[!window.devToolsExtension, chrome.runtime.id]',
-  function(result, isException) {
-    if (!isException && result[0] && result[1]) {
-      require('./remote');
-    }
-    init(result[1]);
-  }
-);
+if (chrome.devtools.inspectedWindow.tabId) {
+  init(chrome.devtools.inspectedWindow.tabId);
+} else {
+  // If there's no tabId it means we're inspecting an extension background script and will use its id
+  chrome.devtools.inspectedWindow.eval('chrome.runtime.id',
+    function(result, isException) {
+      if (!isException && result) init(result);
+    });
+}

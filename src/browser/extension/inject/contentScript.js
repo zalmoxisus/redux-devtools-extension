@@ -8,16 +8,14 @@ const sendMessage = (
     : chrome.runtime.sendMessage
 );
 
-let s = document.createElement('script');
-s.src = (
-  window.devToolsExtensionID ?
-    'chrome-extension://' + window.devToolsExtensionID + '/js/page.bundle.js'
-    : chrome.extension.getURL('js/page.bundle.js')
-);
-s.onload = function() {
-  this.parentNode.removeChild(this);
-};
-(document.head || document.documentElement).appendChild(s);
+if (!window.devToolsExtensionID) {
+  let s = document.createElement('script');
+  s.src = chrome.extension.getURL('js/page.bundle.js');
+  s.onload = function() {
+    this.parentNode.removeChild(this);
+  };
+  (document.head || document.documentElement).appendChild(s);
+}
 
 function parseJSON(data) {
   try {
