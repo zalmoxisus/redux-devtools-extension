@@ -64,6 +64,10 @@ chrome.runtime.onMessageExternal.addListener(messaging);
 
 export function toContentScript(action) {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(store.tabId, {action: action}, function(response) {});
+    if (store.tabId in connections) {
+      connections[ store.tabId ].postMessage({action: action});
+    } else {
+      chrome.tabs.sendMessage(store.tabId, {action: action});
+    }
   });
 }
