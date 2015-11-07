@@ -48,11 +48,12 @@ if (chrome.runtime.onMessage) {
   });
 }
 
-window.addEventListener('beforeunload', function() {
-  sendMessage({
-    type: 'PAGE_UNLOADED'
-  });
-});
+if (typeof window.onbeforeunload !== 'undefined') {
+  // Prevent adding beforeunload listener for Chrome apps
+  window.onbeforeunload = function() {
+    sendMessage({ type: 'PAGE_UNLOADED' });
+  };
+}
 
 // Detect when the tab is reactivated
 document.addEventListener('visibilitychange', function() {
