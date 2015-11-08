@@ -49,8 +49,10 @@ function messaging(request, sender) {
     if (request.payload) store.liftedStore.setState(request.payload);
     if (request.init) {
       store.tabId = tabId;
-      chrome.contextMenus.update(MENU_DEVTOOLS, {documentUrlPatterns: [sender.url], enabled: true});
-      chrome.pageAction.show(tabId);
+      if (typeof tabId === 'number') {
+        chrome.contextMenus.update(MENU_DEVTOOLS, {documentUrlPatterns: [sender.url], enabled: true});
+        chrome.pageAction.show(tabId);
+      }
     }
     if (tabId in connections) {
       connections[ tabId ].postMessage(request);
