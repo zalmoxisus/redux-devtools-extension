@@ -5,6 +5,7 @@ import reducer from '../reducers';
 export default function configureStore(initialState) {
   const finalCreateStore = compose(
     applyMiddleware(thunk),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
   )(createStore);
 
   const store = finalCreateStore(reducer, initialState);
