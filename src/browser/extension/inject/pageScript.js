@@ -40,9 +40,19 @@ window.devToolsInit = function(store) {
 };
 
 window.devToolsExtension = function(next) {
-  return (reducer, initialState) => {
-    const store = configureStore(next)(reducer, initialState);
-    devToolsInit(store);
-    return store;
+  if (next) {
+    console.warn('Please use \'window.devToolsExtension()\' instead of \'window.devToolsExtension\' as store enhancer. The latter will not be supported.');
+    return (reducer, initialState) => {
+      const store = configureStore(next)(reducer, initialState);
+      devToolsInit(store);
+      return store;
+    };
+  }
+  return (next) => {
+    return (reducer, initialState) => {
+      const store = configureStore(next)(reducer, initialState);
+      devToolsInit(store);
+      return store;
+    };
   };
 };

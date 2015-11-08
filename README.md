@@ -20,16 +20,7 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
  - or run it in dev mode with `npm i & npm start` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./dev`.
 2. Use with your favorite Flux implementation
  - **[Redux](https://github.com/rackt/redux)**<br />
-    Just update your [configureStore](https://github.com/zalmoxisus/redux-devtools-extension/commit/ffa804594008c585d28b3319bfcd4b87d5df384d) as follows:
-    ```javascript
-    const store = createStore(rootReducer, initialState);
-    ```
-    becomes
-    ```javascript
-    const store = (window.devToolsExtension ? window.devToolsExtension(createStore) : createStore)(rootReducer, initialState);
-    ```
-
-    or
+    Just update your [configureStore](https://github.com/zalmoxisus/redux-devtools-extension/commit/ffa804594008c585d28b3319bfcd4b87d5df384d):
     ```javascript
         const finalCreateStore = compose(
           applyMiddleware(thunk),
@@ -41,7 +32,7 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
     const finalCreateStore = compose(
       applyMiddleware(thunk),
       ...
-      window.devToolsExtension || (f => f)
+      window.devToolsExtension ? window.devToolsExtension() : f => f
     )(createStore);
     ```
  - **[Freezer](https://github.com/arqex/freezer)**<br />
