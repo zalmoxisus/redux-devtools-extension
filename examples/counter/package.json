@@ -34,6 +34,7 @@
     "node-libs-browser": "^0.5.2",
     "react-addons-test-utils": "^0.14.0",
     "react-transform-hmr": "^1.0.0",
+    "redux-immutable-state-invariant": "^1.1.1",
     "webpack": "^1.9.11",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.2.0"
