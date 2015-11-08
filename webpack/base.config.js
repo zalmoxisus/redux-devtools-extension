@@ -10,7 +10,8 @@ export default {
     devpanel: [ extpath + 'devpanel/index' ],
     devtools: [ extpath + 'devtools/index' ],
     content: [ extpath + 'inject/contentScript' ],
-    page: [ extpath + 'inject/pageScript' ]
+    page: [ extpath + 'inject/pageScript' ],
+    inject: [ extpath + 'inject/index' ]
   },
   output: {
     filename: '[name].bundle.js',

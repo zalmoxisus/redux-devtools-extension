@@ -1,12 +1,21 @@
-import { ACTION, UPDATE } from '../../../app/constants/ActionTypes';
 let payload;
 
-let s = document.createElement('script');
-s.src = chrome.extension.getURL('js/page.bundle.js');
-s.onload = function() {
-  this.parentNode.removeChild(this);
-};
-(document.head || document.documentElement).appendChild(s);
+const sendMessage = (
+  window.devToolsExtensionID ?
+    function(message) {
+      chrome.runtime.sendMessage(window.devToolsExtensionID, message);
+    }
+    : chrome.runtime.sendMessage
+);
+
+if (!window.devToolsExtensionID) {
+  let s = document.createElement('script');
+  s.src = chrome.extension.getURL('js/page.bundle.js');
+  s.onload = function() {
+    this.parentNode.removeChild(this);
+  };
+  (document.head || document.documentElement).appendChild(s);
+}
 
 function parseJSON(data) {
   try {
@@ -23,41 +32,33 @@ window.addEventListener('message', function(event) {
   const message = parseJSON(event.data);
   if (message.source !== 'redux-page') return;
   payload = message.payload;
-  chrome.runtime.sendMessage(message);
+  sendMessage(message);
 });
-
-// Send actions to the page
-window.dispatch = function(action) {
-  window.postMessage({
-    type: ACTION,
-    payload: action,
-    source: 'redux-cs'
-  }, '*');
-};
-
-// Ask for updates from the page
-window.update = function() {
-  window.postMessage({
-    type: UPDATE,
-    source: 'redux-cs'
-  }, '*');
-};
 
 // Request from the background script to send actions to the page
-chrome.runtime.onMessage.addListener((message) => {
-  if (message.action) window.dispatch(message.action);
-});
-
-window.addEventListener('beforeunload', function() {
-  chrome.runtime.sendMessage({
-    type: 'PAGE_UNLOADED'
+if (chrome.runtime.onMessage) {
+  chrome.runtime.onMessage.addListener((message) => {
+    if (message.action) {
+      window.postMessage({
+        type: 'ACTION',
+        payload: message.action,
+        source: 'redux-cs'
+      }, '*');
+    }
   });
-});
+}
+
+if (typeof window.onbeforeunload !== 'undefined') {
+  // Prevent adding beforeunload listener for Chrome apps
+  window.onbeforeunload = function() {
+    sendMessage({ type: 'PAGE_UNLOADED' });
+  };
+}
 
 // Detect when the tab is reactivated
 document.addEventListener('visibilitychange', function() {
   if (document.visibilityState === 'visible' && payload) {
-    chrome.runtime.sendMessage({
+    sendMessage({
       payload: payload,
       source: 'redux-page',
       init: true
