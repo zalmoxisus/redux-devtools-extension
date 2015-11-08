@@ -6,7 +6,7 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
 
 ## Advantages
 
-1. Simple implementation (only [1 line of code](https://github.com/zalmoxisus/redux-devtools-extension/commit/ffa804594008c585d28b3319bfcd4b87d5df384d) without importing anything!).
+1. Simple implementation (only [1 line of code](https://github.com/zalmoxisus/redux-devtools-extension/commit/6c146a2e16da79fefdc0e3e33f188d4ee6667341) without importing anything!).
 2. Having DevTools even in production without any drawbacks. 
 2. Keeping the DevTools up to date (Chrome extension is updated automatically).
 3. Having Redux DevTools in a page without window (Chrome extensions’ background page).
@@ -21,8 +21,8 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
 
 #### 2. Use with your favorite Flux implementation
 
-- **[Redux](https://github.com/rackt/redux)**
-    Just update your [configureStore](https://github.com/zalmoxisus/redux-devtools-extension/commit/ffa804594008c585d28b3319bfcd4b87d5df384d):
+- **[Redux](https://github.com/rackt/redux)**<br/>
+    Just update your [configureStore](https://github.com/zalmoxisus/redux-devtools-extension/commit/6c146a2e16da79fefdc0e3e33f188d4ee6667341):
     ```javascript
     const finalCreateStore = compose(
       applyMiddleware(thunk),
@@ -38,7 +38,7 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
     )(createStore);
     ```
 
-- **[Freezer](https://github.com/arqex/freezer)**
+- **[Freezer](https://github.com/arqex/freezer)**<br/>
     Just use [supportChromeExtension](https://github.com/zalmoxisus/freezer-redux-devtools#using-redux-devtools-chrome-extension) from `freezer-redux-devtools/freezer-redux-middleware`.
 
 ## Examples
