@@ -51,10 +51,16 @@ Also you may run them from `./examples` folder (on port 4001 and 4002 by default
 
 ## FAQ
 
- - **How to open Redux DevTools in a new window?**<br />
-   Right click on the page and open it from the context menu.
- - **How to persist debug sessions across page reloads?**<br />
-   Just add `?debug_session=<session_name>` to the url.
+#### How to open Redux DevTools in a new window
+Right click on the page and open it from the context menu.
+#### How to persist debug sessions across page reloads
+Just add `?debug_session=<session_name>` to the url.
+#### How to include it in chrome / electron / nw.js apps and extensions
+Unlike web apps, Chrome extension doesn't inject anything in other chrome extensions or in chrome / electron / nw.js apps, so you have to do it by yourself to allow debugging. Just add:
+```
+<script src="chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/js/inject.bundle.js"></script>
+```
+To include it in a chrome extension's content script follow [the example](https://github.com/zalmoxisus/browser-redux/commit/df2db9ee11f2d197c4329b2c8a6e197da1edffd4). 
     
 ## Credits
 
