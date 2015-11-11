@@ -55,8 +55,8 @@ Also you may run them from `./examples` folder (on port 4001 and 4002 by default
 Right click on the page and open it from the context menu.
 #### How to persist debug sessions across page reloads
 Just add `?debug_session=<session_name>` to the url.
-#### How to include it in chrome / electron / nw.js apps and extensions
-Unlike web apps, Chrome extension doesn't inject anything in other chrome extensions or in chrome / electron / nw.js apps, so you have to do it by yourself to allow debugging. Just add:
+#### How to include it in chrome apps and extensions
+Unlike web apps, Chrome extension doesn't inject anything in other chrome extensions or apps, so you have to do it by yourself to allow debugging. Just add:
 ```
 <script src="chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/js/inject.bundle.js"></script>
 ```
