@@ -1,14 +1,25 @@
+import { onMessage, sendToBg } from 'crossmessaging';
 let payload;
+let sendMessage;
 
-const sendMessage = (
-  window.devToolsExtensionID ?
-    function(message) {
-      chrome.runtime.sendMessage(window.devToolsExtensionID, message);
-    }
-    : chrome.runtime.sendMessage
-);
+// Relay background script massages to the page script
+onMessage((message) => {
+  if (message.action) {
+    window.postMessage({
+      type: 'ACTION',
+      payload: message.action,
+      source: 'redux-cs'
+    }, '*');
+  }
+});
 
-if (!window.devToolsExtensionID) {
+if (window.devToolsExtensionID) { // Send external messages
+  sendMessage = function(message) {
+    chrome.runtime.sendMessage(window.devToolsExtensionID, message);
+  };
+} else {
+  sendMessage = sendToBg;
+
   let s = document.createElement('script');
   s.src = chrome.extension.getURL('js/page.bundle.js');
   s.onload = function() {
@@ -34,19 +45,6 @@ window.addEventListener('message', function(event) {
   payload = message.payload;
   sendMessage(message);
 });
-
-// Request from the background script to send actions to the page
-if (chrome.runtime.onMessage) {
-  chrome.runtime.onMessage.addListener((message) => {
-    if (message.action) {
-      window.postMessage({
-        type: 'ACTION',
-        payload: message.action,
-        source: 'redux-cs'
-      }, '*');
-    }
-  });
-}
 
 if (typeof window.onbeforeunload !== 'undefined') {
   // Prevent adding beforeunload listener for Chrome apps

@@ -1,8 +1,11 @@
+import { connect } from 'crossmessaging';
 import React from 'react';
 import { render } from 'react-dom';
 import Provider from '../../../app/containers/Provider';
 import DevTools from '../../../app/containers/DevTools';
 import createDevStore from '../../../app/store/createDevStore';
+
+const backgroundPageConnection = connect();
 
 function dispatch(action) {
   chrome.devtools.inspectedWindow.eval(
@@ -30,10 +33,6 @@ function showDevTools() {
     rendered = true;
   }
 }
-
-const backgroundPageConnection = chrome.runtime.connect({
-  name: 'panel'
-});
 
 backgroundPageConnection.onMessage.addListener((message) => {
   if (message.na) {
