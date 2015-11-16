@@ -50,6 +50,12 @@ backgroundPageConnection.onMessage.addListener((message) => {
 });
 
 function init(id) {
+  chrome.devtools.inspectedWindow.eval(
+    'window.postMessage({' +
+    'type: \'UPDATE\',' +
+    'source: \'redux-cs\'' +
+    '}, \'*\');'
+  );
   backgroundPageConnection.postMessage({ name: 'init', tabId: id });
 }
 

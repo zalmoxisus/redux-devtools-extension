@@ -50,7 +50,7 @@
     "webpack": "^1.12.2"
   },
   "dependencies": {
-    "crossmessaging": "^0.1.1",
+    "crossmessaging": "^0.1.2",
     "json-stringify-safe": "^5.0.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",

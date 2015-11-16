@@ -2,17 +2,20 @@ import { onConnect, onMessage, sendToTab } from 'crossmessaging';
 import { MENU_DEVTOOLS } from '../../../app/constants/ContextMenus.js';
 let connections = {};
 
-function sendNAMessage(port) {
-  port.postMessage({
-    na: true,
-    source: 'redux-page'
-  });
-}
-
-onConnect(() => ({
-  payload: window.store.liftedStore.getState(),
+const naMessage = {
+  na: true,
   source: 'redux-page'
-}), {}, connections, window.store, sendNAMessage);
+};
+
+// Connect to devpanel
+onConnect((tabId) => {
+  console.log('init!', window.store.id, tabId);
+  if (tabId !== store.id) return naMessage;
+  return {
+    payload: window.store.liftedStore.getState(),
+    source: 'redux-page'
+  };
+}, {}, connections);
 
 function parseJSON(data) {
   try {
@@ -28,7 +31,7 @@ function messaging(request, sender) {
   const tabId = sender.tab ? sender.tab.id : sender.id;
   if (tabId) {
     if (request.type === 'PAGE_UNLOADED') {
-      if (connections[ tabId ]) sendNAMessage(connections[ tabId ]);
+      if (connections[ tabId ]) connections[ tabId ].postMessage(naMessage);
       return true;
     }
     const payload = typeof request.payload === 'string' ? parseJSON(request.payload) : request.payload;
