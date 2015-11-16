@@ -14,6 +14,15 @@ onConnect(() => ({
   source: 'redux-page'
 }), {}, connections, window.store, sendNAMessage);
 
+function parseJSON(data) {
+  try {
+    return JSON.parse(data);
+  } catch (e) {
+    // console.error(data + 'is not a valid JSON', e);
+    return null;
+  }
+}
+
 // Receive message from content script and relay to the devTools page
 function messaging(request, sender) {
   const tabId = sender.tab ? sender.tab.id : sender.id;
@@ -22,7 +31,9 @@ function messaging(request, sender) {
       if (connections[ tabId ]) sendNAMessage(connections[ tabId ]);
       return true;
     }
-    if (request.payload) store.liftedStore.setState(request.payload);
+    const payload = typeof request.payload === 'string' ? parseJSON(request.payload) : request.payload;
+    if (!payload) return true;
+    store.liftedStore.setState(payload);
     if (request.init) {
       store.id = tabId;
       if (typeof tabId === 'number') {
@@ -31,7 +42,7 @@ function messaging(request, sender) {
       }
     }
     if (tabId in connections) {
-      connections[ tabId ].postMessage(request);
+      connections[ tabId ].postMessage({payload: payload});
     }
   }
   return true;

@@ -28,23 +28,14 @@ if (window.devToolsExtensionID) { // Send external messages
   (document.head || document.documentElement).appendChild(s);
 }
 
-function parseJSON(data) {
-  try {
-    return JSON.parse(data);
-  } catch (e) {
-    // console.error(data + 'is not a valid JSON', e);
-    return {};
-  }
-}
-
 // Resend messages from the page to the background script
 window.addEventListener('message', function(event) {
-  if (!event || event.source !== window || typeof event.data !== 'string') return;
-  const message = parseJSON(event.data);
+  if (!event || event.source !== window || typeof event.data !== 'object') return;
+  const message = event.data;
   if (message.source !== 'redux-page') return;
   payload = message.payload;
   sendMessage(message);
-});
+}, false);
 
 if (typeof window.onbeforeunload !== 'undefined') {
   // Prevent adding beforeunload listener for Chrome apps
@@ -62,4 +53,4 @@ document.addEventListener('visibilitychange', function() {
       init: true
     });
   }
-});
+}, false);

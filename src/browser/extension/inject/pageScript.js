@@ -4,21 +4,19 @@ import { ACTION, UPDATE } from '../../../app/constants/ActionTypes';
 
 window.devToolsInit = function(store) {
   function onChange(init) {
-    window.postMessage(stringify({
-      payload: store.liftedStore.getState(),
+    window.postMessage({
+      payload: stringify(store.liftedStore.getState()),
       source: 'redux-page',
       init: init || false
-    }), '*');
+    }, '*');
   }
 
   function onMessage(event) {
-    let message;
-
-    if (event && event.source !== window) {
+    if (!event || event.source !== window) {
       return;
     }
 
-    message = event.data;
+    const message = event.data;
 
     if (!message || message.source !== 'redux-cs') {
       return;
@@ -34,7 +32,7 @@ window.devToolsInit = function(store) {
   }
 
   store.liftedStore.subscribe(onChange);
-  window.addEventListener('message', onMessage);
+  window.addEventListener('message', onMessage, false);
 
   onChange(true);
 };
