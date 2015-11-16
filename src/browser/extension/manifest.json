@@ -15,6 +15,10 @@
     "128": "img/logo/128x128.png",
     "scalable": "img/logo/scalable.png"
   },
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
   "background": {
     "page": "background.html"
   },

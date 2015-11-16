@@ -6,6 +6,7 @@ const extpath = path.join(__dirname, '../src/browser/extension/');
 export default {
   entry: {
     background: [ extpath + 'background/index' ],
+    options: [ extpath + 'options/index' ],
     window: [ extpath + 'window/index' ],
     devpanel: [ extpath + 'devpanel/index' ],
     devtools: [ extpath + 'devtools/index' ],
