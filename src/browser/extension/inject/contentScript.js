@@ -1,6 +1,10 @@
 import { onMessage, sendToBg } from 'crossmessaging';
+import getOptions from '../options/getOptions';
 let payload;
 let sendMessage;
+let options;
+
+getOptions(items => { options = items; });
 
 // Relay background script massages to the page script
 onMessage((message) => {
@@ -35,6 +39,15 @@ window.addEventListener('message', function(event) {
   if (message.source !== 'redux-page') return;
   payload = message.payload;
   sendMessage(message);
+  
+  if(message.init) {
+    window.postMessage({
+      type: 'OPTIONS',
+      options: options,
+      source: 'redux-cs'
+    }, '*');
+  }
+  
 }, false);
 
 if (typeof window.onbeforeunload !== 'undefined') {

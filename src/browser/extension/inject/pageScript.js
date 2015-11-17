@@ -1,8 +1,10 @@
 import stringify from 'json-stringify-safe';
 import configureStore from '../../../app/store/configureStore';
-import { ACTION, UPDATE } from '../../../app/constants/ActionTypes';
+import { ACTION, UPDATE, OPTIONS } from '../../../app/constants/ActionTypes';
 
 window.devToolsInit = function(store) {
+  let options = {};
+  
   function onChange(init) {
     window.postMessage({
       payload: stringify(store.liftedStore.getState()),
@@ -26,9 +28,14 @@ window.devToolsInit = function(store) {
       store.liftedStore.dispatch(message.payload);
     }
 
-    if (message.type === UPDATE) {
+    else if (message.type === UPDATE) {
       onChange();
     }
+
+    else if (message.type === OPTIONS) {
+      options = message.options;
+    }
+
   }
 
   store.liftedStore.subscribe(onChange);
