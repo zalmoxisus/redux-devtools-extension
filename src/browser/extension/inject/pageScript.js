@@ -19,13 +19,13 @@ window.devToolsInit = function(store) {
     if (init || !options.timeout) doChange(init);
     else if (!timeout.last) {
       doChange();
-      timeout.last = Date.now() / 1000 | 0;
+      timeout.last = Date.now();
     } else {
-      const timeoutValue = (options.timeout - ((Date.now() / 1000 | 0) - timeout.last)) * 1000;
+      const timeoutValue = (options.timeout * 1000 - (Date.now() - timeout.last));
       window.clearTimeout(timeout.id);
       if (timeoutValue <= 0) {
         doChange();
-        timeout.last = Date.now() / 1000 | 0;
+        timeout.last = Date.now();
       }
       else timeout.id = setTimeout(doChange, timeoutValue);
     }
