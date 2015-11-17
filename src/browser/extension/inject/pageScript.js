@@ -5,7 +5,7 @@ import { ACTION, UPDATE, OPTIONS } from '../../../app/constants/ActionTypes';
 window.devToolsInit = function(store) {
   let options = {};
   let timeout = { id: null, last: 0};
-  
+
   function doChange(init) {
     const state = store.liftedStore.getState();
     window.postMessage({
@@ -14,14 +14,13 @@ window.devToolsInit = function(store) {
       init: init || false
     }, '*');
   }
-  
+
   function onChange(init) {
     if (init || !options.timeout) doChange(init);
-    else if(!timeout.last) {
+    else if (!timeout.last) {
       doChange();
       timeout.last = Date.now() / 1000 | 0;
-    }
-    else {
+    } else {
       const timeoutValue = (options.timeout - ((Date.now() / 1000 | 0) - timeout.last)) * 1000;
       window.clearTimeout(timeout.id);
       if (timeoutValue <= 0) {
