@@ -51,6 +51,15 @@ Also you may run them from `./examples` folder (on port 4001 and 4002 by default
 
 ## FAQ
 
+#### How to get it work
+- Test the extension with [Counter](http://zalmoxisus.github.io/redux-devtools-extension/examples/counter/) or [TodoMVC](http://zalmoxisus.github.io/redux-devtools-extension/examples/todomvc/) demo.
+- Reload the extension on the extensions page (`chrome://extensions/`).
+- If something goes wrong, [open an issue](https://github.com/zalmoxisus/redux-devtools-extension/issues) or tweet me: [@mdiordiev](https://twitter.com/mdiordiev).
+
+#### How to make it faster
+Find `Redux DevTools` on the extensions page (`chrome://extensions/`). Under the title there will be an `Options` link. You may set maximum delay to `0` in order to have no delay or set to a higher value if your app generates a lot of actions. Also, you may disable serialization if your states are plain objects without circular references. 
+#### How to disable/enable it in production
+On the options page you may enable the extension to be injected in all pages or you may specify the pages urls to be injected in. Use regex values and new line as a separator.
 #### How to open Redux DevTools in a new window
 Right click on the page and open it from the context menu.
 #### How to persist debug sessions across page reloads
