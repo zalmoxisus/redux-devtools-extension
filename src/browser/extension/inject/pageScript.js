@@ -6,8 +6,9 @@ window.devToolsInit = function(store) {
   let options = {};
   
   function onChange(init) {
+    const state = store.liftedStore.getState();
     window.postMessage({
-      payload: stringify(store.liftedStore.getState()),
+      payload: options.serialize ? stringify(state) : state,
       source: 'redux-page',
       init: init || false
     }, '*');
