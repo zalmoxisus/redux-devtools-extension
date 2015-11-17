@@ -4,7 +4,7 @@ import { ACTION, UPDATE, OPTIONS } from '../../../app/constants/ActionTypes';
 
 window.devToolsInit = function(store) {
   let options = {};
-  let timeout;
+  let timeout = { id: null, last: 0};
   
   function doChange(init) {
     const state = store.liftedStore.getState();
@@ -17,9 +17,18 @@ window.devToolsInit = function(store) {
   
   function onChange(init) {
     if (init || !options.timeout) doChange(init);
+    else if(!timeout.last) {
+      doChange();
+      timeout.last = Date.now() / 1000 | 0;
+    }
     else {
-      window.clearTimeout(timeout);
-      timeout = setTimeout(doChange, options.timeout * 1000);
+      const timeoutValue = (options.timeout - ((Date.now() / 1000 | 0) - timeout.last)) * 1000;
+      window.clearTimeout(timeout.id);
+      if (timeoutValue <= 0) {
+        doChange();
+        timeout.last = Date.now() / 1000 | 0;
+      }
+      else timeout.id = setTimeout(doChange, timeoutValue);
     }
   }
 
@@ -35,6 +44,7 @@ window.devToolsInit = function(store) {
     }
 
     if (message.type === ACTION) {
+      timeout.last = 0;
       store.liftedStore.dispatch(message.payload);
     }
 
