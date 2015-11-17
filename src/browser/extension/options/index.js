@@ -4,7 +4,7 @@ import getOptions from './getOptions';
 
 const saveOption = e => {
   let obj = {};
-  obj[e.target.id] = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+  obj[e.target.id] = e.target.type === 'checkbox' ? e.target.checked : Number(e.target.value);
   chrome.storage.sync.set(obj);
 }
 

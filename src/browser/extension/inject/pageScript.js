@@ -4,14 +4,23 @@ import { ACTION, UPDATE, OPTIONS } from '../../../app/constants/ActionTypes';
 
 window.devToolsInit = function(store) {
   let options = {};
+  let timeout;
   
-  function onChange(init) {
+  function doChange(init) {
     const state = store.liftedStore.getState();
     window.postMessage({
       payload: options.serialize ? stringify(state) : state,
       source: 'redux-page',
       init: init || false
     }, '*');
+  }
+  
+  function onChange(init) {
+    if (init || !options.timeout) doChange(init);
+    else {
+      window.clearTimeout(timeout);
+      timeout = setTimeout(doChange, options.timeout * 1000);
+    }
   }
 
   function onMessage(event) {
