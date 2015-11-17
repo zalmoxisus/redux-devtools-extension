@@ -1,19 +1,11 @@
 import React from 'react';
 import { render } from 'react-dom';
+import getOptions from './getOptions';
 
 const saveOption = e => {
   let obj = {};
   obj[e.target.id] = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
   chrome.storage.sync.set(obj);
-}
-
-const getOptions = callback => {
-  chrome.storage.sync.get({
-    timeout: 1,
-    serialize: true
-  }, function(items) {
-    callback(items)
-  });
 }
 
 getOptions( items => {
