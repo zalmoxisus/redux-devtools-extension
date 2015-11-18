@@ -7,10 +7,10 @@ window.devToolsInit = function(store) {
   let timeout = { id: null, last: 0};
 
   function doChange(init) {
-    let state = store.liftedStore.getState();
+    const state = store.liftedStore.getState();
     if (options.limit && state.currentStateIndex > options.limit) {
       store.liftedStore.dispatch({type: COMMIT, timestamp: Date.now()});
-      state = store.liftedStore.getState();
+      return;
     }
     window.postMessage({
       payload: options.serialize ? stringify(state) : state,
@@ -49,13 +49,9 @@ window.devToolsInit = function(store) {
     if (message.type === ACTION) {
       timeout.last = 0;
       store.liftedStore.dispatch(message.payload);
-    }
-
-    else if (message.type === UPDATE) {
+    } else if (message.type === UPDATE) {
       onChange();
-    }
-
-    else if (message.type === OPTIONS) {
+    } else if (message.type === OPTIONS) {
       options = message.options;
     }
 
