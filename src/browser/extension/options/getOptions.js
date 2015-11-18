@@ -4,7 +4,7 @@ const getOptions = callback => {
     timeout: 1,
     serialize: true,
     inject: true,
-    urls: 'https?:\\/\\/localhost|0\\.0\\.0\\.0:\\d+\\/(.+)?\nhttps?:\\/\\/.+\\.github\\.io\\/(.+)?'
+    urls: '^https?://localhost|0\\.0\\.0\\.0:\\d+\n^https?://.+\\.github\\.io'
   }, function(items) {
     callback(items);
   });
