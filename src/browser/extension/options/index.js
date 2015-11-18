@@ -32,6 +32,11 @@ getOptions( items => {
   render(
     <div>
       <div className="input">
+        <span className="caption">Maximum actions:</span>
+        <input id="limit" type="text" defaultValue={items.limit} onChange={saveOption} />
+        <span className="comment">(autocommit when exceeds, 0 - no limit)</span>
+      </div>
+      <div className="input">
         <span className="caption">Maximum delay:</span>
         <input id="timeout" type="text" defaultValue={items.timeout} onChange={saveOption} />
         <span className="comment">(seconds: bigger - better performance)</span>

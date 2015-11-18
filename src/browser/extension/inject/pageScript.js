@@ -1,13 +1,17 @@
 import stringify from 'json-stringify-safe';
 import configureStore from '../../../app/store/configureStore';
-import { ACTION, UPDATE, OPTIONS } from '../../../app/constants/ActionTypes';
+import { ACTION, UPDATE, OPTIONS, COMMIT } from '../../../app/constants/ActionTypes';
 
 window.devToolsInit = function(store) {
   let options = {};
   let timeout = { id: null, last: 0};
 
   function doChange(init) {
-    const state = store.liftedStore.getState();
+    let state = store.liftedStore.getState();
+    if (options.limit && state.currentStateIndex > options.limit) {
+      store.liftedStore.dispatch({type: COMMIT, timestamp: Date.now()});
+      state = store.liftedStore.getState();
+    }
     window.postMessage({
       payload: options.serialize ? stringify(state) : state,
       source: 'redux-page',
