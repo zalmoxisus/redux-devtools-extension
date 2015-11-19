@@ -1,4 +1,5 @@
 import { onConnect, onMessage, sendToTab } from 'crossmessaging';
+import getOptions from '../options/getOptions';
 import { MENU_DEVTOOLS } from '../../../app/constants/ContextMenus.js';
 let connections = {};
 
@@ -27,11 +28,17 @@ function parseJSON(data) {
 }
 
 // Receive message from content script and relay to the devTools page
-function messaging(request, sender) {
+function messaging(request, sender, sendResponse) {
   const tabId = sender.tab ? sender.tab.id : sender.id;
   if (tabId) {
     if (request.type === 'PAGE_UNLOADED') {
       if (connections[ tabId ]) connections[ tabId ].postMessage(naMessage);
+      return true;
+    }
+    if (request.type === 'GET_OPTIONS') {
+      getOptions(options => {
+        sendResponse({options: options});
+      });
       return true;
     }
     const payload = typeof request.payload === 'string' ? parseJSON(request.payload) : request.payload;

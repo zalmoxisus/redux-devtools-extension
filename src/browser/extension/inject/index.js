@@ -3,5 +3,13 @@
 
 window.devToolsExtensionID = 'lmhkpmbekcpmknklioeibfkpmmfibljd';
 
-require('./contentScript');
-require('./pageScript');
+chrome.runtime.sendMessage(window.devToolsExtensionID, { type: 'GET_OPTIONS' }, function(response) {
+  if (!response.options.inject) {
+    const urls = response.options.urls.split('\n').join('|');
+    if (!location.href.match(new RegExp(urls))) return;
+  }
+
+  window.devToolsOptions = response.options;
+  require('./contentScript');
+  require('./pageScript');
+});

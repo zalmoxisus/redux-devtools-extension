@@ -1,4 +1,9 @@
 const getOptions = callback => {
+  if (window.devToolsExtensionID && chrome.runtime.id !== window.devToolsExtensionID) {
+    callback(window.devToolsOptions);
+    return;
+  }
+
   chrome.storage.sync.get({
     limit: 50,
     timeout: 1,
