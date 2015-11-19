@@ -46,7 +46,10 @@ function messaging(request, sender, sendResponse) {
     if (request.init) {
       store.id = tabId;
       if (typeof tabId === 'number') {
-        chrome.contextMenus.update(MENU_DEVTOOLS, {documentUrlPatterns: [sender.url], enabled: true});
+        let url = sender.url;
+        let hash = url.indexOf('#');
+        if (hash !== -1) url = url.substr(0, hash);
+        chrome.contextMenus.update(MENU_DEVTOOLS, {documentUrlPatterns: [url], enabled: true});
         chrome.pageAction.show(tabId);
       }
     }
