@@ -45,7 +45,7 @@ getOptions(options => {
     if (!event || event.source !== window || typeof event.data !== 'object') return;
     const message = event.data;
     if (message.source !== 'redux-page') return;
-    payload = message.payload;
+    if (message.payload) payload = message.payload;
     sendMessage(message);
   }, false);
 

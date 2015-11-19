@@ -78,3 +78,10 @@ window.devToolsExtension = function(next) {
     };
   };
 };
+
+window.devToolsExtension.open = function() {
+  window.postMessage({
+    source: 'redux-page',
+    type: 'OPEN'
+  }, '*');
+};

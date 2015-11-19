@@ -18,7 +18,7 @@ function closeIfExist(type) {
   }
 }
 
-function popWindow(action, url, type, customOptions, store) {
+function popWindow(action, url, type, customOptions) {
   closeIfExist(type);
   let options = {
     type: 'popup',
@@ -34,8 +34,10 @@ function popWindow(action, url, type, customOptions, store) {
   }
 }
 
-function createMenu() {
-  addToMenu(MENU_DEVTOOLS, 'Open Redux DevTools', ['all'], () => popWindow('open', 'window.html', 'devtools', {width: 320}));
+export function openDevToolsWindow() {
+  popWindow('open', 'window.html', 'devtools', {width: 320});
 }
 
-export default createMenu;
+export default function createMenu() {
+  addToMenu(MENU_DEVTOOLS, 'Open Redux DevTools', ['all'], openDevToolsWindow);
+}

@@ -1,6 +1,7 @@
 import { onConnect, onMessage, sendToTab } from 'crossmessaging';
 import getOptions from '../options/getOptions';
-import { MENU_DEVTOOLS } from '../../../app/constants/ContextMenus.js';
+import { MENU_DEVTOOLS } from '../../../app/constants/ContextMenus';
+import { openDevToolsWindow } from './ContextMenus';
 let connections = {};
 
 const naMessage = {
@@ -40,6 +41,11 @@ function messaging(request, sender, sendResponse) {
       });
       return true;
     }
+    if (request.type === 'OPEN') {
+      openDevToolsWindow();
+      return true;
+    }
+
     const payload = typeof request.payload === 'string' ? parseJSON(request.payload) : request.payload;
     if (!payload) return true;
     store.liftedStore.setState(payload);
