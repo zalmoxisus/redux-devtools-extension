@@ -28,6 +28,11 @@ getOptions(options => {
     sendMessage = sendToBg;
 
     let s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.appendChild(document.createTextNode('window.devToolsOptions=' + JSON.stringify(options)));
+    (document.head || document.documentElement).appendChild(s);
+
+    s = document.createElement('script');
     s.src = chrome.extension.getURL('js/page.bundle.js');
     s.onload = function() {
       this.parentNode.removeChild(this);
@@ -42,14 +47,6 @@ getOptions(options => {
     if (message.source !== 'redux-page') return;
     payload = message.payload;
     sendMessage(message);
-
-    if (message.init) {
-      window.postMessage({
-        type: 'OPTIONS',
-        options: options,
-        source: 'redux-cs'
-      }, '*');
-    }
   }, false);
 
   if (typeof window.onbeforeunload !== 'undefined') {

@@ -3,7 +3,7 @@ import configureStore from '../../../app/store/configureStore';
 import { ACTION, UPDATE, OPTIONS, COMMIT } from '../../../app/constants/ActionTypes';
 
 window.devToolsInit = function(store) {
-  let options = {};
+  const options = window.devToolsOptions;
   let timeout = { id: null, last: 0};
 
   function doChange(init) {
@@ -51,8 +51,6 @@ window.devToolsInit = function(store) {
       store.liftedStore.dispatch(message.payload);
     } else if (message.type === UPDATE) {
       onChange();
-    } else if (message.type === OPTIONS) {
-      options = message.options;
     }
 
   }
