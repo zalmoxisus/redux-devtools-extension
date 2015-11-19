@@ -10,7 +10,6 @@ const naMessage = {
 
 // Connect to devpanel
 onConnect((tabId) => {
-  console.log('init!', window.store.id, tabId);
   if (tabId !== store.id) return naMessage;
   return {
     payload: window.store.liftedStore.getState(),
