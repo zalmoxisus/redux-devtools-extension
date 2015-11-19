@@ -1,7 +1,7 @@
 import { onConnect, onMessage, sendToTab } from 'crossmessaging';
 import getOptions from '../options/getOptions';
 import { MENU_DEVTOOLS } from '../../../app/constants/ContextMenus';
-import { openDevToolsWindow } from './ContextMenus';
+import { openDevToolsWindow } from './contextMenus';
 let connections = {};
 
 const naMessage = {
