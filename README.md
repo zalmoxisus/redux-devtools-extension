@@ -73,6 +73,10 @@ Unlike web apps, Chrome extension doesn't inject anything in other chrome extens
 <script src="chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/js/inject.bundle.js"></script>
 ```
 To include it in a chrome extension's content script follow [the example](https://github.com/zalmoxisus/browser-redux/commit/df2db9ee11f2d197c4329b2c8a6e197da1edffd4). 
+#### How to open DevTools programmatically
+```js
+window.devToolsExtension.open();
+```
     
 ## Credits
 
