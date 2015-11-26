@@ -77,6 +77,8 @@ To include it in a chrome extension's content script follow [the example](https:
 ```js
 window.devToolsExtension.open();
 ```
+#### How to keep DevTools window focused all the time in a chrome panel
+To enable chrome panels feature in Chrome, type in `chrome://flags/#enable-panels` in the url bar and click on "enable" under "enable panels". Make sure to click on "relaunch now " at the bottom of the page, to take effect. 
 #### How to include DevTools in the page
 You may open DevTools in a new window (by opening context menu with right mouse click), from popup (clicking on the browser action button) or from Chrome dev panel. If you still, for some reason, want to include it directly in your page, load the following url in iframe: `chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/window.html`. You'd probably include it in a docker or in a resizeable component.
     

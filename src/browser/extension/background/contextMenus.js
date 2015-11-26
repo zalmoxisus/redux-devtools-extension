@@ -21,7 +21,7 @@ function closeIfExist(type) {
 function popWindow(action, url, type, customOptions) {
   closeIfExist(type);
   let options = {
-    type: 'popup',
+    type: 'panel',
     left: 5, top: 100,
     width: 800, height: 700,
     ...customOptions
