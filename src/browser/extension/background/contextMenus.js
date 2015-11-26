@@ -11,15 +11,16 @@ function addToMenu(id, title, contexts, onClick) {
   });
 }
 
-function closeIfExist(type) {
+function focusIfExist(type) {
   if (windows[type] > 0) {
-    chrome.windows.remove(windows[type]);
-    windows[type] = chrome.windows.WINDOW_ID_NONE;
+    chrome.windows.update(windows[type], {focused: true});
+    return true;
   }
+  return false;
 }
 
 function popWindow(action, url, type, customOptions) {
-  closeIfExist(type);
+  if (focusIfExist(type)) return;
   let options = {
     type: 'panel',
     left: 5, top: 100,
