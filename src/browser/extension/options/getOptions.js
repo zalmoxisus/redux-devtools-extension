@@ -1,4 +1,10 @@
-const getOptions = callback => {
+const save = (key, value) => {
+  let obj = {};
+  obj[key] = value;
+  chrome.storage.sync.set(obj);
+};
+
+const get = callback => {
   if (window.devToolsExtensionID && chrome.runtime.id !== window.devToolsExtensionID) {
     callback(window.devToolsOptions);
     return;
@@ -19,4 +25,8 @@ export const getOptionsFromBg = callback => {
   chrome.runtime.sendMessage({ type: 'GET_OPTIONS' }, response => { callback(response.options); });
 };
 
-export default getOptions;
+export default {
+  save: save,
+  get: get
+};
+

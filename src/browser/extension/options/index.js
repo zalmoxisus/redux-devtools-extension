@@ -1,11 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
-import getOptions from './getOptions';
+import syncOptions from './getOptions';
 
 const saveOption = e => {
-  let obj = {};
-  obj[e.target.id] = e.target.type === 'checkbox' ? e.target.checked : Number(e.target.value);
-  chrome.storage.sync.set(obj);
+  syncOptions.save(e.target.id, e.target.type === 'checkbox' ? e.target.checked : Number(e.target.value));
 };
 
 const isValidRegex = str => {
@@ -19,16 +17,14 @@ const isValidRegex = str => {
 };
 
 const saveUrls = e => {
-  let obj = {};
   const urls = e.target.value;
   urls.split('\n').forEach(function(url) {
     if (!isValidRegex(url)) return; // TODO: show an error message
   });
-  obj[e.target.id] = urls;
-  chrome.storage.sync.set(obj);
+  syncOptions.save(e.target.id, obj);
 };
 
-getOptions( items => {
+syncOptions.get( items => {
   render(
     <div>
       <div className="input">
