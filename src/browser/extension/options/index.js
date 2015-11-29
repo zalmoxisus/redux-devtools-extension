@@ -23,7 +23,7 @@ chrome.runtime.getBackgroundPage( background => {
     urls.split('\n').forEach(function(url) {
       if (!isValidRegex(url)) return; // TODO: show an error message
     });
-    syncOptions.save(e.target.id, obj);
+    syncOptions.save(e.target.id, urls);
   };
 
   syncOptions.get(items => {
