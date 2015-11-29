@@ -15,4 +15,8 @@ const getOptions = callback => {
   });
 };
 
+export const getOptionsFromBg = callback => {
+  chrome.runtime.sendMessage({ type: 'GET_OPTIONS' }, response => { callback(response.options); });
+};
+
 export default getOptions;

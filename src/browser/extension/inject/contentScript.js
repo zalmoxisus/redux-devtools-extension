@@ -1,9 +1,9 @@
 import { onMessage, sendToBg } from 'crossmessaging';
-import getOptions from '../options/getOptions';
+import { getOptionsFromBg } from '../options/getOptions';
 let payload;
 let sendMessage;
 
-getOptions(options => {
+getOptionsFromBg(options => {
   if (!options.inject) {
     const urls = options.urls.split('\n').join('|');
     if (!location.href.match(new RegExp(urls))) return;
