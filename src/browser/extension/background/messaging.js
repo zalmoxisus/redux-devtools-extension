@@ -1,5 +1,5 @@
 import { onConnect, onMessage, sendToTab } from 'crossmessaging';
-import getOptions from '../options/getOptions';
+import syncOptions from '../options/syncOptions';
 import { MENU_DEVTOOLS } from '../../../app/constants/ContextMenus';
 import { openDevToolsWindow } from './contextMenus';
 let connections = {};
@@ -36,7 +36,7 @@ function messaging(request, sender, sendResponse) {
       return true;
     }
     if (request.type === 'GET_OPTIONS') {
-      getOptions(options => {
+      syncOptions.get(options => {
         sendResponse({options: options});
       });
       return true;

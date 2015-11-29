@@ -1,5 +1,5 @@
 import { onMessage, sendToBg } from 'crossmessaging';
-import { getOptionsFromBg } from '../options/getOptions';
+import { getOptionsFromBg } from '../options/syncOptions';
 let payload;
 let sendMessage;
 

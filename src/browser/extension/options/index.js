@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import syncOptions from './getOptions';
+import syncOptions from './syncOptions';
 
 const saveOption = e => {
   syncOptions.save(e.target.id, e.target.type === 'checkbox' ? e.target.checked : Number(e.target.value));
