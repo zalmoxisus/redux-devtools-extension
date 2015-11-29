@@ -28,15 +28,26 @@ const get = callback => {
   }
 };
 
+const injectOptions = () => {
+  let s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.appendChild(document.createTextNode('window.devToolsOptions=' + JSON.stringify(options)));
+  s.onload = function() {
+    this.parentNode.removeChild(this);
+  };
+  (document.head || document.documentElement).appendChild(s);
+};
+
 export const getOptionsFromBg = callback => {
   chrome.runtime.sendMessage({ type: 'GET_OPTIONS' }, response => {
     options = response.options;
-    callback(response.options);
+    if (callback) callback(response.options);
+    else injectOptions();
   });
 };
 
-export const isAllowed = () => (
-  !options || !options.inject && location.href.match(options.urls.split('\n').join('|'))
+export const isAllowed = (localOptions = options) => (
+  !localOptions || !localOptions.inject && location.href.match(localOptions.urls.split('\n').join('|'))
 );
 
 export default {

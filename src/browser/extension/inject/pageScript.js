@@ -1,9 +1,11 @@
 import stringify from 'json-stringify-safe';
 import configureStore from '../../../app/store/configureStore';
 import { ACTION, UPDATE, OPTIONS, COMMIT } from '../../../app/constants/ActionTypes';
+import { isAllowed } from '../options/syncOptions';
+
 
 window.devToolsInit = function(store) {
-  const options = window.devToolsOptions;
+  const options = window.devToolsOptions || {};
   let timeout = { id: null, last: 0};
 
   function doChange(init) {
@@ -13,7 +15,7 @@ window.devToolsInit = function(store) {
       return;
     }
     window.postMessage({
-      payload: options.serialize ? stringify(state) : state,
+      payload: typeof options.serialize === 'undefined' || options.serialize ? stringify(state) : state,
       source: 'redux-page',
       init: init || false
     }, '*');
@@ -72,6 +74,8 @@ window.devToolsExtension = function(next) {
   }
   return (next) => {
     return (reducer, initialState) => {
+      if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState);
+
       const store = configureStore(next)(reducer, initialState);
       devToolsInit(store);
       return store;
