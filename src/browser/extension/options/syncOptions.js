@@ -29,8 +29,15 @@ const get = callback => {
 };
 
 export const getOptionsFromBg = callback => {
-  chrome.runtime.sendMessage({ type: 'GET_OPTIONS' }, response => { callback(response.options); });
+  chrome.runtime.sendMessage({ type: 'GET_OPTIONS' }, response => {
+    options = response.options;
+    callback(response.options);
+  });
 };
+
+export const isAllowed = () => (
+  !options || !options.inject && location.href.match(options.urls.split('\n').join('|'))
+);
 
 export default {
   save: save,

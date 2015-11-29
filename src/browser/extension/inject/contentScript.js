@@ -1,13 +1,10 @@
 import { onMessage, sendToBg } from 'crossmessaging';
-import { getOptionsFromBg } from '../options/syncOptions';
+import { getOptionsFromBg, isAllowed } from '../options/syncOptions';
 let payload;
 let sendMessage;
 
 getOptionsFromBg(options => {
-  if (!options.inject) {
-    const urls = options.urls.split('\n').join('|');
-    if (!location.href.match(new RegExp(urls))) return;
-  }
+  if (!isAllowed()) return;
 
   // Relay background script massages to the page script
   onMessage((message) => {
