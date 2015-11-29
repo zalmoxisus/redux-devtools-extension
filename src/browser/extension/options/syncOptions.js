@@ -1,7 +1,10 @@
+let options;
+
 const save = (key, value) => {
   let obj = {};
   obj[key] = value;
   chrome.storage.sync.set(obj);
+  options[key] = value;
 };
 
 const get = callback => {
@@ -10,15 +13,19 @@ const get = callback => {
     return;
   }
 
-  chrome.storage.sync.get({
-    limit: 50,
-    timeout: 1,
-    serialize: true,
-    inject: true,
-    urls: '^https?://localhost|0\\.0\\.0\\.0:\\d+\n^https?://.+\\.github\\.io'
-  }, function(items) {
-    callback(items);
-  });
+  if (options) callback(options);
+  else {
+    chrome.storage.sync.get({
+      limit: 50,
+      timeout: 1,
+      serialize: true,
+      inject: true,
+      urls: '^https?://localhost|0\\.0\\.0\\.0:\\d+\n^https?://.+\\.github\\.io'
+    }, function(items) {
+      options = items;
+      callback(items);
+    });
+  }
 };
 
 export const getOptionsFromBg = callback => {
@@ -29,4 +36,3 @@ export default {
   save: save,
   get: get
 };
-

@@ -4,6 +4,8 @@ import { MENU_DEVTOOLS } from '../../../app/constants/ContextMenus';
 import { openDevToolsWindow } from './contextMenus';
 let connections = {};
 
+window.syncOptions = syncOptions; // Used in the options page
+
 const naMessage = {
   na: true,
   source: 'redux-page'
