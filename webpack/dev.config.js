@@ -1,17 +1,20 @@
 import path from 'path';
 import webpack from 'webpack';
-import config from './base.config';
+import baseConfig from './base.config';
 
-config.output.path = path.join(__dirname, '../dev/js');
-config.plugins = [
-  new webpack.DefinePlugin({
+let config = baseConfig({
+  output: { path: path.join(__dirname, '../dev/js') },
+  globals: {
     'process.env': {
       NODE_ENV: '"development"'
     }
-  }),
-  new webpack.optimize.OccurenceOrderPlugin(),
-  new webpack.NoErrorsPlugin()
-];
+  },
+  plugins: [
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.NoErrorsPlugin()
+  ]
+});
+
 config.watch = true;
 
 export default config;

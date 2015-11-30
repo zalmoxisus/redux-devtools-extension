@@ -1,21 +1,12 @@
 import path from 'path';
 import webpack from 'webpack';
-import config from './base.config';
+import baseConfig from './base.config';
 
-config.output.path = path.join(__dirname, '../build/extension/js');
-config.plugins = [
-  new webpack.DefinePlugin({
+export default baseConfig({
+  output: { path: path.join(__dirname, '../build/extension/js') },
+  globals: {
     'process.env': {
       NODE_ENV: '"production"'
     }
-  }),
-  new webpack.optimize.DedupePlugin(),
-  new webpack.optimize.UglifyJsPlugin({
-    comments: false,
-    compressor: {
-      warnings: false
-    }
-  })
-];
-
-export default config;
+  }
+});
