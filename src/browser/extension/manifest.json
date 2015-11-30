@@ -26,7 +26,7 @@
     {
       "matches": ["<all_urls>"],
       "exclude_globs": [ "https://www.google*" ],
-      "js": ["js/content.bundle.js"],
+      "js": ["js/content.bundle.js", "js/pagewrap.bundle.js"],
       "run_at": "document_start"
     }
   ],

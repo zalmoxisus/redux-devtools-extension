@@ -12,6 +12,7 @@ const baseConfig = (params) => ({
     devtools: [ `${extpath}devtools/index` ],
     content: [ `${extpath}inject/contentScript` ],
     page: [ `${extpath}inject/pageScript` ],
+    pagewrap: [ `${extpath}inject/pageScriptWrap` ],
     inject: [ `${extpath}inject/index` ],
     ...params.inputExtra
   },
