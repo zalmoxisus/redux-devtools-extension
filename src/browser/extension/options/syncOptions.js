@@ -47,7 +47,7 @@ export const getOptionsFromBg = callback => {
 };
 
 export const isAllowed = (localOptions = options) => (
-  !localOptions || !localOptions.inject && location.href.match(localOptions.urls.split('\n').join('|'))
+  !localOptions || localOptions.inject || location.href.match(localOptions.urls.split('\n').join('|'))
 );
 
 export default {
