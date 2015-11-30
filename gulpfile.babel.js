@@ -7,6 +7,7 @@ import zip from 'gulp-zip';
 import webpack from 'webpack';
 import devConfig from './webpack/dev.config';
 import prodConfig from './webpack/prod.config';
+import wrapConfig from './webpack/wrap.config';
 
 /*
  * common tasks
@@ -56,13 +57,16 @@ gulp.task('copy:dev', () => {
  */
 
 gulp.task('webpack:build:extension', (callback) => {
-  webpack(prodConfig, (err, stats) => {
-    if (err) {
-      throw new gutil.PluginError('webpack:build', err);
-    }
-    gutil.log('[webpack:build]', stats.toString({ colors: true }));
-    callback();
-  });
+  function webpackProcess(config, next) {
+    webpack(config, (err, stats) => {
+      if (err) {
+        throw new gutil.PluginError('webpack:build', err);
+      }
+      gutil.log('[webpack:build]', stats.toString({ colors: true }));
+      next();
+    });
+  }
+  webpackProcess(wrapConfig, () => { webpackProcess(prodConfig, callback); });
 });
 
 gulp.task('views:build:extension', () => {
