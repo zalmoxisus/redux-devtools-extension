@@ -37,6 +37,14 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
       window.devToolsExtension ? window.devToolsExtension() : f => f
     )(createStore);
     ```
+    *or for universal (isomorphic) apps*
+    ```javascript
+    const finalCreateStore = compose(
+      applyMiddleware(thunk),
+      ...
+      typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+    )(createStore);
+    ```
 
 - **[Freezer](https://github.com/arqex/freezer)**<br/>
     Just use [supportChromeExtension](https://github.com/zalmoxisus/freezer-redux-devtools#using-redux-devtools-chrome-extension) from `freezer-redux-devtools/freezer-redux-middleware`.
