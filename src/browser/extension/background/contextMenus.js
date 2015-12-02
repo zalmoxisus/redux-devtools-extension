@@ -11,28 +11,31 @@ function addToMenu(id, title, contexts, onClick) {
   });
 }
 
-function focusIfExist(type) {
-  if (windows[type] > 0) {
-    chrome.windows.update(windows[type], {focused: true});
-    return true;
+function focusIfExist(type, callback) {
+  if (!windows[type]) {
+    callback();
+  } else {
+    chrome.windows.update(windows[type], {focused: true}, () => {
+      if (chrome.runtime.lastError) callback();
+    });
   }
-  return false;
 }
 
 function popWindow(action, url, type, customOptions) {
-  if (focusIfExist(type)) return;
-  let options = {
-    type: 'panel',
-    left: 5, top: 100,
-    width: 800, height: 700,
-    ...customOptions
-  };
-  if (action === 'open') {
-    options.url = chrome.extension.getURL(url);
-    chrome.windows.create(options, (win) => {
-      windows[type] = win.id;
-    });
-  }
+  focusIfExist(type, () => {
+    let options = {
+      type: 'panel',
+      left: 5, top: 100,
+      width: 800, height: 700,
+      ...customOptions
+    };
+    if (action === 'open') {
+      options.url = chrome.extension.getURL(url);
+      chrome.windows.create(options, (win) => {
+        windows[type] = win.id;
+      });
+    }
+  });
 }
 
 export function openDevToolsWindow() {
