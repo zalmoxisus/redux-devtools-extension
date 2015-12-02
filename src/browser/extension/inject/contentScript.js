@@ -3,7 +3,7 @@ import { getOptionsFromBg, isAllowed } from '../options/syncOptions';
 let payload;
 let sendMessage;
 
-getOptionsFromBg();
+if (!window.devToolsOptions) getOptionsFromBg();
 
 // Relay background script massages to the page script
 onMessage((message) => {
