@@ -5,29 +5,29 @@ import { isAllowed } from '../options/syncOptions';
 
 
 window.devToolsInit = function(store) {
-  const options = window.devToolsOptions || {};
+  if (!window.devToolsOptions) window.devToolsOptions = {};
   let timeout = { id: null, last: 0};
 
   function doChange(init) {
     const state = store.liftedStore.getState();
-    if (options.limit && state.currentStateIndex > options.limit) {
+    if (window.devToolsOptions.limit && state.currentStateIndex > window.devToolsOptions.limit) {
       store.liftedStore.dispatch({type: COMMIT, timestamp: Date.now()});
       return;
     }
     window.postMessage({
-      payload: typeof options.serialize === 'undefined' || options.serialize ? stringify(state) : state,
+      payload: typeof window.devToolsOptions.serialize === 'undefined' || window.devToolsOptions.serialize ? stringify(state) : state,
       source: 'redux-page',
       init: init || false
     }, '*');
   }
 
   function onChange(init) {
-    if (init || !options.timeout) doChange(init);
+    if (init || !window.devToolsOptions.timeout) doChange(init);
     else if (!timeout.last) {
       doChange();
       timeout.last = Date.now();
     } else {
-      const timeoutValue = (options.timeout * 1000 - (Date.now() - timeout.last));
+      const timeoutValue = (window.devToolsOptions.timeout * 1000 - (Date.now() - timeout.last));
       window.clearTimeout(timeout.id);
       if (timeoutValue <= 0) {
         doChange();

@@ -1,3 +1,4 @@
+import { onMessage, sendToBg, sendToTab } from 'crossmessaging';
 let options;
 
 const save = (key, value) => {
@@ -5,6 +6,7 @@ const save = (key, value) => {
   obj[key] = value;
   chrome.storage.sync.set(obj);
   options[key] = value;
+  sendToTab(window.store.id, { options: options });
 };
 
 const get = callback => {
@@ -28,7 +30,9 @@ const get = callback => {
   }
 };
 
-const injectOptions = () => {
+const injectOptions = newOptions => {
+  if (!newOptions) return;
+  options = newOptions;
   let s = document.createElement('script');
   s.type = 'text/javascript';
   s.appendChild(document.createTextNode('window.devToolsOptions=' + JSON.stringify(options)));
@@ -38,12 +42,11 @@ const injectOptions = () => {
   (document.head || document.documentElement).appendChild(s);
 };
 
-export const getOptionsFromBg = callback => {
-  chrome.runtime.sendMessage({ type: 'GET_OPTIONS' }, response => {
-    options = response.options;
-    if (callback) callback(response.options);
-    else injectOptions();
+export const getOptionsFromBg = () => {
+  sendToBg({ type: 'GET_OPTIONS' }, response => {
+    injectOptions(response.options);
   });
+  onMessage(message => { injectOptions(message.options); });
 };
 
 export const isAllowed = (localOptions = options) => (
