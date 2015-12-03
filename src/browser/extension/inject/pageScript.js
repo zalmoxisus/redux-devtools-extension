@@ -3,67 +3,66 @@ import configureStore from '../../../app/store/configureStore';
 import { ACTION, UPDATE, OPTIONS, COMMIT } from '../../../app/constants/ActionTypes';
 import { isAllowed } from '../options/syncOptions';
 
+window.devToolsExtension = function(next) {
+  function devToolsInit(store) {
+    if (!window.devToolsOptions) window.devToolsOptions = {};
+    let timeout = { id: null, last: 0};
 
-window.devToolsInit = function(store) {
-  if (!window.devToolsOptions) window.devToolsOptions = {};
-  let timeout = { id: null, last: 0};
-
-  function doChange(init) {
-    const state = store.liftedStore.getState();
-    if (window.devToolsOptions.limit && state.currentStateIndex > window.devToolsOptions.limit) {
-      store.liftedStore.dispatch({type: COMMIT, timestamp: Date.now()});
-      return;
+    function doChange(init) {
+      const state = store.liftedStore.getState();
+      if (window.devToolsOptions.limit && state.currentStateIndex > window.devToolsOptions.limit) {
+        store.liftedStore.dispatch({type: COMMIT, timestamp: Date.now()});
+        return;
+      }
+      window.postMessage({
+        payload: typeof window.devToolsOptions.serialize === 'undefined' || window.devToolsOptions.serialize ? stringify(state) : state,
+        source: 'redux-page',
+        init: init || false
+      }, '*');
     }
-    window.postMessage({
-      payload: typeof window.devToolsOptions.serialize === 'undefined' || window.devToolsOptions.serialize ? stringify(state) : state,
-      source: 'redux-page',
-      init: init || false
-    }, '*');
-  }
 
-  function onChange(init) {
-    if (init || !window.devToolsOptions.timeout) doChange(init);
-    else if (!timeout.last) {
-      doChange();
-      timeout.last = Date.now();
-    } else {
-      const timeoutValue = (window.devToolsOptions.timeout * 1000 - (Date.now() - timeout.last));
-      window.clearTimeout(timeout.id);
-      if (timeoutValue <= 0) {
+    function onChange(init) {
+      if (init || !window.devToolsOptions.timeout) doChange(init);
+      else if (!timeout.last) {
         doChange();
         timeout.last = Date.now();
+      } else {
+        const timeoutValue = (window.devToolsOptions.timeout * 1000 - (Date.now() - timeout.last));
+        window.clearTimeout(timeout.id);
+        if (timeoutValue <= 0) {
+          doChange();
+          timeout.last = Date.now();
+        }
+        else timeout.id = setTimeout(doChange, timeoutValue);
       }
-      else timeout.id = setTimeout(doChange, timeoutValue);
     }
+
+    function onMessage(event) {
+      if (!event || event.source !== window) {
+        return;
+      }
+
+      const message = event.data;
+
+      if (!message || message.source !== 'redux-cs') {
+        return;
+      }
+
+      if (message.type === ACTION) {
+        timeout.last = 0;
+        store.liftedStore.dispatch(message.payload);
+      } else if (message.type === UPDATE) {
+        onChange();
+      }
+
+    }
+
+    store.liftedStore.subscribe(onChange);
+    window.addEventListener('message', onMessage, false);
+
+    onChange(true);
   }
 
-  function onMessage(event) {
-    if (!event || event.source !== window) {
-      return;
-    }
-
-    const message = event.data;
-
-    if (!message || message.source !== 'redux-cs') {
-      return;
-    }
-
-    if (message.type === ACTION) {
-      timeout.last = 0;
-      store.liftedStore.dispatch(message.payload);
-    } else if (message.type === UPDATE) {
-      onChange();
-    }
-
-  }
-
-  store.liftedStore.subscribe(onChange);
-  window.addEventListener('message', onMessage, false);
-
-  onChange(true);
-};
-
-window.devToolsExtension = function(next) {
   if (next) {
     console.warn('Please use \'window.devToolsExtension()\' instead of \'window.devToolsExtension\' as store enhancer. The latter will not be supported.');
     return (reducer, initialState) => {
