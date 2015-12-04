@@ -19,6 +19,9 @@ const get = callback => {
   else {
     chrome.storage.sync.get({
       limit: 50,
+      filter: false,
+      whitelist: '',
+      blacklist: '',
       timeout: 1,
       serialize: true,
       inject: true,

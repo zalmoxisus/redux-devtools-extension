@@ -5,7 +5,11 @@ chrome.runtime.getBackgroundPage( background => {
   const syncOptions = background.syncOptions;
 
   const saveOption = e => {
-    syncOptions.save(e.target.id, e.target.type === 'checkbox' ? e.target.checked : Number(e.target.value));
+    let value;
+    if (e.target.type === 'checkbox') value = e.target.checked;
+    else if (e.target.type === 'input') value = Number(e.target.value);
+    else value = e.target.value;
+    syncOptions.save(e.target.id, value);
   };
 
   const isValidRegex = str => {
@@ -35,14 +39,27 @@ chrome.runtime.getBackgroundPage( background => {
           <span className="comment">(autocommit when exceeds, 0 - no limit)</span>
         </div>
         <div className="input">
-          <span className="caption">Maximum delay:</span>
-          <input id="timeout" type="text" defaultValue={items.timeout} onChange={saveOption}/>
-          <span className="comment">(seconds: bigger - better performance)</span>
+          <span className="caption">Filter spec. actions:</span>
+          <input id="filter" type="checkbox" defaultChecked={items.filter} onChange={saveOption}/>
+          <span className="comment">(enable to show/hide the actions bellow)</span>
+        </div>
+        <div className="input">
+          <span className="caption">Actions to hide from DevTools (from new line):</span>
+          <textarea onChange={saveOption} id="blacklist" defaultValue={items.blacklist}/>
+        </div>
+        <div className="input">
+          <span className="caption">Actions to show (previous option will be ignored):</span>
+          <textarea onChange={saveOption} id="whitelist" defaultValue={items.whitelist}/>
         </div>
         <div className="input">
           <span className="caption">States serialization:</span>
           <input id="serialize" type="checkbox" defaultChecked={items.serialize} onChange={saveOption}/>
           <span className="comment">(required for circular references)</span>
+        </div>
+        <div className="input">
+          <span className="caption">Maximum delay:</span>
+          <input id="timeout" type="text" defaultValue={items.timeout} onChange={saveOption}/>
+          <span className="comment">(seconds: bigger - better performance)</span>
         </div>
         <div className="input">
           <span className="caption">Inject in all pages:</span>
