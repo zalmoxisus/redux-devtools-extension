@@ -6,14 +6,42 @@ import { isAllowed } from '../options/syncOptions';
 window.devToolsExtension = function(next) {
   function devToolsInit(store) {
     if (!window.devToolsOptions) window.devToolsOptions = {};
-    let timeout = { id: null, last: 0};
+    let timeout = { id: null, last: 0 };
+    let filtered = { last: null, post: false, skip: false };
+
+    function checkState() {
+      filtered.post = true;
+      const state = store.liftedStore.getState();
+      if (window.devToolsOptions.filter) {
+        if (filtered.skip) filtered.skip = false;
+        else {
+          const actionType = state.actionsById[state.nextActionId - 1].action.type;
+          const { whitelist, blacklist } = window.devToolsOptions;
+          if (
+            whitelist && whitelist.indexOf(actionType) === -1 ||
+            blacklist && blacklist.indexOf(actionType) !== -1
+          ) filtered.post = false;
+        }
+      }
+      return state;
+    }
 
     function doChange(init) {
-      const state = store.liftedStore.getState();
+      const state = filtered.last || checkState();
+
+      if (!filtered.post) return;
+      filtered.last = null; filtered.post = false;
+
       if (window.devToolsOptions.limit && state.currentStateIndex > window.devToolsOptions.limit) {
         store.liftedStore.dispatch({type: COMMIT, timestamp: Date.now()});
         return;
       }
+
+      if (window.devToolsOptions.filter) {
+        const { whitelist, blacklist } = window.devToolsOptions;
+        state.filter = { whitelist, blacklist };
+      }
+
       window.postMessage({
         payload: typeof window.devToolsOptions.serialize === 'undefined' || window.devToolsOptions.serialize ? stringify(state) : state,
         source: 'redux-page',
@@ -22,6 +50,8 @@ window.devToolsExtension = function(next) {
     }
 
     function onChange(init) {
+      if (window.devToolsOptions.filter) filtered.last = checkState();
+
       if (init || !window.devToolsOptions.timeout) doChange(init);
       else if (!timeout.last) {
         doChange();
@@ -49,7 +79,7 @@ window.devToolsExtension = function(next) {
       }
 
       if (message.type === ACTION) {
-        timeout.last = 0;
+        timeout.last = 0; filtered.skip = true;
         store.liftedStore.dispatch(message.payload);
       } else if (message.type === UPDATE) {
         onChange();
