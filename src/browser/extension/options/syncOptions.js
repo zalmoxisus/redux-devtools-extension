@@ -10,11 +10,6 @@ const save = (key, value) => {
 };
 
 const get = callback => {
-  if (window.devToolsExtensionID && chrome.runtime.id !== window.devToolsExtensionID) {
-    callback(window.devToolsOptions);
-    return;
-  }
-
   if (options) callback(options);
   else {
     chrome.storage.sync.get({
@@ -33,8 +28,17 @@ const get = callback => {
   }
 };
 
+const toArray = str => (
+  str !== '' ? str.split('\n') : null
+);
+
 const injectOptions = newOptions => {
   if (!newOptions) return;
+  if (newOptions.filter) {
+    newOptions.whitelist = toArray(newOptions.whitelist);
+    newOptions.blacklist = toArray(newOptions.blacklist);
+  }
+
   options = newOptions;
   let s = document.createElement('script');
   s.type = 'text/javascript';
