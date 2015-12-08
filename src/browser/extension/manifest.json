@@ -9,6 +9,32 @@
     "default_title": "Redux DevTools",
     "default_popup": "window.html"
   },
+  "commands": {
+    "devtools-left": {
+      "suggested_key": {
+        "default": "Alt+Shift+Left"
+      },
+      "description": "DevTools window to left"
+    },
+    "devtools-right": {
+      "suggested_key": {
+        "default": "Alt+Shift+Right"
+      },
+      "description": "DevTools window to right"
+    },
+    "devtools-bottom": {
+      "suggested_key": {
+        "default": "Alt+Shift+Down"
+      },
+      "description": "DevTools window to bottom"
+    },
+    "devtools-panel": {
+      "suggested_key": {
+        "default": "Alt+Shift+Up"
+      },
+      "description": "DevTools in panel"
+    }
+  },
   "icons": {
     "16": "img/logo/16x16.png",
     "48": "img/logo/48x48.png",

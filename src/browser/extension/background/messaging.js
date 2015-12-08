@@ -1,7 +1,7 @@
 import { onConnect, onMessage, sendToTab } from 'crossmessaging';
 import syncOptions from '../options/syncOptions';
 import { MENU_DEVTOOLS } from '../../../app/constants/ContextMenus';
-import { openDevToolsWindow } from './contextMenus';
+import openDevToolsWindow from './openWindow';
 let connections = {};
 
 window.syncOptions = syncOptions; // Used in the options page

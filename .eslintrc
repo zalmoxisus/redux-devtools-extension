@@ -26,7 +26,8 @@
     "no-undef": 0,
     "id-length": 0,
     "indent": [2, 2, {"SwitchCase": 1}],
-    "new-cap": [2, { "capIsNewExceptions": ["Test"] }]
+    "new-cap": [2, { "capIsNewExceptions": ["Test"] }],
+    "default-case": 0
   },
   "plugins": [
     "react"
