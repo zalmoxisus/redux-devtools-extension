@@ -7,6 +7,7 @@ export default function createDevToolsStore(onDispatch) {
     currentStateIndex: 0
   };
   let listeners = [];
+  let initiated = false;
 
   function dispatch(action) {
     if (action.type[0] !== '@') onDispatch(action);
@@ -17,9 +18,14 @@ export default function createDevToolsStore(onDispatch) {
     return currentState;
   }
 
+  function isSet() {
+    return initiated;
+  }
+
   function setState(state) {
     currentState = state;
     listeners.forEach(listener => listener());
+    initiated = true;
   }
 
   function subscribe(listener) {
@@ -39,7 +45,8 @@ export default function createDevToolsStore(onDispatch) {
       dispatch,
       getState,
       setState,
-      subscribe
+      subscribe,
+      isSet
     }
   };
 }
