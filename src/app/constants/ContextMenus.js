@@ -1,1 +1,0 @@
-export const MENU_DEVTOOLS = 'MENU_DEVTOOLS';

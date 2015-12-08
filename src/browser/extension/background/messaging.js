@@ -1,6 +1,6 @@
 import { onConnect, onMessage, sendToTab } from 'crossmessaging';
 import syncOptions from '../options/syncOptions';
-import { MENU_DEVTOOLS } from '../../../app/constants/ContextMenus';
+import createMenu from './contextMenus';
 import openDevToolsWindow from './openWindow';
 let connections = {};
 
@@ -53,13 +53,7 @@ function messaging(request, sender, sendResponse) {
     store.liftedStore.setState(payload);
     if (request.init) {
       store.id = tabId;
-      if (typeof tabId === 'number') {
-        let url = sender.url;
-        let hash = url.indexOf('#');
-        if (hash !== -1) url = url.substr(0, hash);
-        chrome.contextMenus.update(MENU_DEVTOOLS, {documentUrlPatterns: [url], enabled: true});
-        chrome.pageAction.show(tabId);
-      }
+      createMenu(sender.url, tabId);
     }
     if (tabId in connections) {
       connections[ tabId ].postMessage({payload: payload});
