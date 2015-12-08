@@ -112,9 +112,10 @@ window.devToolsExtension = function(next) {
   };
 };
 
-window.devToolsExtension.open = function() {
+window.devToolsExtension.open = function(position) {
   window.postMessage({
     source: 'redux-page',
-    type: 'OPEN'
+    type: 'OPEN',
+    position: position || ''
   }, '*');
 };

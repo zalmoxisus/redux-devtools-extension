@@ -44,7 +44,9 @@ function messaging(request, sender, sendResponse) {
       return true;
     }
     if (request.type === 'OPEN') {
-      openDevToolsWindow();
+      let position = 'devtools-left';
+      if (['panel', 'left', 'right', 'bottom'].indexOf(request.position) !== -1) position = 'devtools-' + request.position;
+      openDevToolsWindow(position);
       return true;
     }
 
