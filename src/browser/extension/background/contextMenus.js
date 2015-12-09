@@ -17,7 +17,9 @@ chrome.commands.getAll(commands => {
 });
 
 export default function createMenu(forUrl, tabId) {
-  if (typeof tabId !== 'number' || tabId === pageTab) return;
+  if (typeof tabId !== 'number') return; // It is an extension's background page
+  chrome.pageAction.show(tabId);
+  if (tabId === pageTab) return;
 
   let url = forUrl;
   let hash = forUrl.indexOf('#');
@@ -35,6 +37,4 @@ export default function createMenu(forUrl, tabId) {
       onclick: () => { openDevToolsWindow(id); }
     });
   });
-
-  chrome.pageAction.show(tabId);
 }
