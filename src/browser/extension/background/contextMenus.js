@@ -1,14 +1,20 @@
 import openDevToolsWindow from './openWindow';
 
 const menus = [
-  { id: 'devtools-left', title: 'To left (Alt+Shift+Left arrow)' },
-  { id: 'devtools-right', title: 'To right (Alt+Shift+Right arrow)' },
-  { id: 'devtools-bottom', title: 'To bottom (Alt+Shift+Down arrow)' },
-  { id: 'devtools-panel', title: 'In panel (Alt+Shift+Top arrow)' }
+  { id: 'devtools-left', title: 'To left' },
+  { id: 'devtools-right', title: 'To right' },
+  { id: 'devtools-bottom', title: 'To bottom' },
+  { id: 'devtools-panel', title: 'In panel' }
 ];
-
 let pageUrl;
 let pageTab;
+
+let shortcuts = {};
+chrome.commands.getAll(commands => {
+  commands.forEach(({ name, shortcut }) => {
+    shortcuts[name] = shortcut;
+  });
+});
 
 export default function createMenu(forUrl, tabId) {
   if (typeof tabId !== 'number' || tabId === pageTab) return;
@@ -23,7 +29,7 @@ export default function createMenu(forUrl, tabId) {
   menus.forEach(({ id, title }) => {
     chrome.contextMenus.create({
       id: id,
-      title: title,
+      title: title + ' (' + shortcuts[id] + ')',
       contexts: ['all'],
       documentUrlPatterns: [url],
       onclick: () => { openDevToolsWindow(id); }
