@@ -91,7 +91,9 @@ window.devToolsExtension.open();
 To enable chrome panels feature in Chrome, type in `chrome://flags/#enable-panels` in the url bar and click on "enable" under "enable panels". Make sure to click on "relaunch now " at the bottom of the page, to take effect. 
 #### How to include DevTools in the page
 You may open DevTools in a new window (by opening context menu with right mouse click), from popup (clicking on the browser action button) or from Chrome dev panel. If you still, for some reason, want to include it directly in your page, load the following url in iframe: `chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/window.html`. You'd probably include it in a docker or in a resizeable component.
-    
+#### Keyboard shortcuts
+Use `Cmd`+`Ctrl`+Arrows for OSX and `Alt`+`Shift`+Arrows for Windows, Linux and ChromeOS. Arrow up, left and right indicate the position of the DevTools window. Use `arrow up` to open DevTols in a [Chrome panel](https://github.com/zalmoxisus/redux-devtools-extension#how-to-keep-devtools-window-focused-all-the-time-in-a-chrome-panel). To change the shortcuts, click "Keyboard shortcuts" button on the bottom of the extensions page (`chrome://extensions/`).
+
 ## Credits
 
  - Built with our [browser-redux](https://github.com/zalmoxisus/browser-redux) boilerplate.
