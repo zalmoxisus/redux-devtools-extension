@@ -1,7 +1,6 @@
 import { connect } from 'crossmessaging';
 import React from 'react';
 import { render } from 'react-dom';
-import Provider from '../../../app/containers/Provider';
 import DevTools from '../../../app/containers/DevTools';
 import createDevStore from '../../../app/store/createDevStore';
 
@@ -25,9 +24,7 @@ let rendered = false;
 function showDevTools() {
   if (!rendered) {
     render(
-      <Provider store={store}>
-        <DevTools />
-      </Provider>,
+      <DevTools store={store} />,
       document.getElementById('root')
     );
     rendered = true;
