@@ -44,7 +44,7 @@ const baseConfig = (params) => ({
     loaders: [
       ...(params.loaders ? params.loaders : [{
         test: /\.js$/,
-        loaders: ['babel'],
+        loader: 'babel',
         exclude: /node_modules/
       }]),
       {

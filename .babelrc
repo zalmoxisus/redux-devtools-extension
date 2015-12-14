@@ -1,16 +1,4 @@
 {
-  "stage": 0,
-  "env": {
-    "development": {
-      "extra": {
-        "react-transform": {
-          "transforms": [{
-            "transform": "react-transform-hmr",
-            "imports": ["react"],
-            "locals":  ["module"]
-          }]
-        }
-      }
-    }
-  }
+  "presets": [ "es2015", "stage-0", "react" ],
+  "plugins": [ "add-module-exports", "transform-decorators-legacy" ]
 }
