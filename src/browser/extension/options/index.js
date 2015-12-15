@@ -70,6 +70,11 @@ chrome.runtime.getBackgroundPage( background => {
           <span className="caption">Pages urls to inject DevTools in (regex from new line):</span>
           <textarea onChange={saveUrls} id="urls" defaultValue={items.urls}/>
         </div>
+        <div className="input">
+          <span className="caption">Show errors:</span>
+          <input id="notifyErrors" type="checkbox" defaultChecked={items.notifyErrors} onChange={saveOption}/>
+          <span className="comment">(will notify when errors occur in the app)</span>
+        </div>
       </div>,
       document.getElementById('root')
     );

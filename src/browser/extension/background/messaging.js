@@ -3,6 +3,7 @@ import syncOptions from '../options/syncOptions';
 import createMenu from './contextMenus';
 import openDevToolsWindow from './openWindow';
 let connections = {};
+let catchedErrors = {};
 
 window.syncOptions = syncOptions; // Used in the options page
 
@@ -60,12 +61,39 @@ function messaging(request, sender, sendResponse) {
     if (tabId in connections) {
       connections[ tabId ].postMessage({payload: payload});
     }
+
+    // Notify when errors occur in the app
+    syncOptions.get(options => {
+      if (!options.notifyErrors) return;
+      const error = payload.computedStates[payload.currentStateIndex].error;
+      if (error) {
+        chrome.notifications.create('redux-error', {
+          type: 'basic',
+          title: 'An error occurred in the app',
+          message: error,
+          iconUrl: 'img/logo/48x48.png',
+          isClickable: true
+        });
+        if (typeof store.id === 'number') {
+          chrome.pageAction.setIcon({tabId: store.id, path: 'img/logo/error.png'});
+          catchedErrors.tab = store.id;
+        }
+      } else if (catchedErrors.last && typeof store.id === 'number' && catchedErrors.tab === store.id) {
+        chrome.pageAction.setIcon({tabId: store.id, path: 'img/logo/38x38.png'});
+      }
+      catchedErrors.last = error;
+    });
   }
   return true;
 }
 
 onMessage(messaging);
 chrome.runtime.onMessageExternal.addListener(messaging);
+
+chrome.notifications.onClicked.addListener(id => {
+  chrome.notifications.clear(id);
+  if (id === 'redux-error') openDevToolsWindow('devtools-right');
+});
 
 export function toContentScript(action) {
   if (store.id in connections) {
