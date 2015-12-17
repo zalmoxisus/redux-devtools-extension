@@ -3,6 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import DevTools from '../../../app/containers/DevTools';
 import createDevStore from '../../../app/store/createDevStore';
+import parseJSON from '../utils/parseJSON';
 
 const backgroundPageConnection = connect();
 
@@ -39,7 +40,9 @@ backgroundPageConnection.onMessage.addListener((message) => {
     );
     rendered = false;
   } else if (message.payload) {
-    store.liftedStore.setState(message.payload);
+    const payload = parseJSON(message.payload);
+    if (!payload) return;
+    store.liftedStore.setState(payload);
     showDevTools();
   } else if (message.action) {
     dispatch(message.action);

@@ -1,5 +1,5 @@
 import { onConnect, onMessage, sendToTab } from 'crossmessaging';
-import { parse } from 'circular-json';
+import parseJSON from '../utils/parseJSON';
 import syncOptions from '../options/syncOptions';
 import createMenu from './contextMenus';
 import openDevToolsWindow from './openWindow';
@@ -21,15 +21,6 @@ onConnect((tabId) => {
     source: 'redux-page'
   };
 }, {}, connections);
-
-function parseJSON(data) {
-  try {
-    return parse(data);
-  } catch (e) {
-    // console.error(data + 'is not a valid JSON', e);
-    return null;
-  }
-}
 
 // Receive message from content script and relay to the devTools page
 function messaging(request, sender, sendResponse) {
@@ -63,7 +54,7 @@ function messaging(request, sender, sendResponse) {
       return true;
     }
 
-    const payload = typeof request.payload === 'string' ? parseJSON(request.payload) : request.payload;
+    const payload = parseJSON(request.payload);
     if (!payload) return true;
     store.liftedStore.setState(payload);
     if (request.init) {
@@ -71,7 +62,7 @@ function messaging(request, sender, sendResponse) {
       createMenu(sender.url, tabId);
     }
     if (tabId in connections) {
-      connections[ tabId ].postMessage({payload: payload});
+      connections[tabId].postMessage({ payload: request.payload });
     }
 
     // Notify when errors occur in the app
