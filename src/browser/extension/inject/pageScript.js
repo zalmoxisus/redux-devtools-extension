@@ -47,6 +47,16 @@ window.devToolsExtension = function(next) {
         source: 'redux-page',
         init: init || false
       }, '*');
+
+      // Catch non-reducer errors
+      window.addEventListener('error', function(e) {
+        if (!window.devToolsOptions.notifyErrors || !e.filename) return;
+        window.postMessage({
+          source: 'redux-page',
+          type: 'ERROR',
+          message: e.message
+        }, '*');
+      });
     }
 
     function onChange(init) {

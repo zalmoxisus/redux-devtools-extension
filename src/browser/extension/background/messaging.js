@@ -50,6 +50,16 @@ function messaging(request, sender, sendResponse) {
       openDevToolsWindow(position);
       return true;
     }
+    if (request.type === 'ERROR') {
+      chrome.notifications.create('app-error', {
+        type: 'basic',
+        title: 'An error occurred in the app',
+        message: request.message,
+        iconUrl: 'img/logo/48x48.png',
+        isClickable: false
+      });
+      return true;
+    }
 
     const payload = typeof request.payload === 'string' ? parseJSON(request.payload) : request.payload;
     if (!payload) return true;
@@ -69,7 +79,7 @@ function messaging(request, sender, sendResponse) {
       if (error) {
         chrome.notifications.create('redux-error', {
           type: 'basic',
-          title: 'An error occurred in the app',
+          title: 'An error occurred in the reducer',
           message: error,
           iconUrl: 'img/logo/48x48.png',
           isClickable: true
