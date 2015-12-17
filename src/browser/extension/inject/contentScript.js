@@ -31,7 +31,11 @@ window.addEventListener('message', function(event) {
   const message = event.data;
   if (message.source !== 'redux-page') return;
   if (message.payload) payload = message.payload;
-  sendMessage(message);
+  try {
+    sendMessage(message);
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('Failed to send message', err);
+  }
 }, false);
 
 if (typeof window.onbeforeunload !== 'undefined') {
