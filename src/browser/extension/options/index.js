@@ -52,11 +52,6 @@ chrome.runtime.getBackgroundPage( background => {
           <textarea onChange={saveOption} id="whitelist" defaultValue={items.whitelist}/>
         </div>
         <div className="input">
-          <span className="caption">States serialization:</span>
-          <input id="serialize" type="checkbox" defaultChecked={items.serialize} onChange={saveOption}/>
-          <span className="comment">(required for circular references)</span>
-        </div>
-        <div className="input">
           <span className="caption">Maximum delay:</span>
           <input id="timeout" type="text" defaultValue={items.timeout} onChange={saveOption}/>
           <span className="comment">(seconds: bigger - better performance)</span>

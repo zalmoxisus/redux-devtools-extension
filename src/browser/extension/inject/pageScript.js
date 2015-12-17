@@ -42,11 +42,17 @@ window.devToolsExtension = function(next) {
         state.filter = { whitelist, blacklist };
       }
 
-      window.postMessage({
-        payload: typeof window.devToolsOptions.serialize === 'undefined' || window.devToolsOptions.serialize ? stringify(state) : state,
+      const message = {
+        payload: state,
         source: 'redux-page',
         init: init || false
-      }, '*');
+      };
+      try {
+        window.postMessage(message, '*');
+      } catch (err) {
+        message.payload = stringify(state);
+        window.postMessage(message, '*');
+      }
 
       window.devToolsExtension.notifyErrors();
     }

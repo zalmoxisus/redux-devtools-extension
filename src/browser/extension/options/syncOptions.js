@@ -18,7 +18,6 @@ const get = callback => {
       whitelist: '',
       blacklist: '',
       timeout: 1,
-      serialize: true,
       notifyErrors: true,
       inject: true,
       urls: '^https?://localhost|0\\.0\\.0\\.0:\\d+\n^https?://.+\\.github\\.io'
