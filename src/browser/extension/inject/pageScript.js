@@ -1,4 +1,4 @@
-import stringify from 'json-stringify-safe';
+import { stringify } from 'circular-json';
 import configureStore from '../../../app/store/configureStore';
 import { ACTION, UPDATE, OPTIONS, COMMIT } from '../../../app/constants/ActionTypes';
 import { isAllowed } from '../options/syncOptions';

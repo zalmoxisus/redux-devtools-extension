@@ -1,4 +1,5 @@
 import { onConnect, onMessage, sendToTab } from 'crossmessaging';
+import { parse } from 'circular-json';
 import syncOptions from '../options/syncOptions';
 import createMenu from './contextMenus';
 import openDevToolsWindow from './openWindow';
@@ -23,7 +24,7 @@ onConnect((tabId) => {
 
 function parseJSON(data) {
   try {
-    return JSON.parse(data);
+    return parse(data);
   } catch (e) {
     // console.error(data + 'is not a valid JSON', e);
     return null;
