@@ -129,15 +129,24 @@ window.devToolsExtension.open = function(position) {
 };
 
 // Catch non-reducer errors
-function catchErrors(e) {
-  if (window.devToolsOptions && !window.devToolsOptions.notifyErrors) return;
-  window.postMessage({
-    source: 'redux-page',
-    type: 'ERROR',
-    message: e.message
-  }, '*');
-}
-
 window.devToolsExtension.notifyErrors = function() {
+  let lastError = 0;
+  function postError(message) {
+    window.postMessage({
+      source: 'redux-page',
+      type: 'ERROR',
+      message: message
+    }, '*');
+  }
+  function catchErrors(e) {
+    if (window.devToolsOptions && !window.devToolsOptions.notifyErrors) return;
+    const timeout = (window.devToolsOptions.timeout || 1) * 1000;
+    if (!lastError) {
+      setTimeout(() => { postError(e.message); }, window.devToolsOptions.timeout ? timeout : 0);
+    } else if (lastError + timeout < e.timeStamp) {
+      postError(e.message);
+    }
+    lastError = e.timeStamp;
+  }
   window.addEventListener('error', catchErrors, false);
 };
