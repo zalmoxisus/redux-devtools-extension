@@ -51,6 +51,7 @@ function messaging(request, sender, sendResponse) {
       return true;
     }
     if (request.type === 'ERROR') {
+      if (catchedErrors.last) return true;
       chrome.notifications.create('app-error', {
         type: 'basic',
         title: 'An error occurred in the app',

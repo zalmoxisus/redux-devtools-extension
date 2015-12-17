@@ -48,15 +48,7 @@ window.devToolsExtension = function(next) {
         init: init || false
       }, '*');
 
-      // Catch non-reducer errors
-      window.addEventListener('error', function(e) {
-        if (!window.devToolsOptions.notifyErrors || !e.filename) return;
-        window.postMessage({
-          source: 'redux-page',
-          type: 'ERROR',
-          message: e.message
-        }, '*');
-      });
+      window.devToolsExtension.notifyErrors();
     }
 
     function onChange(init) {
@@ -128,4 +120,18 @@ window.devToolsExtension.open = function(position) {
     type: 'OPEN',
     position: position || ''
   }, '*');
+};
+
+// Catch non-reducer errors
+function catchErrors(e) {
+  if (window.devToolsOptions && !window.devToolsOptions.notifyErrors) return;
+  window.postMessage({
+    source: 'redux-page',
+    type: 'ERROR',
+    message: e.message
+  }, '*');
+}
+
+window.devToolsExtension.notifyErrors = function() {
+  window.addEventListener('error', catchErrors, false);
 };

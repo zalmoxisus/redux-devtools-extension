@@ -12,4 +12,5 @@ chrome.runtime.sendMessage(window.devToolsExtensionID, { type: 'GET_OPTIONS' }, 
   window.devToolsOptions = response.options;
   require('./contentScript');
   require('./pageScript');
+  window.devToolsExtension.notifyErrors();
 });
