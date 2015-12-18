@@ -10,7 +10,7 @@ window.devToolsExtension = function(next) {
     let filtered = { last: null, post: false, skip: false };
     let shouldSerialize = false;
 
-    function relayChanges(state) {
+    function relayChanges(state, init) {
       const message = {
         payload: state,
         source: 'redux-page',
@@ -63,7 +63,7 @@ window.devToolsExtension = function(next) {
         state.filter = { whitelist, blacklist };
       }
 
-      relayChanges(state);
+      relayChanges(state, init);
 
       window.devToolsExtension.notifyErrors();
     }
