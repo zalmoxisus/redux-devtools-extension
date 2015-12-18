@@ -1,6 +1,6 @@
 {
   "name": "redux-devtools-extension",
-  "version": "0.4.9",
+  "version": "0.4.10",
   "description": "DevTools extension for Redux",
   "scripts": {
     "start": "gulp",
@@ -23,6 +23,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "babel-cli": "^6.3.17",
     "babel-core": "^6.3.15",
     "babel-eslint": "^4.1.6",
     "babel-loader": "^6.2.0",
