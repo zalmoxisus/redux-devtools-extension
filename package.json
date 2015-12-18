@@ -59,6 +59,6 @@
     "react-redux": "^4.0.0",
     "redux": "^3.0.0",
     "redux-devtools": "^3.0.0",
-    "redux-devtools-log-monitor-filtrable": "^1.0.1"
+    "redux-devtools-log-monitor-filterable": "^1.0.1"
   }
 }
