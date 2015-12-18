@@ -7,10 +7,10 @@ import * as TodoActions from '../actions/todos';
 
 class App extends Component {
   render() {
-    const { todos, actions } = this.props;
+    const { todos, path, actions } = this.props;
     return (
       <div>
-        <Header addTodo={actions.addTodo} />
+        <Header addTodo={actions.addTodo} path={path} />
         <MainSection todos={todos} actions={actions} />
       </div>
     );
@@ -24,7 +24,8 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    todos: state.todos
+    todos: state.todos,
+    path: state.router.location.pathname
   };
 }
 

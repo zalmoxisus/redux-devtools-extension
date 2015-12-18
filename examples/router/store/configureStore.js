@@ -1,7 +1,7 @@
 import { createStore, compose } from 'redux';
 import { reduxReactRouter, routerStateReducer, ReduxRouter } from 'redux-router';
-import createHistory from 'history/lib/createBrowserHistory';
-//import createHistory from 'history/lib/createHashHistory';
+//import createHistory from 'history/lib/createBrowserHistory';
+import createHistory from 'history/lib/createHashHistory';
 import rootReducer from '../reducers';
 
 export default function configureStore(initialState) {
