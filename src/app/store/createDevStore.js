@@ -6,7 +6,7 @@ export default function createDevToolsStore(onDispatch) {
     skippedActions: {},
     currentStateIndex: 0
   };
-  let listeners = [];
+  let handleChangeState = null;
   let initiated = false;
 
   function dispatch(action) {
@@ -24,23 +24,21 @@ export default function createDevToolsStore(onDispatch) {
 
   function setState(state) {
     currentState = state;
-    listeners.forEach(listener => listener());
-    initiated = true;
+    if (handleChangeState) handleChangeState();
+    if (!initiated) initiated = true;
   }
 
   function subscribe(listener) {
-    listeners.push(listener);
+    handleChangeState = listener;
 
     return function unsubscribe() {
-      const index = listeners.indexOf(listener);
-      listeners.splice(index, 1);
+      handleChangeState = null;
     };
   }
 
   return {
     dispatch,
     getState,
-    subscribe,
     liftedStore: {
       dispatch,
       getState,
