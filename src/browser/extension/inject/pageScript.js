@@ -8,6 +8,27 @@ window.devToolsExtension = function(next) {
     if (!window.devToolsOptions) window.devToolsOptions = {};
     let timeout = { id: null, last: 0 };
     let filtered = { last: null, post: false, skip: false };
+    let shouldSerialize = false;
+
+    function relayChanges(state) {
+      const message = {
+        payload: state,
+        source: 'redux-page',
+        init: init || false
+      };
+      if (shouldSerialize) {
+        message.payload = stringify(state);
+        window.postMessage(message, '*');
+      } else {
+        try {
+          window.postMessage(message, '*');
+        } catch (err) {
+          message.payload = stringify(state);
+          window.postMessage(message, '*');
+          shouldSerialize = true;
+        }
+      }
+    }
 
     function checkState() {
       filtered.post = true;
@@ -42,17 +63,7 @@ window.devToolsExtension = function(next) {
         state.filter = { whitelist, blacklist };
       }
 
-      const message = {
-        payload: state,
-        source: 'redux-page',
-        init: init || false
-      };
-      try {
-        window.postMessage(message, '*');
-      } catch (err) {
-        message.payload = stringify(state);
-        window.postMessage(message, '*');
-      }
+      relayChanges(state);
 
       window.devToolsExtension.notifyErrors();
     }
