@@ -1,4 +1,5 @@
 import { onConnect, onMessage, sendToTab } from 'crossmessaging';
+import { stringify } from 'circular-json';
 import parseJSON from '../utils/parseJSON';
 import syncOptions from '../options/syncOptions';
 import createMenu from './contextMenus';
@@ -17,7 +18,7 @@ const naMessage = {
 onConnect((tabId) => {
   if (tabId !== store.id) return naMessage;
   return {
-    payload: window.store.liftedStore.getState(),
+    payload: stringify(window.store.liftedStore.getState()),
     source: 'redux-page'
   };
 }, {}, connections);
