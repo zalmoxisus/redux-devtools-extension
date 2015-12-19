@@ -82,7 +82,7 @@ window.devToolsExtension = function(next) {
           doChange();
           timeout.last = Date.now();
         }
-        else timeout.id = setTimeout(doChange, timeoutValue);
+        else timeout.id = setTimeout(() => { doChange(); timeout.last = Date.now(); }, timeoutValue);
       }
     }
 
