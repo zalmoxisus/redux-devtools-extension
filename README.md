@@ -55,6 +55,7 @@ Open these urls to test the extension:
  - [Counter](http://zalmoxisus.github.io/redux-devtools-extension/examples/counter/)
  - [TodoMVC](http://zalmoxisus.github.io/redux-devtools-extension/examples/todomvc/)
  - [Redux Form](http://erikras.github.io/redux-form/#/examples/simple)
+ - [Redux Router](http://zalmoxisus.github.io/redux-devtools-extension/examples/router/)
  - [Implemented with FreezerJS](http://freezer-redux-devtools.divshot.io/)
  - [Implemented in a Chrome app and extension](https://github.com/zalmoxisus/browser-redux)
 
