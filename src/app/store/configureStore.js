@@ -1,10 +1,9 @@
 import { compose } from 'redux';
-import { persistState } from 'redux-devtools';
-import DevTools from '../containers/DevTools';
+import { persistState, instrument } from 'redux-devtools';
 
-export default function configureStore(next) {
+export default function configureStore(next, subscriber = () => {}) {
   return compose(
-    DevTools.instrument(),
+    instrument(subscriber),
     persistState(
       getPersistSession()
     )
