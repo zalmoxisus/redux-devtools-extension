@@ -52,11 +52,6 @@ chrome.runtime.getBackgroundPage( background => {
           <textarea onChange={saveOption} id="whitelist" defaultValue={items.whitelist}/>
         </div>
         <div className="input">
-          <span className="caption">Maximum delay:</span>
-          <input id="timeout" type="text" defaultValue={items.timeout} onChange={saveOption}/>
-          <span className="comment">(seconds: bigger - better performance)</span>
-        </div>
-        <div className="input">
           <span className="caption">Inject in all pages:</span>
           <input id="inject" type="checkbox" defaultChecked={items.inject} onChange={saveOption}/>
           <span className="comment">(disable to allow only the urls bellow)</span>

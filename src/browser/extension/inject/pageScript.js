@@ -6,7 +6,6 @@ import { isAllowed } from '../options/syncOptions';
 window.devToolsExtension = function(next) {
   function devToolsInit(store) {
     if (!window.devToolsOptions) window.devToolsOptions = {};
-    let timeout = { id: null, last: 0 };
     let filtered = { last: null, post: false, skip: false };
     let shouldSerialize = false;
 
@@ -47,11 +46,11 @@ window.devToolsExtension = function(next) {
       return state;
     }
 
-    function doChange(init) {
-      const state = filtered.last || checkState();
+    function onChange(init) {
+      const state = checkState();
 
       if (!filtered.post) return;
-      filtered.last = null; filtered.post = false;
+      filtered.post = false;
 
       if (window.devToolsOptions.limit && state.currentStateIndex > window.devToolsOptions.limit) {
         store.liftedStore.dispatch({type: COMMIT, timestamp: Date.now()});
@@ -68,24 +67,6 @@ window.devToolsExtension = function(next) {
       window.devToolsExtension.notifyErrors();
     }
 
-    function onChange(init) {
-      if (window.devToolsOptions.filter) filtered.last = checkState();
-
-      if (init || !window.devToolsOptions.timeout) doChange(init);
-      else if (!timeout.last) {
-        doChange();
-        timeout.last = Date.now();
-      } else {
-        const timeoutValue = (window.devToolsOptions.timeout * 1000 - (Date.now() - timeout.last));
-        window.clearTimeout(timeout.id);
-        if (timeoutValue <= 0) {
-          doChange();
-          timeout.last = Date.now();
-        }
-        else timeout.id = setTimeout(() => { doChange(); timeout.last = Date.now(); }, timeoutValue);
-      }
-    }
-
     function onMessage(event) {
       if (!event || event.source !== window) {
         return;
@@ -98,7 +79,7 @@ window.devToolsExtension = function(next) {
       }
 
       if (message.type === ACTION) {
-        timeout.last = 0; filtered.skip = true;
+        filtered.skip = true;
         store.liftedStore.dispatch(message.payload);
       } else if (message.type === UPDATE) {
         onChange();
@@ -141,7 +122,6 @@ window.devToolsExtension.open = function(position) {
 
 // Catch non-reducer errors
 window.devToolsExtension.notifyErrors = function() {
-  let lastError = 0;
   function postError(message) {
     window.postMessage({
       source: 'redux-page',
@@ -151,13 +131,7 @@ window.devToolsExtension.notifyErrors = function() {
   }
   function catchErrors(e) {
     if (window.devToolsOptions && !window.devToolsOptions.notifyErrors) return;
-    const timeout = (window.devToolsOptions.timeout || 1) * 1000;
-    if (!lastError) {
-      setTimeout(() => { postError(e.message); }, window.devToolsOptions.timeout ? timeout : 0);
-    } else if (lastError + timeout < e.timeStamp) {
-      postError(e.message);
-    }
-    lastError = e.timeStamp;
+    postError(e.message);
   }
   window.addEventListener('error', catchErrors, false);
 };
