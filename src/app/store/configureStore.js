@@ -1,7 +1,7 @@
 import { compose } from 'redux';
 import { persistState, instrument } from 'redux-devtools';
 
-export default function configureStore(next, subscriber = () => {}) {
+export default function configureStore(next, subscriber = () => ({})) {
   return compose(
     instrument(subscriber),
     persistState(
