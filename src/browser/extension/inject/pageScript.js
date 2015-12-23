@@ -4,89 +4,90 @@ import { ACTION, UPDATE, OPTIONS, COMMIT } from '../../../app/constants/ActionTy
 import { isAllowed } from '../options/syncOptions';
 
 window.devToolsExtension = function(next) {
-  function devToolsInit(store) {
-    if (!window.devToolsOptions) window.devToolsOptions = {};
-    let filtered = { last: null, post: false, skip: false };
-    let shouldSerialize = false;
+  let store = {};
+  if (!window.devToolsOptions) window.devToolsOptions = {};
+  let filtered = { last: null, post: false, skip: false };
+  let shouldSerialize = false;
 
-    function relayChanges(state, init) {
-      const message = {
-        payload: state,
-        source: 'redux-page',
-        init: init || false
-      };
-      if (shouldSerialize) {
+  function relayChanges(state, init) {
+    const message = {
+      payload: state,
+      source: 'redux-page',
+      init: init || false
+    };
+    if (shouldSerialize) {
+      message.payload = stringify(state);
+      window.postMessage(message, '*');
+    } else {
+      try {
+        window.postMessage(message, '*');
+      } catch (err) {
         message.payload = stringify(state);
         window.postMessage(message, '*');
-      } else {
-        try {
-          window.postMessage(message, '*');
-        } catch (err) {
-          message.payload = stringify(state);
-          window.postMessage(message, '*');
-          shouldSerialize = true;
-        }
+        shouldSerialize = true;
       }
     }
+  }
 
-    function checkState() {
-      filtered.post = true;
-      const state = store.liftedStore.getState();
-      if (window.devToolsOptions.filter) {
-        if (filtered.skip) filtered.skip = false;
-        else {
-          const actionType = state.actionsById[state.nextActionId - 1].action.type;
-          const { whitelist, blacklist } = window.devToolsOptions;
-          if (
-            whitelist && whitelist.indexOf(actionType) === -1 ||
-            blacklist && blacklist.indexOf(actionType) !== -1
-          ) filtered.post = false;
-        }
-      }
-      return state;
-    }
-
-    function onChange(init) {
-      const state = checkState();
-
-      if (!filtered.post) return;
-      filtered.post = false;
-
-      if (window.devToolsOptions.limit && state.currentStateIndex > window.devToolsOptions.limit) {
-        store.liftedStore.dispatch({type: COMMIT, timestamp: Date.now()});
-        return;
-      }
-
-      if (window.devToolsOptions.filter) {
+  function checkState() {
+    filtered.post = true;
+    const state = store.liftedStore.getState();
+    if (window.devToolsOptions.filter) {
+      if (filtered.skip) filtered.skip = false;
+      else {
+        const actionType = state.actionsById[state.nextActionId - 1].action.type;
         const { whitelist, blacklist } = window.devToolsOptions;
-        state.filter = { whitelist, blacklist };
+        if (
+          whitelist && whitelist.indexOf(actionType) === -1 ||
+          blacklist && blacklist.indexOf(actionType) !== -1
+        ) filtered.post = false;
       }
+    }
+    return state;
+  }
 
-      relayChanges(state, init);
+  function onChange(init) {
+    const state = checkState();
 
-      window.devToolsExtension.notifyErrors();
+    if (!filtered.post) return;
+    filtered.post = false;
+
+    if (window.devToolsOptions.limit && state.currentStateIndex > window.devToolsOptions.limit) {
+      store.liftedStore.dispatch({type: COMMIT, timestamp: Date.now()});
+      return;
     }
 
-    function onMessage(event) {
-      if (!event || event.source !== window) {
-        return;
-      }
-
-      const message = event.data;
-
-      if (!message || message.source !== 'redux-cs') {
-        return;
-      }
-
-      if (message.type === ACTION) {
-        filtered.skip = true;
-        store.liftedStore.dispatch(message.payload);
-      } else if (message.type === UPDATE) {
-        onChange();
-      }
-
+    if (window.devToolsOptions.filter) {
+      const { whitelist, blacklist } = window.devToolsOptions;
+      state.filter = { whitelist, blacklist };
     }
 
+    relayChanges(state, init);
+
+    window.devToolsExtension.notifyErrors();
+  }
+
+  function onMessage(event) {
+    if (!event || event.source !== window) {
+      return;
+    }
+
+    const message = event.data;
+
+    if (!message || message.source !== 'redux-cs') {
+      return;
+    }
+
+    if (message.type === ACTION) {
+      filtered.skip = true;
+      store.liftedStore.dispatch(message.payload);
+    } else if (message.type === UPDATE) {
+      onChange();
+    }
+
+  }
+
+  function devToolsInit() {
     store.liftedStore.subscribe(onChange);
     window.addEventListener('message', onMessage, false);
 
@@ -97,7 +98,7 @@ window.devToolsExtension = function(next) {
     console.warn('Please use \'window.devToolsExtension()\' instead of \'window.devToolsExtension\' as store enhancer. The latter will not be supported.');
     return (reducer, initialState) => {
       const store = configureStore(next)(reducer, initialState);
-      devToolsInit(store);
+      devToolsInit();
       return store;
     };
   }
@@ -106,7 +107,7 @@ window.devToolsExtension = function(next) {
       if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState);
 
       const store = configureStore(next)(reducer, initialState);
-      devToolsInit(store);
+      devToolsInit();
       return store;
     };
   };
