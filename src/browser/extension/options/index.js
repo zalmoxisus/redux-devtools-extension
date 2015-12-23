@@ -52,6 +52,11 @@ chrome.runtime.getBackgroundPage( background => {
           <textarea onChange={saveOption} id="whitelist" defaultValue={items.whitelist}/>
         </div>
         <div className="input">
+          <span className="caption">States serialization:</span>
+          <input id="serialize" type="checkbox" defaultChecked={items.serialize} onChange={saveOption}/>
+          <span className="comment">(required for ImmutableJS states)</span>
+        </div>
+        <div className="input">
           <span className="caption">Inject in all pages:</span>
           <input id="inject" type="checkbox" defaultChecked={items.inject} onChange={saveOption}/>
           <span className="comment">(disable to allow only the urls bellow)</span>

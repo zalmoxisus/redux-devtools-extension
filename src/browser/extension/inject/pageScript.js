@@ -18,7 +18,7 @@ window.devToolsExtension = function(next) {
       init: shouldInit
     };
     if (shouldInit) shouldInit = false;
-    if (shouldSerialize) {
+    if (shouldSerialize || window.devToolsOptions.serialize) {
       message.payload = stringify(state);
       window.postMessage(message, '*');
     } else {
