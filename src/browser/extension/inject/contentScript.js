@@ -9,7 +9,7 @@ if (!window.devToolsOptions) getOptionsFromBg();
 onMessage((message) => {
   if (message.action) {
     window.postMessage({
-      type: 'ACTION',
+      type: 'DISPATCH',
       payload: message.action,
       source: 'redux-cs'
     }, '*');

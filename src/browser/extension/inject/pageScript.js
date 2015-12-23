@@ -1,6 +1,5 @@
 import { stringify } from 'circular-json';
 import configureStore from '../../../app/store/configureStore';
-import { ACTION, UPDATE, OPTIONS, COMMIT } from '../../../app/constants/ActionTypes';
 import { isAllowed } from '../options/syncOptions';
 
 window.devToolsExtension = function(next) {
@@ -44,9 +43,9 @@ window.devToolsExtension = function(next) {
       return;
     }
 
-    if (message.type === ACTION) {
+    if (message.type === 'DISPATCH') {
       store.liftedStore.dispatch(message.payload);
-    } else if (message.type === UPDATE) {
+    } else if (message.type === 'UPDATE') {
       relay('STATE', store.liftedStore.getState());
     }
   }
@@ -62,7 +61,7 @@ window.devToolsExtension = function(next) {
 
   function isLimit() {
     if (window.devToolsOptions.limit && actionsCount > window.devToolsOptions.limit) {
-      store.liftedStore.dispatch({type: COMMIT, timestamp: Date.now()});
+      store.liftedStore.dispatch({type: 'COMMIT', timestamp: Date.now()});
       return true;
     }
     actionsCount++;

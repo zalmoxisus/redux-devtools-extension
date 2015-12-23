@@ -9,7 +9,7 @@ let catchedErrors = {};
 
 window.syncOptions = syncOptions; // Used in the options page
 
-const naMessage = { na: true };
+const naMessage = { type: 'NA' };
 
 // Connect to devpanel
 onConnect((tabId) => {
@@ -96,9 +96,10 @@ chrome.notifications.onClicked.addListener(id => {
 });
 
 export function toContentScript(action) {
+  const message = { type: 'DISPATCH', action: action };
   if (store.id in connections) {
-    connections[ store.id ].postMessage({action: action});
+    connections[ store.id ].postMessage(message);
   } else {
-    sendToTab(store.id, {action: action});
+    sendToTab(store.id, message);
   }
 }

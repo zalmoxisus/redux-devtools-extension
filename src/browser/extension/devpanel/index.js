@@ -10,7 +10,7 @@ const backgroundPageConnection = connect();
 function dispatch(action) {
   chrome.devtools.inspectedWindow.eval(
     'window.postMessage({' +
-    'type: \'ACTION\',' +
+    'type: \'DISPATCH\',' +
     'payload: ' + JSON.stringify(action) + ',' +
     'source: \'redux-cs\'' +
     '}, \'*\');',
@@ -33,16 +33,19 @@ function showDevTools() {
 }
 
 backgroundPageConnection.onMessage.addListener((message) => {
-  if (message.na) {
-    render(
-      <div>No store found. Make sure to follow <a href="https://github.com/zalmoxisus/redux-devtools-extension#implementation" target="_blank">the instructions</a>.</div>,
-      document.getElementById('root')
-    );
-    rendered = false;
-  } else if (message.type) {
-    if (updateState(store, message)) showDevTools();
-  } else if (message.action) {
-    dispatch(message.action);
+  switch (message.type) {
+    case 'NA':
+      render(
+        <div>No store found. Make sure to follow <a href="https://github.com/zalmoxisus/redux-devtools-extension#implementation" target="_blank">the instructions</a>.</div>,
+        document.getElementById('root')
+      );
+      rendered = false;
+      break;
+    case 'DISPATCH':
+      dispatch(message.action);
+      break;
+    default:
+      if (updateState(store, message)) showDevTools();
   }
 });
 
