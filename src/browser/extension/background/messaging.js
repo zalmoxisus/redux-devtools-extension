@@ -1,6 +1,6 @@
 import { onConnect, onMessage, sendToTab } from 'crossmessaging';
 import { stringify } from 'circular-json';
-import parseJSON from '../utils/parseJSON';
+import updateState from '../utils/updateState';
 import syncOptions from '../options/syncOptions';
 import createMenu from './contextMenus';
 import openDevToolsWindow from './openWindow';
@@ -9,21 +9,15 @@ let catchedErrors = {};
 
 window.syncOptions = syncOptions; // Used in the options page
 
-const naMessage = {
-  na: true,
-  source: 'redux-page'
-};
+const naMessage = { na: true };
 
 // Connect to devpanel
 onConnect((tabId) => {
   if (tabId !== store.id) return naMessage;
-  return {
-    payload: stringify(window.store.liftedStore.getState()),
-    source: 'redux-page'
-  };
+  return {};
 }, {}, connections);
 
-// Receive message from content script and relay to the devTools page
+// Receive message from content script
 function messaging(request, sender, sendResponse) {
   const tabId = sender.tab ? sender.tab.id : sender.id;
   if (tabId) {
@@ -55,15 +49,17 @@ function messaging(request, sender, sendResponse) {
       return true;
     }
 
-    const payload = parseJSON(request.payload);
+    const payload = updateState(store, request);
     if (!payload) return true;
-    store.liftedStore.setState(payload);
+
     if (request.init) {
       store.id = tabId;
       createMenu(sender.url, tabId);
     }
+
+    // Relay the message to the devTools page
     if (tabId in connections) {
-      connections[tabId].postMessage({ payload: request.payload });
+      connections[tabId].postMessage(request);
     }
 
     // Notify when errors occur in the app

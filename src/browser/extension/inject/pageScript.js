@@ -6,15 +6,19 @@ import { isAllowed } from '../options/syncOptions';
 window.devToolsExtension = function(next) {
   let store = {};
   if (!window.devToolsOptions) window.devToolsOptions = {};
-  let filtered = { last: null, post: false, skip: false };
   let shouldSerialize = false;
+  let shouldInit = true;
+  let actionsCount = 0;
 
-  function relayChanges(state, init) {
+  function relay(type, state, action) {
     const message = {
       payload: state,
+      action: action || '',
+      type: type,
       source: 'redux-page',
-      init: init || false
+      init: shouldInit
     };
+    if (shouldInit) shouldInit = false;
     if (shouldSerialize) {
       message.payload = stringify(state);
       window.postMessage(message, '*');
@@ -29,44 +33,6 @@ window.devToolsExtension = function(next) {
     }
   }
 
-  function checkState() {
-    filtered.post = true;
-    const state = store.liftedStore.getState();
-    if (window.devToolsOptions.filter) {
-      if (filtered.skip) filtered.skip = false;
-      else {
-        const actionType = state.actionsById[state.nextActionId - 1].action.type;
-        const { whitelist, blacklist } = window.devToolsOptions;
-        if (
-          whitelist && whitelist.indexOf(actionType) === -1 ||
-          blacklist && blacklist.indexOf(actionType) !== -1
-        ) filtered.post = false;
-      }
-    }
-    return state;
-  }
-
-  function onChange(init) {
-    const state = checkState();
-
-    if (!filtered.post) return;
-    filtered.post = false;
-
-    if (window.devToolsOptions.limit && state.currentStateIndex > window.devToolsOptions.limit) {
-      store.liftedStore.dispatch({type: COMMIT, timestamp: Date.now()});
-      return;
-    }
-
-    if (window.devToolsOptions.filter) {
-      const { whitelist, blacklist } = window.devToolsOptions;
-      state.filter = { whitelist, blacklist };
-    }
-
-    relayChanges(state, init);
-
-    window.devToolsExtension.notifyErrors();
-  }
-
   function onMessage(event) {
     if (!event || event.source !== window) {
       return;
@@ -79,26 +45,56 @@ window.devToolsExtension = function(next) {
     }
 
     if (message.type === ACTION) {
-      filtered.skip = true;
       store.liftedStore.dispatch(message.payload);
     } else if (message.type === UPDATE) {
-      onChange();
+      relay('STATE', store.liftedStore.getState());
     }
-
   }
 
-  function devToolsInit() {
-    store.liftedStore.subscribe(onChange);
-    window.addEventListener('message', onMessage, false);
+  function isFiltered(action) {
+    if (!window.devToolsOptions.filter) return false;
+    const { whitelist, blacklist } = window.devToolsOptions;
+    return (
+      whitelist && whitelist.indexOf(action.type) === -1 ||
+      blacklist && blacklist.indexOf(action.type) !== -1
+    );
+  }
 
-    onChange(true);
+  function isLimit() {
+    if (window.devToolsOptions.limit && actionsCount > window.devToolsOptions.limit) {
+      store.liftedStore.dispatch({type: COMMIT, timestamp: Date.now()});
+      return true;
+    }
+    actionsCount++;
+    return false;
+  }
+
+  function subscriber(state = {}, action) {
+    if (action && action.type) {
+      setTimeout(() => {
+        if (action.type === 'PERFORM_ACTION') {
+          if (isLimit() || isFiltered(action.action)) return state;
+          relay('ACTION', store.getState(), action);
+        } else {
+          const liftedState = store.liftedStore.getState();
+          relay('STATE', liftedState);
+          actionsCount = liftedState.nextActionId;
+        }
+      }, 0);
+    }
+    return state;
+  }
+
+  function init() {
+    window.addEventListener('message', onMessage, false);
+    window.devToolsExtension.notifyErrors();
   }
 
   if (next) {
     console.warn('Please use \'window.devToolsExtension()\' instead of \'window.devToolsExtension\' as store enhancer. The latter will not be supported.');
     return (reducer, initialState) => {
-      const store = configureStore(next)(reducer, initialState);
-      devToolsInit();
+      store = configureStore(next, subscriber)(reducer, initialState);
+      init();
       return store;
     };
   }
@@ -106,8 +102,8 @@ window.devToolsExtension = function(next) {
     return (reducer, initialState) => {
       if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState);
 
-      const store = configureStore(next)(reducer, initialState);
-      devToolsInit();
+      store = configureStore(next, subscriber)(reducer, initialState);
+      init();
       return store;
     };
   };
