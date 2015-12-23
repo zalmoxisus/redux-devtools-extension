@@ -14,13 +14,15 @@ export default function updateState(store, request) {
   const payload = parseJSON(request.payload);
   if (!payload) return null;
 
-  if (request.type === 'ACTION') {
-    store.liftedStore.setState(
-      recompute(store.liftedStore.getState(), payload, request.action)
-    );
-  } else if (request.type === 'STATE') {
-    store.liftedStore.setState(payload);
+  switch (request.type) {
+    case 'ACTION':
+      const newState = recompute(store.liftedStore.getState(), payload, request.action);
+      store.liftedStore.setState(newState);
+      return newState;
+    case 'STATE':
+      store.liftedStore.setState(payload);
+      return payload;
+    default:
+      return null;
   }
-
-  return payload;
 }
