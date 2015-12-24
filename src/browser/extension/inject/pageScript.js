@@ -8,6 +8,7 @@ window.devToolsExtension = function(next) {
   let shouldSerialize = false;
   let shouldInit = true;
   let actionsCount = 0;
+  let errorOccurred = false;
 
   function relay(type, state, action, nextActionId) {
     const message = {
@@ -80,10 +81,11 @@ window.devToolsExtension = function(next) {
       setTimeout(() => {
         if (action.type === 'PERFORM_ACTION') {
           actionsCount++;
-          if (isLimit() || isFiltered(action.action)) return state;
+          if (isLimit() || isFiltered(action.action) || errorOccurred) return state;
           relay('ACTION', store.getState(), action, actionsCount);
         } else {
           let liftedState = store.liftedStore.getState();
+          if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) errorOccurred = false;
           addFilter(liftedState);
           relay('STATE', liftedState);
           actionsCount = liftedState.nextActionId;
@@ -95,7 +97,7 @@ window.devToolsExtension = function(next) {
 
   function init() {
     window.addEventListener('message', onMessage, false);
-    window.devToolsExtension.notifyErrors();
+    window.devToolsExtension.notifyErrors(store, relay, () => { errorOccurred = true; });
   }
 
   if (next) {
@@ -125,9 +127,17 @@ window.devToolsExtension.open = function(position) {
   }, '*');
 };
 
-// Catch non-reducer errors
-window.devToolsExtension.notifyErrors = function() {
+// Catch errors
+window.devToolsExtension.notifyErrors = function(store, relay, onError) {
   function postError(message) {
+    if (store && store.liftedStore && relay) {
+      const state = store.liftedStore.getState();
+      if (state.computedStates[state.currentStateIndex].error) {
+        relay('STATE', state);
+        if (onError) onError();
+        return;
+      }
+    }
     window.postMessage({
       source: 'redux-page',
       type: 'ERROR',
