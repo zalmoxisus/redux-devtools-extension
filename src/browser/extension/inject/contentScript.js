@@ -45,15 +45,3 @@ if (typeof window.onbeforeunload !== 'undefined') {
     sendMessage({ type: 'PAGE_UNLOADED' });
   };
 }
-
-// Detect when the tab is reactivated
-document.addEventListener('visibilitychange', function() {
-  if (!isAllowed()) return;
-  if (document.visibilityState === 'visible' && payload) {
-    sendMessage({
-      payload: payload,
-      source: 'redux-page',
-      init: true
-    });
-  }
-}, false);

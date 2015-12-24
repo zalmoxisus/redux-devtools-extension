@@ -107,6 +107,14 @@ window.devToolsExtension = function(next) {
       }
       return true;
     });
+
+    // Detect when the tab is reactivated
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible') {
+        shouldInit = true;
+        relay('STATE', store.liftedStore.getState());
+      }
+    }, false);
   }
 
   if (next) {
