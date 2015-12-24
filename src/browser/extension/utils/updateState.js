@@ -1,10 +1,11 @@
 import parseJSON from '../utils/parseJSON';
 
-function recompute(previousLiftedState, storeState, action) {
-  let liftedState = { ...previousLiftedState };
-  liftedState.stagedActionIds.push(liftedState.nextActionId);
-  liftedState.actionsById[liftedState.nextActionId] = action;
-  liftedState.nextActionId++;
+function recompute(previousLiftedState, storeState, action, nextActionId) {
+  const actionId = nextActionId - 1;
+  const liftedState = { ...previousLiftedState };
+  liftedState.stagedActionIds.push(actionId);
+  liftedState.actionsById[actionId] = action;
+  liftedState.nextActionId = nextActionId;
   liftedState.computedStates.push({ state: storeState });
   liftedState.currentStateIndex++;
   return liftedState;
@@ -16,7 +17,7 @@ export default function updateState(store, request) {
 
   switch (request.type) {
     case 'ACTION':
-      const newState = recompute(store.liftedStore.getState(), payload, request.action);
+      const newState = recompute(store.liftedStore.getState(), payload, request.action, request.nextActionId);
       store.liftedStore.setState(newState);
       return newState;
     case 'STATE':

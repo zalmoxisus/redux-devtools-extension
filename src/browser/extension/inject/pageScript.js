@@ -9,10 +9,11 @@ window.devToolsExtension = function(next) {
   let shouldInit = true;
   let actionsCount = 0;
 
-  function relay(type, state, action) {
+  function relay(type, state, action, nextActionId) {
     const message = {
       payload: state,
       action: action || '',
+      nextActionId: nextActionId || '',
       type: type,
       source: 'redux-page',
       init: shouldInit
@@ -59,12 +60,18 @@ window.devToolsExtension = function(next) {
     );
   }
 
+  function addFilter(state) {
+    if (window.devToolsOptions.filter) {
+      const { whitelist, blacklist } = window.devToolsOptions;
+      state.filter = { whitelist, blacklist };
+    }
+  }
+
   function isLimit() {
     if (window.devToolsOptions.limit && actionsCount > window.devToolsOptions.limit) {
       store.liftedStore.dispatch({type: 'COMMIT', timestamp: Date.now()});
       return true;
     }
-    actionsCount++;
     return false;
   }
 
@@ -72,10 +79,12 @@ window.devToolsExtension = function(next) {
     if (action && action.type) {
       setTimeout(() => {
         if (action.type === 'PERFORM_ACTION') {
+          actionsCount++;
           if (isLimit() || isFiltered(action.action)) return state;
-          relay('ACTION', store.getState(), action);
+          relay('ACTION', store.getState(), action, actionsCount);
         } else {
-          const liftedState = store.liftedStore.getState();
+          let liftedState = store.liftedStore.getState();
+          addFilter(liftedState);
           relay('STATE', liftedState);
           actionsCount = liftedState.nextActionId;
         }
