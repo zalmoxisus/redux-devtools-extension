@@ -1,6 +1,7 @@
 import { stringify } from 'circular-json';
 import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
+import notifyErrors from '../utils/notifyErrors';
 
 window.devToolsExtension = function(next) {
   let store = {};
@@ -97,7 +98,15 @@ window.devToolsExtension = function(next) {
 
   function init() {
     window.addEventListener('message', onMessage, false);
-    window.devToolsExtension.notifyErrors(store, relay, () => { errorOccurred = true; });
+    notifyErrors(() => {
+      errorOccurred = true;
+      const state = store.liftedStore.getState();
+      if (state.computedStates[state.currentStateIndex].error) {
+        relay('STATE', state);
+        return false;
+      }
+      return true;
+    });
   }
 
   if (next) {
@@ -127,26 +136,4 @@ window.devToolsExtension.open = function(position) {
   }, '*');
 };
 
-// Catch errors
-window.devToolsExtension.notifyErrors = function(store, relay, onError) {
-  function postError(message) {
-    if (store && store.liftedStore && relay) {
-      const state = store.liftedStore.getState();
-      if (state.computedStates[state.currentStateIndex].error) {
-        relay('STATE', state);
-        if (onError) onError();
-        return;
-      }
-    }
-    window.postMessage({
-      source: 'redux-page',
-      type: 'ERROR',
-      message: message
-    }, '*');
-  }
-  function catchErrors(e) {
-    if (window.devToolsOptions && !window.devToolsOptions.notifyErrors) return;
-    postError(e.message);
-  }
-  window.addEventListener('error', catchErrors, false);
-};
+window.devToolsExtension.notifyErrors = notifyErrors;
