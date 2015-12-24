@@ -11,6 +11,12 @@ window.devToolsExtension = function(next) {
   let actionsCount = 0;
   let errorOccurred = false;
 
+  function relaySerialized(message) {
+    message.payload = stringify(message.payload);
+    if (message.action !== '') message.action = stringify(message.action);
+    window.postMessage(message, '*');
+  }
+
   function relay(type, state, action, nextActionId) {
     const message = {
       payload: state,
@@ -22,14 +28,12 @@ window.devToolsExtension = function(next) {
     };
     if (shouldInit) shouldInit = false;
     if (shouldSerialize || window.devToolsOptions.serialize) {
-      message.payload = stringify(state);
-      window.postMessage(message, '*');
+      relaySerialized(message);
     } else {
       try {
         window.postMessage(message, '*');
       } catch (err) {
-        message.payload = stringify(state);
-        window.postMessage(message, '*');
+        relaySerialized(message);
         shouldSerialize = true;
       }
     }

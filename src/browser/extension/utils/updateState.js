@@ -4,7 +4,7 @@ function recompute(previousLiftedState, storeState, action, nextActionId) {
   const actionId = nextActionId - 1;
   const liftedState = { ...previousLiftedState };
   liftedState.stagedActionIds.push(actionId);
-  liftedState.actionsById[actionId] = action;
+  liftedState.actionsById[actionId] = parseJSON(action);
   liftedState.nextActionId = nextActionId;
   liftedState.computedStates.push({ state: storeState });
   liftedState.currentStateIndex++;
