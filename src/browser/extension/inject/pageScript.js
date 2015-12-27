@@ -68,8 +68,8 @@ window.devToolsExtension = function(next) {
 
   function addFilter(state) {
     if (window.devToolsOptions.filter) {
-      const { whitelist, blacklist } = window.devToolsOptions;
-      state.filter = { whitelist, blacklist };
+      if (window.devToolsOptions.whitelist) state.whitelist = window.devToolsOptions.whitelist;
+      else if (window.devToolsOptions.blacklist) state.blacklist = window.devToolsOptions.blacklist;
     }
   }
 
