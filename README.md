@@ -68,8 +68,6 @@ Also you may run them from `./examples` folder (on port 4001 and 4002 by default
 - Reload the extension on the extensions page (`chrome://extensions/`).
 - If something goes wrong, [open an issue](https://github.com/zalmoxisus/redux-devtools-extension/issues) or tweet me: [@mdiordiev](https://twitter.com/mdiordiev).
 
-#### How to make it faster
-Find `Redux DevTools` on the extensions page (`chrome://extensions/`). Under the title there will be an `Options` link. You may set maximum delay to `0` in order to have no delay or set to a higher value if your app generates a lot of actions. Also, you may limit the quantity of stored actions to a lower value. 
 #### How to filter actions
 On the options page you may enable actions filtering and specify either actions to be hidden or shown in DevTools. If the latter is specified, other than those actions will be hidden.  
 #### How to disable/enable it in production
