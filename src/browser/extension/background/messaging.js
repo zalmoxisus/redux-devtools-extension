@@ -1,5 +1,4 @@
 import { onConnect, onMessage, sendToTab } from 'crossmessaging';
-import { stringify } from 'circular-json';
 import updateState from '../utils/updateState';
 import syncOptions from '../options/syncOptions';
 import createMenu from './contextMenus';

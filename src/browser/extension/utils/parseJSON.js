@@ -1,4 +1,4 @@
-import { parse } from 'circular-json';
+import { parse } from 'jsan';
 
 export default function parseJSON(data) {
   if (typeof data !== 'string') return data;

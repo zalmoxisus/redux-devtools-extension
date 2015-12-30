@@ -1,4 +1,4 @@
-import { stringify } from 'circular-json';
+import { stringify } from 'jsan';
 import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
 import notifyErrors from '../utils/notifyErrors';
