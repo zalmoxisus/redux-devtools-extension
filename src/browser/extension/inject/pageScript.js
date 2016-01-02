@@ -10,6 +10,7 @@ window.devToolsExtension = function(next) {
   let shouldInit = true;
   let actionsCount = 0;
   let errorOccurred = false;
+  let lastTime = 0;
 
   function relaySerialized(message) {
     message.payload = stringify(message.payload);
@@ -85,11 +86,13 @@ window.devToolsExtension = function(next) {
     if (action && action.type) {
       setTimeout(() => {
         if (action.type === 'PERFORM_ACTION') {
+          if (isLimit() || lastTime > action.timestamp) return state;
           actionsCount++;
-          if (isLimit() || isFiltered(action.action) || errorOccurred) return state;
+          if (isFiltered(action.action) || errorOccurred) return state;
           relay('ACTION', store.getState(), action, actionsCount);
         } else {
           let liftedState = store.liftedStore.getState();
+          lastTime = Date.now();
           if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) errorOccurred = false;
           addFilter(liftedState);
           relay('STATE', liftedState);
