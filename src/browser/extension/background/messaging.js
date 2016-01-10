@@ -1,5 +1,5 @@
 import { onConnect, onMessage, sendToTab } from 'crossmessaging';
-import updateState from '../utils/updateState';
+import updateState from 'remotedev-app/lib/store/updateState';
 import syncOptions from '../options/syncOptions';
 import createMenu from './contextMenus';
 import openDevToolsWindow from './openWindow';
