@@ -55,14 +55,15 @@
   "dependencies": {
     "crossmessaging": "^0.1.2",
     "jsan": "^2.0.4",
-    "react": "^0.14.0",
-    "react-dom": "^0.14.0",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
     "react-icons": "^1.0.3",
-    "react-redux": "^4.0.0",
-    "redux": "^3.0.0",
+    "react-redux": "^4.0.6",
+    "redux": "^3.0.5",
     "redux-devtools": "^3.0.1",
     "redux-devtools-filter-actions": "^1.0.0",
     "redux-devtools-log-monitor": "^1.0.1",
-    "redux-devtools-themes": "^1.0.0"
+    "redux-devtools-themes": "^1.0.0",
+    "redux-thunk": "^1.0.3"
   }
 }
