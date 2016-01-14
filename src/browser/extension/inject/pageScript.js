@@ -13,8 +13,8 @@ window.devToolsExtension = function(next) {
   let reducedState;
 
   function relaySerialized(message) {
-    message.payload = stringify(message.payload, null, null, true);
-    if (message.action !== '') message.action = stringify(message.action, null, null, true);
+    message.payload = stringify(message.payload);
+    if (message.action !== '') message.action = stringify(message.action);
     window.postMessage(message, '*');
   }
 
