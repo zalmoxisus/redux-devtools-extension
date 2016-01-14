@@ -2,8 +2,8 @@ import { connect } from 'crossmessaging';
 import React from 'react';
 import { render } from 'react-dom';
 import updateState from 'remotedev-app/lib/store/updateState';
+import createDevStore from 'remotedev-app/lib/store/createDevStore';
 import DevTools from '../../../app/containers/DevTools';
-import createDevStore from '../../../app/store/createDevStore';
 
 const backgroundPageConnection = connect();
 

@@ -65,6 +65,6 @@
     "redux-devtools-log-monitor": "^1.0.2",
     "redux-devtools-themes": "^1.0.0",
     "redux-thunk": "^1.0.3",
-    "remotedev-app": "0.0.1"
+    "remotedev-app": "^0.1.1"
   }
 }

@@ -1,5 +1,5 @@
 import { sendToTab } from 'crossmessaging';
-import createDevStore from '../../../app/store/createDevStore.js';
+import createDevStore from 'remotedev-app/lib/store/createDevStore';
 import openDevToolsWindow from './openWindow';
 import { toContentScript } from './messaging';
 
