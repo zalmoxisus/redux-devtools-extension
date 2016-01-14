@@ -10,7 +10,7 @@ window.devToolsExtension = function(next) {
   let shouldInit = true;
   let actionsCount = 0;
   let errorOccurred = false;
-  let lastTime = 0;
+  let reducedState;
 
   function relaySerialized(message) {
     message.payload = stringify(message.payload, null, null, true);
@@ -19,25 +19,27 @@ window.devToolsExtension = function(next) {
   }
 
   function relay(type, state, action, nextActionId) {
-    const message = {
-      payload: state,
-      action: action || '',
-      nextActionId: nextActionId || '',
-      type: type,
-      source: 'redux-page',
-      init: shouldInit
-    };
-    if (shouldInit) shouldInit = false;
-    if (shouldSerialize || window.devToolsOptions.serialize) {
-      relaySerialized(message);
-    } else {
-      try {
-        window.postMessage(message, '*');
-      } catch (err) {
+    setTimeout(() => {
+      const message = {
+        payload: state,
+        action: action || '',
+        nextActionId: nextActionId || '',
+        type: type,
+        source: 'redux-page',
+        init: shouldInit
+      };
+      if (shouldInit) shouldInit = false;
+      if (shouldSerialize || window.devToolsOptions.serialize) {
         relaySerialized(message);
-        shouldSerialize = true;
+      } else {
+        try {
+          window.postMessage(message, '*');
+        } catch (err) {
+          relaySerialized(message);
+          shouldSerialize = true;
+        }
       }
-    }
+    }, 0);
   }
 
   function onMessage(event) {
@@ -82,27 +84,6 @@ window.devToolsExtension = function(next) {
     return false;
   }
 
-  function subscriber(state = {}, action) {
-    if (action && action.type) {
-      setTimeout(() => {
-        if (action.type === 'PERFORM_ACTION') {
-          if (isLimit() || lastTime > action.timestamp) return state;
-          actionsCount++;
-          if (isFiltered(action.action) || errorOccurred) return state;
-          relay('ACTION', store.getState(), action, actionsCount);
-        } else {
-          let liftedState = store.liftedStore.getState();
-          lastTime = Date.now();
-          if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) errorOccurred = false;
-          addFilter(liftedState);
-          relay('STATE', liftedState);
-          actionsCount = liftedState.nextActionId;
-        }
-      }, 0);
-    }
-    return state;
-  }
-
   function init() {
     window.addEventListener('message', onMessage, false);
     notifyErrors(() => {
@@ -124,10 +105,38 @@ window.devToolsExtension = function(next) {
     }, false);
   }
 
+  function subscriber(state = {}, action) {
+    if (action && action.type) {
+      if (action.type === '@@redux/INIT') {
+        actionsCount = 1;
+        relay('INIT', reducedState, { timestamp: Date.now() });
+      } else if (action.type === 'PERFORM_ACTION') {
+        actionsCount++;
+        if (isLimit() || isFiltered(action.action) || errorOccurred) return state;
+        relay('ACTION', reducedState, action, actionsCount);
+      } else {
+        setTimeout(() => {
+          let liftedState = store.liftedStore.getState();
+          if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) errorOccurred = false;
+          addFilter(liftedState);
+          relay('STATE', liftedState);
+        }, 0);
+      }
+    }
+    return state;
+  }
+
+  function createReducer(reducer) {
+    return (state, action) => {
+      reducedState = reducer(state, action);
+      return reducedState;
+    };
+  }
+
   if (next) {
     console.warn('Please use \'window.devToolsExtension()\' instead of \'window.devToolsExtension\' as store enhancer. The latter will not be supported.');
     return (reducer, initialState) => {
-      store = configureStore(next, subscriber)(reducer, initialState);
+      store = configureStore(next, subscriber)(createReducer(reducer), initialState);
       init();
       return store;
     };
@@ -136,7 +145,7 @@ window.devToolsExtension = function(next) {
     return (reducer, initialState) => {
       if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState);
 
-      store = configureStore(next, subscriber)(reducer, initialState);
+      store = configureStore(next, subscriber)(createReducer(reducer), initialState);
       init();
       return store;
     };
