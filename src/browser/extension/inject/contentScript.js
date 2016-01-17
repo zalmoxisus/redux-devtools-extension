@@ -13,9 +13,6 @@ onMessage((message) => {
       payload: message.action,
       source: 'redux-cs'
     }, '*');
-  } else {
-    message.source = 'redux-cs';
-    window.postMessage(message, '*');
   }
 });
 
