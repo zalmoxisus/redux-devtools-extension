@@ -77,8 +77,11 @@ window.devToolsExtension = function(next) {
   }
 
   function isLimit() {
-    if (window.devToolsOptions.limit && actionsCount > window.devToolsOptions.limit) {
-      store.liftedStore.dispatch({type: 'COMMIT', timestamp: Date.now()});
+    if (window.devToolsOptions.limit && actionsCount - 1 > window.devToolsOptions.limit) {
+      setTimeout(() => {
+        store.liftedStore.dispatch({type: 'COMMIT', timestamp: Date.now()});
+        actionsCount = 1;
+      });
       return true;
     }
     return false;
