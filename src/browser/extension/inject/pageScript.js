@@ -8,9 +8,8 @@ window.devToolsExtension = function(next) {
   if (!window.devToolsOptions) window.devToolsOptions = {};
   let shouldSerialize = false;
   let shouldInit = true;
-  let actionsCount = 0;
+  let lastAction;
   let errorOccurred = false;
-  let reducedState;
 
   function relaySerialized(message) {
     message.payload = stringify(message.payload);
@@ -76,12 +75,12 @@ window.devToolsExtension = function(next) {
     }
   }
 
-  function isLimit() {
-    if (window.devToolsOptions.limit && actionsCount - 1 > window.devToolsOptions.limit) {
-      setTimeout(() => {
-        store.liftedStore.dispatch({type: 'COMMIT', timestamp: Date.now()});
-        actionsCount = 1;
-      });
+  function isLimit(nextActionId) {
+    if (
+      window.devToolsOptions.limit && window.devToolsOptions.limit !== '0'
+      && nextActionId - 1 > window.devToolsOptions.limit
+    ) {
+      store.liftedStore.dispatch({type: 'COMMIT', timestamp: Date.now()});
       return true;
     }
     return false;
@@ -89,6 +88,7 @@ window.devToolsExtension = function(next) {
 
   function init() {
     window.addEventListener('message', onMessage, false);
+    relay('STATE', store.liftedStore.getState());
     notifyErrors(() => {
       errorOccurred = true;
       const state = store.liftedStore.getState();
@@ -108,39 +108,33 @@ window.devToolsExtension = function(next) {
     }, false);
   }
 
-  function subscriber(state = {}, action) {
-    if (action && action.type) {
-      if (action.type === '@@redux/INIT') {
-        actionsCount = 1;
-        relay('INIT', reducedState, { timestamp: Date.now() });
-      } else if (action.type === 'PERFORM_ACTION') {
-        actionsCount++;
-        if (isLimit() || isFiltered(action.action) || errorOccurred) return state;
-        relay('ACTION', reducedState, action, actionsCount);
-      } else {
-        setTimeout(() => {
-          let liftedState = store.liftedStore.getState();
-          if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) errorOccurred = false;
-          addFilter(liftedState);
-          relay('STATE', liftedState);
-        }, 0);
-      }
-    }
+  function monitorReducer(state = {}, action) {
+    lastAction = action.type;
     return state;
   }
 
-  function createReducer(reducer) {
-    return (state, action) => {
-      reducedState = reducer(state, action);
-      return reducedState;
-    };
+  function handleChange(state, liftedState) {
+    const nextActionId = liftedState.nextActionId;
+    const liftedAction = liftedState.actionsById[nextActionId - 1];
+    const action = liftedAction.action;
+    if (action.type === '@@INIT') {
+      relay('INIT', state, { timestamp: Date.now() });
+    } else if (!errorOccurred && lastAction !== 'TOGGLE_ACTION' && lastAction !== 'SWEEP') {
+      if (isLimit(nextActionId) || isFiltered(action)) return;
+      relay('ACTION', state, liftedAction, nextActionId);
+    } else {
+      if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) errorOccurred = false;
+      addFilter(liftedState);
+      relay('STATE', liftedState);
+    }
   }
 
   if (next) {
     console.warn('Please use \'window.devToolsExtension()\' instead of \'window.devToolsExtension\' as store enhancer. The latter will not be supported.');
     return (reducer, initialState) => {
-      store = configureStore(next, subscriber)(createReducer(reducer), initialState);
+      store = configureStore(next, monitorReducer)(reducer, initialState);
       init();
+      store.subscribe(() => { handleChange(store.getState(), store.liftedStore.getState()); });
       return store;
     };
   }
@@ -148,8 +142,9 @@ window.devToolsExtension = function(next) {
     return (reducer, initialState) => {
       if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState);
 
-      store = configureStore(next, subscriber)(createReducer(reducer), initialState);
+      store = configureStore(next, monitorReducer)(reducer, initialState);
       init();
+      store.subscribe(() => { handleChange(store.getState(), store.liftedStore.getState()); });
       return store;
     };
   };
