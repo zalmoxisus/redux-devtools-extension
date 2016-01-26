@@ -3,7 +3,7 @@ import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
 import notifyErrors from '../utils/notifyErrors';
 
-window.devToolsExtension = function(next) {
+window.devToolsExtension = function(config = {}) {
   let store = {};
   if (!window.devToolsOptions) window.devToolsOptions = {};
   let shouldSerialize = false;
@@ -129,15 +129,6 @@ window.devToolsExtension = function(next) {
     }
   }
 
-  if (next) {
-    console.warn('Please use \'window.devToolsExtension()\' instead of \'window.devToolsExtension\' as store enhancer. The latter will not be supported.');
-    return (reducer, initialState) => {
-      store = configureStore(next, monitorReducer)(reducer, initialState);
-      init();
-      store.subscribe(() => { handleChange(store.getState(), store.liftedStore.getState()); });
-      return store;
-    };
-  }
   return (next) => {
     return (reducer, initialState) => {
       if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState);
