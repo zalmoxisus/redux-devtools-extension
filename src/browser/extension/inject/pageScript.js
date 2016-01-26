@@ -25,6 +25,7 @@ window.devToolsExtension = function(config = {}) {
         nextActionId: nextActionId || '',
         type: type,
         source: 'redux-page',
+        name: config.name || document.title,
         init: shouldInit
       };
       if (shouldInit) shouldInit = false;

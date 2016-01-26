@@ -49,6 +49,11 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
 - **[Freezer](https://github.com/arqex/freezer)**<br/>
     Just use [supportChromeExtension](https://github.com/zalmoxisus/freezer-redux-devtools#using-redux-devtools-chrome-extension) from `freezer-redux-devtools/freezer-redux-middleware`.
 
+## API
+`window.devToolsExtension([config])`
+- **config** arguments (optional)
+  - **name** (*string*) - the instance name to be showed on the monitor page. Default value is `document.title`.
+
 ## Examples
 Open these urls to test the extension:
 
