@@ -1,6 +1,8 @@
 import React, { cloneElement, Component, PropTypes } from 'react';
 import styles from 'remotedev-app/lib/styles';
 import Instances from 'remotedev-app/lib/components/Instances';
+import Button from 'remotedev-app/lib/components/Button';
+import SettingsIcon from 'react-icons/lib/md/settings';
 
 export default class App extends Component {
   static propTypes = {
@@ -26,6 +28,12 @@ export default class App extends Component {
           </div>
         : null }
         { Monitor }
+        <div style={styles.buttonBar}>
+          <Button
+            Icon={SettingsIcon}
+            onClick={() => { chrome.runtime.openOptionsPage(); }}
+          >Settings</Button>
+        </div>
       </div>
     );
   }
