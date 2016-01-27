@@ -20,9 +20,11 @@ export default class App extends Component {
     const Monitor = cloneElement(children, childProps);
     return (
       <div style={styles.container}>
-        <div style={styles.buttonBar}>
-          <Instances instances={store.instances} onSelect={this.handleSelectInstance}/>
-        </div>
+        {store.instances ?
+          <div style={styles.buttonBar}>
+           <Instances instances={store.instances} onSelect={this.handleSelectInstance}/>
+          </div>
+        : null }
         { Monitor }
       </div>
     );

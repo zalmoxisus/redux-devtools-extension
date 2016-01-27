@@ -16,12 +16,19 @@ onConnect((tabId) => {
   return {};
 }, {}, connections);
 
+function handleInstancesChanged(instance, name) {
+  window.store.liftedStore.instances[instance] = name || instance;
+}
+
 // Receive message from content script
 function messaging(request, sender, sendResponse) {
   const tabId = sender.tab ? sender.tab.id : sender.id;
   if (tabId) {
     if (request.type === 'PAGE_UNLOADED') {
-      if (connections[ tabId ]) connections[ tabId ].postMessage(naMessage);
+      handleInstancesChanged(tabId, undefined, true);
+      if (connections[tabId]) connections[tabId].postMessage(naMessage);
+      delete window.store.liftedStore.instances[instance];
+      window.store.liftedStore.deleteInstance(instance);
       return true;
     }
     if (request.type === 'GET_OPTIONS') {
@@ -47,7 +54,8 @@ function messaging(request, sender, sendResponse) {
       return true;
     }
 
-    const payload = updateState(store, request);
+    request.id = tabId;
+    const payload = updateState(store, request, handleInstancesChanged, store.liftedStore.instance);
     if (!payload) return true;
 
     if (request.init) {
@@ -96,9 +104,11 @@ chrome.notifications.onClicked.addListener(id => {
 
 export function toContentScript(action) {
   const message = { type: 'DISPATCH', action: action };
-  if (store.id in connections) {
-    connections[ store.id ].postMessage(message);
+  let id = store.liftedStore.instance;
+  if (!id || id === 'auto') id = store.id;
+  if (id in connections) {
+    connections[id].postMessage(message);
   } else {
-    sendToTab(store.id, message);
+    sendToTab(Number(id), message);
   }
 }
