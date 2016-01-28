@@ -1,16 +1,16 @@
-let windows = {devtools: 0};
+let windows = {};
 let lastPosition = null;
 
 export default function openDevToolsWindow(position) {
-  function popWindow(action, url, type, customOptions) {
+  function popWindow(action, url, customOptions) {
     function focusIfExist(callback) {
-      if (!windows[type]) {
+      if (!windows[position]) {
         callback();
         lastPosition = position;
       } else {
         let params = {focused: true};
         if (lastPosition !== position && position !== 'devtools-panel') params = {...params, ...customOptions};
-        chrome.windows.update(windows[type], params, () => {
+        chrome.windows.update(windows[position], params, () => {
           lastPosition = null;
           if (chrome.runtime.lastError) callback();
         });
@@ -23,9 +23,9 @@ export default function openDevToolsWindow(position) {
         ...customOptions
       };
       if (action === 'open') {
-        options.url = chrome.extension.getURL(url);
+        options.url = chrome.extension.getURL(url + '#' + position);
         chrome.windows.create(options, (win) => {
-          windows[type] = win.id;
+          windows[position] = win.id;
         });
       }
     });
@@ -45,5 +45,5 @@ export default function openDevToolsWindow(position) {
       params.type = 'panel';
       break;
   }
-  popWindow('open', 'window.html', 'devtools', params);
+  popWindow('open', 'window.html', params);
 }
