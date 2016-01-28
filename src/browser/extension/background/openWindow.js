@@ -1,3 +1,4 @@
+import getMonitorName from '../options/getMonitorName';
 let windows = {};
 let lastPosition = null;
 
@@ -23,9 +24,11 @@ export default function openDevToolsWindow(position) {
         ...customOptions
       };
       if (action === 'open') {
-        options.url = chrome.extension.getURL(url + '#' + position);
-        chrome.windows.create(options, (win) => {
-          windows[position] = win.id;
+        getMonitorName(position, monitorName => {
+          options.url = chrome.extension.getURL(url + '#' + monitorName);
+          chrome.windows.create(options, (win) => {
+            windows[position] = win.id;
+          });
         });
       }
     });
@@ -37,8 +40,8 @@ export default function openDevToolsWindow(position) {
       params.left = window.screen.availWidth - params.width;
       break;
     case 'devtools-bottom':
-      params.height = 320;
-      params.top = window.screen.availHeight - 320;
+      params.height = 200;
+      params.top = window.screen.availHeight - params.height;
       params.width = window.screen.availWidth;
       break;
     case 'devtools-panel':

@@ -121,7 +121,7 @@ window.devToolsExtension = function(config = {}) {
     if (action.type === '@@INIT') {
       relay('INIT', state, { timestamp: Date.now() });
     } else if (!errorOccurred && lastAction !== 'TOGGLE_ACTION' && lastAction !== 'SWEEP') {
-      if (isLimit(nextActionId) || isFiltered(action)) return;
+      if (lastAction === 'JUMP_TO_STATE' || isLimit(nextActionId) || isFiltered(action)) return;
       relay('ACTION', state, liftedAction, nextActionId);
     } else {
       if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) errorOccurred = false;

@@ -3,11 +3,11 @@ import styles from 'remotedev-app/lib/styles';
 import Instances from 'remotedev-app/lib/components/Instances';
 import Button from 'remotedev-app/lib/components/Button';
 import SettingsIcon from 'react-icons/lib/md/settings';
+import Monitor from './Monitor';
 
 export default class App extends Component {
   static propTypes = {
-    store: PropTypes.object,
-    children: PropTypes.element
+    store: PropTypes.object
   };
 
   static update = () => ({});
@@ -18,8 +18,7 @@ export default class App extends Component {
   };
 
   render() {
-    const { store, children, ...childProps } = this.props;
-    const Monitor = cloneElement(children, childProps);
+    const { store, ...childProps } = this.props;
     return (
       <div style={styles.container}>
         {store.instances ?
@@ -27,7 +26,8 @@ export default class App extends Component {
            <Instances instances={store.instances} onSelect={this.handleSelectInstance}/>
           </div>
         : null }
-        { Monitor }
+        <Monitor {...childProps} />
+
         <div style={styles.buttonBar}>
           <Button
             Icon={SettingsIcon}
