@@ -27,13 +27,14 @@ export default class App extends Component {
           </div>
         : null }
         <Monitor {...childProps} />
-
-        <div style={styles.buttonBar}>
-          <Button
-            Icon={SettingsIcon}
-            onClick={() => { chrome.runtime.openOptionsPage(); }}
-          >Settings</Button>
-        </div>
+        {chrome.runtime.openOptionsPage ?
+          <div style={styles.buttonBar}>
+            <Button
+              Icon={SettingsIcon}
+              onClick={() => { chrome.runtime.openOptionsPage(); }}
+            >Settings</Button>
+          </div>
+        : null }
       </div>
     );
   }
