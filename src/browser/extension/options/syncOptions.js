@@ -6,7 +6,7 @@ const save = (key, value) => {
   obj[key] = value;
   chrome.storage.sync.set(obj);
   options[key] = value;
-  sendToTab(window.store.id, { options: options });
+  if (window.store.id) sendToTab(window.store.id, { options: options });
 };
 
 const get = callback => {
