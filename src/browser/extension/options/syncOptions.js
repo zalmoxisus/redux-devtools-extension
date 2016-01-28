@@ -13,6 +13,9 @@ const get = callback => {
   if (options) callback(options);
   else {
     chrome.storage.sync.get({
+      leftMonitor: 'LogMonitor',
+      rightMonitor: 'LogMonitor',
+      bottomMonitor: 'SliderMonitor',
       limit: 50,
       filter: false,
       whitelist: '',

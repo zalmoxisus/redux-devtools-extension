@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import Monitors from './monitors';
 
 chrome.runtime.getBackgroundPage( background => {
   const syncOptions = background.syncOptions;
@@ -33,6 +34,18 @@ chrome.runtime.getBackgroundPage( background => {
   syncOptions.get(items => {
     render(
       <div>
+        <div className="input">
+          <span className="caption">Left monitor:</span>
+          <Monitors type="side" defaultValue={items.leftMonitor} id="leftMonitor" onChange={saveOption}/>
+        </div>
+        <div className="input">
+          <span className="caption">Right monitor:</span>
+          <Monitors type="side" defaultValue={items.rightMonitor} id="rightMonitor" onChange={saveOption}/>
+        </div>
+        <div className="input">
+          <span className="caption">Bottom monitor:</span>
+          <Monitors type="bottom" defaultValue={items.bottomMonitor} id="bottomMonitor" onChange={saveOption}/>
+        </div>
         <div className="input">
           <span className="caption">Maximum actions:</span>
           <input id="limit" type="text" defaultValue={items.limit} onChange={saveOption}/>
