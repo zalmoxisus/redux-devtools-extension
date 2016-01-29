@@ -3,7 +3,7 @@ import FilterMonitor from 'redux-devtools-filter-actions';
 import LogMonitor from 'redux-devtools-log-monitor';
 import ChartMonitor from 'redux-devtools-chart-monitor';
 import SliderMonitor from 'redux-slider-monitor';
-import DiffMonitor from 'redux-devtools-diff-monitor';
+import DiffMonitor from './DiffMonitor';
 
 function getMonitor() {
   if (!location.hash) return LogMonitor;
