@@ -1,9 +1,16 @@
 import React, { cloneElement, Component, PropTypes } from 'react';
+import { sendToBg } from 'crossmessaging';
 import styles from 'remotedev-app/lib/styles';
 import Instances from 'remotedev-app/lib/components/Instances';
 import Button from 'remotedev-app/lib/components/Button';
 import SettingsIcon from 'react-icons/lib/md/settings';
+import LeftIcon from 'react-icons/lib/md/border-left';
+import RightIcon from 'react-icons/lib/md/border-right';
+import BottomIcon from 'react-icons/lib/md/border-bottom';
 import Monitor from './Monitor';
+
+let monitorPosition;
+if (location.hash) monitorPosition = location.hash.substr(location.hash.indexOf('-') + 1);
 
 export default class App extends Component {
   static propTypes = {
@@ -15,6 +22,10 @@ export default class App extends Component {
   handleSelectInstance = e => {
     this.props.store.instance = e.target.value;
     this.props.store.setInstance(this.props.store.instance, true);
+  };
+
+  openWindow = (position) => {
+    sendToBg({ type: 'OPEN', position });
   };
 
   render() {
@@ -29,6 +40,24 @@ export default class App extends Component {
         <Monitor {...childProps} />
         {chrome.runtime.openOptionsPage ?
           <div style={styles.buttonBar}>
+            {monitorPosition !== 'left' ?
+              <Button
+                Icon={LeftIcon}
+                onClick={() => { this.openWindow('left'); }}
+              />
+            : null }
+            {monitorPosition !== 'right' ?
+              <Button
+                Icon={RightIcon}
+                onClick={() => { this.openWindow('right'); }}
+              />
+            : null }
+            {monitorPosition !== 'bottom' ?
+              <Button
+                Icon={BottomIcon}
+                onClick={() => { this.openWindow('bottom'); }}
+              />
+            : null }
             <Button
               Icon={SettingsIcon}
               onClick={() => { chrome.runtime.openOptionsPage(); }}

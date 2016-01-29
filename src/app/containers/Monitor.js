@@ -5,8 +5,9 @@ import ChartMonitor from 'redux-devtools-chart-monitor';
 import SliderMonitor from 'redux-slider-monitor';
 
 function getMonitor() {
-  const monitorType = location.hash.substr(1);
-  switch (monitorType) {
+  if (!location.hash) return LogMonitor;
+  const monitorTypes = location.hash.substr(1).split('/');
+  switch (monitorTypes[0]) {
     case 'SliderMonitor': return SliderMonitor;
     case 'ChartMonitor': return ChartMonitor;
     default: return LogMonitor;

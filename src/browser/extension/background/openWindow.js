@@ -25,7 +25,7 @@ export default function openDevToolsWindow(position) {
       };
       if (action === 'open') {
         getMonitorName(position, monitorName => {
-          options.url = chrome.extension.getURL(url + '#' + monitorName);
+          options.url = chrome.extension.getURL(url + '#' + monitorName + '/' + position);
           chrome.windows.create(options, (win) => {
             windows[position] = win.id;
           });
