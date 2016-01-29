@@ -27,8 +27,10 @@ function messaging(request, sender, sendResponse) {
     if (request.type === 'PAGE_UNLOADED') {
       handleInstancesChanged(tabId, undefined, true);
       if (connections[tabId]) connections[tabId].postMessage(naMessage);
-      delete window.store.liftedStore.instances[instance];
-      window.store.liftedStore.deleteInstance(instance);
+      if (window.store.liftedStore.instances[tabId]) {
+        delete window.store.liftedStore.instances[tabId];
+        window.store.liftedStore.deleteInstance(tabId);
+      }
       return true;
     }
     if (request.type === 'GET_OPTIONS') {
