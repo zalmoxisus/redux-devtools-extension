@@ -1,6 +1,6 @@
 # Redux DevTools Extension
 
-![Demo](demo/v0.1.0.gif)
+![Demo](demo/v1.0.0.png)
 
 If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtools) is, [see Dan's React Europe talk](https://www.youtube.com/watch?v=xsSnOQynTHs)!
 
