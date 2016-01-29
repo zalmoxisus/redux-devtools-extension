@@ -2,6 +2,7 @@ import React from 'react';
 
 export const sideMonitors = [
   ['LogMonitor', 'Log Monitor'],
+  ['DiffMonitor', 'Diff Monitor'],
   ['ChartMonitor', 'Chart Monitor']
 ];
 
