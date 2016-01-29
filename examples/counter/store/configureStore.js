@@ -4,12 +4,10 @@ import invariant from 'redux-immutable-state-invariant';
 import reducer from '../reducers';
 
 export default function configureStore(initialState) {
-  const finalCreateStore = compose(
+  const store = createStore(reducer, initialState, compose(
     applyMiddleware(invariant(), thunk),
     window.devToolsExtension ? window.devToolsExtension() : f => f
-  )(createStore);
-
-  const store = finalCreateStore(reducer, initialState);
+  ));
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
