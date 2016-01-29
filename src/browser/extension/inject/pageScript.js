@@ -131,10 +131,10 @@ window.devToolsExtension = function(config = {}) {
   }
 
   return (next) => {
-    return (reducer, initialState) => {
-      if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState);
+    return (reducer, initialState, enhancer) => {
+      if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState, enhancer);
 
-      store = configureStore(next, monitorReducer)(reducer, initialState);
+      store = configureStore(next, monitorReducer)(reducer, initialState, enhancer);
       init();
       store.subscribe(() => { handleChange(store.getState(), store.liftedStore.getState()); });
       return store;
