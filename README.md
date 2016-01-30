@@ -46,6 +46,26 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
     )(createStore);
     ```
 
+- **With Redux@^3.1 it's [even easier](https://github.com/zalmoxisus/redux-devtools-extension/commit/9c631ef66f53e51f34b55f4642bd9ff2cbc7a992)**<br/>
+    ```javascript
+    export default function configureStore(initialState) {
+      const store = createStore(reducer, initialState, compose(
+        applyMiddleware(thunk),
+        window.devToolsExtension ? window.devToolsExtension() : f => f
+      ));
+      return store;
+    }
+    ```
+    or if you don't have other store enhancers and middlewares:
+    ```javascript
+    export default function configureStore(initialState) {
+      const store = createStore(reducer, initialState, 
+        window.devToolsExtension ? window.devToolsExtension() : undefined
+      );
+      return store;
+    }
+    ```
+
 - **[Freezer](https://github.com/arqex/freezer)**<br/>
     Just use [supportChromeExtension](https://github.com/zalmoxisus/freezer-redux-devtools#using-redux-devtools-chrome-extension) from `freezer-redux-devtools/freezer-redux-middleware`.
 
