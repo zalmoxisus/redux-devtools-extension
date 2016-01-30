@@ -5,17 +5,17 @@ import ChartMonitor from 'redux-devtools-chart-monitor';
 import SliderMonitor from 'redux-slider-monitor';
 import DiffMonitor from './DiffMonitor';
 
+const monitorTypes = location.hash ? location.hash.substr(1).split('/') : {};
+
 function getMonitor() {
-  if (!location.hash) return LogMonitor;
-  const monitorTypes = location.hash.substr(1).split('/');
   switch (monitorTypes[0]) {
-    case 'SliderMonitor': return SliderMonitor;
-    case 'ChartMonitor': return ChartMonitor;
-    case 'DiffMonitor': return DiffMonitor;
-    default: return LogMonitor;
+    case 'SliderMonitor': return createElement(SliderMonitor);
+    case 'ChartMonitor': return createElement(ChartMonitor);
+    case 'DiffMonitor': return createElement(DiffMonitor);
+    default: return createElement(LogMonitor, { preserveScrollTop: false });
   }
 }
 
 export default (props) => (
-  <FilterMonitor {...props}>{createElement(getMonitor())}</FilterMonitor>
+  <FilterMonitor {...props}>{getMonitor()}</FilterMonitor>
 );
