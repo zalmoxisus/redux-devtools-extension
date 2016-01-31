@@ -7,6 +7,7 @@ import SettingsIcon from 'react-icons/lib/md/settings';
 import LeftIcon from 'react-icons/lib/md/border-left';
 import RightIcon from 'react-icons/lib/md/border-right';
 import BottomIcon from 'react-icons/lib/md/border-bottom';
+import RemoteIcon from 'react-icons/lib/go/radio-tower';
 import Monitor from './Monitor';
 
 let monitorPosition;
@@ -58,6 +59,10 @@ export default class App extends Component {
                 onClick={() => { this.openWindow('bottom'); }}
               />
             : null }
+            <Button
+              Icon={RemoteIcon}
+              onClick={() => { this.openWindow('panel'); }}
+            >Remote</Button>
             <Button
               Icon={SettingsIcon}
               onClick={() => { chrome.runtime.openOptionsPage(); }}

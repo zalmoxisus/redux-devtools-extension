@@ -35,6 +35,7 @@ export default function openDevToolsWindow(position) {
   }
 
   let params = { left: 0, top: 0, width: 340, height: window.screen.availHeight };
+  let url = 'window.html';
   switch (position) {
     case 'devtools-right':
       params.left = window.screen.availWidth - params.width;
@@ -45,8 +46,9 @@ export default function openDevToolsWindow(position) {
       params.width = window.screen.availWidth;
       break;
     case 'devtools-panel':
-      params.type = 'panel';
+      params = { width: 850, height: 600 };
+      url = 'remote.html';
       break;
   }
-  popWindow('open', 'window.html', params);
+  popWindow('open', url, params);
 }
