@@ -8,6 +8,7 @@ const baseConfig = (params) => ({
     background: [ `${extpath}background/index` ],
     options: [ `${extpath}options/index` ],
     window: [ `${extpath}window/index` ],
+    remote: [ `${extpath}window/remote` ],
     devpanel: [ `${extpath}devpanel/index` ],
     devtools: [ `${extpath}devtools/index` ],
     content: [ `${extpath}inject/contentScript` ],
