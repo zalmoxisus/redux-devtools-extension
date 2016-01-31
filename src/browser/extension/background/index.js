@@ -10,7 +10,5 @@ window.store = store;
 window.store.liftedStore.instances = {};
 
 chrome.commands.onCommand.addListener(shortcut => {
-  if (store.liftedStore.isSet()) {
-    openDevToolsWindow(shortcut);
-  }
+  openDevToolsWindow(shortcut);
 });
