@@ -56,7 +56,7 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
       return store;
     }
     ```
-    or if you don't have other store enhancers and middlewares:
+    or [if you don't have other store enhancers and middlewares](https://github.com/zalmoxisus/redux-devtools-extension/commit/f26975cccff37f477001158019be7c9c9cb721b1):
     ```javascript
     export default function configureStore(initialState) {
       const store = createStore(reducer, initialState, 
@@ -111,14 +111,14 @@ To include it in a chrome extension's content script follow [the example](https:
 ```js
 window.devToolsExtension.open();
 ```
-#### How to keep DevTools window focused all the time in a chrome panel
-To enable chrome panels feature in Chrome, type in `chrome://flags/#enable-panels` in the url bar and click on "enable" under "enable panels". Make sure to click on "relaunch now " at the bottom of the page, to take effect. 
 #### How to include DevTools in the page
 You may open DevTools in a new window (by opening context menu with right mouse click), from popup (clicking on the browser action button) or from Chrome dev panel. If you still, for some reason, want to include it directly in your page, load the following url in iframe: `chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/window.html`. You'd probably include it in a docker or in a resizeable component.
 #### How to enable/disable errors notifying
 Just find `Redux DevTools` on the extensions page (`chrome://extensions/`) and click the `Options` link to customize everything. The errors notifying is enabled by default, but it works only when the store enhancer is called (in order not to show notifications for any sites you visit). In case you want notifications for a non-redux app, init it explicitly by calling `window.devToolsExtension.notifyErrors()` (probably you'll check if `window.devToolsExtension` exists before calling it).
+#### How to get it work with WebWorkers, React Native, hybrid, desktop and server side apps
+Of course, it is not possible to inject extension's script there and to communicate directly. To solve this we use [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools). Just find `Remote` button or press `Alt`+`Shift`+`arrow up` for remote monitoring. 
 #### Keyboard shortcuts
-Use `Cmd`+`Ctrl`+Arrows for OSX and `Alt`+`Shift`+Arrows for Windows, Linux and ChromeOS. Arrow down, left and right indicate the position of the DevTools window. Use `arrow up` to open DevTols in a [Chrome panel](https://github.com/zalmoxisus/redux-devtools-extension#how-to-keep-devtools-window-focused-all-the-time-in-a-chrome-panel). To change the shortcuts, click "Keyboard shortcuts" button on the bottom of the extensions page (`chrome://extensions/`).
+Use `Cmd`+`Ctrl`+Arrows for OSX and `Alt`+`Shift`+Arrows for Windows, Linux and ChromeOS. Arrow down, left and right indicate the position of the DevTools window. Use `arrow up` to open Remote monitoring to communicate with [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools). To change the shortcuts, click "Keyboard shortcuts" button on the bottom of the extensions page (`chrome://extensions/`).
 
 ## Credits
 
