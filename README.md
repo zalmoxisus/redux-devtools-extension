@@ -45,6 +45,10 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
       typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
     )(createStore);
     ```
+    You can use it together with vanilla Redux DevTools as a fallback, but not both simultaneously:
+    ```js
+    window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
+    ```
 
 - **With Redux@^3.1 it's [even easier](https://github.com/zalmoxisus/redux-devtools-extension/commit/9c631ef66f53e51f34b55f4642bd9ff2cbc7a992)**<br/>
     ```javascript
