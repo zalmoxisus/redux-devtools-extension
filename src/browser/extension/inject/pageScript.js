@@ -111,6 +111,12 @@ window.devToolsExtension = function(config = {}) {
 
   function monitorReducer(state = {}, action) {
     lastAction = action.type;
+    if (lastAction === '@@redux/INIT' && store.liftedStore) {
+      // Send new lifted state on hot-reloading
+      setTimeout(() => {
+        relay('STATE', store.liftedStore.getState());
+      }, 0);
+    }
     return state;
   }
 
