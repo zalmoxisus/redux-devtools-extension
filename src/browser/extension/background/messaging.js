@@ -41,7 +41,7 @@ function messaging(request, sender, sendResponse) {
     }
     if (request.type === 'OPEN') {
       let position = 'devtools-left';
-      if (['panel', 'left', 'right', 'bottom'].indexOf(request.position) !== -1) position = 'devtools-' + request.position;
+      if (['remote', 'panel', 'left', 'right', 'bottom'].indexOf(request.position) !== -1) position = 'devtools-' + request.position;
       openDevToolsWindow(position);
       return true;
     }

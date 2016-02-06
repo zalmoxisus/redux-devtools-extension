@@ -25,7 +25,7 @@ export default function openDevToolsWindow(position) {
       };
       if (action === 'open') {
         getMonitorName(position, monitorName => {
-          options.url = chrome.extension.getURL(url + '#' + monitorName + '/' + position);
+          options.url = chrome.extension.getURL(url + (monitorName ? '#' + monitorName + '/' + position : ''));
           chrome.windows.create(options, (win) => {
             windows[position] = win.id;
           });
@@ -46,6 +46,9 @@ export default function openDevToolsWindow(position) {
       params.width = window.screen.availWidth;
       break;
     case 'devtools-panel':
+      params.type = 'panel';
+      break;
+    case 'devtools-remote':
       params = { width: 850, height: 600 };
       url = 'remote.html';
       break;

@@ -61,7 +61,7 @@ export default class App extends Component {
             : null }
             <Button
               Icon={RemoteIcon}
-              onClick={() => { this.openWindow('panel'); }}
+              onClick={() => { this.openWindow('remote'); }}
             >Remote</Button>
             <Button
               Icon={SettingsIcon}

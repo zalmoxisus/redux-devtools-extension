@@ -31,12 +31,12 @@
       },
       "description": "DevTools window to bottom"
     },
-    "devtools-panel": {
+    "devtools-remote": {
       "suggested_key": {
         "default": "Alt+Shift+Up",
         "mac": "Command+MacCtrl+Up"
       },
-      "description": "DevTools in panel"
+      "description": "Remote DevTools"
     }
   },
   "icons": {

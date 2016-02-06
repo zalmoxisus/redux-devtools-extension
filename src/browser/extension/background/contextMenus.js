@@ -4,7 +4,8 @@ const menus = [
   { id: 'devtools-left', title: 'To left' },
   { id: 'devtools-right', title: 'To right' },
   { id: 'devtools-bottom', title: 'To bottom' },
-  { id: 'devtools-panel', title: 'In panel' }
+  { id: 'devtools-panel', title: 'Open in a chrome panel (enable in Chrome settings)' },
+  { id: 'devtools-remote', title: 'Open Remote DevTools' }
 ];
 let pageUrl;
 let pageTab;
@@ -31,7 +32,7 @@ export default function createMenu(forUrl, tabId) {
   menus.forEach(({ id, title }) => {
     chrome.contextMenus.create({
       id: id,
-      title: title + ' (' + shortcuts[id] + ')',
+      title: title + (shortcuts[id] ? ' (' + shortcuts[id] + ')' : ''),
       contexts: ['all'],
       documentUrlPatterns: [url],
       onclick: () => { openDevToolsWindow(id); }
