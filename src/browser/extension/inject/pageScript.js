@@ -19,6 +19,7 @@ window.devToolsExtension = function(config = {}) {
 
   function relay(type, state, action, nextActionId) {
     setTimeout(() => {
+      if (type === 'STATE') addFilter(state);
       const message = {
         payload: state,
         action: action || '',
@@ -64,15 +65,15 @@ window.devToolsExtension = function(config = {}) {
     if (!window.devToolsOptions.filter) return false;
     const { whitelist, blacklist } = window.devToolsOptions;
     return (
-      whitelist && whitelist.indexOf(action.type) === -1 ||
-      blacklist && blacklist.indexOf(action.type) !== -1
+      whitelist && !action.type.match(whitelist) ||
+      blacklist && action.type.match(blacklist)
     );
   }
 
   function addFilter(state) {
     if (window.devToolsOptions.filter) {
-      if (window.devToolsOptions.whitelist) state.whitelist = window.devToolsOptions.whitelist;
-      else if (window.devToolsOptions.blacklist) state.blacklist = window.devToolsOptions.blacklist;
+      if (window.devToolsOptions.whitelist) state.whitelist = [window.devToolsOptions.whitelist];
+      else if (window.devToolsOptions.blacklist) state.blacklist = [window.devToolsOptions.blacklist];
     }
   }
 
@@ -131,7 +132,6 @@ window.devToolsExtension = function(config = {}) {
       relay('ACTION', state, liftedAction, nextActionId);
     } else {
       if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) errorOccurred = false;
-      addFilter(liftedState);
       relay('STATE', liftedState);
     }
   }

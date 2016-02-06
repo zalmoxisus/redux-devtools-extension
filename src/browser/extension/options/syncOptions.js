@@ -31,15 +31,15 @@ const get = callback => {
   }
 };
 
-const toArray = str => (
-  str !== '' ? str.split('\n') : null
+const toReg = str => (
+  str !== '' ? str.split('\n').join('|') : null
 );
 
 const injectOptions = newOptions => {
   if (!newOptions) return;
   if (newOptions.filter) {
-    newOptions.whitelist = toArray(newOptions.whitelist);
-    newOptions.blacklist = toArray(newOptions.blacklist);
+    newOptions.whitelist = toReg(newOptions.whitelist);
+    newOptions.blacklist = toReg(newOptions.blacklist);
   }
 
   options = newOptions;
@@ -61,7 +61,7 @@ export const getOptionsFromBg = () => {
 
 export const isAllowed = (localOptions = options) => (
   !localOptions || localOptions.inject || !localOptions.urls
-    || location.href.match(localOptions.urls.split('\n').join('|'))
+    || location.href.match(toReg(localOptions.urls))
 );
 
 export default {
