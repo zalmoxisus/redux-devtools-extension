@@ -35,51 +35,51 @@ chrome.runtime.getBackgroundPage( background => {
     render(
       <div>
         <div className="input">
-          <span className="caption">Left monitor:</span>
+          <label className="caption" htmlFor="leftMonitor">Left monitor:</label>
           <Monitors type="side" defaultValue={items.leftMonitor} id="leftMonitor" onChange={saveOption}/>
         </div>
         <div className="input">
-          <span className="caption">Right monitor:</span>
+          <label className="caption" htmlFor="rightMonitor">Right monitor:</label>
           <Monitors type="side" defaultValue={items.rightMonitor} id="rightMonitor" onChange={saveOption}/>
         </div>
         <div className="input">
-          <span className="caption">Bottom monitor:</span>
+          <label className="caption" htmlFor="bottomMonitor">Bottom monitor:</label>
           <Monitors type="bottom" defaultValue={items.bottomMonitor} id="bottomMonitor" onChange={saveOption}/>
         </div>
         <div className="input">
-          <span className="caption">Maximum actions:</span>
+          <label className="caption" htmlFor="limit">Maximum actions:</label>
           <input id="limit" type="text" defaultValue={items.limit} onChange={saveOption}/>
           <span className="comment">(autocommit when exceeds, 0 - no limit)</span>
         </div>
         <div className="input">
-          <span className="caption">Filter spec. actions:</span>
+          <label className="caption" htmlFor="filter">Filter spec. actions:</label>
           <input id="filter" type="checkbox" defaultChecked={items.filter} onChange={saveOption}/>
           <span className="comment">(enable to show/hide the actions bellow)</span>
         </div>
         <div className="input">
-          <span className="caption">Actions to hide from DevTools (from new line):</span>
+          <label className="caption" htmlFor="blacklist">Actions to hide from DevTools (from new line):</label>
           <textarea onChange={saveOption} id="blacklist" defaultValue={items.blacklist}/>
         </div>
         <div className="input">
-          <span className="caption">Actions to show (previous option will be ignored):</span>
+          <label className="caption" htmlFor="whitelist">Actions to show (previous option will be ignored):</label>
           <textarea onChange={saveOption} id="whitelist" defaultValue={items.whitelist}/>
         </div>
         <div className="input">
-          <span className="caption">States serialization:</span>
+          <label className="caption" htmlFor="serialize">States serialization:</label>
           <input id="serialize" type="checkbox" defaultChecked={items.serialize} onChange={saveOption}/>
           <span className="comment">(required for ImmutableJS states)</span>
         </div>
         <div className="input">
-          <span className="caption">Inject in all pages:</span>
+          <label className="caption" htmlFor="inject">Inject in all pages:</label>
           <input id="inject" type="checkbox" defaultChecked={items.inject} onChange={saveOption}/>
           <span className="comment">(disable to allow only the urls bellow)</span>
         </div>
         <div className="input">
-          <span className="caption">Pages urls to inject DevTools in (regex from new line):</span>
+          <label className="caption" htmlFor="urls">Pages urls to inject DevTools in (regex from new line):</label>
           <textarea onChange={saveUrls} id="urls" defaultValue={items.urls}/>
         </div>
         <div className="input">
-          <span className="caption">Show errors:</span>
+          <label className="caption" htmlFor="notifyErrors">Show errors:</label>
           <input id="notifyErrors" type="checkbox" defaultChecked={items.notifyErrors} onChange={saveOption}/>
           <span className="comment">(will notify when errors occur in the app)</span>
         </div>
