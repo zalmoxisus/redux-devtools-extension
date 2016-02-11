@@ -36,14 +36,17 @@ chrome.runtime.getBackgroundPage( background => {
       <div>
         <div className="input">
           <label className="caption" htmlFor="leftMonitor">Left monitor:</label>
+          <br/>
           <Monitors type="side" defaultValue={items.leftMonitor} id="leftMonitor" onChange={saveOption}/>
         </div>
         <div className="input">
           <label className="caption" htmlFor="rightMonitor">Right monitor:</label>
+          <br/>
           <Monitors type="side" defaultValue={items.rightMonitor} id="rightMonitor" onChange={saveOption}/>
         </div>
         <div className="input">
           <label className="caption" htmlFor="bottomMonitor">Bottom monitor:</label>
+          <br/>
           <Monitors type="bottom" defaultValue={items.bottomMonitor} id="bottomMonitor" onChange={saveOption}/>
         </div>
         <div className="input">
@@ -58,10 +61,12 @@ chrome.runtime.getBackgroundPage( background => {
         </div>
         <div className="input">
           <label className="caption" htmlFor="blacklist">Actions to hide from DevTools (from new line):</label>
+          <br/>
           <textarea onChange={saveOption} id="blacklist" defaultValue={items.blacklist}/>
         </div>
         <div className="input">
           <label className="caption" htmlFor="whitelist">Actions to show (previous option will be ignored):</label>
+          <br/>
           <textarea onChange={saveOption} id="whitelist" defaultValue={items.whitelist}/>
         </div>
         <div className="input">
@@ -76,6 +81,7 @@ chrome.runtime.getBackgroundPage( background => {
         </div>
         <div className="input">
           <label className="caption" htmlFor="urls">Pages urls to inject DevTools in (regex from new line):</label>
+          <br/>
           <textarea onChange={saveUrls} id="urls" defaultValue={items.urls}/>
         </div>
         <div className="input">
