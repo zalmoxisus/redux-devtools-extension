@@ -55,9 +55,11 @@ chrome.runtime.getBackgroundPage( background => {
           <span className="comment">(autocommit when exceeds, 0 - no limit)</span>
         </div>
         <div className="input">
-          <label className="caption" htmlFor="filter">Filter spec. actions:</label>
           <input id="filter" type="checkbox" defaultChecked={items.filter} onChange={saveOption}/>
-          <span className="comment">(enable to show/hide the actions bellow)</span>
+          <label className="caption" htmlFor="filter">
+            Filter spec. actions
+            <span className="comment">(enable to show/hide the actions bellow)</span>
+          </label>
         </div>
         <div className="input">
           <label className="caption" htmlFor="blacklist">Actions to hide from DevTools (from new line):</label>
@@ -70,14 +72,18 @@ chrome.runtime.getBackgroundPage( background => {
           <textarea onChange={saveOption} id="whitelist" defaultValue={items.whitelist}/>
         </div>
         <div className="input">
-          <label className="caption" htmlFor="serialize">States serialization:</label>
           <input id="serialize" type="checkbox" defaultChecked={items.serialize} onChange={saveOption}/>
-          <span className="comment">(required for ImmutableJS states)</span>
+          <label className="caption" htmlFor="serialize">
+            States serialization
+            <span className="comment">(required for ImmutableJS states)</span>
+          </label>
         </div>
         <div className="input">
-          <label className="caption" htmlFor="inject">Inject in all pages:</label>
           <input id="inject" type="checkbox" defaultChecked={items.inject} onChange={saveOption}/>
-          <span className="comment">(disable to allow only the urls bellow)</span>
+          <label className="caption" htmlFor="inject">
+            Inject in all pages
+            <span className="comment">(disable to allow only the urls bellow)</span>
+          </label>
         </div>
         <div className="input">
           <label className="caption" htmlFor="urls">Pages urls to inject DevTools in (regex from new line):</label>
@@ -85,9 +91,11 @@ chrome.runtime.getBackgroundPage( background => {
           <textarea onChange={saveUrls} id="urls" defaultValue={items.urls}/>
         </div>
         <div className="input">
-          <label className="caption" htmlFor="notifyErrors">Show errors:</label>
           <input id="notifyErrors" type="checkbox" defaultChecked={items.notifyErrors} onChange={saveOption}/>
-          <span className="comment">(will notify when errors occur in the app)</span>
+          <label className="caption" htmlFor="notifyErrors">
+            Show errors
+            <span className="comment">(will notify when errors occur in the app)</span>
+          </label>
         </div>
       </div>,
       document.getElementById('root')
