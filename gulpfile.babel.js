@@ -110,6 +110,18 @@ gulp.task('compress:firefox', () => {
     .pipe(gulp.dest('./build'));
 });
 
-gulp.task('default', ['replace-webpack-code', 'webpack:dev', 'views:dev', 'copy:dev']);
+/*
+ * watch tasks
+ */
+
+gulp.task('views:watch', () => {
+  gulp.watch('./src/browser/views/*.jade', ['views:dev']);
+});
+
+gulp.task('copy:watch', () => {
+  gulp.watch(['./src/browser/extension/manifest.json', './src/assets/**/*'], ['copy:dev']);
+});
+
+gulp.task('default', ['replace-webpack-code', 'webpack:dev', 'views:dev', 'copy:dev', 'views:watch', 'copy:watch']);
 gulp.task('build:extension', ['replace-webpack-code', 'webpack:build:extension', 'views:build:extension', 'copy:build:extension']);
 gulp.task('build:firefox', ['copy:build:firefox']);
