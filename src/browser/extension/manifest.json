@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0.5",
+  "version": "1.0.0.6",
   "name": "Redux DevTools",
   "short_name": "Redux DevTools",
   "description": "DevTools for Redux with actions history, undo and replay.",
