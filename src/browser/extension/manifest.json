@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0.5",
+  "version": "1.0.0.6",
   "name": "Redux DevTools",
   "short_name": "Redux DevTools",
   "description": "DevTools for Redux with actions history, undo and replay.",
@@ -56,7 +56,8 @@
       "matches": ["<all_urls>"],
       "exclude_globs": [ "https://www.google*" ],
       "js": ["js/content.bundle.js", "js/pagewrap.bundle.js"],
-      "run_at": "document_start"
+      "run_at": "document_start",
+      "all_frames": true
     }
   ],
   "devtools_page": "devtools.html",

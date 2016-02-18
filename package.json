@@ -1,6 +1,6 @@
 {
   "name": "redux-devtools-extension",
-  "version": "1.0.0-beta5",
+  "version": "1.0.0-beta6",
   "description": "DevTools extension for Redux",
   "scripts": {
     "start": "gulp",
@@ -58,15 +58,15 @@
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-icons": "^1.0.3",
-    "react-redux": "^4.0.6",
-    "redux": "^3.2.1",
-    "redux-devtools": "^3.1.0",
+    "react-redux": "^4.4.0",
+    "redux": "^3.3.1",
+    "redux-devtools": "^3.1.1",
     "redux-devtools-chart-monitor": "^1.1.3",
     "redux-devtools-diff-monitor": "^4.0.1",
     "redux-devtools-filter-actions": "^1.1.0",
     "redux-devtools-log-monitor": "^1.0.4",
-    "redux-slider-monitor": "^1.0.1",
+    "redux-slider-monitor": "^1.0.2",
     "redux-thunk": "^1.0.3",
-    "remotedev-app": "^0.2.6"
+    "remotedev-app": "^0.2.8"
   }
 }
