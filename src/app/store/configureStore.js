@@ -10,6 +10,6 @@ export default function configureStore(next, subscriber = () => ({})) {
   )(next);
 }
 function getPersistSession() {
-  const matches = window.location.href.match(/[?&]debug_session=([^&]+)\b/);
+  const matches = window.location.href.match(/[?&]debug_session=([^&#]+)\b/);
   return (matches && matches.length > 0)? matches[1] : null;
 }
