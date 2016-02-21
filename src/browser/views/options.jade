@@ -8,9 +8,12 @@ html
     body {
       padding: 2px;
     }
+
     .option {
+      display: flex;
       margin-bottom: 10px;
     }
+
     .option__caption {
       margin-right: 5px;
     }
@@ -18,20 +21,47 @@ html
       color: #999;
       margin-left: 5px;
     }
+
+    .option_type_input .option__caption,
+    .option_type_textarea .option__caption,
+    .option_type_select .option__caption {
+      flex: none;
+      width: 105px;
+    }
+
+    /* Input styling */
+    .option_type_input {
+      align-items: baseline;
+    }
+
+    /* Checkbox styling */
+    .option_type_checkbox .option__element {
+      margin-right: 5px;
+    }
+
+    /* Textarea styling */
+    .option_type_textarea .option__caption {
+      /* Baseline-align the caption and the element. See the commit message for more. */
+      margin-top: 4px;
+    }
+    .option_type_textarea .option__element {
+      flex: 1;
+      height: 50px;
+    }
+
+    /* Select styling */
+    .option_type_select .option__caption {
+      /* Baseline-align the caption and the element. See the commit message for more. */
+      line-height: 24px;
+    }
+    .option_type_select .option__element {
+      flex: 1;
+    }
+
+    /* Value-based styling */
     .option_value_limit .option__element {
       width: 25px;
       text-align: center;
-    }
-    .option_type_checkbox .option__element {
-      margin-right: 5px;
-      vertical-align: baseline;
-    }
-    .option_type_textarea .option__element {
-      width: 250px;
-      height: 50px;
-    }
-    .option_type_select .option__element {
-      width: 250px;
     }
 
   body

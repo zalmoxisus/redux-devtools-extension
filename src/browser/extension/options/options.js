@@ -5,19 +5,16 @@ export default ({ options, saveOption, saveUrls }) => (
   <div>
     <div className="option option_type_select option_value_left-monitor">
       <label className="option__caption" htmlFor="leftMonitor">Left monitor:</label>
-      <br/>
       <Monitors elementClassName="option__element" type="side" defaultValue={options.leftMonitor}
                 id="leftMonitor" onChange={saveOption} />
     </div>
     <div className="option option_type_select option_value_right-monitor">
       <label className="option__caption" htmlFor="rightMonitor">Right monitor:</label>
-      <br/>
       <Monitors elementClassName="option__element" type="side" defaultValue={options.rightMonitor}
                 id="rightMonitor" onChange={saveOption} />
     </div>
     <div className="option option_type_select option_value_bottom-monitor">
       <label className="option__caption" htmlFor="bottomMonitor">Bottom monitor:</label>
-      <br/>
       <Monitors elementClassName="option__element" type="bottom" defaultValue={options.bottomMonitor}
                 id="bottomMonitor" onChange={saveOption} />
     </div>
@@ -35,12 +32,10 @@ export default ({ options, saveOption, saveUrls }) => (
     </div>
     <div className="option option_type_textarea option_value_blacklist">
       <label className="option__caption" htmlFor="blacklist">Actions to hide from DevTools (from new line):</label>
-      <br/>
       <textarea className="option__element" onChange={saveOption} id="blacklist" defaultValue={options.blacklist}/>
     </div>
     <div className="option option_type_textarea option_value_whitelist">
       <label className="option__caption" htmlFor="whitelist">Actions to show (previous option will be ignored):</label>
-      <br/>
       <textarea className="option__element" onChange={saveOption} id="whitelist" defaultValue={options.whitelist}/>
     </div>
     <div className="option option_type_checkbox option_value_serialize">
@@ -59,7 +54,6 @@ export default ({ options, saveOption, saveUrls }) => (
     </div>
     <div className="option option_type_textarea option_value_urls">
       <label className="option__caption" htmlFor="urls">Pages urls to inject DevTools in (regex from new line):</label>
-      <br/>
       <textarea className="option__element" onChange={saveUrls} id="urls" defaultValue={options.urls}/>
     </div>
     <div className="option option_type_checkbox option_value_notify-errors">
