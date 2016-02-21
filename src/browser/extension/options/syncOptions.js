@@ -1,5 +1,6 @@
 import { onMessage, sendToBg, sendToTab } from 'crossmessaging';
 let options;
+let subscribers = [];
 
 const save = (key, value) => {
   let obj = {};
@@ -7,6 +8,7 @@ const save = (key, value) => {
   chrome.storage.sync.set(obj);
   options[key] = value;
   if (window.store.id) sendToTab(window.store.id, { options: options });
+  subscribers.forEach(s => s(options));
 };
 
 const get = callback => {
@@ -29,6 +31,10 @@ const get = callback => {
       callback(items);
     });
   }
+};
+
+const subscribe = callback => {
+  subscribers = subscribers.concat(callback);
 };
 
 const toReg = str => (
@@ -66,5 +72,6 @@ export const isAllowed = (localOptions = options) => (
 
 export default {
   save: save,
-  get: get
+  get: get,
+  subscribe: subscribe
 };

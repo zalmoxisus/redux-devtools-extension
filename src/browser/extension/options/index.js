@@ -31,10 +31,15 @@ chrome.runtime.getBackgroundPage( background => {
     syncOptions.save(e.target.id, urls);
   };
 
-  syncOptions.get(items => {
+  const renderOptions = options => {
     render(
-      <Options options={items} saveOption={saveOption} saveUrls={saveUrls} />,
+      <Options options={options} saveOption={saveOption} saveUrls={saveUrls} />,
       document.getElementById('root')
     );
+  };
+
+  syncOptions.subscribe(renderOptions);
+  syncOptions.get(options => {
+    renderOptions(options);
   });
 });
