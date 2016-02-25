@@ -140,7 +140,11 @@ window.devToolsExtension = function(config = {}) {
     return (reducer, initialState, enhancer) => {
       if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState, enhancer);
 
-      store = configureStore(next, monitorReducer)(reducer, initialState, enhancer);
+      const { deserializeState, deserializeAction } = config;
+      store = configureStore(next, monitorReducer, {
+        deserializeState, 
+        deserializeAction
+      })(reducer, initialState, enhancer);
       init();
       store.subscribe(() => { handleChange(store.getState(), store.liftedStore.getState()); });
       return store;

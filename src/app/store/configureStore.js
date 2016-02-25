@@ -1,11 +1,14 @@
 import { compose } from 'redux';
 import { persistState, instrument } from 'redux-devtools';
 
-export default function configureStore(next, subscriber = () => ({})) {
+export default function configureStore(next, subscriber = () => ({}), options = {}) {
+  const { deserializeState, deserializeAction } = options;
   return compose(
     instrument(subscriber),
     persistState(
-      getPersistSession()
+      getPersistSession(),
+      deserializeState,
+      deserializeAction
     )
   )(next);
 }
