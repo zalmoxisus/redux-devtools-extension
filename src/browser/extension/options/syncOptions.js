@@ -46,10 +46,8 @@ const injectOptions = newOptions => {
   let s = document.createElement('script');
   s.type = 'text/javascript';
   s.appendChild(document.createTextNode('window.devToolsOptions=' + JSON.stringify(options)));
-  s.onload = function() {
-    this.parentNode.removeChild(this);
-  };
   (document.head || document.documentElement).appendChild(s);
+  s.parentNode.removeChild(s);
 };
 
 export const getOptionsFromBg = () => {
