@@ -49,6 +49,10 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
     ```js
     window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
     ```
+    [Make sure not to render DevTools when using the extension](https://github.com/zalmoxisus/redux-devtools-extension/issues/57) or you'll probably want to render the monitor from vanilla DevTools as follows: 
+    ```js
+    { !window.devToolsExtension ? <DevTools /> : null }
+    ```
 
 - **With Redux@^3.1 it's [even easier](https://github.com/zalmoxisus/redux-devtools-extension/commit/9c631ef66f53e51f34b55f4642bd9ff2cbc7a992)**<br/>
     ```javascript
