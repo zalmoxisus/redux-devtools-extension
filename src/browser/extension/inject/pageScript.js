@@ -12,8 +12,8 @@ window.devToolsExtension = function(config = {}) {
   let errorOccurred = false;
 
   function relaySerialized(message) {
-    message.payload = stringify(message.payload);
-    if (message.action !== '') message.action = stringify(message.action);
+    message.payload = stringify(message.payload, null, null, true);
+    if (message.action !== '') message.action = stringify(message.action, null, null, true);
     window.postMessage(message, '*');
   }
 
