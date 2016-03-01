@@ -81,6 +81,10 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
 `window.devToolsExtension([config])`
 - **config** arguments (optional)
   - **name** (*string*) - the instance name to be showed on the monitor page. Default value is `document.title`.
+  - **deserializeState(state): transformedState** (*function*) - optional transformation of state deserialized from debug session (useful if state is not plain object. Example: immutable-js state)
+    - state, transformedState - Redux state objects
+  - **deserializeAction(action): transformedAction** (*function*) - optional transformation of actions deserialized from debug session (useful if actions are not plain object. Example: immutable-js action payload)
+    - action, transformedAction - Redux action objects
 
 ## Examples
 Open these urls to test the extension:
