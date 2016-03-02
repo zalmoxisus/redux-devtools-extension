@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "crossmessaging": "^0.2.0",
-    "jsan": "^3.0.0",
+    "jsan": "^3.1.1",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-icons": "^1.0.3",

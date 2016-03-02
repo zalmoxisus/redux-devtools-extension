@@ -1,4 +1,4 @@
-import { stringify } from 'jsan';
+import jsan from 'jsan';
 import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
 import notifyErrors from '../utils/notifyErrors';
@@ -11,9 +11,16 @@ window.devToolsExtension = function(config = {}) {
   let lastAction;
   let errorOccurred = false;
 
+  function stringify(obj) {
+    return jsan.stringify(obj, function(key, value) {
+      if (value && value.toJS) { return value.toJS(); }
+      return value;
+    }, null, true);
+  }
+
   function relaySerialized(message) {
-    message.payload = stringify(message.payload, null, null, true);
-    if (message.action !== '') message.action = stringify(message.action, null, null, true);
+    message.payload = stringify(message.payload);
+    if (message.action !== '') message.action = stringify(message.action);
     window.postMessage(message, '*');
   }
 
