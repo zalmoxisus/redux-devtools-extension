@@ -65,7 +65,7 @@
     "redux-devtools-diff-monitor": "^4.0.1",
     "redux-devtools-filter-actions": "^1.1.0",
     "redux-devtools-inspector": "^0.1.7",
-    "redux-devtools-log-monitor": "^1.0.4",
+    "redux-devtools-log-monitor": "^1.0.5",
     "redux-slider-monitor": "^1.0.2",
     "redux-thunk": "^1.0.3",
     "remotedev-app": "^0.2.8"
