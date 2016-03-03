@@ -9,7 +9,8 @@ export const sideMonitors = [
 
 export const bottomMonitors = [
   ['LogMonitor', 'Log Monitor'],
-  ['SliderMonitor', 'Slider Monitor']
+  ['SliderMonitor', 'Slider Monitor'],
+  ['InspectorMonitor', 'Inspector Monitor']
 ];
 
 export default ({ type, defaultValue, onChange, id }) => (
