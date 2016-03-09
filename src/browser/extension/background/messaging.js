@@ -16,8 +16,12 @@ function initPanel(msg, port) {
   if (msg.tabId !== store.id) return naMessage;
 }
 
+function getId(port) {
+  return port.sender.tab ? port.sender.tab.id : port.sender.id;
+}
+
 function initInstance(msg, port) {
-  const id = port.sender.tab.id;
+  const id = getId(port);
   tabConnections[id] = port;
   store.liftedStore.instances[id] = msg.instance;
   store.id = id;
@@ -26,8 +30,8 @@ function initInstance(msg, port) {
 }
 
 function disconnect(port) {
-  if (!port.sender.tab) return;
-  const id = port.sender.tab.id;
+  if (!port.sender.tab && port.id === chrome.runtime.id) return;
+  const id = getId(port);
   delete tabConnections[id];
   if (panelConnections[id]) panelConnections[id].postMessage(naMessage);
   if (window.store.liftedStore.instances[id]) {
