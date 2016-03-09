@@ -21,9 +21,9 @@ function connect(instance) {
         payload: message.action,
         source: 'redux-cs'
       }, '*');
-    } else if (message.type === 'START') {
+    } else {
       window.postMessage({
-        type: 'START',
+        type: message.type,
         source: 'redux-cs'
       }, '*');
     }

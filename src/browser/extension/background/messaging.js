@@ -5,12 +5,15 @@ import openDevToolsWindow from './openWindow';
 let panelConnections = {};
 let tabConnections = {};
 let catchedErrors = {};
+let unsubscribeList = {};
+let isMonitored = false;
 
 window.syncOptions = syncOptions; // Used in the options page
 
 const naMessage = { type: 'NA' };
 
 function initPanel(msg, port) {
+  monitorInstances(true);
   panelConnections[msg.tabId] = port;
   if (msg.tabId !== store.id) return naMessage;
 }
@@ -25,11 +28,14 @@ function initInstance(msg, port) {
   store.liftedStore.instances[id] = msg.instance;
   store.id = id;
   if (typeof id === 'number') chrome.pageAction.show(id);
-  return { type: 'START' };
+  if (isMonitored) return { type: 'START' };
 }
 
 function disconnect(port) {
-  if (!port.sender.tab && port.id === chrome.runtime.id) return;
+  if (!port.sender.tab && !port.id) {
+    monitorInstances(false);
+    return;
+  }
   const id = getId(port);
   delete tabConnections[id];
   if (panelConnections[id]) panelConnections[id].postMessage(naMessage);
@@ -128,3 +134,51 @@ export function toContentScript(action) {
     tabConnections[id].postMessage(message);
   }
 }
+
+function monitorInstances(shouldMonitor) {
+  if (
+    !shouldMonitor && Object.getOwnPropertyNames(unsubscribeList).length !== 0
+    || isMonitored === shouldMonitor
+  ) return;
+
+  Object.keys(tabConnections).forEach(id => {
+    tabConnections[id].postMessage({ type: shouldMonitor ? 'START' : 'STOP' });
+  });
+  isMonitored = shouldMonitor;
+}
+
+function getTab(cb) {
+  chrome.tabs.query({
+    active: true,
+    windowId: chrome.windows.WINDOW_ID_CURRENT
+  }, (tab) => {
+    cb(tab[0].id);
+  });
+}
+
+const unsubscribeMonitor = (tabId) => () => {
+  if (!unsubscribeList[tabId]) return;
+  unsubscribeList[tabId]();
+  delete unsubscribeList[tabId];
+  if (Object.getOwnPropertyNames(panelConnections).length === 0) {
+    monitorInstances(false);
+  }
+};
+
+// Expose store to extension's windows (monitors)
+window.getStore = (cb) => {
+  monitorInstances(true);
+  getTab((tabId) => {
+    cb({
+      ...store,
+      liftedStore: {
+        ...store.liftedStore,
+        subscribe(...args) {
+          const unsubscribe = store.liftedStore.subscribe(...args);
+          unsubscribeList[tabId] = unsubscribe;
+          return unsubscribe;
+        }
+      }
+    }, unsubscribeMonitor(tabId));
+  });
+};
