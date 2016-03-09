@@ -20,7 +20,7 @@ window.devToolsExtension = function(config = {}) {
   }
 
   function relaySerialized(message) {
-    message.payload = stringify(message.payload);
+    if (message.payload) message.payload = stringify(message.payload);
     if (message.action !== '') message.action = stringify(message.action);
     window.postMessage(message, '*');
   }
@@ -103,7 +103,7 @@ window.devToolsExtension = function(config = {}) {
 
   function init() {
     window.addEventListener('message', onMessage, false);
-    relay('STATE', store.liftedStore.getState());
+    relay('INIT_INSTANCE');
     notifyErrors(() => {
       errorOccurred = true;
       const state = store.liftedStore.getState();
