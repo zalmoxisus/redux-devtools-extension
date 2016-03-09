@@ -1,27 +1,33 @@
-import { onMessage, sendToBg } from 'crossmessaging';
 import { getOptionsFromBg, isAllowed } from '../options/syncOptions';
+let bg;
 let payload;
-let sendMessage;
 
 if (!window.devToolsOptions) getOptionsFromBg();
 
-// Relay background script massages to the page script
-onMessage((message) => {
-  if (message.action) {
-    window.postMessage({
-      type: 'DISPATCH',
-      payload: message.action,
-      source: 'redux-cs'
-    }, '*');
+function connect(instance) {
+  // Connect to the background script
+  if (window.devToolsExtensionID) {
+    bg = chrome.runtime.connect(window.devToolsExtensionID);
+  } else {
+    bg = chrome.runtime.connect();
   }
-});
+  bg.postMessage({name: 'INIT_INSTANCE', instance});
 
-if (window.devToolsExtensionID) { // Send external messages
-  sendMessage = function(message) {
-    chrome.runtime.sendMessage(window.devToolsExtensionID, message);
-  };
-} else {
-  sendMessage = sendToBg;
+  // Relay background script massages to the page script
+  bg.onMessage.addListener((message) => {
+    if (message.action) {
+      window.postMessage({
+        type: 'DISPATCH',
+        payload: message.action,
+        source: 'redux-cs'
+      }, '*');
+    } else {
+      window.postMessage({
+        type: message.type,
+        source: 'redux-cs'
+      }, '*');
+    }
+  });
 }
 
 // Resend messages from the page to the background script
@@ -32,7 +38,9 @@ window.addEventListener('message', function(event) {
   if (message.source !== 'redux-page') return;
   if (message.payload) payload = message.payload;
   try {
-    sendMessage(message);
+    if (message.type === 'INIT_INSTANCE') {
+      connect(message.name);
+    } else bg.postMessage({ name: 'RELAY', message });
   } catch (err) {
     if (process.env.NODE_ENV !== 'production') console.error('Failed to send message', err);
   }
@@ -42,6 +50,6 @@ if (typeof window.onbeforeunload !== 'undefined') {
   // Prevent adding beforeunload listener for Chrome apps
   window.onbeforeunload = function() {
     if (!isAllowed()) return;
-    sendMessage({ type: 'PAGE_UNLOADED' });
+    bg.postMessage({ type: 'PAGE_UNLOADED' });
   };
 }

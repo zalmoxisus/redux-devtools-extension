@@ -56,7 +56,7 @@ function init(id) {
     'source: \'redux-cs\'' +
     '}, \'*\');'
   );
-  backgroundPageConnection.postMessage({ name: 'init', tabId: id });
+  backgroundPageConnection.postMessage({ name: 'INIT_PANEL', tabId: id });
 }
 
 if (chrome.devtools.inspectedWindow.tabId) {

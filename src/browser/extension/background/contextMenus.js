@@ -7,8 +7,6 @@ const menus = [
   { id: 'devtools-panel', title: 'Open in a chrome panel (enable in Chrome settings)' },
   { id: 'devtools-remote', title: 'Open Remote DevTools' }
 ];
-let pageUrl;
-let pageTab;
 
 let shortcuts = {};
 chrome.commands.getAll(commands => {
@@ -17,24 +15,12 @@ chrome.commands.getAll(commands => {
   });
 });
 
-export default function createMenu(forUrl, tabId) {
-  if (typeof tabId !== 'number') return; // It is an extension's background page
-  chrome.pageAction.show(tabId);
-  if (tabId === pageTab) return;
-
-  let url = forUrl;
-  let hash = forUrl.indexOf('#');
-  if (hash !== -1) url = forUrl.substr(0, hash);
-  if (pageUrl === url) return;
-  pageUrl = url; pageTab = tabId;
-  chrome.contextMenus.removeAll();
-
+export default function createMenu() {
   menus.forEach(({ id, title }) => {
     chrome.contextMenus.create({
       id: id,
       title: title + (shortcuts[id] ? ' (' + shortcuts[id] + ')' : ''),
       contexts: ['all'],
-      documentUrlPatterns: [url],
       onclick: () => { openDevToolsWindow(id); }
     });
   });

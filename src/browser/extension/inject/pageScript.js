@@ -10,6 +10,7 @@ window.devToolsExtension = function(config = {}) {
   let shouldInit = true;
   let lastAction;
   let errorOccurred = false;
+  let isMonitored = false;
 
   function stringify(obj) {
     return jsan.stringify(obj, function(key, value) {
@@ -19,7 +20,7 @@ window.devToolsExtension = function(config = {}) {
   }
 
   function relaySerialized(message) {
-    message.payload = stringify(message.payload);
+    if (message.payload) message.payload = stringify(message.payload);
     if (message.action !== '') message.action = stringify(message.action);
     window.postMessage(message, '*');
   }
@@ -65,6 +66,11 @@ window.devToolsExtension = function(config = {}) {
       store.liftedStore.dispatch(message.payload);
     } else if (message.type === 'UPDATE') {
       relay('STATE', store.liftedStore.getState());
+    } else if (message.type === 'START') {
+      isMonitored = true;
+      relay('STATE', store.liftedStore.getState());
+    } else if (message.type === 'STOP') {
+      isMonitored = false;
     }
   }
 
@@ -97,7 +103,7 @@ window.devToolsExtension = function(config = {}) {
 
   function init() {
     window.addEventListener('message', onMessage, false);
-    relay('STATE', store.liftedStore.getState());
+    relay('INIT_INSTANCE');
     notifyErrors(() => {
       errorOccurred = true;
       const state = store.liftedStore.getState();
@@ -110,7 +116,7 @@ window.devToolsExtension = function(config = {}) {
 
     // Detect when the tab is reactivated
     document.addEventListener('visibilitychange', function() {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === 'visible' && isMonitored) {
         shouldInit = true;
         relay('STATE', store.liftedStore.getState());
       }
@@ -118,6 +124,7 @@ window.devToolsExtension = function(config = {}) {
   }
 
   function monitorReducer(state = {}, action) {
+    if (!isMonitored) return state;
     lastAction = action.type;
     if (lastAction === '@@redux/INIT' && store.liftedStore) {
       // Send new lifted state on hot-reloading
@@ -129,6 +136,7 @@ window.devToolsExtension = function(config = {}) {
   }
 
   function handleChange(state, liftedState) {
+    if (!isMonitored) return;
     const nextActionId = liftedState.nextActionId;
     const liftedAction = liftedState.actionsById[nextActionId - 1];
     const action = liftedAction.action;
