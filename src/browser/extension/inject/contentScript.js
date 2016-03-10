@@ -45,11 +45,3 @@ window.addEventListener('message', function(event) {
     if (process.env.NODE_ENV !== 'production') console.error('Failed to send message', err);
   }
 }, false);
-
-if (typeof window.onbeforeunload !== 'undefined') {
-  // Prevent adding beforeunload listener for Chrome apps
-  window.onbeforeunload = function() {
-    if (!isAllowed()) return;
-    bg.postMessage({ type: 'PAGE_UNLOADED' });
-  };
-}
