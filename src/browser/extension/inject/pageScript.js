@@ -7,7 +7,6 @@ window.devToolsExtension = function(config = {}) {
   let store = {};
   if (!window.devToolsOptions) window.devToolsOptions = {};
   let shouldSerialize = false;
-  let shouldInit = true;
   let lastAction;
   let errorOccurred = false;
   let isMonitored = false;
@@ -34,10 +33,8 @@ window.devToolsExtension = function(config = {}) {
         nextActionId: nextActionId || '',
         type: type,
         source: 'redux-page',
-        name: config.name || document.title,
-        init: shouldInit
+        name: config.name || document.title
       };
-      if (shouldInit) shouldInit = false;
       if (shouldSerialize || window.devToolsOptions.serialize) {
         relaySerialized(message);
       } else {
@@ -117,7 +114,6 @@ window.devToolsExtension = function(config = {}) {
     // Detect when the tab is reactivated
     document.addEventListener('visibilitychange', function() {
       if (document.visibilityState === 'visible' && isMonitored) {
-        shouldInit = true;
         relay('STATE', store.liftedStore.getState());
       }
     }, false);
