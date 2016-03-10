@@ -8,7 +8,7 @@ let catchedErrors = {};
 let unsubscribeList = {};
 let isMonitored = false;
 
-window.syncOptions = syncOptions; // Used in the options page
+window.syncOptions = syncOptions(toAllTabs); // Used in the options page
 
 const naMessage = { type: 'NA' };
 
@@ -60,7 +60,7 @@ function messaging(request, sender, sendResponse) {
   const tabId = sender.tab ? sender.tab.id : sender.id;
   if (tabId) {
     if (request.type === 'GET_OPTIONS') {
-      syncOptions.get(options => {
+      window.syncOptions.get(options => {
         sendResponse({options: options});
       });
       return true;
@@ -92,7 +92,7 @@ function messaging(request, sender, sendResponse) {
     }
 
     // Notify when errors occur in the app
-    syncOptions.get(options => {
+    window.syncOptions.get(options => {
       if (!options.notifyErrors) return;
       const error = payload.computedStates[payload.currentStateIndex].error;
       if (error === 'Interrupted by an error up the chain') return;
@@ -135,15 +135,18 @@ export function toContentScript(action) {
   }
 }
 
+function toAllTabs(msg) {
+  Object.keys(tabConnections).forEach(id => {
+    tabConnections[id].postMessage(msg);
+  });
+}
+
 function monitorInstances(shouldMonitor) {
   if (
     !shouldMonitor && Object.getOwnPropertyNames(unsubscribeList).length !== 0
     || isMonitored === shouldMonitor
   ) return;
-
-  Object.keys(tabConnections).forEach(id => {
-    tabConnections[id].postMessage({ type: shouldMonitor ? 'START' : 'STOP' });
-  });
+  toAllTabs({ type: shouldMonitor ? 'START' : 'STOP' });
   isMonitored = shouldMonitor;
 }
 

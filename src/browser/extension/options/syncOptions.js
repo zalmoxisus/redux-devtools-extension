@@ -1,12 +1,12 @@
 import { onMessage, sendToBg, sendToTab } from 'crossmessaging';
 let options;
 
-const save = (key, value) => {
+const save = (toAllTabs) => (key, value) => {
   let obj = {};
   obj[key] = value;
   chrome.storage.sync.set(obj);
   options[key] = value;
-  if (window.store.id) sendToTab(window.store.id, { options: options });
+  toAllTabs({ options: options });
 };
 
 const get = callback => {
@@ -35,7 +35,7 @@ const toReg = str => (
   str !== '' ? str.split('\n').join('|') : null
 );
 
-const injectOptions = newOptions => {
+export const injectOptions = newOptions => {
   if (!newOptions) return;
   if (newOptions.filter) {
     newOptions.whitelist = toReg(newOptions.whitelist);
@@ -54,7 +54,6 @@ export const getOptionsFromBg = () => {
   sendToBg({ type: 'GET_OPTIONS' }, response => {
     injectOptions(response.options);
   });
-  onMessage(message => { injectOptions(message.options); });
 };
 
 export const isAllowed = (localOptions = options) => (
@@ -62,7 +61,9 @@ export const isAllowed = (localOptions = options) => (
     || location.href.match(toReg(localOptions.urls))
 );
 
-export default {
-  save: save,
-  get: get
-};
+export default function syncOptions(toAllTabs) {
+  return {
+    save: save(toAllTabs),
+    get: get
+  };
+}

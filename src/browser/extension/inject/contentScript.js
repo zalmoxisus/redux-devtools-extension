@@ -1,4 +1,4 @@
-import { getOptionsFromBg, isAllowed } from '../options/syncOptions';
+import { getOptionsFromBg, injectOptions, isAllowed } from '../options/syncOptions';
 let bg;
 let payload;
 
@@ -21,6 +21,8 @@ function connect(instance) {
         payload: message.action,
         source: 'redux-cs'
       }, '*');
+    } if (message.options) {
+      injectOptions(message.options);
     } else {
       window.postMessage({
         type: message.type,
