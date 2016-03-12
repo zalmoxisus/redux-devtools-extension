@@ -5,7 +5,7 @@ import openDevToolsWindow from './openWindow';
 let panelConnections = {};
 let tabConnections = {};
 let catchedErrors = {};
-let unsubscribeList = {};
+let monitors = 0;
 let isMonitored = false;
 
 window.syncOptions = syncOptions(toAllTabs); // Used in the options page
@@ -143,45 +143,38 @@ function toAllTabs(msg) {
 
 function monitorInstances(shouldMonitor) {
   if (
-    !shouldMonitor && Object.getOwnPropertyNames(unsubscribeList).length !== 0
+    !shouldMonitor && monitors !== 0
     || isMonitored === shouldMonitor
   ) return;
   toAllTabs({ type: shouldMonitor ? 'START' : 'STOP' });
   isMonitored = shouldMonitor;
 }
 
-function getTab(cb) {
-  chrome.tabs.query({
-    active: true,
-    windowId: chrome.windows.WINDOW_ID_CURRENT
-  }, (tab) => {
-    cb(tab[0].id);
-  });
-}
-
-const unsubscribeMonitor = (tabId) => () => {
-  if (!unsubscribeList[tabId]) return;
-  unsubscribeList[tabId]();
-  delete unsubscribeList[tabId];
+const unsubscribeMonitor = (unsubscribeList) => () => {
+  monitors--;
+  unsubscribeList.forEach(unsubscribe => { unsubscribe(); });
   if (Object.getOwnPropertyNames(panelConnections).length === 0) {
     monitorInstances(false);
   }
 };
 
 // Expose store to extension's windows (monitors)
-window.getStore = (cb) => {
+window.getStore = () => {
+  monitors++;
   monitorInstances(true);
-  getTab((tabId) => {
-    cb({
+  let unsubscribeList = [];
+  return {
+    store: {
       ...store,
       liftedStore: {
         ...store.liftedStore,
         subscribe(...args) {
           const unsubscribe = store.liftedStore.subscribe(...args);
-          unsubscribeList[tabId] = unsubscribe;
+          unsubscribeList.push(unsubscribe);
           return unsubscribe;
         }
       }
-    }, unsubscribeMonitor(tabId));
-  });
+    },
+    unsubscribe: unsubscribeMonitor(unsubscribeList)
+  };
 };

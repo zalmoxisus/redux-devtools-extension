@@ -21,7 +21,7 @@ function connect(instance) {
         payload: message.action,
         source: 'redux-cs'
       }, '*');
-    } if (message.options) {
+    } else if (message.options) {
       injectOptions(message.options);
     } else {
       window.postMessage({
