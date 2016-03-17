@@ -12,10 +12,13 @@ window.devToolsExtension = function(config = {}) {
   let isMonitored = false;
 
   function stringify(obj) {
+    return jsan.stringify(obj);
+    /*
     return jsan.stringify(obj, function(key, value) {
       if (value && value.toJS) { return value.toJS(); }
       return value;
     }, null, true);
+    */
   }
 
   function relaySerialized(message) {
