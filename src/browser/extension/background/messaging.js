@@ -32,7 +32,7 @@ function initInstance(msg, port) {
 }
 
 function disconnect(port) {
-  if (!port.sender.tab && !port.id) {
+  if (!port.sender.tab && !port.sender.id) {
     monitorInstances(false);
     return;
   }
