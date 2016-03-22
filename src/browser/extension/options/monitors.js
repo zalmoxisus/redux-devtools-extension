@@ -11,8 +11,8 @@ export const bottomMonitors = [
   ['SliderMonitor', 'Slider Monitor']
 ];
 
-export default ({ elementClassName, type, defaultValue, onChange, id }) => (
-  <select className={elementClassName} defaultValue={defaultValue} onChange={onChange} id={id}>{
+export default ({ elementClassName, type, value, onChange, id }) => (
+  <select className={elementClassName} value={value} onChange={onChange} id={id}>{
     (type === 'bottom' ? bottomMonitors : sideMonitors).map(monitor => (
       <option key={monitor[0]} value={monitor[0]}>{monitor[1]}</option>
     ))
