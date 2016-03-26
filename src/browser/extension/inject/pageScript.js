@@ -9,10 +9,12 @@ window.devToolsExtension = function(config = {}) {
   let store = {};
   if (!window.devToolsOptions) window.devToolsOptions = {};
 
+  let localFilter;
   if (config.actionsBlacklist || config.actionsWhitelist) {
-    window.devToolsOptions.filter = true;
-    window.devToolsOptions.blacklist = actionsArrToReg(config.actionsBlacklist);
-    window.devToolsOptions.whitelist = actionsArrToReg(config.actionsWhitelist);
+    localFilter = {
+      whitelist: actionsArrToReg(config.actionsWhitelist),
+      blacklist: actionsArrToReg(config.actionsBlacklist)
+    };
   }
 
   let shouldSerialize = false;
@@ -84,8 +86,8 @@ window.devToolsExtension = function(config = {}) {
   }
 
   function isFiltered(action) {
-    if (!window.devToolsOptions.filter) return false;
-    const { whitelist, blacklist } = window.devToolsOptions;
+    if (!localFilter && !window.devToolsOptions.filter) return false;
+    const { whitelist, blacklist } = localFilter || window.devToolsOptions;
     return (
       whitelist && !action.type.match(whitelist) ||
       blacklist && action.type.match(blacklist)
@@ -93,9 +95,10 @@ window.devToolsExtension = function(config = {}) {
   }
 
   function addFilter(state) {
-    if (window.devToolsOptions.filter) {
-      if (window.devToolsOptions.whitelist) state.whitelist = [window.devToolsOptions.whitelist];
-      else if (window.devToolsOptions.blacklist) state.blacklist = [window.devToolsOptions.blacklist];
+    if (localFilter || window.devToolsOptions.filter) {
+      const { whitelist, blacklist } = localFilter || window.devToolsOptions;
+      if (whitelist) state.whitelist = [whitelist];
+      else if (blacklist) state.blacklist = [blacklist];
     }
   }
 
