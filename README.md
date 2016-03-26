@@ -85,6 +85,8 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
     - state, transformedState - Redux state objects
   - **deserializeAction(action): transformedAction** (*function*) - optional transformation of actions deserialized from debug session (useful if actions are not plain object. Example: immutable-js action payload)
     - action, transformedAction - Redux action objects
+  - **actionsBlacklist** (*array*) - actions to be hidden in DevTools. Overwrites corresponding global setting in the options page.
+  - **actionsWhitelist** (*array*) - all other actions will be hidden in DevTools. Overwrites corresponding global setting in the options page.
 
 ## Examples
 Open these urls to test the extension:
@@ -106,7 +108,8 @@ Also you may run them from `./examples` folder (on port 4001 and 4002 by default
 - If something goes wrong, [open an issue](https://github.com/zalmoxisus/redux-devtools-extension/issues) or tweet me: [@mdiordiev](https://twitter.com/mdiordiev).
 
 #### How to filter actions
-On the options page you may enable actions filtering and specify either actions to be hidden or shown in DevTools. If the latter is specified, other than those actions will be hidden.  
+On the options page you may enable actions filtering and specify either actions to be hidden or shown in DevTools. If the latter is specified, other than those actions will be hidden.
+You can overwrite theese settings for an individual project using `actionsBlacklist` and `actionsWhitelist` [config options](#API).
 #### How to disable/enable it in production
 On the options page you may enable the extension to be injected in all pages or you may specify the pages urls to be injected in. Use regex values and new line as a separator.
 #### How to open Redux DevTools in a new window
