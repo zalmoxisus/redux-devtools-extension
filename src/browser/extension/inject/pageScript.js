@@ -3,9 +3,18 @@ import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
 import notifyErrors from '../utils/notifyErrors';
 
+const actionsArrToReg = (arr) => arr ? arr.join('|') : null;
+
 window.devToolsExtension = function(config = {}) {
   let store = {};
   if (!window.devToolsOptions) window.devToolsOptions = {};
+
+  if (config.actionsBlacklist || config.actionsWhitelist) {
+    window.devToolsOptions.filter = true;
+    window.devToolsOptions.blacklist = actionsArrToReg(config.actionsBlacklist);
+    window.devToolsOptions.whitelist = actionsArrToReg(config.actionsWhitelist);
+  }
+
   let shouldSerialize = false;
   let lastAction;
   let errorOccurred = false;
