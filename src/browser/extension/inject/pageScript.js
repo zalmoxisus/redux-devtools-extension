@@ -3,8 +3,6 @@ import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
 import notifyErrors from '../utils/notifyErrors';
 
-const actionsArrToReg = (arr) => arr ? arr.join('|') : null;
-
 window.devToolsExtension = function(config = {}) {
   let store = {};
   if (!window.devToolsOptions) window.devToolsOptions = {};
@@ -12,8 +10,8 @@ window.devToolsExtension = function(config = {}) {
   let localFilter;
   if (config.actionsBlacklist || config.actionsWhitelist) {
     localFilter = {
-      whitelist: actionsArrToReg(config.actionsWhitelist),
-      blacklist: actionsArrToReg(config.actionsBlacklist)
+      whitelist: config.actionsWhitelist && config.actionsWhitelist.join('|'),
+      blacklist: config.actionsBlacklist && config.actionsBlacklist.join('|')
     };
   }
 
@@ -168,7 +166,7 @@ window.devToolsExtension = function(config = {}) {
 
       const { deserializeState, deserializeAction } = config;
       store = configureStore(next, monitorReducer, {
-        deserializeState, 
+        deserializeState,
         deserializeAction
       })(reducer, initialState, enhancer);
       init();
