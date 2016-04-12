@@ -42,13 +42,14 @@ window.devToolsExtension = function(config = {}) {
     window.postMessage(message, '*');
   }
 
-  function relay(type, state, action, nextActionId) {
+  function relay(type, state, action, nextActionId, isExcess) {
     setTimeout(() => {
       const message = {
         payload: type === 'STATE' && shouldFilter() ? filterActions(state) : state,
         action: action || '',
         nextActionId: nextActionId || '',
-        type: type,
+        isExcess,
+        type,
         source: 'redux-page',
         name: config.name || document.title
       };
@@ -155,7 +156,9 @@ window.devToolsExtension = function(config = {}) {
       relay('INIT', state, { timestamp: Date.now() });
     } else if (!errorOccurred && monitorActions.indexOf(lastAction) === -1) {
       if (lastAction === 'JUMP_TO_STATE' || shouldFilter() && isFiltered(action)) return;
-      relay('ACTION', state, liftedAction, nextActionId);
+      const { maxAge } = window.devToolsOptions;
+      const isExcess = maxAge && liftedState.stagedActionIds.length === maxAge;
+      relay('ACTION', state, liftedAction, nextActionId, isExcess);
     } else {
       if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) errorOccurred = false;
       relay('STATE', liftedState);

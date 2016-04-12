@@ -4,7 +4,7 @@ import { persistState, instrument } from 'redux-devtools';
 export default function configureStore(next, subscriber = () => ({}), options = {}) {
   const { deserializeState, deserializeAction } = options;
   return compose(
-    instrument(subscriber),
+    instrument(subscriber, window.devToolsOptions),
     persistState(
       getPersistSession(),
       deserializeState,

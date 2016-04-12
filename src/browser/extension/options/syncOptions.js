@@ -16,7 +16,7 @@ const get = callback => {
       leftMonitor: 'LogMonitor',
       rightMonitor: 'LogMonitor',
       bottomMonitor: 'SliderMonitor',
-      limit: 50,
+      maxAge: 50,
       filter: false,
       whitelist: '',
       blacklist: '',

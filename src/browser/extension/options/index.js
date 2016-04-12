@@ -8,7 +8,9 @@ chrome.runtime.getBackgroundPage( background => {
   const saveOption = e => {
     let value;
     if (e.target.type === 'checkbox') value = e.target.checked;
-    else if (e.target.type === 'input') value = Number(e.target.value);
+    else if (
+      e.target.type === 'input' || e.target.type === 'text'
+    ) value = Number(e.target.value);
     else value = e.target.value;
     syncOptions.save(e.target.id, value);
   };
@@ -48,7 +50,7 @@ chrome.runtime.getBackgroundPage( background => {
         </div>
         <div className="input">
           <span className="caption">Maximum actions:</span>
-          <input id="limit" type="text" defaultValue={items.limit} onChange={saveOption}/>
+          <input id="maxAge" type="text" defaultValue={items.maxAge} onChange={saveOption}/>
           <span className="comment">(autocommit when exceeds, 0 - no limit)</span>
         </div>
         <div className="input">
