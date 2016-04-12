@@ -94,7 +94,9 @@ function messaging(request, sender, sendResponse) {
     // Notify when errors occur in the app
     window.syncOptions.get(options => {
       if (!options.notifyErrors) return;
-      const error = payload.computedStates[payload.currentStateIndex].error;
+      const computedState = payload.computedStates[payload.currentStateIndex];
+      if (!computedState) return;
+      const error = computedState.error;
       if (error === 'Interrupted by an error up the chain') return;
       if (error) {
         chrome.notifications.create('redux-error', {
