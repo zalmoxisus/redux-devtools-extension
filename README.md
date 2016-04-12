@@ -17,55 +17,53 @@
  - or build it with `npm i & npm run build:extension` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./build/extension`
  - or run it in dev mode with `npm i & npm start` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./dev`.
 
-#### 2. Use with
+#### 2. Use with [Redux](https://github.com/rackt/redux)
+  Just update your [configureStore](https://github.com/zalmoxisus/redux-devtools-extension/commit/9c631ef66f53e51f34b55f4642bd9ff2cbc7a992):
+  ```javascript
+  export default function configureStore(initialState) {
+    const store = createStore(reducer, initialState, compose(
+      applyMiddleware(...middleware)
+    ));
+    return store;
+  }
+  ```
+  *becomes*
+  ```javascript
+  export default function configureStore(initialState) {
+    const store = createStore(reducer, initialState, compose(
+      applyMiddleware(...middleware),
+      window.devToolsExtension ? window.devToolsExtension() : f => f
+    ));
+    return store;
+  }
+  ```
+  or [if you don't have other store enhancers and middlewares](https://github.com/zalmoxisus/redux-devtools-extension/commit/f26975cccff37f477001158019be7c9c9cb721b1):
+  ```javascript
+  export default function configureStore(initialState) {
+    const store = createStore(reducer, initialState, 
+      window.devToolsExtension ? window.devToolsExtension() : undefined
+    );
+    return store;
+  }
+  ```
+  *or for universal (isomorphic) apps*
+  ```javascript
+    typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+  ```
+  You can use it together with vanilla Redux DevTools as a fallback, but not both simultaneously:
+  ```js
+  window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
+  ```
+  [Make sure not to render DevTools when using the extension](https://github.com/zalmoxisus/redux-devtools-extension/issues/57) or you'll probably want to render the monitor from vanilla DevTools as follows: 
+  ```js
+  { !window.devToolsExtension ? <DevTools /> : null }
+  ```
 
-##### **[Redux](https://github.com/rackt/redux)**<br/>
-    Just update your [configureStore](https://github.com/zalmoxisus/redux-devtools-extension/commit/9c631ef66f53e51f34b55f4642bd9ff2cbc7a992):
-    ```javascript
-    export default function configureStore(initialState) {
-      const store = createStore(reducer, initialState, compose(
-        applyMiddleware(...middleware)
-      ));
-      return store;
-    }
-    ```
-    *becomes*
-    ```javascript
-    export default function configureStore(initialState) {
-      const store = createStore(reducer, initialState, compose(
-        applyMiddleware(...middleware),
-        window.devToolsExtension ? window.devToolsExtension() : f => f
-      ));
-      return store;
-    }
-    ```
-    or [if you don't have other store enhancers and middlewares](https://github.com/zalmoxisus/redux-devtools-extension/commit/f26975cccff37f477001158019be7c9c9cb721b1):
-    ```javascript
-    export default function configureStore(initialState) {
-      const store = createStore(reducer, initialState, 
-        window.devToolsExtension ? window.devToolsExtension() : undefined
-      );
-      return store;
-    }
-    ```
-    *or for universal (isomorphic) apps*
-    ```javascript
-      typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
-    ```
-    You can use it together with vanilla Redux DevTools as a fallback, but not both simultaneously:
-    ```js
-    window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
-    ```
-    [Make sure not to render DevTools when using the extension](https://github.com/zalmoxisus/redux-devtools-extension/issues/57) or you'll probably want to render the monitor from vanilla DevTools as follows: 
-    ```js
-    { !window.devToolsExtension ? <DevTools /> : null }
-    ```
+##### For React Native, hybrid, desktop and server side Redux apps
+  Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools), and on the extension's context choose 'Open Remote DevTools' or press Alt+Shift+arrow up for remote monitoring.
 
-- **For React Native, hybrid, desktop and server side Redux apps**<br/>
-    Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools), and on the extension's context choose 'Open Remote DevTools' or press Alt+Shift+arrow up for remote monitoring.
-
-- **[Freezer](https://github.com/arqex/freezer)**<br/>
-    Just use [supportChromeExtension](https://github.com/arqex/freezer-redux-devtools#using-redux-devtools-chrome-extension) from `freezer-redux-devtools/freezer-redux-middleware`.
+##### For [Freezer](https://github.com/arqex/freezer)
+  Just use [supportChromeExtension](https://github.com/arqex/freezer-redux-devtools#using-redux-devtools-chrome-extension) from `freezer-redux-devtools/freezer-redux-middleware`.
 
 ## API
 `window.devToolsExtension([config])`
