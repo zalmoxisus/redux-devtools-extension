@@ -100,6 +100,11 @@ Open these urls to test the extension:
 
 Also you may run them from `./examples` folder (on port 4001 and 4002 by default).
 
+## Videos
+
+- [Live React: Hot Reloading with Time Travel at React Europe 2015](https://youtu.be/xsSnOQynTHs)
+- [Getting Started with Redux Dev Tools (Chrome Extension)](https://egghead.io/lessons/javascript-getting-started-with-redux-dev-tools)
+
 ## FAQ
 
 #### How to get it work
