@@ -113,17 +113,6 @@ window.devToolsExtension = function(config = {}) {
     };
   }
 
-  function isLimit(nextActionId) {
-    if (
-      window.devToolsOptions.limit && window.devToolsOptions.limit !== '0'
-      && nextActionId - 1 > window.devToolsOptions.limit
-    ) {
-      store.liftedStore.dispatch({type: 'COMMIT', timestamp: Date.now()});
-      return true;
-    }
-    return false;
-  }
-
   function init() {
     window.addEventListener('message', onMessage, false);
     relay('INIT_INSTANCE');
@@ -165,7 +154,7 @@ window.devToolsExtension = function(config = {}) {
     if (action.type === '@@INIT') {
       relay('INIT', state, { timestamp: Date.now() });
     } else if (!errorOccurred && monitorActions.indexOf(lastAction) === -1) {
-      if (lastAction === 'JUMP_TO_STATE' || isLimit(nextActionId) || shouldFilter() && isFiltered(action)) return;
+      if (lastAction === 'JUMP_TO_STATE' || shouldFilter() && isFiltered(action)) return;
       relay('ACTION', state, liftedAction, nextActionId);
     } else {
       if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) errorOccurred = false;
