@@ -1,7 +1,13 @@
 import jsan from 'jsan';
+import logMonitorReducer from 'redux-devtools-log-monitor/lib/reducers';
 import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
 import notifyErrors from '../utils/notifyErrors';
+
+const monitorActions = [
+  'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE',
+  '@@redux-devtools-log-monitor/START_CONSECUTIVE_TOGGLE'
+];
 
 window.devToolsExtension = function(config = {}) {
   let store = {};
@@ -141,7 +147,7 @@ window.devToolsExtension = function(config = {}) {
         relay('STATE', store.liftedStore.getState());
       }, 0);
     }
-    return state;
+    return logMonitorReducer({}, state, action);
   }
 
   function handleChange(state, liftedState) {
@@ -151,7 +157,7 @@ window.devToolsExtension = function(config = {}) {
     const action = liftedAction.action;
     if (action.type === '@@INIT') {
       relay('INIT', state, { timestamp: Date.now() });
-    } else if (!errorOccurred && lastAction !== 'TOGGLE_ACTION' && lastAction !== 'SWEEP') {
+    } else if (!errorOccurred && monitorActions.indexOf(lastAction) === -1) {
       if (lastAction === 'JUMP_TO_STATE' || isLimit(nextActionId) || isFiltered(action)) return;
       relay('ACTION', state, liftedAction, nextActionId);
     } else {
