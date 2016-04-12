@@ -2,8 +2,6 @@
 
 ![Demo](demo/v1.0.0.png)
 
-If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtools) is, [see Dan's React Europe talk](https://www.youtube.com/watch?v=xsSnOQynTHs)!
-
 ## Advantages
 
 1. Simple implementation (only [1 line of code](https://github.com/zalmoxisus/redux-devtools-extension/commit/6c146a2e16da79fefdc0e3e33f188d4ee6667341) without importing anything!).
@@ -19,46 +17,23 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
  - or build it with `npm i & npm run build:extension` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./build/extension`
  - or run it in dev mode with `npm i & npm start` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./dev`.
 
-#### 2. Use with your favorite Flux implementation
+#### 2. Use with
 
-- **[Redux](https://github.com/rackt/redux)**<br/>
-    Just update your [configureStore](https://github.com/zalmoxisus/redux-devtools-extension/commit/6c146a2e16da79fefdc0e3e33f188d4ee6667341):
-    ```javascript
-    const finalCreateStore = compose(
-      applyMiddleware(thunk),
-      ...
-    )(createStore);
-    ```
-    *becomes*
-    ```javascript
-    const finalCreateStore = compose(
-      applyMiddleware(thunk),
-      ...
-      window.devToolsExtension ? window.devToolsExtension() : f => f
-    )(createStore);
-    ```
-    *or for universal (isomorphic) apps*
-    ```javascript
-    const finalCreateStore = compose(
-      applyMiddleware(thunk),
-      ...
-      typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
-    )(createStore);
-    ```
-    You can use it together with vanilla Redux DevTools as a fallback, but not both simultaneously:
-    ```js
-    window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
-    ```
-    [Make sure not to render DevTools when using the extension](https://github.com/zalmoxisus/redux-devtools-extension/issues/57) or you'll probably want to render the monitor from vanilla DevTools as follows: 
-    ```js
-    { !window.devToolsExtension ? <DevTools /> : null }
-    ```
-
-- **With Redux@^3.1 it's [even easier](https://github.com/zalmoxisus/redux-devtools-extension/commit/9c631ef66f53e51f34b55f4642bd9ff2cbc7a992)**<br/>
+##### **[Redux](https://github.com/rackt/redux)**<br/>
+    Just update your [configureStore](https://github.com/zalmoxisus/redux-devtools-extension/commit/9c631ef66f53e51f34b55f4642bd9ff2cbc7a992):
     ```javascript
     export default function configureStore(initialState) {
       const store = createStore(reducer, initialState, compose(
-        applyMiddleware(thunk),
+        applyMiddleware(...middleware)
+      ));
+      return store;
+    }
+    ```
+    *becomes*
+    ```javascript
+    export default function configureStore(initialState) {
+      const store = createStore(reducer, initialState, compose(
+        applyMiddleware(...middleware),
         window.devToolsExtension ? window.devToolsExtension() : f => f
       ));
       return store;
@@ -73,9 +48,24 @@ If you do not know what [Redux DevTools](https://github.com/gaearon/redux-devtoo
       return store;
     }
     ```
+    *or for universal (isomorphic) apps*
+    ```javascript
+      typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+    ```
+    You can use it together with vanilla Redux DevTools as a fallback, but not both simultaneously:
+    ```js
+    window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
+    ```
+    [Make sure not to render DevTools when using the extension](https://github.com/zalmoxisus/redux-devtools-extension/issues/57) or you'll probably want to render the monitor from vanilla DevTools as follows: 
+    ```js
+    { !window.devToolsExtension ? <DevTools /> : null }
+    ```
+
+- **For React Native, hybrid, desktop and server side Redux apps**<br/>
+    Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools), and on the extension's context choose 'Open Remote DevTools' or press Alt+Shift+arrow up for remote monitoring.
 
 - **[Freezer](https://github.com/arqex/freezer)**<br/>
-    Just use [supportChromeExtension](https://github.com/zalmoxisus/freezer-redux-devtools#using-redux-devtools-chrome-extension) from `freezer-redux-devtools/freezer-redux-middleware`.
+    Just use [supportChromeExtension](https://github.com/arqex/freezer-redux-devtools#using-redux-devtools-chrome-extension) from `freezer-redux-devtools/freezer-redux-middleware`.
 
 ## API
 `window.devToolsExtension([config])`
@@ -95,7 +85,6 @@ Open these urls to test the extension:
  - [TodoMVC](http://zalmoxisus.github.io/redux-devtools-extension/examples/todomvc/)
  - [Redux Form](http://erikras.github.io/redux-form/#/examples/simple)
  - [Redux Router](http://zalmoxisus.github.io/redux-devtools-extension/examples/router/)
- - [Implemented with FreezerJS](http://freezer-redux-devtools.divshot.io/)
  - [Implemented in a Chrome app and extension](https://github.com/zalmoxisus/browser-redux)
 
 Also you may run them from `./examples` folder (on port 4001 and 4002 by default).
@@ -116,9 +105,7 @@ Also you may run them from `./examples` folder (on port 4001 and 4002 by default
 On the options page you may enable actions filtering and specify either actions to be hidden or shown in DevTools. If the latter is specified, other than those actions will be hidden.
 You can overwrite theese settings for an individual project using `actionsBlacklist` and `actionsWhitelist` [config options](#API).
 #### How to disable/enable it in production
-On the options page you may enable the extension to be injected in all pages or you may specify the pages urls to be injected in. Use regex values and new line as a separator.
-#### How to open Redux DevTools in a new window
-Right click on the page and open it from the context menu.
+On the options page you may enable the extension to be injected in all pages or you may specify the pages urls to be injected in. Use regex values and new line as a separator. A good practice would be to add a condition for including the extension - a variable in localStorage or a url query, which will use only the developers.
 #### How to persist debug sessions across page reloads
 Just add `?debug_session=<session_name>` to the url.
 #### How to include it in chrome apps and extensions
@@ -134,7 +121,7 @@ window.devToolsExtension.open();
 #### How to keep DevTools window focused all the time in a chrome panel
 To enable chrome panels feature in Chrome, type in `chrome://flags/#enable-panels` in the url bar and click on "enable" under "enable panels". Make sure to click on "relaunch now " at the bottom of the page, to take effect.
 #### How to include DevTools in the page
-You may open DevTools in a new window (by opening context menu with right mouse click), from popup (clicking on the browser action button) or from Chrome dev panel. If you still, for some reason, want to include it directly in your page, load the following url in iframe: `chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/window.html`. You'd probably include it in a docker or in a resizeable component.
+You can open DevTools in a new window (by opening context menu with right mouse click), from popup (clicking on the browser action button) or from Chrome dev panel. If you still, for some reason, want to include it directly in your page, load the following url in iframe: `chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/window.html`. You'd probably include it in a docker or in a resizeable component.
 #### How to enable/disable errors notifying
 Just find `Redux DevTools` on the extensions page (`chrome://extensions/`) and click the `Options` link to customize everything. The errors notifying is enabled by default, but it works only when the store enhancer is called (in order not to show notifications for any sites you visit). In case you want notifications for a non-redux app, init it explicitly by calling `window.devToolsExtension.notifyErrors()` (probably you'll check if `window.devToolsExtension` exists before calling it).
 #### How to get it work with WebWorkers, React Native, hybrid, desktop and server side apps
@@ -150,12 +137,10 @@ Use `Cmd`+`Ctrl`+Arrows for OSX and `Alt`+`Shift`+Arrows for Windows, Linux and 
  - [The logo icon](https://github.com/rackt/redux/issues/151#issuecomment-150060367) made by [Keith Yong](https://github.com/keithyong) .
  - Examples from [Redux](https://github.com/rackt/redux/tree/master/examples).
 
-## Roadmap
-
-- [x] Chrome extension.
-- [ ] Firefox extension.
-- [ ] Safari extension (simplified).
-
 ## LICENSE
 
 [MIT](LICENSE)
+
+## Created By
+
+If you like this, follow [@mdiordiev](https://twitter.com/mdiordiev) on twitter.
