@@ -44,9 +44,8 @@ window.devToolsExtension = function(config = {}) {
 
   function relay(type, state, action, nextActionId) {
     setTimeout(() => {
-      if (type === 'STATE') addFilter(state);
       const message = {
-        payload: state,
+        payload: type === 'STATE' && shouldFilter() ? filterActions(state) : state,
         action: action || '',
         nextActionId: nextActionId || '',
         type: type,
@@ -89,6 +88,7 @@ window.devToolsExtension = function(config = {}) {
     }
   }
 
+  const shouldFilter = () => localFilter || window.devToolsOptions.filter;
   function isFiltered(action) {
     if (!localFilter && !window.devToolsOptions.filter) return false;
     const { whitelist, blacklist } = localFilter || window.devToolsOptions;
@@ -97,13 +97,20 @@ window.devToolsExtension = function(config = {}) {
       blacklist && action.type.match(blacklist)
     );
   }
+  function filterActions(state) {
+    const filteredStagedActionIds = [];
+    const filteredComputedStates = [];
+    state.stagedActionIds.forEach((id, idx) => {
+      if (!isFiltered(state.actionsById[id].action)) {
+        filteredStagedActionIds.push(id);
+        filteredComputedStates.push(state.computedStates[idx]);
+      }
+    });
 
-  function addFilter(state) {
-    if (localFilter || window.devToolsOptions.filter) {
-      const { whitelist, blacklist } = localFilter || window.devToolsOptions;
-      if (whitelist) state.whitelist = [whitelist];
-      else if (blacklist) state.blacklist = [blacklist];
-    }
+    return { ...state,
+      stagedActionIds: filteredStagedActionIds,
+      computedStates: filteredComputedStates
+    };
   }
 
   function isLimit(nextActionId) {
@@ -158,7 +165,7 @@ window.devToolsExtension = function(config = {}) {
     if (action.type === '@@INIT') {
       relay('INIT', state, { timestamp: Date.now() });
     } else if (!errorOccurred && monitorActions.indexOf(lastAction) === -1) {
-      if (lastAction === 'JUMP_TO_STATE' || isLimit(nextActionId) || isFiltered(action)) return;
+      if (lastAction === 'JUMP_TO_STATE' || isLimit(nextActionId) || shouldFilter() && isFiltered(action)) return;
       relay('ACTION', state, liftedAction, nextActionId);
     } else {
       if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) errorOccurred = false;
