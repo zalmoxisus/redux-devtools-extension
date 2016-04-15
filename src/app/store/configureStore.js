@@ -1,5 +1,6 @@
 import { compose } from 'redux';
-import { persistState, instrument } from 'redux-devtools';
+import instrument from 'redux-devtools/lib/instrument';
+import persistState from 'redux-devtools/lib/persistState';
 
 export default function configureStore(next, subscriber = () => ({}), options = {}) {
   const { deserializeState, deserializeAction } = options;
