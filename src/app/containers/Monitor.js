@@ -10,7 +10,7 @@ const monitorTypes = location.hash ? location.hash.substr(1).split('/') : {};
 export default (props) => {
   switch (monitorTypes[0]) {
     case 'SliderMonitor': return createElement(SliderMonitor, props);
-    case 'ChartMonitor': return createElement(ChartMonitor, props);
+    case 'ChartMonitor': return createElement(ChartMonitor, { ...props, defaultIsVisible: true });
     case 'DiffMonitor': return createElement(DiffMonitor, props);
     case 'InspectorMonitor': return createElement(InspectorMonitor, props);
     default: return createElement(LogMonitor, { ...props, preserveScrollTop: false });
