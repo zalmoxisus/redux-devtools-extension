@@ -3,8 +3,8 @@ import openDevToolsWindow from './openWindow';
 import { toContentScript } from './messaging';
 import createMenu from './contextMenus';
 
-const store = createDevStore((action) => {
-  toContentScript(action);
+const store = createDevStore((action, instance) => {
+  toContentScript(action, instance);
 });
 
 window.store = store;

@@ -126,10 +126,8 @@ chrome.notifications.onClicked.addListener(id => {
   if (id === 'redux-error') openDevToolsWindow('devtools-right');
 });
 
-export function toContentScript(action) {
+export function toContentScript(action, id) {
   const message = { type: 'DISPATCH', action: action };
-  let id = store.liftedStore.instance;
-  if (!id || id === 'auto') id = store.id;
   if (id in panelConnections) {
     panelConnections[id].postMessage(message);
   } else {
