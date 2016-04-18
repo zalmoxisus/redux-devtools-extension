@@ -49,9 +49,9 @@ chrome.runtime.getBackgroundPage( background => {
           <Monitors type="bottom" defaultValue={items.bottomMonitor} id="bottomMonitor" onChange={saveOption}/>
         </div>
         <div className="input">
-          <span className="caption">Maximum actions:</span>
+          <span className="caption">Actions history limit:</span>
           <input id="maxAge" type="text" defaultValue={items.maxAge} onChange={saveOption}/>
-          <span className="comment">(autocommit when exceeds, 0 - no limit)</span>
+          <span className="comment">(the oldest removed once it is reached)</span>
         </div>
         <div className="input">
           <span className="caption">Filter spec. actions:</span>
