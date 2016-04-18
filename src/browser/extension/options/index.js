@@ -72,12 +72,12 @@ chrome.runtime.getBackgroundPage( background => {
           <span className="comment">(required for ImmutableJS states)</span>
         </div>
         <div className="input">
-          <span className="caption">Inject in all pages:</span>
+          <span className="caption">Allowed everywhere:</span>
           <input id="inject" type="checkbox" defaultChecked={items.inject} onChange={saveOption}/>
           <span className="comment">(disable to allow only the urls bellow)</span>
         </div>
         <div className="input">
-          <span className="caption">Pages urls to inject DevTools in (regex from new line):</span>
+          <span className="caption">Allowed for the following urls (regex from new line):</span>
           <textarea onChange={saveUrls} id="urls" defaultValue={items.urls}/>
         </div>
         <div className="input">
