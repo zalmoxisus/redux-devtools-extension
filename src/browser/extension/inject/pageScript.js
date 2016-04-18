@@ -10,7 +10,7 @@ const monitorActions = [
 ];
 
 window.devToolsExtension = function(config = {}) {
-  let store = {};
+  let liftedStore;
   if (!window.devToolsOptions) window.devToolsOptions = {};
 
   let localFilter;
@@ -78,12 +78,12 @@ window.devToolsExtension = function(config = {}) {
     }
 
     if (message.type === 'DISPATCH') {
-      store.liftedStore.dispatch(message.payload);
+      liftedStore.dispatch(message.payload);
     } else if (message.type === 'UPDATE') {
-      relay('STATE', store.liftedStore.getState());
+      relay('STATE', liftedStore.getState());
     } else if (message.type === 'START') {
       isMonitored = true;
-      relay('STATE', store.liftedStore.getState());
+      relay('STATE', liftedStore.getState());
     } else if (message.type === 'STOP') {
       isMonitored = false;
     }
@@ -119,7 +119,7 @@ window.devToolsExtension = function(config = {}) {
     relay('INIT_INSTANCE');
     notifyErrors(() => {
       errorOccurred = true;
-      const state = store.liftedStore.getState();
+      const state = liftedStore.getState();
       if (state.computedStates[state.currentStateIndex].error) {
         relay('STATE', state);
         return false;
@@ -130,7 +130,7 @@ window.devToolsExtension = function(config = {}) {
     // Detect when the tab is reactivated
     document.addEventListener('visibilitychange', function() {
       if (document.visibilityState === 'visible' && isMonitored) {
-        relay('STATE', store.liftedStore.getState());
+        relay('STATE', liftedStore.getState());
       }
     }, false);
   }
@@ -138,10 +138,10 @@ window.devToolsExtension = function(config = {}) {
   function monitorReducer(state = {}, action) {
     if (!isMonitored) return state;
     lastAction = action.type;
-    if (lastAction === '@@redux/INIT' && store.liftedStore) {
+    if (lastAction === '@@redux/INIT' && liftedStore) {
       // Send new lifted state on hot-reloading
       setTimeout(() => {
-        relay('STATE', store.liftedStore.getState());
+        relay('STATE', liftedStore.getState());
       }, 0);
     }
     return logMonitorReducer({}, state, action);
@@ -165,20 +165,24 @@ window.devToolsExtension = function(config = {}) {
     }
   }
 
-  return (next) => {
+  function extEnhancer(next) {
     return (reducer, initialState, enhancer) => {
-      if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState, enhancer);
-
-      const { deserializeState, deserializeAction } = config;
-      store = configureStore(next, monitorReducer, {
-        deserializeState,
-        deserializeAction
-      })(reducer, initialState, enhancer);
       init();
-      store.subscribe(() => { handleChange(store.getState(), store.liftedStore.getState()); });
+      const store = next(reducer, initialState, enhancer);
+      liftedStore = store.liftedStore;
+      store.subscribe(() => {
+        handleChange(store.getState(), liftedStore.getState());
+      });
       return store;
     };
-  };
+  }
+
+  if (!isAllowed(window.devToolsOptions)) return f => f;
+  const { deserializeState, deserializeAction } = config;
+  return configureStore(extEnhancer, monitorReducer, {
+    deserializeState,
+    deserializeAction
+  });
 };
 
 window.devToolsExtension.open = function(position) {
