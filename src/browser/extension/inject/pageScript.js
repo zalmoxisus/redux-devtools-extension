@@ -171,6 +171,7 @@ window.devToolsExtension = function(config = {}) {
       const store = next(reducer, initialState, enhancer);
       liftedStore = store.liftedStore;
       store.subscribe(() => {
+        if (liftedStore !== store.liftedStore) liftedStore = store.liftedStore;
         handleChange(store.getState(), liftedStore.getState());
       });
       return store;
