@@ -63,7 +63,7 @@
     "redux-devtools": "^3.2.0",
     "redux-devtools-chart-monitor": "^1.4.1",
     "redux-devtools-diff-monitor": "^5.0.4",
-    "redux-devtools-inspector": "^0.3.4",
+    "redux-devtools-inspector": "^0.3.5",
     "redux-devtools-log-monitor": "^1.0.5",
     "redux-slider-monitor": "^1.0.2",
     "redux-thunk": "^1.0.3",
