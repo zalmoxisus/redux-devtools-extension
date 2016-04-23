@@ -3,6 +3,8 @@ import { sendToBg } from 'crossmessaging';
 import styles from 'remotedev-app/lib/styles';
 import Instances from 'remotedev-app/lib/components/Instances';
 import Button from 'remotedev-app/lib/components/Button';
+import ImportButton from 'remotedev-app/lib/components/buttons/ImportButton';
+import ExportButton from 'remotedev-app/lib/components/buttons/ExportButton';
 import SettingsIcon from 'react-icons/lib/md/settings';
 import LeftIcon from 'react-icons/lib/md/border-left';
 import RightIcon from 'react-icons/lib/md/border-right';
@@ -59,6 +61,8 @@ export default class App extends Component {
                 onClick={() => { this.openWindow('bottom'); }}
               />
             : null }
+            <ImportButton importState={store && store.importState} />
+            <ExportButton exportState={store.getState} />
             <Button
               Icon={RemoteIcon}
               onClick={() => { this.openWindow('remote'); }}

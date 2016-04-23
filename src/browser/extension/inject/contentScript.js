@@ -26,6 +26,7 @@ function connect(instance) {
     } else {
       window.postMessage({
         type: message.type,
+        state: message.state,
         source: 'redux-cs'
       }, '*');
     }

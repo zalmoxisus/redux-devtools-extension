@@ -5,7 +5,7 @@ import { isAllowed } from '../options/syncOptions';
 import notifyErrors from '../utils/notifyErrors';
 
 const monitorActions = [
-  'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE',
+  'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE', 'IMPORT_STATE',
   '@@redux-devtools-log-monitor/START_CONSECUTIVE_TOGGLE'
 ];
 
@@ -78,6 +78,11 @@ window.devToolsExtension = function(config = {}) {
 
     if (message.type === 'DISPATCH') {
       liftedStore.dispatch(message.payload);
+    } else if (message.type === 'IMPORT') {
+      liftedStore.dispatch({
+        type: 'IMPORT_STATE', nextLiftedState: jsan.parse(message.state)
+      });
+      relay('STATE', liftedStore.getState());
     } else if (message.type === 'UPDATE') {
       relay('STATE', liftedStore.getState());
     } else if (message.type === 'START') {
