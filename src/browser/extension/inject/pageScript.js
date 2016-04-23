@@ -43,27 +43,25 @@ window.devToolsExtension = function(config = {}) {
   }
 
   function relay(type, state, action, nextActionId, isExcess) {
-    setTimeout(() => {
-      const message = {
-        payload: type === 'STATE' && shouldFilter() ? filterActions(state) : state,
-        action: action || '',
-        nextActionId: nextActionId || '',
-        isExcess,
-        type,
-        source: 'redux-page',
-        name: config.name || document.title
-      };
-      if (shouldSerialize || window.devToolsOptions.serialize) {
+    const message = {
+      payload: type === 'STATE' && shouldFilter() ? filterActions(state) : state,
+      action: action || '',
+      nextActionId: nextActionId || '',
+      isExcess,
+      type,
+      source: 'redux-page',
+      name: config.name || document.title
+    };
+    if (shouldSerialize || window.devToolsOptions.serialize) {
+      relaySerialized(message);
+    } else {
+      try {
+        window.postMessage(message, '*');
+      } catch (err) {
         relaySerialized(message);
-      } else {
-        try {
-          window.postMessage(message, '*');
-        } catch (err) {
-          relaySerialized(message);
-          shouldSerialize = true;
-        }
+        shouldSerialize = true;
       }
-    }, 0);
+    }
   }
 
   function onMessage(event) {
