@@ -34,7 +34,7 @@ export default function openDevToolsWindow(position) {
     });
   }
 
-  let params = { left: 0, top: 0, width: 340, height: window.screen.availHeight };
+  let params = { left: 0, top: 0, width: 350, height: window.screen.availHeight };
   let url = 'window.html';
   switch (position) {
     case 'devtools-right':
