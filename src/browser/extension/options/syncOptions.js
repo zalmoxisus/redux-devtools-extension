@@ -54,7 +54,7 @@ export const injectOptions = newOptions => {
 
 export const getOptionsFromBg = () => {
   sendToBg({ type: 'GET_OPTIONS' }, response => {
-    injectOptions(response.options);
+    if (response && response.options) injectOptions(response.options);
   });
 };
 
