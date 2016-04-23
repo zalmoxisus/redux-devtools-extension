@@ -67,6 +67,6 @@
     "redux-devtools-log-monitor": "^1.0.5",
     "redux-slider-monitor": "^1.0.2",
     "redux-thunk": "^1.0.3",
-    "remotedev-app": "^0.3.1"
+    "remotedev-app": "^0.3.5"
   }
 }

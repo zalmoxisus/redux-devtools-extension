@@ -3,9 +3,7 @@ import openDevToolsWindow from './openWindow';
 import { toContentScript } from './messaging';
 import createMenu from './contextMenus';
 
-const store = createDevStore((action, instance) => {
-  toContentScript(action, instance);
-});
+const store = createDevStore(toContentScript);
 
 window.store = store;
 window.store.liftedStore.instances = {};
