@@ -1,6 +1,6 @@
 {
   "name": "redux-devtools-extension",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "DevTools extension for Redux",
   "scripts": {
     "start": "gulp",
