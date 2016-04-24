@@ -7,10 +7,10 @@ import DevTools from '../../../app/containers/DevTools';
 
 const backgroundPageConnection = connect();
 
-function dispatch(action) {
+function dispatch(type, action) {
   chrome.devtools.inspectedWindow.eval(
     'window.postMessage({' +
-    'type: \'DISPATCH\',' +
+    'type: \'' + type + '\',' +
     'payload: ' + JSON.stringify(action) + ',' +
     'source: \'redux-cs\'' +
     '}, \'*\');',
