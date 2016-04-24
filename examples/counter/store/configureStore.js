@@ -6,7 +6,7 @@ import reducer from '../reducers';
 export default function configureStore(initialState) {
   const store = createStore(reducer, initialState, compose(
     applyMiddleware(invariant(), thunk),
-    window.devToolsExtension ? window.devToolsExtension() : f => f
+    window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
   ));
 
   if (module.hot) {

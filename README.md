@@ -5,7 +5,7 @@
 ## Advantages
 
 1. Simple implementation (only [1 line of code](https://github.com/zalmoxisus/redux-devtools-extension/commit/6c146a2e16da79fefdc0e3e33f188d4ee6667341) without importing anything!).
-2. Having DevTools even in production without any drawbacks. 
+2. Having DevTools even in production without any drawbacks.
 2. Keeping the DevTools up to date (Chrome extension is updated automatically).
 3. Having Redux DevTools in a page without window (Chrome extensions’ background page).
 4. Using DevTools remotely for Chrome Mobile.
@@ -32,7 +32,7 @@
   export default function configureStore(initialState) {
     const store = createStore(reducer, initialState, compose(
       applyMiddleware(...middleware),
-      window.devToolsExtension ? window.devToolsExtension() : f => f
+      window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
     ));
     return store;
   }
@@ -40,23 +40,23 @@
   or [if you don't have other store enhancers and middlewares](https://github.com/zalmoxisus/redux-devtools-extension/commit/f26975cccff37f477001158019be7c9c9cb721b1):
   ```javascript
   export default function configureStore(initialState) {
-    const store = createStore(reducer, initialState, 
-      window.devToolsExtension ? window.devToolsExtension() : undefined
+    const store = createStore(reducer, initialState,
+      window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : undefined
     );
     return store;
   }
   ```
   *or for universal (isomorphic) apps*
   ```javascript
-    typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+    typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
   ```
   You can use it together with vanilla Redux DevTools as a fallback, but not both simultaneously:
   ```js
-  window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
+  window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : DevTools.instrument()
   ```
-  [Make sure not to render DevTools when using the extension](https://github.com/zalmoxisus/redux-devtools-extension/issues/57) or you'll probably want to render the monitor from vanilla DevTools as follows: 
+  [Make sure not to render DevTools when using the extension](https://github.com/zalmoxisus/redux-devtools-extension/issues/57) or you'll probably want to render the monitor from vanilla DevTools as follows:
   ```js
-  { !window.devToolsExtension ? <DevTools /> : null }
+  { !window.__REDUX_DEVTOOLS_EXTENSION__ ? <DevTools /> : null }
   ```
 
 ##### For React Native, hybrid, desktop and server side Redux apps
@@ -66,7 +66,7 @@
   Just use [supportChromeExtension](https://github.com/arqex/freezer-redux-devtools#using-redux-devtools-chrome-extension) from `freezer-redux-devtools/freezer-redux-middleware`.
 
 ## API
-`window.devToolsExtension([config])`
+`window.__REDUX_DEVTOOLS_EXTENSION__([config])`
 - **config** arguments (optional)
   - **name** (*string*) - the instance name to be showed on the monitor page. Default value is `document.title`.
   - **deserializeState(state): transformedState** (*function*) - optional transformation of state deserialized from debug session (useful if state is not plain object. Example: immutable-js state)
@@ -111,19 +111,19 @@ Unlike web apps, Chrome extension doesn't inject anything in other chrome extens
 ```
 <script src="chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/js/inject.bundle.js"></script>
 ```
-To include it in a chrome extension's content script follow [the example](https://github.com/zalmoxisus/browser-redux/commit/df2db9ee11f2d197c4329b2c8a6e197da1edffd4). 
+To include it in a chrome extension's content script follow [the example](https://github.com/zalmoxisus/browser-redux/commit/df2db9ee11f2d197c4329b2c8a6e197da1edffd4).
 #### How to open DevTools programmatically
 ```js
-window.devToolsExtension.open();
+window.__REDUX_DEVTOOLS_EXTENSION__.open();
 ```
 #### How to keep DevTools window focused all the time in a chrome panel
 To enable chrome panels feature in Chrome, type in `chrome://flags/#enable-panels` in the url bar and click on "enable" under "enable panels". Make sure to click on "relaunch now " at the bottom of the page, to take effect.
 #### How to include DevTools in the page
 You can open DevTools in a new window (by opening context menu with right mouse click), from popup (clicking on the browser action button) or from Chrome dev panel. If you still, for some reason, want to include it directly in your page, load the following url in iframe: `chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/window.html`. You'd probably include it in a docker or in a resizeable component.
 #### How to enable/disable errors notifying
-Just find `Redux DevTools` on the extensions page (`chrome://extensions/`) and click the `Options` link to customize everything. The errors notifying is enabled by default, but it works only when the store enhancer is called (in order not to show notifications for any sites you visit). In case you want notifications for a non-redux app, init it explicitly by calling `window.devToolsExtension.notifyErrors()` (probably you'll check if `window.devToolsExtension` exists before calling it).
+Just find `Redux DevTools` on the extensions page (`chrome://extensions/`) and click the `Options` link to customize everything. The errors notifying is enabled by default, but it works only when the store enhancer is called (in order not to show notifications for any sites you visit). In case you want notifications for a non-redux app, init it explicitly by calling `window.__REDUX_DEVTOOLS_EXTENSION__.notifyErrors()` (probably you'll check if `window.__REDUX_DEVTOOLS_EXTENSION__` exists before calling it).
 #### How to get it work with WebWorkers, React Native, hybrid, desktop and server side apps
-Of course, it is not possible to inject extension's script there and to communicate directly. To solve this we use [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools). Just find `Remote` button or press `Alt`+`Shift`+`arrow up` for remote monitoring. 
+Of course, it is not possible to inject extension's script there and to communicate directly. To solve this we use [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools). Just find `Remote` button or press `Alt`+`Shift`+`arrow up` for remote monitoring.
 #### Keyboard shortcuts
 Use `Cmd`+`Ctrl`+Arrows for OSX and `Alt`+`Shift`+Arrows for Windows, Linux and ChromeOS. Arrow down, left and right indicate the position of the DevTools window. Use `arrow up` to open Remote monitoring to communicate with [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools). To change the shortcuts, click "Keyboard shortcuts" button on the bottom of the extensions page (`chrome://extensions/`).
 

@@ -46,7 +46,7 @@ export const injectOptions = newOptions => {
   let s = document.createElement('script');
   s.type = 'text/javascript';
   s.appendChild(document.createTextNode(
-    'window.devToolsOptions = Object.assign(window.devToolsOptions||{},' + JSON.stringify(options) + ');'
+    'window.__REDUX_DEVTOOLS_EXTENSION__.options = Object.assign(window.__REDUX_DEVTOOLS_EXTENSION__.options||{},' + JSON.stringify(options) + ');'
   ));
   (document.head || document.documentElement).appendChild(s);
   s.parentNode.removeChild(s);
