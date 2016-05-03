@@ -130,7 +130,7 @@ export function toContentScript(type, action, id, state) {
   const message = { type, action, state };
   if (id in panelConnections) {
     panelConnections[id].postMessage(message);
-  } else {
+  } else if (id in tabConnections) {
     tabConnections[id].postMessage(message);
   }
 }
