@@ -22,7 +22,9 @@ export default (props) => {
       }
     });
     case 'DiffMonitor': return createElement(DiffMonitor, props);
-    case 'InspectorMonitor': return createElement(InspectorMonitor, props);
+    case 'InspectorMonitor': return createElement(InspectorMonitor, {
+      ...props, shouldPersistState: false, isLightTheme: false, theme: 'nicinabox'
+    });
     default: return createElement(LogMonitor, { ...props, preserveScrollTop: false });
   }
 };
