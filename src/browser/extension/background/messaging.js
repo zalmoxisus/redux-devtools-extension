@@ -25,7 +25,7 @@ function getId(port) {
 function initInstance(msg, port) {
   const id = getId(port);
   tabConnections[id] = port;
-  store.liftedStore.instances[id] = msg.instance;
+  store.instances[id] = msg.instance;
   store.id = id;
   if (typeof id === 'number') chrome.pageAction.show(id);
   if (isMonitored) return { type: 'START' };
@@ -39,8 +39,8 @@ function disconnect(port) {
   const id = getId(port);
   delete tabConnections[id];
   if (panelConnections[id]) panelConnections[id].postMessage(naMessage);
-  if (window.store.liftedStore.instances[id]) {
-    delete window.store.liftedStore.instances[id];
+  if (window.store.instances[id]) {
+    delete window.store.instances[id];
     window.store.liftedStore.deleteInstance(id);
   }
 }
@@ -52,7 +52,7 @@ onConnect(undefined, {
 }, panelConnections, disconnect);
 
 function handleInstancesChanged(instance, name) {
-  window.store.liftedStore.instances[instance] = name || instance;
+  window.store.instances[instance] = name || instance;
 }
 
 // Receive message from content script
@@ -83,7 +83,7 @@ function messaging(request, sender, sendResponse) {
     }
 
     request.id = tabId;
-    const payload = updateState(store, request, handleInstancesChanged, store.liftedStore.instance);
+    const payload = updateState(store, request, handleInstancesChanged, store.instance);
     if (!payload) return true;
 
     // Relay the message to the devTools panel

@@ -7,7 +7,11 @@ const store = createDevStore(toContentScript);
 
 // Expose objects globally in order to use them from windows via chrome.runtime.getBackgroundPage
 window.store = store;
-window.store.liftedStore.instances = {};
+window.store.instances = {};
+window.store.setInstance = instance => {
+  store.instance = instance;
+  store.liftedStore.setInstance(instance, true);
+};
 
 chrome.commands.onCommand.addListener(shortcut => {
   openDevToolsWindow(shortcut);
