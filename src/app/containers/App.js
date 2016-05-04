@@ -1,6 +1,7 @@
 import React, { cloneElement, Component, PropTypes } from 'react';
 import { sendToBg } from 'crossmessaging';
 import styles from 'remotedev-app/lib/styles';
+import DevTools from 'remotedev-app/lib/containers/DevTools';
 import Instances from 'remotedev-app/lib/components/Instances';
 import Button from 'remotedev-app/lib/components/Button';
 import ImportButton from 'remotedev-app/lib/components/buttons/ImportButton';
@@ -10,7 +11,6 @@ import LeftIcon from 'react-icons/lib/md/border-left';
 import RightIcon from 'react-icons/lib/md/border-right';
 import BottomIcon from 'react-icons/lib/md/border-bottom';
 import RemoteIcon from 'react-icons/lib/go/radio-tower';
-import Monitor from './Monitor';
 
 let monitorPosition;
 if (location.hash) monitorPosition = location.hash.substr(location.hash.indexOf('-') + 1);
@@ -23,8 +23,7 @@ export default class App extends Component {
   static update = () => ({});
 
   handleSelectInstance = e => {
-    this.props.store.instance = e.target.value;
-    this.props.store.setInstance(this.props.store.instance, true);
+    this.props.store.setInstance(e.target.value);
   };
 
   openWindow = (position) => {
@@ -32,15 +31,17 @@ export default class App extends Component {
   };
 
   render() {
-    const { store, ...childProps } = this.props;
+    const { store } = this.props;
+    const instances = store.instances;
+    const monitor = location.hash && location.hash.substr(1).split('/')[0];
     return (
       <div style={styles.container}>
-        {store.instances ?
+        {instances &&
           <div style={styles.buttonBar}>
-           <Instances instances={store.instances} onSelect={this.handleSelectInstance}/>
+           <Instances instances={instances} onSelect={this.handleSelectInstance}/>
           </div>
-        : null }
-        <Monitor {...childProps} />
+        }
+        <DevTools monitor={monitor} store={store} key={`${monitor}-${store.instance}`} />
         {chrome.runtime.openOptionsPage ?
           <div style={styles.buttonBar}>
             {monitorPosition !== 'left' ?
@@ -61,7 +62,7 @@ export default class App extends Component {
                 onClick={() => { this.openWindow('bottom'); }}
               />
             : null }
-            <ImportButton importState={store && store.importState} />
+            <ImportButton importState={store.importState} />
             <ExportButton exportState={store.getState} />
             <Button
               Icon={RemoteIcon}
