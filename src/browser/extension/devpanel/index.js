@@ -3,7 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import updateState from 'remotedev-app/lib/store/updateState';
 import createDevStore from 'remotedev-app/lib/store/createDevStore';
-import DevTools from '../../../app/containers/DevTools';
+import ConnectedApp from '../../../app/containers/ConnectedApp';
 
 const backgroundPageConnection = connect();
 
@@ -25,7 +25,7 @@ let rendered = false;
 function showDevTools() {
   if (!rendered) {
     render(
-      <DevTools store={store} />,
+      <ConnectedApp store={store} />,
       document.getElementById('root')
     );
     rendered = true;

@@ -42,38 +42,38 @@ export default class App extends Component {
           </div>
         }
         <DevTools monitor={monitor} store={store} key={`${monitor}-${store.instance}`} />
-        {chrome.runtime.openOptionsPage ?
-          <div style={styles.buttonBar}>
-            {monitorPosition !== 'left' ?
-              <Button
-                Icon={LeftIcon}
-                onClick={() => { this.openWindow('left'); }}
-              />
-            : null }
-            {monitorPosition !== 'right' ?
-              <Button
-                Icon={RightIcon}
-                onClick={() => { this.openWindow('right'); }}
-              />
-            : null }
-            {monitorPosition !== 'bottom' ?
-              <Button
-                Icon={BottomIcon}
-                onClick={() => { this.openWindow('bottom'); }}
-              />
-            : null }
-            <ImportButton importState={store.importState} />
-            <ExportButton exportState={store.getState} />
+        <div style={styles.buttonBar}>
+          {monitorPosition !== 'left' &&
             <Button
-              Icon={RemoteIcon}
-              onClick={() => { this.openWindow('remote'); }}
-            >Remote</Button>
+              Icon={LeftIcon}
+              onClick={() => { this.openWindow('left'); }}
+            />
+          }
+          {monitorPosition !== 'right' &&
+            <Button
+              Icon={RightIcon}
+              onClick={() => { this.openWindow('right'); }}
+            />
+          }
+          {monitorPosition !== 'bottom' &&
+            <Button
+              Icon={BottomIcon}
+              onClick={() => { this.openWindow('bottom'); }}
+            />
+          }
+          <ImportButton importState={store.importState} />
+          <ExportButton exportState={store.getState} />
+          <Button
+            Icon={RemoteIcon}
+            onClick={() => { this.openWindow('remote'); }}
+          >Remote</Button>
+          {chrome.runtime.openOptionsPage &&
             <Button
               Icon={SettingsIcon}
               onClick={() => { chrome.runtime.openOptionsPage(); }}
             >Settings</Button>
-          </div>
-        : null }
+          }
+        </div>
       </div>
     );
   }
