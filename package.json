@@ -55,11 +55,11 @@
   "dependencies": {
     "crossmessaging": "^0.2.1",
     "jsan": "^3.1.1",
-    "react": "^0.14.6",
-    "react-dom": "^0.14.6",
-    "react-icons": "^1.0.3",
-    "react-redux": "^4.4.0",
-    "redux": "^3.3.1",
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2",
+    "react-icons": "^2.0.1",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
     "redux-devtools": "^3.2.0",
     "remotedev-app": "^0.3.8"
   }
