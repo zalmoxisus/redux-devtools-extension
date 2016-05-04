@@ -29,7 +29,7 @@ function postError(message) {
 
 function catchErrors(e) {
   if (
-    window.devToolsOptions && !window.devToolsOptions.notifyErrors
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__.options && !window.__REDUX_DEVTOOLS_EXTENSION__.options.notifyErrors
     || e.timeStamp - lastTime < nextErrorTimeout()
   ) return;
   lastTime = e.timeStamp; nextErrorTimeout(true);

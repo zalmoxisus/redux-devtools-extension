@@ -3,7 +3,7 @@ import rootReducer from '../reducers';
 
 export default function configureStore(initialState) {
   const store = createStore(rootReducer, initialState,
-    window.devToolsExtension ? window.devToolsExtension() : undefined
+    window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : undefined
   );
 
   if (module.hot) {

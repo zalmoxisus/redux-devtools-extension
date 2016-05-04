@@ -2,12 +2,14 @@ import { getOptionsFromBg, injectOptions, isAllowed } from '../options/syncOptio
 let bg;
 let payload;
 
-if (!window.devToolsOptions) getOptionsFromBg();
+const reduxDevToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
+
+if (!reduxDevToolsExtension.options) getOptionsFromBg();
 
 function connect(instance) {
   // Connect to the background script
-  if (window.devToolsExtensionID) {
-    bg = chrome.runtime.connect(window.devToolsExtensionID);
+  if (reduxDevToolsExtension.id) {
+    bg = chrome.runtime.connect(reduxDevToolsExtension.id);
   } else {
     bg = chrome.runtime.connect();
   }

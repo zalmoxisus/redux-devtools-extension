@@ -9,9 +9,10 @@ const monitorActions = [
   '@@redux-devtools-log-monitor/START_CONSECUTIVE_TOGGLE'
 ];
 
-window.devToolsExtension = function(config = {}) {
+function reduxDevToolsExtension(config = {}) {
+  const { options } = reduxDevToolsExtension;
+
   let liftedStore;
-  if (!window.devToolsOptions) window.devToolsOptions = {};
 
   let localFilter;
   if (config.actionsBlacklist || config.actionsWhitelist) {
@@ -53,7 +54,7 @@ window.devToolsExtension = function(config = {}) {
       source: 'redux-page',
       name: config.name || document.title
     };
-    if (shouldSerialize || window.devToolsOptions.serialize) {
+    if (shouldSerialize || options.serialize) {
       relaySerialized(message);
     } else {
       try {
@@ -93,10 +94,10 @@ window.devToolsExtension = function(config = {}) {
     }
   }
 
-  const shouldFilter = () => localFilter || window.devToolsOptions.filter;
+  const shouldFilter = () => localFilter || options.filter;
   function isFiltered(action) {
-    if (!localFilter && !window.devToolsOptions.filter) return false;
-    const { whitelist, blacklist } = localFilter || window.devToolsOptions;
+    if (!localFilter && !options.filter) return false;
+    const { whitelist, blacklist } = localFilter || options;
     return (
       whitelist && !action.type.match(whitelist) ||
       blacklist && action.type.match(blacklist)
@@ -160,7 +161,7 @@ window.devToolsExtension = function(config = {}) {
       relay('INIT', state, { timestamp: Date.now() });
     } else if (!errorOccurred && monitorActions.indexOf(lastAction) === -1) {
       if (lastAction === 'JUMP_TO_STATE' || shouldFilter() && isFiltered(action)) return;
-      const { maxAge } = window.devToolsOptions;
+      const { maxAge } = options;
       relay('ACTION', state, liftedAction, nextActionId);
       if (!isExcess && maxAge) isExcess = liftedState.stagedActionIds.length >= maxAge;
     } else {
@@ -182,15 +183,17 @@ window.devToolsExtension = function(config = {}) {
     };
   }
 
-  if (!isAllowed(window.devToolsOptions)) return f => f;
+  if (!isAllowed(options)) return f => f;
   const { deserializeState, deserializeAction } = config;
   return configureStore(extEnhancer, monitorReducer, {
     deserializeState,
     deserializeAction
   });
-};
+}
 
-window.devToolsExtension.open = function(position) {
+reduxDevToolsExtension.options = {};
+
+reduxDevToolsExtension.open = function(position) {
   window.postMessage({
     source: 'redux-page',
     type: 'OPEN',
@@ -198,4 +201,53 @@ window.devToolsExtension.open = function(position) {
   }, '*');
 };
 
-window.devToolsExtension.notifyErrors = notifyErrors;
+reduxDevToolsExtension.notifyErrors = notifyErrors;
+
+// Mount the devtools extension on the window object.
+window.__REDUX_DEVTOOLS_EXTENSION__ = reduxDevToolsExtension;
+
+function deprecate(old, new_) {
+  // Initialize the deprecation warned cache if it does not exist.
+  if (!deprecate.warned) {
+    deprecate.warned = {};
+  }
+
+  // We only want deprecation warnings to be displayed once.
+  if (deprecate.warned[old]) {
+    return;
+  }
+
+  deprecationWarned[old] = true;
+
+  console.error(
+    `[redux-devtools-extension]: Use of \`${old}\` is deprecated and this ` +
+    'functionality will be removed in future versions. Please instead use ' +
+    `\`${new_}\`.`
+  );
+}
+
+Object.defineProperty(window, 'devToolsOptions', {
+  get() {
+    deprecate('window.devToolsOptions', 'window.__REDUX_DEVTOOLS_EXTENSION__.options');
+    return reduxDevToolsExtension.options;
+  },
+  set(value) {
+    deprecate('window.devToolsOptions', 'window.__REDUX_DEVTOOLS_EXTENSION__.options');
+    reduxDevToolsExtension.options = value;
+  }
+});
+
+window.devToolsExtension = function() {
+  deprecate('window.devToolsExtension()', 'window.__REDUX_DEVTOOLS_EXTENSION__()');
+  return reduxDevToolsExtension.apply(this, arguments);
+};
+
+window.devToolsExtension.open = function() {
+  deprecate('window.devToolsExtension.open()', 'window.__REDUX_DEVTOOLS_EXTENSION__.open()');
+  return reduxDevToolsExtension.open.apply(this, arguments);
+};
+
+window.devToolsExtension.notifyErrors = function() {
+  deprecate('window.devToolsExtension.notifyErrors()', 'window.__REDUX_DEVTOOLS_EXTENSION__.notifyErrors()');
+  return reduxDevToolsExtension.open.apply(this, arguments);
+};

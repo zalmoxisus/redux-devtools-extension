@@ -7,7 +7,7 @@ import rootReducer from '../reducers';
 export default function configureStore(initialState) {
   let finalCreateStore = compose(
     reduxReactRouter({ createHistory }),
-    global.devToolsExtension ? global.devToolsExtension() : f => f
+    global.__REDUX_DEVTOOLS_EXTENSION__ ? global.__REDUX_DEVTOOLS_EXTENSION__() : f => f
   )(createStore);
 
   const store = finalCreateStore(rootReducer, initialState);

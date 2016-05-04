@@ -11,7 +11,7 @@ export default function configureStore(extEnhancer, subscriber = () => ({}), opt
   const { deserializeState, deserializeAction } = options;
   return compose(
     extEnhancer,
-    instrument(subscriber, window.devToolsOptions),
+    instrument(subscriber, window.__REDUX_DEVTOOLS_EXTENSION__.options),
     persistState(
       getPersistSession(),
       deserializeState,
