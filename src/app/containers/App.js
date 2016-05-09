@@ -6,6 +6,7 @@ import MonitorSelector from 'remotedev-app/lib/components/MonitorSelector';
 import Instances from 'remotedev-app/lib/components/Instances';
 import Button from 'remotedev-app/lib/components/Button';
 import DispatcherButton from 'remotedev-app/lib/components/buttons/DispatcherButton';
+import SliderButton from 'remotedev-app/lib/components/buttons/SliderButton';
 import ImportButton from 'remotedev-app/lib/components/buttons/ImportButton';
 import ExportButton from 'remotedev-app/lib/components/buttons/ExportButton';
 import SettingsIcon from 'react-icons/lib/md/settings';
@@ -24,7 +25,8 @@ export default class App extends Component {
 
   state = {
     monitor: location.hash && location.hash.substr(1).split('/')[0],
-    dispatcherIsOpen: false
+    dispatcherIsOpen: false,
+    sliderIsOpen: false
   };
 
   handleSelectMonitor = e => {
@@ -43,6 +45,10 @@ export default class App extends Component {
     this.setState({ dispatcherIsOpen: !this.state.dispatcherIsOpen });
   };
 
+  toggleSlider = () => {
+    this.setState({ sliderIsOpen: !this.state.sliderIsOpen });
+  };
+
   render() {
     const { store } = this.props;
     const instances = store.instances;
@@ -56,6 +62,9 @@ export default class App extends Component {
           </div>
         }
         <DevTools monitor={monitor} store={store} key={`${monitor}-${store.instance}`} />
+        {this.state.sliderIsOpen && <div style={styles.sliderMonitor}>
+          <DevTools monitor="SliderMonitor" store={store} key={`Slider-${store.instance}`} />
+        </div>}
         {this.state.dispatcherIsOpen &&
           <DevTools monitor="DispatchMonitor"
             store={store} dispatchFn={store.dispatch}
@@ -84,6 +93,7 @@ export default class App extends Component {
           <DispatcherButton
             dispatcherIsOpen={this.state.dispatcherIsOpen} onClick={this.toggleDispatcher}
           />
+          <SliderButton isOpen={this.state.sliderIsOpen} onClick={this.toggleSlider} />
           <ImportButton importState={store.importState} />
           <ExportButton exportState={store.getState} />
           <Button
