@@ -2,6 +2,7 @@ import React, { cloneElement, Component, PropTypes } from 'react';
 import { sendToBg } from 'crossmessaging';
 import styles from 'remotedev-app/lib/styles';
 import DevTools from 'remotedev-app/lib/containers/DevTools';
+import MonitorSelector from 'remotedev-app/lib/components/MonitorSelector';
 import Instances from 'remotedev-app/lib/components/Instances';
 import Button from 'remotedev-app/lib/components/Button';
 import DispatcherButton from 'remotedev-app/lib/components/buttons/DispatcherButton';
@@ -22,7 +23,12 @@ export default class App extends Component {
   };
 
   state = {
+    monitor: location.hash && location.hash.substr(1).split('/')[0],
     dispatcherIsOpen: false
+  };
+
+  handleSelectMonitor = e => {
+    this.setState({ monitor: e.target.value });
   };
 
   handleSelectInstance = e => {
@@ -40,12 +46,13 @@ export default class App extends Component {
   render() {
     const { store } = this.props;
     const instances = store.instances;
-    const monitor = location.hash && location.hash.substr(1).split('/')[0];
+    const { monitor } = this.state;
     return (
       <div style={styles.container}>
         {instances &&
           <div style={styles.buttonBar}>
-           <Instances instances={instances} onSelect={this.handleSelectInstance}/>
+            <MonitorSelector selected={this.state.monitor} onSelect={this.handleSelectMonitor}/>
+            <Instances instances={instances} onSelect={this.handleSelectInstance}/>
           </div>
         }
         <DevTools monitor={monitor} store={store} key={`${monitor}-${store.instance}`} />
