@@ -4,6 +4,7 @@ import styles from 'remotedev-app/lib/styles';
 import DevTools from 'remotedev-app/lib/containers/DevTools';
 import Instances from 'remotedev-app/lib/components/Instances';
 import Button from 'remotedev-app/lib/components/Button';
+import DispatcherButton from 'remotedev-app/lib/components/buttons/DispatcherButton';
 import ImportButton from 'remotedev-app/lib/components/buttons/ImportButton';
 import ExportButton from 'remotedev-app/lib/components/buttons/ExportButton';
 import SettingsIcon from 'react-icons/lib/md/settings';
@@ -20,7 +21,9 @@ export default class App extends Component {
     store: PropTypes.object
   };
 
-  static update = () => ({});
+  state = {
+    dispatcherIsOpen: false
+  };
 
   handleSelectInstance = e => {
     this.props.store.setInstance(e.target.value);
@@ -28,6 +31,10 @@ export default class App extends Component {
 
   openWindow = (position) => {
     sendToBg({ type: 'OPEN', position });
+  };
+
+  toggleDispatcher = () => {
+    this.setState({ dispatcherIsOpen: !this.state.dispatcherIsOpen });
   };
 
   render() {
@@ -42,6 +49,12 @@ export default class App extends Component {
           </div>
         }
         <DevTools monitor={monitor} store={store} key={`${monitor}-${store.instance}`} />
+        {this.state.dispatcherIsOpen &&
+          <DevTools monitor="DispatchMonitor"
+            store={store} dispatchFn={store.dispatch}
+            key={`Dispatch-${store.instance}`}
+          />
+        }
         <div style={styles.buttonBar}>
           {monitorPosition !== 'left' &&
             <Button
@@ -61,6 +74,9 @@ export default class App extends Component {
               onClick={() => { this.openWindow('bottom'); }}
             />
           }
+          <DispatcherButton
+            dispatcherIsOpen={this.state.dispatcherIsOpen} onClick={this.toggleDispatcher}
+          />
           <ImportButton importState={store.importState} />
           <ExportButton exportState={store.getState} />
           <Button

@@ -17,7 +17,7 @@ function connect(instance) {
   bg.onMessage.addListener((message) => {
     if (message.action) {
       window.postMessage({
-        type: 'DISPATCH',
+        type: message.type,
         payload: message.action,
         source: 'redux-cs'
       }, '*');

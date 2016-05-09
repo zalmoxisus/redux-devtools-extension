@@ -10,6 +10,7 @@ const monitorActions = [
 ];
 
 window.devToolsExtension = function(config = {}) {
+  let store;
   let liftedStore;
   if (!window.devToolsOptions) window.devToolsOptions = {};
 
@@ -78,6 +79,8 @@ window.devToolsExtension = function(config = {}) {
 
     if (message.type === 'DISPATCH') {
       liftedStore.dispatch(message.payload);
+    } else if (message.type === 'ACTION') {
+      store.dispatch(message.payload);
     } else if (message.type === 'IMPORT') {
       liftedStore.dispatch({
         type: 'IMPORT_STATE', nextLiftedState: jsan.parse(message.state)
@@ -172,7 +175,7 @@ window.devToolsExtension = function(config = {}) {
   function extEnhancer(next) {
     return (reducer, initialState, enhancer) => {
       init();
-      const store = next(reducer, initialState, enhancer);
+      store = next(reducer, initialState, enhancer);
       liftedStore = store.liftedStore;
       store.subscribe(() => {
         if (liftedStore !== store.liftedStore) liftedStore = store.liftedStore;
