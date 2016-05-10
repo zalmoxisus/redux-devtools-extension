@@ -51,7 +51,7 @@ chrome.runtime.getBackgroundPage( background => {
         <div className="input">
           <span className="caption">Actions history limit:</span>
           <input id="maxAge" type="text" defaultValue={items.maxAge} onChange={saveOption}/>
-          <span className="comment">(the oldest removed once it is reached)</span>
+          <span className="comment">(the oldest removed once it's reached, >1)</span>
         </div>
         <div className="input">
           <span className="caption">Filter spec. actions:</span>
