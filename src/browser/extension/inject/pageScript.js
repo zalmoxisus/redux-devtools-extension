@@ -122,6 +122,10 @@ window.devToolsExtension = function(config = {}) {
   }
 
   function init() {
+    if (window.devToolsExtension.__listener) {
+      window.removeEventListener('message', window.devToolsExtension.__listener);
+    }
+    window.devToolsExtension.__listener = onMessage; // Prevent applying listener multiple times
     window.addEventListener('message', onMessage, false);
     relay('INIT_INSTANCE');
     notifyErrors(() => {
