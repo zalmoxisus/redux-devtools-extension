@@ -25,13 +25,7 @@ const baseConfig = (params) => ({
     new webpack.DefinePlugin(params.globals),
     ...(params.plugins ? params.plugins :
       [
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-          comments: false,
-          compressor: {
-            warnings: false
-          }
-        })
+        new webpack.optimize.DedupePlugin()
       ])
   ],
   resolve: {
