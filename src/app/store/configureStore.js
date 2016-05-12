@@ -1,5 +1,5 @@
 import { compose } from 'redux';
-import instrument from 'redux-devtools/lib/instrument';
+import instrument from 'redux-devtools-instrument';
 import persistState from 'redux-devtools/lib/persistState';
 
 function getPersistSession() {
