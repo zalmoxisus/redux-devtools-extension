@@ -7,15 +7,14 @@ function getPersistSession() {
   return (matches && matches.length > 0) ? matches[1] : null;
 }
 
-export default function configureStore(extEnhancer, subscriber = () => ({}), options = {}) {
+export default function configureStore(next, subscriber = () => ({}), options = {}) {
   const { deserializeState, deserializeAction } = options;
   return compose(
-    extEnhancer,
     instrument(subscriber, window.devToolsOptions),
     persistState(
       getPersistSession(),
       deserializeState,
       deserializeAction
     )
-  );
+  )(next);
 }

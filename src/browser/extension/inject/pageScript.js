@@ -172,25 +172,25 @@ window.devToolsExtension = function(config = {}) {
     }
   }
 
-  function extEnhancer(next) {
+  return (next) => {
     return (reducer, initialState, enhancer) => {
-      init();
-      store = next(reducer, initialState, enhancer);
+      if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState, enhancer);
+
+      const { deserializeState, deserializeAction } = config;
+      store = configureStore(next, monitorReducer, {
+        deserializeState,
+        deserializeAction
+      })(reducer, initialState, enhancer);
       liftedStore = store.liftedStore;
+
+      init();
       store.subscribe(() => {
         if (liftedStore !== store.liftedStore) liftedStore = store.liftedStore;
         handleChange(store.getState(), liftedStore.getState());
       });
       return store;
     };
-  }
-
-  if (!isAllowed(window.devToolsOptions)) return f => f;
-  const { deserializeState, deserializeAction } = config;
-  return configureStore(extEnhancer, monitorReducer, {
-    deserializeState,
-    deserializeAction
-  });
+  };
 };
 
 window.devToolsExtension.open = function(position) {
