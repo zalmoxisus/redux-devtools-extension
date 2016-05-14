@@ -94,8 +94,8 @@ export default class App extends Component {
             dispatcherIsOpen={this.state.dispatcherIsOpen} onClick={this.toggleDispatcher}
           />
           <SliderButton isOpen={this.state.sliderIsOpen} onClick={this.toggleSlider} />
-          <ImportButton importState={store.importState} />
-          <ExportButton exportState={store.getState} />
+          <ImportButton importState={store.liftedStore.importState} />
+          <ExportButton exportState={store.liftedStore.getState} />
           <Button
             Icon={RemoteIcon}
             onClick={() => { this.openWindow('remote'); }}
