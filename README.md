@@ -70,7 +70,19 @@
 - **config** arguments (optional)
   - **name** (*string*) - the instance name to be showed on the monitor page. Default value is `document.title`.
   - **deserializeState(state): transformedState** (*function*) - optional transformation of state deserialized from debug session (useful if state is not plain object. Example: immutable-js state)
-    - state, transformedState - Redux state objects
+    - state, transformedState - Redux state objects.
+      Example of usage:
+      
+      ```js
+      const store = createStore(rootReducer, window.devToolsExtension && window.devToolsExtension({
+        deserializeState: (state) => ({
+          todos: {
+            ...state.todos,
+            todoList: Immutable.fromJS(state.todos.todoList)
+          }
+        })
+      }));
+      ```
   - **deserializeAction(action): transformedAction** (*function*) - optional transformation of actions deserialized from debug session (useful if actions are not plain object. Example: immutable-js action payload)
     - action, transformedAction - Redux action objects
   - **actionsBlacklist** (*array*) - actions to be hidden in DevTools. Overwrites corresponding global setting in the options page.

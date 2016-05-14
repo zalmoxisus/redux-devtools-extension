@@ -1,3 +1,4 @@
+import mapValues from 'lodash/mapValues';
 import jsan from 'jsan';
 import logMonitorReducer from 'redux-devtools-log-monitor/lib/reducers';
 import configureStore from '../../../app/store/configureStore';
@@ -66,6 +67,28 @@ window.devToolsExtension = function(config = {}) {
     }
   }
 
+  function importState(state) {
+    const nextLiftedState = jsan.parse(state);
+    const { deserializeState, deserializeAction } = config;
+    if (deserializeState) {
+      nextLiftedState.computedStates = nextLiftedState.computedStates.map(computedState => ({
+        ...computedState,
+        state: deserializeState(computedState.state)
+      }));
+      if (typeof nextLiftedState.committedState !== 'undefined') {
+        nextLiftedState.committedState = deserializeState(nextLiftedState.committedState);
+      }
+    }
+    if (deserializeAction) {
+      nextLiftedState.actionsById = mapValues(nextLiftedState.actionsById, liftedAction => ({
+        ...liftedAction,
+        action: deserializeAction(liftedAction.action)
+      }));
+    }
+
+    liftedStore.dispatch({ type: 'IMPORT_STATE', nextLiftedState });
+  }
+
   function onMessage(event) {
     if (!event || event.source !== window) {
       return;
@@ -82,9 +105,7 @@ window.devToolsExtension = function(config = {}) {
     } else if (message.type === 'ACTION') {
       store.dispatch(message.payload);
     } else if (message.type === 'IMPORT') {
-      liftedStore.dispatch({
-        type: 'IMPORT_STATE', nextLiftedState: jsan.parse(message.state)
-      });
+      importState(message.state);
       relay('STATE', liftedStore.getState());
     } else if (message.type === 'UPDATE') {
       relay('STATE', liftedStore.getState());

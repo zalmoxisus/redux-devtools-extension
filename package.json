@@ -55,6 +55,7 @@
   "dependencies": {
     "crossmessaging": "^0.2.1",
     "jsan": "^3.1.1",
+    "lodash": "^4.2.0",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
     "react-icons": "^2.0.1",
