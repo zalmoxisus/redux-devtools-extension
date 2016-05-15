@@ -1,6 +1,6 @@
 # Redux DevTools Extension
 
-![Demo](demo/v1.0.0.png)
+![Demo](demo/v1.3.0.png)
 
 ## Advantages
 
