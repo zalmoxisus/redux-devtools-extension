@@ -1,4 +1,4 @@
-import { onMessage, sendToBg, sendToTab } from 'crossmessaging';
+import { sendToBg } from 'crossmessaging';
 let options;
 
 const save = (toAllTabs) => (key, value) => {
@@ -13,9 +13,6 @@ const get = callback => {
   if (options) callback(options);
   else {
     chrome.storage.sync.get({
-      leftMonitor: 'LogMonitor',
-      rightMonitor: 'LogMonitor',
-      bottomMonitor: 'SliderMonitor',
       maxAge: 50,
       filter: false,
       whitelist: '',
