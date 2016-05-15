@@ -7,7 +7,7 @@
   "page_action": {
     "default_icon": "img/logo/38x38.png",
     "default_title": "Redux DevTools",
-    "default_popup": "window.html"
+    "default_popup": "window.html#popup"
   },
   "commands": {
     "devtools-left": {
