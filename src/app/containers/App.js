@@ -1,6 +1,7 @@
 import React, { cloneElement, Component, PropTypes } from 'react';
 import { sendToBg } from 'crossmessaging';
 import styles from 'remotedev-app/lib/styles';
+import enhance from 'remotedev-app/lib/hoc';
 import DevTools from 'remotedev-app/lib/containers/DevTools';
 import MonitorSelector from 'remotedev-app/lib/components/MonitorSelector';
 import Instances from 'remotedev-app/lib/components/Instances';
@@ -15,26 +16,29 @@ import RightIcon from 'react-icons/lib/md/border-right';
 import BottomIcon from 'react-icons/lib/md/border-bottom';
 import RemoteIcon from 'react-icons/lib/go/radio-tower';
 
-let monitorPosition;
-if (location.hash) monitorPosition = location.hash.substr(location.hash.indexOf('-') + 1);
+const monitorPosition = location.hash;
 
+@enhance
 export default class App extends Component {
   static propTypes = {
     store: PropTypes.object
   };
 
   state = {
-    monitor: location.hash && location.hash.substr(1).split('/')[0],
+    monitor: localStorage.getItem('monitor' + monitorPosition),
+    instance: 'auto',
     dispatcherIsOpen: false,
     sliderIsOpen: false
   };
 
-  handleSelectMonitor = e => {
-    this.setState({ monitor: e.target.value });
+  handleSelectMonitor = (event, index, value) => {
+    this.setState({ monitor: value });
+    localStorage.setItem('monitor' + monitorPosition, value);
   };
 
-  handleSelectInstance = e => {
-    this.props.store.setInstance(e.target.value);
+  handleSelectInstance = (event, index, value) => {
+    this.setState({ instance: value });
+    this.props.store.setInstance(value);
   };
 
   openWindow = (position) => {
@@ -52,23 +56,23 @@ export default class App extends Component {
   render() {
     const { store } = this.props;
     const instances = store.instances;
-    const { monitor } = this.state;
+    const { instance, monitor } = this.state;
     return (
       <div style={styles.container}>
-        {instances &&
           <div style={styles.buttonBar}>
             <MonitorSelector selected={this.state.monitor} onSelect={this.handleSelectMonitor}/>
-            <Instances instances={instances} onSelect={this.handleSelectInstance}/>
+            {instances &&
+              <Instances instances={instances} onSelect={this.handleSelectInstance} selected={instance} />
+            }
           </div>
-        }
-        <DevTools monitor={monitor} store={store} key={`${monitor}-${store.instance}`} />
+        <DevTools monitor={monitor} store={store} key={`${monitor}-${instance}`} />
         {this.state.sliderIsOpen && <div style={styles.sliderMonitor}>
-          <DevTools monitor="SliderMonitor" store={store} key={`Slider-${store.instance}`} />
+          <DevTools monitor="SliderMonitor" store={store} key={`Slider-${instance}`} />
         </div>}
         {this.state.dispatcherIsOpen &&
           <DevTools monitor="DispatchMonitor"
             store={store} dispatchFn={store.dispatch}
-            key={`Dispatch-${store.instance}`}
+            key={`Dispatch-${instance}`}
           />
         }
         <div style={styles.buttonBar}>
