@@ -7,11 +7,12 @@ import ConnectedApp from '../../../app/containers/ConnectedApp';
 
 const backgroundPageConnection = connect();
 
-function dispatch(type, action) {
+function dispatch(type, action, id, state) {
   chrome.devtools.inspectedWindow.eval(
     'window.postMessage({' +
     'type: \'' + type + '\',' +
     'payload: ' + JSON.stringify(action) + ',' +
+    'state: \'' + state + '\',' +
     'source: \'redux-cs\'' +
     '}, \'*\');',
     { useContentScriptContext: false }

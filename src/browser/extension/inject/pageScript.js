@@ -68,6 +68,7 @@ window.devToolsExtension = function(config = {}) {
   }
 
   function importState(state) {
+    if (!state) return;
     const nextLiftedState = jsan.parse(state);
     const { deserializeState, deserializeAction } = config;
     if (deserializeState) {
