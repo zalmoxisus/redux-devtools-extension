@@ -49,7 +49,8 @@
     "chrome_style": true
   },
   "background": {
-    "page": "background.html"
+    "scripts": ["js/background.bundle.js"],
+    "persistent": false
   },
   "content_scripts": [
     {
