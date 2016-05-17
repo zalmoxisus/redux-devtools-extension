@@ -8,20 +8,23 @@ const menus = [
   { id: 'devtools-remote', title: 'Open Remote DevTools' }
 ];
 
-let shortcuts = {};
-chrome.commands.getAll(commands => {
-  commands.forEach(({ name, shortcut }) => {
-    shortcuts[name] = shortcut;
-  });
-});
-
 export default function createMenu() {
+  let shortcuts = {};
+  chrome.commands.getAll(commands => {
+    commands.forEach(({ name, shortcut }) => {
+      shortcuts[name] = shortcut;
+    });
+  });
+
   menus.forEach(({ id, title }) => {
     chrome.contextMenus.create({
       id: id,
       title: title + (shortcuts[id] ? ' (' + shortcuts[id] + ')' : ''),
-      contexts: ['all'],
-      onclick: () => { openDevToolsWindow(id); }
+      contexts: ['all']
     });
+  });
+
+  chrome.contextMenus.onClicked.addListener(({ menuItemId }) => {
+    openDevToolsWindow(menuItemId);
   });
 }
