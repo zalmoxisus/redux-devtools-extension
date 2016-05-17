@@ -3,6 +3,7 @@ import syncOptions from '../options/syncOptions';
 import openDevToolsWindow from './openWindow';
 let panelConnections = {};
 let tabConnections = {};
+let monitorConnections = {};
 let catchedErrors = {};
 let monitors = 0;
 let isMonitored = false;
@@ -13,6 +14,12 @@ const naMessage = { type: 'NA' };
 
 function handleInstancesChanged(instance, name) {
   window.store.instances[instance] = name || instance;
+}
+
+function updateMonitors() {
+  Object.keys(monitorConnections).forEach(id => {
+    monitorConnections[id].postMessage({ type: 'UPDATE' });
+  });
 }
 
 // Receive message from content script
@@ -50,6 +57,8 @@ function messaging(request, sender, sendResponse) {
     if (tabId in panelConnections) {
       panelConnections[tabId].postMessage(request);
     }
+
+    updateMonitors();
 
     // Notify when errors occur in the app
     window.syncOptions.get(options => {
@@ -94,6 +103,7 @@ function onConnect(port) {
   let connections;
   let id;
   let listener;
+  let disconnect;
 
   if (port.name === 'tab') {
     connections = tabConnections; id = getId(port);
@@ -101,26 +111,38 @@ function onConnect(port) {
       if (msg.name === 'INIT_INSTANCE') initInstance(port, id, msg);
       else if (msg.name === 'RELAY') messaging(msg.message, port.sender);
     };
-  } else {
-    connections = panelConnections; id = port.name;
-    monitorInstances(true);
-    if (id !== store.id) port.postMessage(naMessage);
-  }
-
-  connections[id] = port;
-  if (listener) port.onMessage.addListener(listener);
-
-  port.onDisconnect.addListener(() => {
-    if (listener) { // Is Tab
+    disconnect = () => {
       port.onMessage.removeListener(listener);
       if (panelConnections[id]) panelConnections[id].postMessage(naMessage);
       if (window.store.instances[id]) {
         delete window.store.instances[id];
         window.store.liftedStore.deleteInstance(id);
       }
-    } else {
+    };
+  } else if (port.name === 'monitor') {
+    connections = monitorConnections; id = getId(port);
+    monitors++;
+    monitorInstances(true);
+    disconnect = () => {
+      monitors--;
+      if (Object.getOwnPropertyNames(panelConnections).length === 0) {
+        monitorInstances(false);
+      }
+    };
+  } else {
+    connections = panelConnections; id = port.name;
+    monitorInstances(true);
+    if (id !== store.id) port.postMessage(naMessage);
+    disconnect = () => {
       monitorInstances(false);
-    }
+    };
+  }
+
+  connections[id] = port;
+  if (listener) port.onMessage.addListener(listener);
+
+  port.onDisconnect.addListener(() => {
+    disconnect();
     delete connections[id];
   });
 }
@@ -156,34 +178,6 @@ function monitorInstances(shouldMonitor) {
     || isMonitored === shouldMonitor
   ) return;
   toAllTabs({ type: shouldMonitor ? 'START' : 'STOP' });
+  if (!shouldMonitor) window.store.clear();
   isMonitored = shouldMonitor;
 }
-
-const unsubscribeMonitor = (unsubscribeList) => () => {
-  monitors--;
-  unsubscribeList.forEach(unsubscribe => { unsubscribe(); });
-  if (Object.getOwnPropertyNames(panelConnections).length === 0) {
-    monitorInstances(false);
-  }
-};
-
-// Expose store to extension's windows (monitors)
-window.getStore = () => {
-  monitors++;
-  monitorInstances(true);
-  let unsubscribeList = [];
-  return {
-    store: {
-      ...store,
-      liftedStore: {
-        ...store.liftedStore,
-        subscribe(...args) {
-          const unsubscribe = store.liftedStore.subscribe(...args);
-          unsubscribeList.push(unsubscribe);
-          return unsubscribe;
-        }
-      }
-    },
-    unsubscribe: unsubscribeMonitor(unsubscribeList)
-  };
-};
