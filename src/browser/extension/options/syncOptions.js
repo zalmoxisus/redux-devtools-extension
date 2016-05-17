@@ -1,4 +1,3 @@
-import { sendToBg } from 'crossmessaging';
 let options;
 
 const save = (toAllTabs) => (key, value) => {
@@ -50,7 +49,7 @@ export const injectOptions = newOptions => {
 };
 
 export const getOptionsFromBg = () => {
-  sendToBg({ type: 'GET_OPTIONS' }, response => {
+  chrome.runtime.sendMessage({ type: 'GET_OPTIONS' }, response => {
     if (response && response.options) injectOptions(response.options);
   });
 };

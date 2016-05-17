@@ -1,4 +1,3 @@
-import { onConnect, onMessage, sendToTab } from 'crossmessaging';
 import updateState from 'remotedev-app/lib/store/updateState';
 import syncOptions from '../options/syncOptions';
 import openDevToolsWindow from './openWindow';
@@ -11,45 +10,6 @@ let isMonitored = false;
 window.syncOptions = syncOptions(toAllTabs); // Used in the options page
 
 const naMessage = { type: 'NA' };
-
-function initPanel(msg, port) {
-  monitorInstances(true);
-  panelConnections[msg.tabId] = port;
-  if (msg.tabId !== store.id) return naMessage;
-}
-
-function getId(port) {
-  return port.sender.tab ? port.sender.tab.id : port.sender.id;
-}
-
-function initInstance(msg, port) {
-  const id = getId(port);
-  tabConnections[id] = port;
-  store.instances[id] = msg.instance;
-  store.id = id;
-  if (typeof id === 'number') chrome.pageAction.show(id);
-  if (isMonitored) return { type: 'START' };
-}
-
-function disconnect(port) {
-  if (!port.sender.tab && !port.sender.id) {
-    monitorInstances(false);
-    return;
-  }
-  const id = getId(port);
-  delete tabConnections[id];
-  if (panelConnections[id]) panelConnections[id].postMessage(naMessage);
-  if (window.store.instances[id]) {
-    delete window.store.instances[id];
-    window.store.liftedStore.deleteInstance(id);
-  }
-}
-
-onConnect(undefined, {
-  INIT_PANEL: initPanel,
-  INIT_INSTANCE: initInstance,
-  RELAY: (msg, port) => { messaging(msg.message, port.sender); }
-}, panelConnections, disconnect);
 
 function handleInstancesChanged(instance, name) {
   window.store.instances[instance] = name || instance;
@@ -119,7 +79,55 @@ function messaging(request, sender, sendResponse) {
   return true;
 }
 
-onMessage(messaging);
+function getId(port) {
+  return port.sender.tab ? port.sender.tab.id : port.sender.id;
+}
+
+function initInstance(port, id, msg) {
+  store.instances[id] = msg.instance;
+  store.id = id;
+  if (typeof id === 'number') chrome.pageAction.show(id);
+  if (isMonitored) port.postMessage({ type: 'START' });
+}
+
+function onConnect(port) {
+  let connections;
+  let id;
+  let listener;
+
+  if (port.name === 'tab') {
+    connections = tabConnections; id = getId(port);
+    listener = msg => {
+      if (msg.name === 'INIT_INSTANCE') initInstance(port, id, msg);
+      else if (msg.name === 'RELAY') messaging(msg.message, port.sender);
+    };
+  } else {
+    connections = panelConnections; id = port.name;
+    monitorInstances(true);
+    if (id !== store.id) port.postMessage(naMessage);
+  }
+
+  connections[id] = port;
+  if (listener) port.onMessage.addListener(listener);
+
+  port.onDisconnect.addListener(() => {
+    if (listener) { // Is Tab
+      port.onMessage.removeListener(listener);
+      if (panelConnections[id]) panelConnections[id].postMessage(naMessage);
+      if (window.store.instances[id]) {
+        delete window.store.instances[id];
+        window.store.liftedStore.deleteInstance(id);
+      }
+    } else {
+      monitorInstances(false);
+    }
+    delete connections[id];
+  });
+}
+
+chrome.runtime.onConnect.addListener(onConnect);
+chrome.runtime.onConnectExternal.addListener(onConnect);
+chrome.runtime.onMessage.addListener(messaging);
 
 chrome.notifications.onClicked.addListener(id => {
   chrome.notifications.clear(id);

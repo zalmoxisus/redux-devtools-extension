@@ -6,10 +6,11 @@ if (!window.devToolsOptions) getOptionsFromBg();
 
 function connect(instance) {
   // Connect to the background script
+  const name = 'tab';
   if (window.devToolsExtensionID) {
-    bg = chrome.runtime.connect(window.devToolsExtensionID);
+    bg = chrome.runtime.connect(window.devToolsExtensionID, { name });
   } else {
-    bg = chrome.runtime.connect();
+    bg = chrome.runtime.connect({ name });
   }
   bg.postMessage({name: 'INIT_INSTANCE', instance});
 
