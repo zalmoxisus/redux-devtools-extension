@@ -22,11 +22,18 @@ let rendered = false;
 
 function showDevTools() {
   if (!rendered) {
-    render(
-      <ConnectedApp store={store} />,
-      document.getElementById('root')
-    );
-    rendered = true;
+    try {
+      render(
+        <ConnectedApp store={store}/>,
+        document.getElementById('root')
+      );
+      rendered = true;
+    } catch (error) {
+      render(
+        <div>{error.toString()}</div>,
+        document.getElementById('root')
+      );
+    }
   }
 }
 
