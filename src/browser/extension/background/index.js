@@ -16,4 +16,7 @@ window.store.setInstance = instance => {
 chrome.commands.onCommand.addListener(shortcut => {
   openDevToolsWindow(shortcut);
 });
-setTimeout(createMenu, 0);
+
+chrome.runtime.onInstalled.addListener(() => {
+  createMenu();
+});
