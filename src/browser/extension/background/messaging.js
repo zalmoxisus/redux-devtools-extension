@@ -150,6 +150,7 @@ function onConnect(port) {
 chrome.runtime.onConnect.addListener(onConnect);
 chrome.runtime.onConnectExternal.addListener(onConnect);
 chrome.runtime.onMessage.addListener(messaging);
+chrome.runtime.onMessageExternal.addListener(messaging)
 
 chrome.notifications.onClicked.addListener(id => {
   chrome.notifications.clear(id);
