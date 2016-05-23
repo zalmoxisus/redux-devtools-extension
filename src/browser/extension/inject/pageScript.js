@@ -3,6 +3,7 @@ import jsan from 'jsan';
 import logMonitorReducer from 'redux-devtools-log-monitor/lib/reducers';
 import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
+import { getLocalFilter, isFiltered, filterState } from '../utils/filters';
 import notifyErrors from '../utils/notifyErrors';
 
 const monitorActions = [
@@ -11,18 +12,11 @@ const monitorActions = [
 ];
 
 window.devToolsExtension = function(config = {}) {
-  let store;
-  let liftedStore;
   if (!window.devToolsOptions) window.devToolsOptions = {};
 
-  let localFilter;
-  if (config.actionsBlacklist || config.actionsWhitelist) {
-    localFilter = {
-      whitelist: config.actionsWhitelist && config.actionsWhitelist.join('|'),
-      blacklist: config.actionsBlacklist && config.actionsBlacklist.join('|')
-    };
-  }
-
+  let store;
+  let liftedStore;
+  let localFilter = getLocalFilter(config);
   let shouldSerialize = false;
   let lastAction;
   let errorOccurred = false;
@@ -41,20 +35,24 @@ window.devToolsExtension = function(config = {}) {
 
   function relaySerialized(message) {
     if (message.payload) message.payload = stringify(message.payload);
-    if (message.action !== '') message.action = stringify(message.action);
+    if (message.action) message.action = stringify(message.action);
     window.postMessage(message, '*');
   }
 
   function relay(type, state, action, nextActionId) {
     const message = {
-      payload: type === 'STATE' && shouldFilter() ? filterActions(state) : state,
-      action: action || '',
-      nextActionId: nextActionId || '',
-      isExcess,
       type,
+      payload: filterState(state, type, localFilter),
       source: 'redux-page',
       name: config.name || document.title
     };
+
+    if (action) message.action = action;
+    if (type === 'ACTION') {
+      message.isExcess = isExcess;
+      message.nextActionId = nextActionId;
+    }
+
     if (shouldSerialize || window.devToolsOptions.serialize) {
       relaySerialized(message);
     } else {
@@ -118,31 +116,6 @@ window.devToolsExtension = function(config = {}) {
     }
   }
 
-  const shouldFilter = () => localFilter || window.devToolsOptions.filter;
-  function isFiltered(action) {
-    if (!localFilter && !window.devToolsOptions.filter) return false;
-    const { whitelist, blacklist } = localFilter || window.devToolsOptions;
-    return (
-      whitelist && !action.type.match(whitelist) ||
-      blacklist && action.type.match(blacklist)
-    );
-  }
-  function filterActions(state) {
-    const filteredStagedActionIds = [];
-    const filteredComputedStates = [];
-    state.stagedActionIds.forEach((id, idx) => {
-      if (!isFiltered(state.actionsById[id].action)) {
-        filteredStagedActionIds.push(id);
-        filteredComputedStates.push(state.computedStates[idx]);
-      }
-    });
-
-    return { ...state,
-      stagedActionIds: filteredStagedActionIds,
-      computedStates: filteredComputedStates
-    };
-  }
-
   function init() {
     if (window.devToolsExtension.__listener) {
       window.removeEventListener('message', window.devToolsExtension.__listener);
@@ -188,7 +161,7 @@ window.devToolsExtension = function(config = {}) {
     if (action.type === '@@INIT') {
       relay('INIT', state, { timestamp: Date.now() });
     } else if (!errorOccurred && monitorActions.indexOf(lastAction) === -1) {
-      if (lastAction === 'JUMP_TO_STATE' || shouldFilter() && isFiltered(action)) return;
+      if (lastAction === 'JUMP_TO_STATE' || isFiltered(action, localFilter)) return;
       const { maxAge } = window.devToolsOptions;
       relay('ACTION', state, liftedAction, nextActionId);
       if (!isExcess && maxAge) isExcess = liftedState.stagedActionIds.length >= maxAge;
