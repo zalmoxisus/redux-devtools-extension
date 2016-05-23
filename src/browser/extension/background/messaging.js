@@ -76,7 +76,7 @@ function messaging(request, sender, sendResponse) {
           isClickable: true
         });
         if (typeof store.id === 'number') {
-          chrome.pageAction.setIcon({tabId: store.id, path: 'img/logo/error.png'});
+          // chrome.pageAction.setIcon({tabId: store.id, path: 'img/logo/error.png'});
           catchedErrors.tab = store.id;
         }
       } else if (catchedErrors.last && typeof store.id === 'number' && catchedErrors.tab === store.id) {
