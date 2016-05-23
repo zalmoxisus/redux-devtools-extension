@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-chrome.runtime.getBackgroundPage( background => {
+chrome.runtime.getBackgroundPage(background => {
   const syncOptions = background.syncOptions;
 
   const saveOption = e => {
@@ -10,7 +10,7 @@ chrome.runtime.getBackgroundPage( background => {
     else if (
       e.target.type === 'input' || e.target.type === 'text'
     ) value = Number(e.target.value);
-    else value = e.target.value;
+    else value = trim(e.target.value);
     syncOptions.save(e.target.id, value);
   };
 
