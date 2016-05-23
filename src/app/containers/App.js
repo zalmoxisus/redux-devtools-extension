@@ -18,6 +18,17 @@ import RemoteIcon from 'react-icons/lib/go/radio-tower';
 
 const monitorPosition = location.hash;
 
+// Mock localStorage when it is not allowed
+let localStorage;
+try {
+  localStorage = window.localStorage;
+} catch (error) {
+  localStorage = {
+    getItem: key => undefined,
+    setItem: () => {}
+  };
+}
+
 @enhance
 export default class App extends Component {
   static propTypes = {
