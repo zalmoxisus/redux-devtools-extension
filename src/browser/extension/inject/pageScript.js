@@ -16,12 +16,13 @@ window.devToolsExtension = function(config = {}) {
 
   let store;
   let liftedStore;
-  let localFilter = getLocalFilter(config);
   let shouldSerialize = false;
   let lastAction;
   let errorOccurred = false;
   let isMonitored = false;
   let isExcess;
+  const localFilter = getLocalFilter(config);
+  const { statesFilter, actionsFilter } = config;
 
   function stringify(obj) {
     return jsan.stringify(obj);
@@ -42,15 +43,17 @@ window.devToolsExtension = function(config = {}) {
   function relay(type, state, action, nextActionId) {
     const message = {
       type,
-      payload: filterState(state, type, localFilter),
+      payload: filterState(state, type, localFilter, statesFilter, actionsFilter, nextActionId),
       source: 'redux-page',
       name: config.name || document.title
     };
 
-    if (action) message.action = action;
     if (type === 'ACTION') {
+      message.action = !actionsFilter ? action : actionsFilter(action.action, nextActionId - 1);
       message.isExcess = isExcess;
       message.nextActionId = nextActionId;
+    } else if (action) {
+      message.action = action;
     }
 
     if (shouldSerialize || window.devToolsOptions.serialize) {

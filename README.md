@@ -86,9 +86,22 @@
   - **deserializeAction(action): transformedAction** (*function*) - optional transformation of actions deserialized from debug session (useful if actions are not plain object. Example: immutable-js action payload)
     - action, transformedAction - Redux action objects
   - **actionsBlacklist** (*array*) - actions to be hidden in DevTools. Overwrites corresponding global setting in the options page.
-  - **actionsWhitelist** (*array*) - all other actions will be hidden in DevTools. Overwrites corresponding global setting in the options page.
+  - **actionsFilter** (*function*) - function which takes `action` object and id number as arguments, and should return `action` object back. See the example bellow.
+  - **statesFilter** (*function*) - function which takes `state` object and index as arguments, and should return `state` object back.
+      Example of usage:
+      
+      ```js
+      const actionsFilter = (action) => (
+        action.type === 'FILE_DOWNLOAD_SUCCESS' && action.data ?
+        { ...action, data: '<<LONG_BLOB>>' } : action
+      );
+      const store = createStore(rootReducer, window.devToolsExtension && window.devToolsExtension({
+        actionsFilter,
+        statesFilter: (state) => state.data ? { ...state, data: '<<LONG_BLOB>>' } : state)
+      }));
+      ```
 
-## Examples
+## Demo
 Open these urls to test the extension:
 
  - [Counter](http://zalmoxisus.github.io/redux-devtools-extension/examples/counter/)
