@@ -7,8 +7,9 @@ function getPersistSession() {
   return (matches && matches.length > 0) ? matches[1] : null;
 }
 
-export default function configureStore(next, subscriber = () => ({}), options = {}) {
-  const { deserializeState, deserializeAction } = options;
+export default function configureStore(
+  next, subscriber = () => ({}), { deserializeState, deserializeAction }
+) {
   return compose(
     instrument(subscriber, window.devToolsOptions),
     persistState(

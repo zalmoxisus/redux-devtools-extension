@@ -125,7 +125,9 @@ window.devToolsExtension = function(config = {}) {
       relay('ACTION', state, liftedAction, nextActionId);
       if (!isExcess && maxAge) isExcess = liftedState.stagedActionIds.length >= maxAge;
     } else {
-      if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) errorOccurred = false;
+      if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) {
+        errorOccurred = false;
+      }
       relay('STATE', liftedState);
     }
   }
@@ -134,11 +136,7 @@ window.devToolsExtension = function(config = {}) {
     return (reducer, initialState, enhancer) => {
       if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState, enhancer);
 
-      const { deserializeState, deserializeAction } = config;
-      store = configureStore(next, monitorReducer, {
-        deserializeState,
-        deserializeAction
-      })(reducer, initialState, enhancer);
+      store = configureStore(next, monitorReducer, config)(reducer, initialState, enhancer);
       liftedStore = store.liftedStore;
 
       init();
