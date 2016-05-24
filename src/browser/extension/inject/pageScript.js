@@ -1,9 +1,9 @@
-import jsan from 'jsan';
 import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
 import { getLocalFilter, isFiltered, filterState } from '../utils/filters';
 import notifyErrors from '../utils/notifyErrors';
 import importState from '../utils/importState';
+import toContentScript from '../utils/toContentScript';
 
 const monitorActions = [
   'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE', 'IMPORT_STATE'
@@ -22,22 +22,6 @@ window.devToolsExtension = function(config = {}) {
   const localFilter = getLocalFilter(config);
   const { statesFilter, actionsFilter } = config;
 
-  function stringify(obj) {
-    return jsan.stringify(obj);
-    /*
-    return jsan.stringify(obj, function(key, value) {
-      if (value && value.toJS) { return value.toJS(); }
-      return value;
-    }, null, true);
-    */
-  }
-
-  function relaySerialized(message) {
-    if (message.payload) message.payload = stringify(message.payload);
-    if (message.action) message.action = stringify(message.action);
-    window.postMessage(message, '*');
-  }
-
   function relay(type, state, action, nextActionId) {
     const message = {
       type,
@@ -55,12 +39,12 @@ window.devToolsExtension = function(config = {}) {
     }
 
     if (shouldSerialize || window.devToolsOptions.serialize) {
-      relaySerialized(message);
+      toContentScript(message, true);
     } else {
       try {
-        window.postMessage(message, '*');
+        toContentScript(message);
       } catch (err) {
-        relaySerialized(message);
+        toContentScript(message, true);
         shouldSerialize = true;
       }
     }
