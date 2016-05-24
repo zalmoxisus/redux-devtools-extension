@@ -1,9 +1,9 @@
-import mapValues from 'lodash/mapValues';
 import jsan from 'jsan';
 import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
 import { getLocalFilter, isFiltered, filterState } from '../utils/filters';
 import notifyErrors from '../utils/notifyErrors';
+import importState from '../utils/importState';
 
 const monitorActions = [
   'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE', 'IMPORT_STATE'
@@ -66,29 +66,6 @@ window.devToolsExtension = function(config = {}) {
     }
   }
 
-  function importState(state) {
-    if (!state) return;
-    const nextLiftedState = jsan.parse(state);
-    const { deserializeState, deserializeAction } = config;
-    if (deserializeState) {
-      nextLiftedState.computedStates = nextLiftedState.computedStates.map(computedState => ({
-        ...computedState,
-        state: deserializeState(computedState.state)
-      }));
-      if (typeof nextLiftedState.committedState !== 'undefined') {
-        nextLiftedState.committedState = deserializeState(nextLiftedState.committedState);
-      }
-    }
-    if (deserializeAction) {
-      nextLiftedState.actionsById = mapValues(nextLiftedState.actionsById, liftedAction => ({
-        ...liftedAction,
-        action: deserializeAction(liftedAction.action)
-      }));
-    }
-
-    liftedStore.dispatch({ type: 'IMPORT_STATE', nextLiftedState });
-  }
-
   function onMessage(event) {
     if (!event || event.source !== window) {
       return;
@@ -105,7 +82,9 @@ window.devToolsExtension = function(config = {}) {
     } else if (message.type === 'ACTION') {
       store.dispatch(message.payload);
     } else if (message.type === 'IMPORT') {
-      importState(message.state);
+      const nextLiftedState = importState(message.state, config);
+      if (!nextLiftedState) return;
+      liftedStore.dispatch({type: 'IMPORT_STATE', nextLiftedState});
       relay('STATE', liftedStore.getState());
     } else if (message.type === 'UPDATE') {
       relay('STATE', liftedStore.getState());
