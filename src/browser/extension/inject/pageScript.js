@@ -51,32 +51,32 @@ window.devToolsExtension = function(config = {}) {
   }
 
   function onMessage(event) {
-    if (!event || event.source !== window) {
-      return;
-    }
-
+    if (!event || event.source !== window) return;
     const message = event.data;
+    if (!message || message.source !== 'redux-cs') return;
 
-    if (!message || message.source !== 'redux-cs') {
-      return;
-    }
-
-    if (message.type === 'DISPATCH') {
-      liftedStore.dispatch(message.payload);
-    } else if (message.type === 'ACTION') {
-      store.dispatch(message.payload);
-    } else if (message.type === 'IMPORT') {
-      const nextLiftedState = importState(message.state, config);
-      if (!nextLiftedState) return;
-      liftedStore.dispatch({type: 'IMPORT_STATE', nextLiftedState});
-      relay('STATE', liftedStore.getState());
-    } else if (message.type === 'UPDATE') {
-      relay('STATE', liftedStore.getState());
-    } else if (message.type === 'START') {
-      isMonitored = true;
-      relay('STATE', liftedStore.getState());
-    } else if (message.type === 'STOP') {
-      isMonitored = false;
+    switch (message.type) {
+      case 'DISPATCH':
+        liftedStore.dispatch(message.payload);
+        return;
+      case 'ACTION':
+        store.dispatch(message.payload);
+        return;
+      case 'IMPORT':
+        const nextLiftedState = importState(message.state, config);
+        if (!nextLiftedState) return;
+        liftedStore.dispatch({type: 'IMPORT_STATE', nextLiftedState});
+        relay('STATE', liftedStore.getState());
+        return;
+      case 'UPDATE':
+        relay('STATE', liftedStore.getState());
+        return;
+      case 'START':
+        isMonitored = true;
+        relay('STATE', liftedStore.getState());
+        return;
+      case 'STOP':
+        isMonitored = false;
     }
   }
 
@@ -86,7 +86,7 @@ window.devToolsExtension = function(config = {}) {
     }
     window.devToolsExtension.__listener = onMessage; // Prevent applying listener multiple times
     window.addEventListener('message', onMessage, false);
-    relay('INIT_INSTANCE');
+
     notifyErrors(() => {
       errorOccurred = true;
       const state = liftedStore.getState();
@@ -96,6 +96,8 @@ window.devToolsExtension = function(config = {}) {
       }
       return true;
     });
+
+    relay('INIT_INSTANCE');
 
     // Detect when the tab is reactivated
     document.addEventListener('visibilitychange', function() {
