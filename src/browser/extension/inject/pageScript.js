@@ -98,13 +98,6 @@ window.devToolsExtension = function(config = {}) {
     });
 
     relay('INIT_INSTANCE');
-
-    // Detect when the tab is reactivated
-    document.addEventListener('visibilitychange', function() {
-      if (document.visibilityState === 'visible' && isMonitored) {
-        relay('STATE', liftedStore.getState());
-      }
-    }, false);
   }
 
   function monitorReducer(state = {}, action) {
