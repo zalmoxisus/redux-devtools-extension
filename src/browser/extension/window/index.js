@@ -4,10 +4,13 @@ import ConnectedApp from '../../../app/containers/ConnectedApp';
 
 chrome.runtime.getBackgroundPage(({ store }) => {
   const listeners = [];
+  function update() {
+    listeners.forEach(listener => listener());
+  }
 
   const bg = chrome.runtime.connect({ name: 'monitor' });
   bg.onMessage.addListener(message => {
-    if (message.type === 'UPDATE') listeners.forEach(listener => listener());
+    if (message.type === 'UPDATE') update();
   });
 
   const subscribe = (listener) => {
@@ -22,6 +25,10 @@ chrome.runtime.getBackgroundPage(({ store }) => {
     subscribe,
     liftedStore: {
       ...store.liftedStore,
+      dispatch: (action) => {
+        store.liftedStore.dispatch(action);
+        if (action.type === 'JUMP_TO_STATE') update();
+      },
       subscribe
     }
   };
