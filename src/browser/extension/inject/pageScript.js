@@ -1,14 +1,12 @@
 import mapValues from 'lodash/mapValues';
 import jsan from 'jsan';
-import logMonitorReducer from 'redux-devtools-log-monitor/lib/reducers';
 import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
 import { getLocalFilter, isFiltered, filterState } from '../utils/filters';
 import notifyErrors from '../utils/notifyErrors';
 
 const monitorActions = [
-  'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE', 'IMPORT_STATE',
-  '@@redux-devtools-log-monitor/START_CONSECUTIVE_TOGGLE'
+  'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE', 'IMPORT_STATE'
 ];
 
 window.devToolsExtension = function(config = {}) {
@@ -153,7 +151,7 @@ window.devToolsExtension = function(config = {}) {
         relay('STATE', liftedStore.getState());
       }, 0);
     }
-    return logMonitorReducer({}, state, action);
+    return state;
   }
 
   function handleChange(state, liftedState) {
