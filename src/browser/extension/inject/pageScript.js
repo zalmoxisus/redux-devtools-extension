@@ -4,6 +4,7 @@ import { getLocalFilter, isFiltered, filterState } from '../utils/filters';
 import notifyErrors from '../utils/notifyErrors';
 import importState from '../utils/importState';
 import toContentScript from '../utils/toContentScript';
+import openWindow from '../utils/openWindow';
 
 const monitorActions = [
   'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE', 'IMPORT_STATE'
@@ -149,12 +150,5 @@ window.devToolsExtension = function(config = {}) {
   };
 };
 
-window.devToolsExtension.open = function(position) {
-  window.postMessage({
-    source: 'redux-page',
-    type: 'OPEN',
-    position: position || ''
-  }, '*');
-};
-
+window.devToolsExtension.open = openWindow;
 window.devToolsExtension.notifyErrors = notifyErrors;
