@@ -8,10 +8,10 @@ function getPersistSession() {
 }
 
 export default function configureStore(
-  next, subscriber = () => ({}), { deserializeState, deserializeAction }
+  next, monitorReducer, { deserializeState, deserializeAction }
 ) {
   return compose(
-    instrument(subscriber, window.devToolsOptions),
+    instrument(monitorReducer, window.devToolsOptions),
     persistState(
       getPersistSession(),
       deserializeState,
