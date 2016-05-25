@@ -1,5 +1,4 @@
 import React, { cloneElement, Component, PropTypes } from 'react';
-import { sendToBg } from 'crossmessaging';
 import styles from 'remotedev-app/lib/styles';
 import enhance from 'remotedev-app/lib/hoc';
 import DevTools from 'remotedev-app/lib/containers/DevTools';
@@ -53,7 +52,7 @@ export default class App extends Component {
   };
 
   openWindow = (position) => {
-    sendToBg({ type: 'OPEN', position });
+    chrome.runtime.sendMessage({ type: 'OPEN', position });
   };
 
   toggleDispatcher = () => {
