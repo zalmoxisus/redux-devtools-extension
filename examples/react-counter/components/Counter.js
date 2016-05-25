@@ -1,5 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 
+const reducer = (state = { counter: 0 }, action) => {
+  switch (action.type) {
+    case 'INCREMENT':
+      return { counter: state.counter + 1 };
+    case 'DECREMENT':
+      return { counter: state.counter - 1 };
+    default:
+      return state;
+  }
+};
+
 class Counter extends Component {
   constructor() {
     super();
@@ -9,12 +20,16 @@ class Counter extends Component {
     this.decrement = this.decrement.bind(this);
   }
 
+  dispatch(action) {
+    this.setState(reducer(this.state, action));
+  }
+
   increment() {
-    this.setState({ counter: this.state.counter + 1 });
+    this.dispatch({ type: 'INCREMENT' });
   }
 
   decrement() {
-    this.setState({ counter: this.state.counter - 1 });
+    this.dispatch({ type: 'DECREMENT' });
   }
 
   render() {
