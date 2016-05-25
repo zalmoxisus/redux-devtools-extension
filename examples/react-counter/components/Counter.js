@@ -1,5 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 
+const withDevTools = (
+  // process.env.NODE_ENV === 'development' &&
+  typeof window !== 'undefined' && window.devToolsExtension
+);
+
 const reducer = (state = { counter: 0 }, action) => {
   switch (action.type) {
     case 'INCREMENT':
@@ -20,8 +25,16 @@ class Counter extends Component {
     this.decrement = this.decrement.bind(this);
   }
 
+  componentWillMount() {
+    if (withDevTools) {
+      this.store = window.devToolsExtension(reducer);
+      this.store.subscribe(() => { this.setState(this.store.getState()); });
+    }
+  }
+
   dispatch(action) {
-    this.setState(reducer(this.state, action));
+    if (withDevTools) this.store.dispatch(action);
+    else this.setState(reducer(this.state, action));
   }
 
   increment() {
