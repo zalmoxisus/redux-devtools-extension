@@ -10,7 +10,7 @@ window.store = store;
 window.store.instances = {};
 window.store.setInstance = instance => {
   store.instance = instance;
-  store.liftedStore.setInstance(instance, true);
+  if (instance && instance !== 'auto') store.liftedStore.setInstance(instance, true);
 };
 
 chrome.commands.onCommand.addListener(shortcut => {
