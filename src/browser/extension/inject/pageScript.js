@@ -4,12 +4,8 @@ import { isAllowed } from '../options/syncOptions';
 import { getLocalFilter, isFiltered, filterState } from '../utils/filters';
 import notifyErrors from '../utils/notifyErrors';
 import importState from '../utils/importState';
-import toContentScript from '../utils/toContentScript';
+import { toContentScript, sendMessage } from '../utils/toContentScript';
 import openWindow from '../utils/openWindow';
-
-const monitorActions = [
-  'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE', 'IMPORT_STATE'
-];
 
 window.devToolsExtension = function(reducer, initialState, config) {
   /* eslint-disable no-param-reassign */
@@ -118,6 +114,10 @@ window.devToolsExtension = function(reducer, initialState, config) {
     return state;
   }
 
+  const monitorActions = [
+    'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE', 'IMPORT_STATE'
+  ];
+
   function handleChange(state, liftedState) {
     if (!isMonitored) return;
     const nextActionId = liftedState.nextActionId;
@@ -160,3 +160,4 @@ window.devToolsExtension = function(reducer, initialState, config) {
 
 window.devToolsExtension.open = openWindow;
 window.devToolsExtension.notifyErrors = notifyErrors;
+window.devToolsExtension.send = sendMessage;

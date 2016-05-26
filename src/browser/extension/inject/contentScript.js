@@ -42,9 +42,10 @@ window.addEventListener('message', function(event) {
   if (message.source !== '@devtools-page') return;
   if (message.payload) payload = message.payload;
   try {
-    if (message.type === 'INIT_INSTANCE') {
-      connect(message.name);
-    } else bg.postMessage({ name: 'RELAY', message });
+    if (!bg) connect(message.name);
+    if (message.type !== 'INIT_INSTANCE') {
+      bg.postMessage({ name: 'RELAY', message });
+    }
   } catch (err) {
     if (process.env.NODE_ENV !== 'production') console.error('Failed to send message', err);
   }
