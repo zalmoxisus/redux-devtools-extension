@@ -139,10 +139,10 @@ window.devToolsExtension = function(reducer, initialState, config) {
   }
 
   const enhance = () => (next) => {
-    return (reducer, initialState, enhancer) => {
-      if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState, enhancer);
+    return (reducer_, initialState_, enhancer_) => {
+      if (!isAllowed(window.devToolsOptions)) return next(reducer_, initialState_, enhancer_);
 
-      store = configureStore(next, monitorReducer, config)(reducer, initialState, enhancer);
+      store = configureStore(next, monitorReducer, config)(reducer_, initialState_, enhancer_);
       liftedStore = store.liftedStore;
 
       init();
