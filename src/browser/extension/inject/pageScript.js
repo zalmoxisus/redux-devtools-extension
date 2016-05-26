@@ -4,7 +4,7 @@ import { isAllowed } from '../options/syncOptions';
 import { getLocalFilter, isFiltered, filterState } from '../utils/filters';
 import notifyErrors from '../utils/notifyErrors';
 import importState from '../utils/importState';
-import { toContentScript, sendMessage } from '../utils/toContentScript';
+import { toContentScript, sendMessage } from '../utils/contentScriptMsg';
 import openWindow from '../utils/openWindow';
 
 window.devToolsExtension = function(reducer, initialState, config) {
