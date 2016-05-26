@@ -10,7 +10,7 @@ function dispatch(type, action, id, state) {
     'type: \'' + type + '\',' +
     'payload: ' + JSON.stringify(action) + ',' +
     'state: \'' + state + '\',' +
-    'source: \'redux-cs\'' +
+    'source: \'@devtools-extension\'' +
     '}, \'*\');',
     { useContentScriptContext: false }
   );
@@ -41,7 +41,7 @@ function init(id) {
   chrome.devtools.inspectedWindow.eval(
     'window.postMessage({' +
     'type: \'UPDATE\',' +
-    'source: \'redux-cs\'' +
+    'source: \'@devtools-extension\'' +
     '}, \'*\');'
   );
 

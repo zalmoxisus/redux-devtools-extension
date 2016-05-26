@@ -14,13 +14,13 @@ function connect(instance) {
   }
   bg.postMessage({name: 'INIT_INSTANCE', instance});
 
-  // Relay background script massages to the page script
+  // Relay background script messages to the page script
   bg.onMessage.addListener((message) => {
     if (message.action) {
       window.postMessage({
         type: message.type,
         payload: message.action,
-        source: 'redux-cs'
+        source: '@devtools-extension'
       }, '*');
     } else if (message.options) {
       injectOptions(message.options);
@@ -28,7 +28,7 @@ function connect(instance) {
       window.postMessage({
         type: message.type,
         state: message.state,
-        source: 'redux-cs'
+        source: '@devtools-extension'
       }, '*');
     }
   });
@@ -39,7 +39,7 @@ window.addEventListener('message', function(event) {
   if (!isAllowed()) return;
   if (!event || event.source !== window || typeof event.data !== 'object') return;
   const message = event.data;
-  if (message.source !== 'redux-page') return;
+  if (message.source !== '@devtools-page') return;
   if (message.payload) payload = message.payload;
   try {
     if (message.type === 'INIT_INSTANCE') {

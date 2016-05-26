@@ -32,7 +32,7 @@ window.devToolsExtension = function(reducer, initialState, config) {
     const message = {
       type,
       payload: filterState(state, type, localFilter, statesFilter, actionsFilter, nextActionId),
-      source: 'redux-page',
+      source: '@devtools-page',
       name: config.name || document.title
     };
 
@@ -59,7 +59,7 @@ window.devToolsExtension = function(reducer, initialState, config) {
   function onMessage(event) {
     if (!event || event.source !== window) return;
     const message = event.data;
-    if (!message || message.source !== 'redux-cs') return;
+    if (!message || message.source !== '@devtools-extension') return;
 
     switch (message.type) {
       case 'DISPATCH':
