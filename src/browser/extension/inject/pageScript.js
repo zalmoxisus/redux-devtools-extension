@@ -1,3 +1,4 @@
+import createStore from '../../../app/store/createStore';
 import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
 import { getLocalFilter, isFiltered, filterState } from '../utils/filters';
@@ -10,7 +11,11 @@ const monitorActions = [
   'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE', 'IMPORT_STATE'
 ];
 
-window.devToolsExtension = function(config = {}) {
+window.devToolsExtension = function(reducer, initialState, config) {
+  /* eslint-disable no-param-reassign */
+  if (typeof reducer === 'object') config = reducer;
+  else if (typeof config !== 'object') config = {};
+  /* eslint-enable no-param-reassign */
   if (!window.devToolsOptions) window.devToolsOptions = {};
 
   let store;
@@ -133,7 +138,7 @@ window.devToolsExtension = function(config = {}) {
     }
   }
 
-  return (next) => {
+  const enhance = () => (next) => {
     return (reducer, initialState, enhancer) => {
       if (!isAllowed(window.devToolsOptions)) return next(reducer, initialState, enhancer);
 
@@ -148,6 +153,9 @@ window.devToolsExtension = function(config = {}) {
       return store;
     };
   };
+
+  if (!reducer) return enhance();
+  return createStore(reducer, initialState, enhance);
 };
 
 window.devToolsExtension.open = openWindow;
