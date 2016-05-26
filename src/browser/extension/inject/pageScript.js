@@ -4,7 +4,7 @@ import { isAllowed } from '../options/syncOptions';
 import { getLocalFilter, isFiltered, filterState } from '../utils/filters';
 import notifyErrors from '../utils/notifyErrors';
 import importState from '../utils/importState';
-import { toContentScript, sendMessage } from '../utils/contentScriptMsg';
+import { toContentScript, sendMessage, addListener } from '../utils/contentScriptMsg';
 import openWindow from '../utils/openWindow';
 
 window.devToolsExtension = function(reducer, initialState, config) {
@@ -52,11 +52,7 @@ window.devToolsExtension = function(reducer, initialState, config) {
     }
   }
 
-  function onMessage(event) {
-    if (!event || event.source !== window) return;
-    const message = event.data;
-    if (!message || message.source !== '@devtools-extension') return;
-
+  function onMessage(message) {
     switch (message.type) {
       case 'DISPATCH':
         liftedStore.dispatch(message.payload);
@@ -83,12 +79,7 @@ window.devToolsExtension = function(reducer, initialState, config) {
   }
 
   function init() {
-    if (window.devToolsExtension.__listener) {
-      window.removeEventListener('message', window.devToolsExtension.__listener);
-    }
-    window.devToolsExtension.__listener = onMessage; // Prevent applying listener multiple times
-    window.addEventListener('message', onMessage, false);
-
+    addListener(onMessage);
     notifyErrors(() => {
       errorOccurred = true;
       const state = liftedStore.getState();
@@ -161,3 +152,4 @@ window.devToolsExtension = function(reducer, initialState, config) {
 window.devToolsExtension.open = openWindow;
 window.devToolsExtension.notifyErrors = notifyErrors;
 window.devToolsExtension.send = sendMessage;
+window.devToolsExtension.listen = addListener;

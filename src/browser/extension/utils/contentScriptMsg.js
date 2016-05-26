@@ -26,3 +26,17 @@ export function sendMessage(action, state, shouldStringify) {
     name: document.title
   }, shouldStringify);
 }
+
+let handleMessage;
+
+function listener(event) {
+  if (!event || event.source !== window) return;
+  const message = event.data;
+  if (!message || message.source !== '@devtools-extension') return;
+  handleMessage(message);
+}
+
+export function addListener(onMessage) {
+  handleMessage = onMessage;
+  window.addEventListener('message', listener, false);
+}
