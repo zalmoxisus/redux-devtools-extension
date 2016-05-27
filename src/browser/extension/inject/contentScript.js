@@ -19,6 +19,7 @@ function connect(instance) {
       window.postMessage({
         type: message.type,
         payload: message.action,
+        state: message.state,
         source: '@devtools-extension'
       }, '*');
     } else if (message.options) {
