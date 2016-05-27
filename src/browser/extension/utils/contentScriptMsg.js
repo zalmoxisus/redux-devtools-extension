@@ -40,3 +40,8 @@ export function addListener(onMessage) {
   handleMessage = onMessage;
   window.addEventListener('message', listener, false);
 }
+
+export function disconnect() {
+  window.removeEventListener('message', listener);
+  toContentScript({ type: 'DISCONNECT', source: '@devtools-page' });
+}

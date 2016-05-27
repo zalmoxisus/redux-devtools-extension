@@ -117,6 +117,7 @@ function onConnect(port) {
       if (window.store.instances[id]) {
         delete window.store.instances[id];
         window.store.liftedStore.deleteInstance(id);
+        updateMonitors();
       }
     };
   } else if (port.name === 'monitor') {

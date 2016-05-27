@@ -1,6 +1,5 @@
 import { getOptionsFromBg, injectOptions, isAllowed } from '../options/syncOptions';
 let bg;
-let payload;
 
 if (!window.devToolsOptions) getOptionsFromBg();
 
@@ -40,7 +39,11 @@ window.addEventListener('message', function(event) {
   if (!event || event.source !== window || typeof event.data !== 'object') return;
   const message = event.data;
   if (message.source !== '@devtools-page') return;
-  if (message.payload) payload = message.payload;
+  if (message.type === 'DISCONNECT') {
+    if (bg) { bg.disconnect(); bg = undefined; }
+    return;
+  }
+
   try {
     if (!bg) connect(message.name);
     if (message.type !== 'INIT_INSTANCE') {

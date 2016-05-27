@@ -4,7 +4,7 @@ import { isAllowed } from '../options/syncOptions';
 import { getLocalFilter, isFiltered, filterState } from '../utils/filters';
 import notifyErrors from '../utils/notifyErrors';
 import importState from '../utils/importState';
-import { toContentScript, sendMessage, addListener } from '../utils/contentScriptMsg';
+import { toContentScript, sendMessage, addListener, disconnect } from '../utils/contentScriptMsg';
 import openWindow from '../utils/openWindow';
 
 window.devToolsExtension = function(reducer, initialState, config) {
@@ -153,3 +153,4 @@ window.devToolsExtension.open = openWindow;
 window.devToolsExtension.notifyErrors = notifyErrors;
 window.devToolsExtension.send = sendMessage;
 window.devToolsExtension.listen = addListener;
+window.devToolsExtension.disconnect = disconnect;
