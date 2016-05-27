@@ -17,12 +17,20 @@ class Counter extends Component {
   componentWillMount() {
     if (withDevTools) {
       this.devTools = window.devToolsExtension.connect();
+      this.unsubscribe = this.devTools.subscribe((message) => {
+        // Implement monitors actions.
+        // For example time traveling:
+        if (message.type === 'DISPATCH' && message.payload.type === 'JUMP_TO_STATE') {
+          this.setState(message.state);
+        }
+      });
     }
   }
 
   componentWillUnmount() {
     if (withDevTools) {
-      window.devToolsExtension.disconnect();
+      this.unsubscribe(); // Use if you have other subscribers from other components.
+      window.devToolsExtension.disconnect(); // If there aren't other subscribers.
     }
   }
 
