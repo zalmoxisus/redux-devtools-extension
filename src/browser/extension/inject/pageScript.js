@@ -4,8 +4,10 @@ import { isAllowed } from '../options/syncOptions';
 import { getLocalFilter, isFiltered, filterState } from '../utils/filters';
 import notifyErrors from '../utils/notifyErrors';
 import importState from '../utils/importState';
-import { toContentScript, sendMessage, addListener, disconnect } from '../utils/contentScriptMsg';
 import openWindow from '../utils/openWindow';
+import {
+  toContentScript, sendMessage, setListener, disconnect, generateId
+} from '../utils/contentScriptMsg';
 
 window.devToolsExtension = function(reducer, initialState, config) {
   /* eslint-disable no-param-reassign */
@@ -21,6 +23,7 @@ window.devToolsExtension = function(reducer, initialState, config) {
   let errorOccurred = false;
   let isMonitored = false;
   let isExcess;
+  const instanceId = generateId(config.instanceId);
   const localFilter = getLocalFilter(config);
   const { statesFilter, actionsFilter } = config;
 
@@ -29,7 +32,7 @@ window.devToolsExtension = function(reducer, initialState, config) {
       type,
       payload: filterState(state, type, localFilter, statesFilter, actionsFilter, nextActionId),
       source: '@devtools-page',
-      name: config.name || document.title
+      id: instanceId
     };
 
     if (type === 'ACTION') {
@@ -38,6 +41,8 @@ window.devToolsExtension = function(reducer, initialState, config) {
       message.nextActionId = nextActionId;
     } else if (action) {
       message.action = action;
+    } else {
+      message.name = config.name || document.title;
     }
 
     if (shouldSerialize || window.devToolsOptions.serialize) {
@@ -79,7 +84,7 @@ window.devToolsExtension = function(reducer, initialState, config) {
   }
 
   function init() {
-    addListener(onMessage);
+    setListener(onMessage, instanceId);
     notifyErrors(() => {
       errorOccurred = true;
       const state = liftedStore.getState();
@@ -152,5 +157,5 @@ window.devToolsExtension = function(reducer, initialState, config) {
 window.devToolsExtension.open = openWindow;
 window.devToolsExtension.notifyErrors = notifyErrors;
 window.devToolsExtension.send = sendMessage;
-window.devToolsExtension.listen = addListener;
+window.devToolsExtension.listen = setListener;
 window.devToolsExtension.disconnect = disconnect;

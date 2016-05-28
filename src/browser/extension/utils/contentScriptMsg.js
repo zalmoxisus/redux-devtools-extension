@@ -1,5 +1,7 @@
 import { stringify } from 'jsan';
 
+const listeners = {};
+
 /*
 function stringify(obj) {
    return jsan.stringify(obj, function(key, value) {
@@ -9,6 +11,10 @@ function stringify(obj) {
 }
 */
 
+export function generateId(instanceId) {
+  return instanceId || Math.random().toString(36).substr(2);
+}
+
 export function toContentScript(message, shouldStringify) {
   if (shouldStringify) {
     if (message.payload) message.payload = stringify(message.payload);
@@ -17,31 +23,34 @@ export function toContentScript(message, shouldStringify) {
   window.postMessage(message, '*');
 }
 
-export function sendMessage(action, state, shouldStringify) {
+export function sendMessage(action, state, shouldStringify, id) {
   toContentScript({
     type: 'ACTION',
     action: typeof action === 'object' ? action : { type: action },
     payload: state,
     source: '@devtools-page',
-    name: document.title
+    name: document.title,
+    id
   }, shouldStringify);
 }
 
-let handleMessage;
-
-function listener(event) {
+function handleMessages(event) {
   if (!event || event.source !== window) return;
   const message = event.data;
   if (!message || message.source !== '@devtools-extension') return;
-  handleMessage(message);
+  Object.keys(listeners).forEach(id => {
+    if (message.id && id !== message.id) return;
+    if (typeof listeners[id] === 'function') listeners[id](message);
+    else listeners[id].forEach(fn => { fn(message); });
+  });
 }
 
-export function addListener(onMessage) {
-  handleMessage = onMessage;
-  window.addEventListener('message', listener, false);
+export function setListener(onMessage, instanceId) {
+  listeners[instanceId] = onMessage;
+  window.addEventListener('message', handleMessages, false);
 }
 
 export function disconnect() {
-  window.removeEventListener('message', listener);
+  window.removeEventListener('message', handleMessages);
   toContentScript({ type: 'DISCONNECT', source: '@devtools-page' });
 }

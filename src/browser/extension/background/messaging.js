@@ -4,6 +4,7 @@ import openDevToolsWindow from './openWindow';
 let panelConnections = {};
 let tabConnections = {};
 let monitorConnections = {};
+let instancesConn = {}
 let catchedErrors = {};
 let monitors = 0;
 let isMonitored = false;
@@ -49,7 +50,7 @@ function messaging(request, sender, sendResponse) {
       return true;
     }
 
-    request.id = tabId;
+    if (!instancesConn[request.id]) instancesConn[request.id] = tabId;
     const payload = updateState(store, request, handleInstancesChanged, store.instance);
     if (!payload) return true;
 
@@ -92,9 +93,7 @@ function getId(port) {
   return port.sender.tab ? port.sender.tab.id : port.sender.id;
 }
 
-function initInstance(port, id, msg) {
-  store.instances[id] = msg.instance;
-  store.id = id;
+function initInstance(port, id) {
   if (typeof id === 'number') chrome.pageAction.show(id);
   if (isMonitored) port.postMessage({ type: 'START' });
 }
@@ -108,17 +107,21 @@ function onConnect(port) {
   if (port.name === 'tab') {
     connections = tabConnections; id = getId(port);
     listener = msg => {
-      if (msg.name === 'INIT_INSTANCE') initInstance(port, id, msg);
+      if (msg.name === 'INIT_INSTANCE') initInstance(port, id);
       else if (msg.name === 'RELAY') messaging(msg.message, port.sender);
     };
     disconnect = () => {
       port.onMessage.removeListener(listener);
       if (panelConnections[id]) panelConnections[id].postMessage(naMessage);
-      if (window.store.instances[id]) {
-        delete window.store.instances[id];
-        window.store.liftedStore.deleteInstance(id);
-        updateMonitors();
-      }
+      delete tabConnections[id];
+      Object.keys(instancesConn).forEach(instance => {
+        if (instancesConn[instance] === id) {
+          window.store.liftedStore.deleteInstance(instance);
+          delete window.store.instances[instance];
+          delete instancesConn[instance];
+        }
+      });
+      updateMonitors();
     };
   } else if (port.name === 'monitor') {
     connections = monitorConnections; id = getId(port);
@@ -151,7 +154,7 @@ function onConnect(port) {
 chrome.runtime.onConnect.addListener(onConnect);
 chrome.runtime.onConnectExternal.addListener(onConnect);
 chrome.runtime.onMessage.addListener(messaging);
-chrome.runtime.onMessageExternal.addListener(messaging)
+chrome.runtime.onMessageExternal.addListener(messaging);
 
 chrome.notifications.onClicked.addListener(id => {
   chrome.notifications.clear(id);
@@ -159,12 +162,12 @@ chrome.notifications.onClicked.addListener(id => {
 });
 
 export function toContentScript(type, action, id, state) {
-  const message = { type, action, state };
+  const message = { type, action, state, id };
   if (id in panelConnections) {
     panelConnections[id].postMessage(message);
   }
-  if (id in tabConnections) {
-    tabConnections[id].postMessage(message);
+  if (instancesConn[id] in tabConnections) {
+    tabConnections[instancesConn[id]].postMessage(message);
   }
 }
 

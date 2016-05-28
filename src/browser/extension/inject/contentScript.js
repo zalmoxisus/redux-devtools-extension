@@ -3,7 +3,7 @@ let bg;
 
 if (!window.devToolsOptions) getOptionsFromBg();
 
-function connect(instance) {
+function connect() {
   // Connect to the background script
   const name = 'tab';
   if (window.devToolsExtensionID) {
@@ -11,7 +11,6 @@ function connect(instance) {
   } else {
     bg = chrome.runtime.connect({ name });
   }
-  bg.postMessage({name: 'INIT_INSTANCE', instance});
 
   // Relay background script messages to the page script
   bg.onMessage.addListener((message) => {
@@ -20,6 +19,7 @@ function connect(instance) {
         type: message.type,
         payload: message.action,
         state: message.state,
+        id: message.id,
         source: '@devtools-extension'
       }, '*');
     } else if (message.options) {
@@ -28,6 +28,7 @@ function connect(instance) {
       window.postMessage({
         type: message.type,
         state: message.state,
+        id: message.id,
         source: '@devtools-extension'
       }, '*');
     }
@@ -46,10 +47,9 @@ window.addEventListener('message', function(event) {
   }
 
   try {
-    if (!bg) connect(message.name);
-    if (message.type !== 'INIT_INSTANCE') {
-      bg.postMessage({ name: 'RELAY', message });
-    }
+    if (!bg) connect();
+    if (message.type === 'INIT_INSTANCE') bg.postMessage({ name: 'INIT_INSTANCE' });
+    else bg.postMessage({ name: 'RELAY', message });
   } catch (err) {
     if (process.env.NODE_ENV !== 'production') console.error('Failed to send message', err);
   }
