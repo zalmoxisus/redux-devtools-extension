@@ -54,3 +54,34 @@ export function disconnect() {
   window.removeEventListener('message', handleMessages);
   toContentScript({ type: 'DISCONNECT', source: '@devtools-page' });
 }
+
+export function connect(config = {}) {
+  const id = generateId(config.instanceId);
+
+  const subscribe = (listener) => {
+    if (!listener) return undefined;
+    if (!listeners[id]) listeners[id] = [];
+    listeners[id].push(listener);
+
+    return function unsubscribe() {
+      const index = listeners.indexOf(listener);
+      listeners[id].splice(index, 1);
+    };
+  };
+
+  const unsubscribe = (instanceId) => {
+    delete listeners[instanceId];
+  };
+
+  const send = (action, state) => sendMessage(action, state, config.shouldStringify, id);
+
+  window.addEventListener('message', handleMessages, false);
+
+  toContentScript({ type: 'INIT_INSTANCE', source: '@devtools-page' });
+
+  return {
+    subscribe,
+    unsubscribe,
+    send
+  };
+}

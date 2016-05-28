@@ -6,7 +6,7 @@ import notifyErrors from '../utils/notifyErrors';
 import importState from '../utils/importState';
 import openWindow from '../utils/openWindow';
 import {
-  toContentScript, sendMessage, setListener, disconnect, generateId
+  toContentScript, sendMessage, setListener, connect, disconnect, generateId
 } from '../utils/contentScriptMsg';
 
 window.devToolsExtension = function(reducer, initialState, config) {
@@ -158,4 +158,5 @@ window.devToolsExtension.open = openWindow;
 window.devToolsExtension.notifyErrors = notifyErrors;
 window.devToolsExtension.send = sendMessage;
 window.devToolsExtension.listen = setListener;
+window.devToolsExtension.connect = connect;
 window.devToolsExtension.disconnect = disconnect;
