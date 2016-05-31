@@ -9,7 +9,7 @@ import {
   toContentScript, sendMessage, setListener, connect, disconnect, generateId
 } from '../utils/contentScriptMsg';
 
-window.devToolsExtension = function(reducer, initialState, config) {
+window.devToolsExtension = function(reducer, preloadedState, config) {
   /* eslint-disable no-param-reassign */
   if (typeof reducer === 'object') {
     config = reducer; reducer = undefined;
@@ -152,7 +152,7 @@ window.devToolsExtension = function(reducer, initialState, config) {
   };
 
   if (!reducer) return enhance();
-  return createStore(reducer, initialState, enhance);
+  return createStore(reducer, preloadedState, enhance);
 };
 
 window.devToolsExtension.open = openWindow;
