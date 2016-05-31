@@ -11,8 +11,9 @@ import {
 
 window.devToolsExtension = function(reducer, initialState, config) {
   /* eslint-disable no-param-reassign */
-  if (typeof reducer === 'object') config = reducer;
-  else if (typeof config !== 'object') config = {};
+  if (typeof reducer === 'object') {
+    config = reducer; reducer = undefined;
+  } else if (typeof config !== 'object') config = {};
   /* eslint-enable no-param-reassign */
   if (!window.devToolsOptions) window.devToolsOptions = {};
 
