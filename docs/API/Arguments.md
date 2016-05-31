@@ -1,8 +1,8 @@
 # API Reference
 
 `window.devToolsExtension` function can be used in 2 ways:
- 1. [Apply as Redux store enhancer](#windowdevtoolsextensionconfig)
- 2. [Create Redux store right in the extension](#windowdevtoolsextensionreducer-initialstate-config).
+ 1. [Apply as a Redux store enhancer](#windowdevtoolsextensionconfig)
+ 2. [Create Redux store right in the extension](#windowdevtoolsextensionreducer-preloadedstate-config).
 
 
 ### `window.devToolsExtension([config])`

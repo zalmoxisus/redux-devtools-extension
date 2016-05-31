@@ -58,8 +58,8 @@
 
  - [FAQ](docs/FAQ.md)
  - [API](docs/API.md)
-  - [Apply as Redux store enhancer](docs/API.md#windowdevtoolsextensionconfig)
-  - [Create Redux store right in the extension](docs/API.md#windowdevtoolsextensionreducer-initialstate-config)
+  - [Apply as a Redux store enhancer](docs/API/Arguments.md#windowdevtoolsextensionconfig)
+  - [Create Redux store right in the extension](docs/API/Arguments.md#windowdevtoolsextensionreducer-preloadedstate-config)
 
 ## Videos
 
