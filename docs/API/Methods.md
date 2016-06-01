@@ -48,14 +48,14 @@ Send a new action and state manually to be shown on the monitor.
 
 ##### Arguments
 
-- [`config`] *Object* intended to be the same as for [Redux store enhancer](Arguments.md#windowdevtoolsextensionconfig). For now only `instanceId` should be specified.
+- [`config`] *Object* intended to be the same as for [Redux store enhancer](Arguments.md#windowdevtoolsextensionconfig). For now only `instanceId` and `shouldStringify` should be specified.
 
 ##### Returns
 *Object* containing the following methods:
 
 - `subscribe(listener)` - adds a change listener. It will be called any time an action is dispatched form the monitor.
 - `unsubscribe()` - unsubscribes the change listener. You can use [window.devToolsExtension.disconnect](#windowdevtoolsextensiondisconnect) to remove all listeners.
-- `send(action, state)` - sends a new action and state manually to be shown on the monitor.
+- `send(action, state)` - sends a new action and state manually to be shown on the monitor. If action is `null` then we suppose we send `liftedState`. 
 
 [See the example for an example on usage](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/examples/react-counter-messaging/components/Counter.js).
 

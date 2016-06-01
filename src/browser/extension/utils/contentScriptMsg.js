@@ -24,14 +24,20 @@ export function toContentScript(message, shouldStringify) {
 }
 
 export function sendMessage(action, state, shouldStringify, id) {
-  toContentScript({
-    type: 'ACTION',
-    action: typeof action === 'object' ? action : { type: action },
+  const message = {
     payload: state,
     source: '@devtools-page',
     name: document.title,
     id
-  }, shouldStringify);
+  };
+  if (action) {
+    message.type = 'ACTION';
+    message.action = typeof action === 'object' ? action : { type: action };
+  } else {
+    message.type = 'STATE';
+  }
+
+  toContentScript(message, shouldStringify);
 }
 
 function handleMessages(event) {
