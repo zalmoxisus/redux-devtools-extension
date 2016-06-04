@@ -10,7 +10,7 @@ chrome.runtime.getBackgroundPage(background => {
     else if (
       e.target.type === 'input' || e.target.type === 'text'
     ) value = Number(e.target.value);
-    else value = trim(e.target.value);
+    else value = e.target.value.trim();
     syncOptions.save(e.target.id, value);
   };
 
