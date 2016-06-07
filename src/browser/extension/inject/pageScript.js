@@ -19,7 +19,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
 
   let store;
   let liftedStore;
-  let shouldSerialize = false;
+  let shouldSerialize = config.serializeState || config.serializeAction;
   let lastAction;
   let errorOccurred = false;
   let isMonitored = false;
@@ -47,7 +47,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
     }
 
     if (shouldSerialize || window.devToolsOptions.serialize) {
-      toContentScript(message, true);
+      toContentScript(message, true, config.serializeState, config.serializeAction);
     } else {
       try {
         toContentScript(message);

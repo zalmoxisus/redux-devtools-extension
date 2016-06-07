@@ -24,6 +24,17 @@
       ```
   - **deserializeAction(action): transformedAction** (*function*) - optional transformation of actions deserialized from debug session (useful if actions are not plain object. Example: immutable-js action payload)
     - action, transformedAction - Redux action objects
+  - **serializeState(key, value): transformedState** (*function*) - optional serialization function (useful if state is not plain object. Example: for mori data structures)
+      Example of usage:
+      
+      ```js
+      const store = Redux.createStore(reducer, window.devToolsExtension && window.devToolsExtension({
+        serializeState: (key, value) => (
+          value && mori.isMap(value) ? mori.toJs(value) : value
+        )
+      }));
+      ```
+  - **serializeAction(key, value): transformedAction** (*function*) - optional serialization function (useful if actions are not plain object. Example: for mori data structures in actions payload)
   - **actionsBlacklist** (*array*) - actions to be hidden in DevTools. Overwrites corresponding global setting in the options page.
   - **actionsWhitelist** (*array*) - all other actions will be hidden in DevTools. Overwrites corresponding global setting in the options page.
   - **actionsFilter** (*function*) - function which takes `action` object and id number as arguments, and should return `action` object back. See the example bellow.

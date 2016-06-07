@@ -15,10 +15,10 @@ export function generateId(instanceId) {
   return instanceId || Math.random().toString(36).substr(2);
 }
 
-export function toContentScript(message, shouldStringify) {
+export function toContentScript(message, shouldStringify, serializeState, serializeAction) {
   if (shouldStringify) {
-    if (message.payload) message.payload = stringify(message.payload);
-    if (message.action) message.action = stringify(message.action);
+    if (message.payload) message.payload = stringify(message.payload, serializeState);
+    if (message.action) message.action = stringify(message.action, serializeAction);
   }
   window.postMessage(message, '*');
 }
