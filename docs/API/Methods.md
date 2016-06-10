@@ -24,6 +24,23 @@ Show notifications for uncaught exceptions.
 
 - [`onError`] *Function* to call when there's an exceptions.
 
+### window.devToolsExtension.updateStore(store)
+
+Specify a new `store` object to be used by the extension. For example, in case of Redux Saga we can use like this:
+ 
+```js
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(
+  reducer,
+  compose(
+    applyMiddleware(sagaMiddleware),
+    window.devToolsExtension && window.devToolsExtension()
+  )
+);
+sagaMiddleware.run(rootSaga);
+if (window.devToolsExtension) window.devToolsExtension.updateStore(store);
+```
+
 ### window.devToolsExtension.send(action, state, [shouldStringify, instanceId])
 
 Send a new action and state manually to be shown on the monitor.

@@ -9,6 +9,8 @@ import {
   toContentScript, sendMessage, setListener, connect, disconnect, generateId
 } from '../utils/contentScriptMsg';
 
+let store;
+
 window.devToolsExtension = function(reducer, preloadedState, config) {
   /* eslint-disable no-param-reassign */
   if (typeof reducer === 'object') {
@@ -17,8 +19,6 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
   /* eslint-enable no-param-reassign */
   if (!window.devToolsOptions) window.devToolsOptions = {};
 
-  let store;
-  let liftedStore;
   let shouldSerialize = config.serializeState || config.serializeAction;
   let lastAction;
   let errorOccurred = false;
@@ -61,7 +61,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
   function onMessage(message) {
     switch (message.type) {
       case 'DISPATCH':
-        liftedStore.dispatch(message.payload);
+        store.liftedStore.dispatch(message.payload);
         return;
       case 'ACTION':
         store.dispatch(message.payload);
@@ -69,15 +69,15 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
       case 'IMPORT':
         const nextLiftedState = importState(message.state, config);
         if (!nextLiftedState) return;
-        liftedStore.dispatch({type: 'IMPORT_STATE', nextLiftedState});
-        relay('STATE', liftedStore.getState());
+        store.liftedStore.dispatch({type: 'IMPORT_STATE', nextLiftedState});
+        relay('STATE', store.liftedStore.getState());
         return;
       case 'UPDATE':
-        relay('STATE', liftedStore.getState());
+        relay('STATE', store.liftedStore.getState());
         return;
       case 'START':
         isMonitored = true;
-        relay('STATE', liftedStore.getState());
+        relay('STATE', store.liftedStore.getState());
         return;
       case 'STOP':
         isMonitored = false;
@@ -88,7 +88,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
     setListener(onMessage, instanceId);
     notifyErrors(() => {
       errorOccurred = true;
-      const state = liftedStore.getState();
+      const state = store.liftedStore.getState();
       if (state.computedStates[state.currentStateIndex].error) {
         relay('STATE', state);
         return false;
@@ -102,10 +102,10 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
   function monitorReducer(state = {}, action) {
     if (!isMonitored) return state;
     lastAction = action.type;
-    if (lastAction === '@@redux/INIT' && liftedStore) {
+    if (lastAction === '@@redux/INIT' && store.liftedStore) {
       // Send new lifted state on hot-reloading
       setTimeout(() => {
-        relay('STATE', liftedStore.getState());
+        relay('STATE', store.liftedStore.getState());
       }, 0);
     }
     return state;
@@ -140,12 +140,10 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
       if (!isAllowed(window.devToolsOptions)) return next(reducer_, initialState_, enhancer_);
 
       store = configureStore(next, monitorReducer, config)(reducer_, initialState_, enhancer_);
-      liftedStore = store.liftedStore;
 
       init();
       store.subscribe(() => {
-        if (liftedStore !== store.liftedStore) liftedStore = store.liftedStore;
-        handleChange(store.getState(), liftedStore.getState());
+        handleChange(store.getState(), store.liftedStore.getState());
       });
       return store;
     };
@@ -161,3 +159,5 @@ window.devToolsExtension.send = sendMessage;
 window.devToolsExtension.listen = setListener;
 window.devToolsExtension.connect = connect;
 window.devToolsExtension.disconnect = disconnect;
+
+window.devToolsExtension.updateStore = (newStore) => { store = newStore; };
