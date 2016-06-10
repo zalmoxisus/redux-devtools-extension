@@ -22,6 +22,8 @@ const store = createStore(
 )
 sagaMiddleware.run(rootSaga)
 
+if (window.devToolsExtension) window.devToolsExtension.updateStore(store)
+
 const action = type => store.dispatch({type})
 
 function render() {
