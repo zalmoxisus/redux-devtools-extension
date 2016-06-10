@@ -3,7 +3,7 @@ import "babel-polyfill"
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 // import sagaMonitor from './sagaMonitor'
 
@@ -15,7 +15,10 @@ import rootSaga from './sagas'
 const sagaMiddleware = createSagaMiddleware(/* {sagaMonitor} */)
 const store = createStore(
   reducer,
-  applyMiddleware(sagaMiddleware)
+  compose(
+    applyMiddleware(sagaMiddleware),
+    window.devToolsExtension && window.devToolsExtension()
+  )
 )
 sagaMiddleware.run(rootSaga)
 
