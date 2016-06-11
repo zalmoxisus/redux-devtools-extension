@@ -58,8 +58,8 @@
 
 ## Documentation
 
- - [FAQ](docs/FAQ.md)
- - API Reference
+- [FAQ](docs/FAQ.md)
+- API Reference
   - [Apply as a Redux store enhancer](docs/API/Arguments.md#windowdevtoolsextensionconfig)
   - [Create Redux store right in the extension](docs/API/Arguments.md#windowdevtoolsextensionreducer-preloadedstate-config)
   - [Communicate with the extension directly](docs/API/Methods.md)
@@ -68,7 +68,9 @@
     - [send](docs/API/Methods.md#windowdevtoolsextensionlistenonmessage-instanceid)
     - [connect](docs/API/Methods.md#windowdevtoolsextensionconnectconfig)
     - [disconnect](docs/API/Methods.md#windowdevtoolsextensiondisconnect)
-  - [Troubleshooting](docs/Troubleshooting.md)
+- [Troubleshooting](docs/Troubleshooting.md)
+- [Change Log](https://github.com/zalmoxisus/redux-devtools-extension/releases)
+- [Feedback](https://github.com/zalmoxisus/redux-devtools-extension/releases)
 
 ##📺 Videos
 
