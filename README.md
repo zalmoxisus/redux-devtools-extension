@@ -67,10 +67,11 @@
     - [connect](docs/API/Methods.md#windowdevtoolsextensionconnectconfig)
     - [disconnect](docs/API/Methods.md#windowdevtoolsextensiondisconnect)
 
-## Videos
+##📺 Videos
 
+- [Debugging flux applications in production at React Europe 2016](https://youtu.be/cbXLohVbzNI)
+- [Hot Reloading with Time Travel at React Europe 2015](https://youtu.be/xsSnOQynTHs)
 - [Getting Started with Redux DevTools Extension](https://egghead.io/lessons/javascript-getting-started-with-redux-dev-tools)
-- [Live React: Hot Reloading with Time Travel at React Europe 2015](https://youtu.be/xsSnOQynTHs)
 
 ## Demo
 Open these urls to test the extension:
