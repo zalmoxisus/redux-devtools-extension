@@ -50,14 +50,16 @@
   ```js
   { !window.devToolsExtension ? <DevTools /> : null }
   ```
+  
+  Note: passing enhancer as last argument requires redux@>=3.1.0. For older versions apply it like [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/todomvc/store/configureStore.js) or [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/counter/store/configureStore.js#L7-L12).
 
 #### For React Native, hybrid, desktop and server side Redux apps
-  Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools), and on the extension's context choose 'Open Remote DevTools' or press Alt+Shift+arrow up for remote monitoring.
+  Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools), and from the extension's context menu choose 'Open Remote DevTools' or press Alt+Shift+arrow up for remote monitoring.
 
 ## Documentation
 
  - [FAQ](docs/FAQ.md)
- - API
+ - API Reference
   - [Apply as a Redux store enhancer](docs/API/Arguments.md#windowdevtoolsextensionconfig)
   - [Create Redux store right in the extension](docs/API/Arguments.md#windowdevtoolsextensionreducer-preloadedstate-config)
   - [Communicate with the extension directly](docs/API/Methods.md)
@@ -66,6 +68,7 @@
     - [send](docs/API/Methods.md#windowdevtoolsextensionlistenonmessage-instanceid)
     - [connect](docs/API/Methods.md#windowdevtoolsextensionconnectconfig)
     - [disconnect](docs/API/Methods.md#windowdevtoolsextensiondisconnect)
+  - [Troubleshooting](docs/Troubleshooting.md)
 
 ##📺 Videos
 
