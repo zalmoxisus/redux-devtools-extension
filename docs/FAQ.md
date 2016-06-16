@@ -1,13 +1,27 @@
 # Redux DevTools Extension FAQ
 
+## Table of Contents
+- [How to get it work](#how-to-get-it-work)
+- [How to filter actions](#how-to-filter-actions)
+- [How to disable/enable it in production](#how-to-disableenable-it-in-production)
+- [How to persist debug sessions across page reloads](#how-to-persist-debug-sessions-across-page-reloads)
+- [How to include it in chrome apps and extensions](#how-to-include-it-in-chrome-apps-and-extensions)
+- [How to open DevTools programmatically](#how-to-open-devtools-programmatically)
+- [How to keep DevTools window focused all the time in a chrome panel](#how-to-open-devtools-programmatically)
+- [How to include DevTools in the page](#how-to-include-devtools-in-the-page)
+- [How to enable/disable errors notifying](#how-to-enabledisable-errors-notifying)
+- [How to get it work with WebWorkers, React Native, hybrid, desktop and server side apps](#how-to-get-it-work-with-webworkers-react-native-hybrid-desktop-and-server-side-apps)
+- [Keyboard shortcuts](#keyboard-shortcuts)
+- [How to change keyboard shortcuts](#how-to-change-keyboard-shortcuts)
+
 #### How to get it work
-- Test the extension with [Counter](http://zalmoxisus.github.io/redux-devtools-extension/examples/counter/) or [TodoMVC](http://zalmoxisus.github.io/redux-devtools-extension/examples/todomvc/) demo.
+- Check the extension with [Counter](http://zalmoxisus.github.io/redux-devtools-extension/examples/counter/) or [TodoMVC](http://zalmoxisus.github.io/redux-devtools-extension/examples/todomvc/) demo.
 - Reload the extension on the extensions page (`chrome://extensions/`).
 - If something goes wrong, [open an issue](https://github.com/zalmoxisus/redux-devtools-extension/issues) or tweet me: [@mdiordiev](https://twitter.com/mdiordiev).
 
 #### How to filter actions
 On the options page you may enable actions filtering and specify either actions to be hidden or shown in DevTools. If the latter is specified, other than those actions will be hidden.
-You can overwrite theese settings for an individual project using `actionsBlacklist` and `actionsWhitelist` [config options](#API).
+You can overwrite these settings for an individual project using `actionsBlacklist` and `actionsWhitelist` [config options](#API).
 #### How to disable/enable it in production
 A good practice (for other libraries as React as well) is to have a global variable set in webpack config, which indicates the environment like
 ```js
@@ -52,6 +66,7 @@ To include it in a chrome extension's content script follow [the example](https:
 ```js
 window.devToolsExtension.open();
 ```
+See the [API details](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Methods.md#windowdevtoolsextensionopenposition).
 #### How to keep DevTools window focused all the time in a chrome panel
 To enable chrome panels feature in Chrome, type in `chrome://flags/#enable-panels` in the url bar and click on "enable" under "enable panels". Make sure to click on "relaunch now " at the bottom of the page, to take effect.
 #### How to include DevTools in the page
