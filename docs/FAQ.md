@@ -9,7 +9,37 @@
 On the options page you may enable actions filtering and specify either actions to be hidden or shown in DevTools. If the latter is specified, other than those actions will be hidden.
 You can overwrite theese settings for an individual project using `actionsBlacklist` and `actionsWhitelist` [config options](#API).
 #### How to disable/enable it in production
-On the options page you may enable the extension to be injected in all pages or you may specify the pages urls to be injected in. Use regex values and new line as a separator. A good practice would be to add a condition for including the extension - a variable in localStorage or a url query, which will use only the developers.
+A good practice (for other libraries as React as well) is to have a global variable set in webpack config, which indicates the environment like
+```js
+globals: {
+    'process.env': {
+      NODE_ENV: '"production"'
+    }
+  }
+```
+
+and you can use the extension as follows:
+```js
+export default function configureStore(preloadedState) {
+  const store = createStore(reducer, preloadedState,
+    process.env.NODE_ENV !== 'production' &&
+    typeof window !== 'undefined' && window.devToolsExtension &&
+    window.devToolsExtension()
+  );
+  return store;
+}
+```
+If you want to use the extension in production, add a condition for including the extension (an url query parameter for example), which will use only the developers:
+```js
+export default function configureStore(preloadedState) {
+  const store = createStore(reducer, preloadedState,
+    (process.env.NODE_ENV !== 'production' || /debug/.test(location.href)) &&
+    typeof window !== 'undefined' && window.devToolsExtension &&
+    window.devToolsExtension()
+  );
+  return store;
+}
+```
 #### How to persist debug sessions across page reloads
 Just add `?debug_session=<session_name>` to the url.
 #### How to include it in chrome apps and extensions
