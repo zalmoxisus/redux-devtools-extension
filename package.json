@@ -55,13 +55,13 @@
   "dependencies": {
     "jsan": "^3.1.1",
     "lodash": "^4.2.0",
-    "react": "^15.0.2",
-    "react-dom": "^15.0.2",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
     "react-icons": "^2.0.1",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-devtools": "^3.3.1",
     "redux-devtools-instrument": "^1.0.1",
-    "remotedev-app": "^0.4.0"
+    "remotedev-app": "^0.4.2"
   }
 }
