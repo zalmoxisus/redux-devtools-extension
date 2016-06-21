@@ -67,6 +67,7 @@ export default class App extends Component {
     const { store } = this.props;
     const instances = store.instances;
     const { instance, monitor } = this.state;
+    const onElectron = navigator.userAgent.indexOf('Electron') !== -1;
     return (
       <div style={styles.container}>
           <div style={styles.buttonBar}>
@@ -86,19 +87,19 @@ export default class App extends Component {
           />
         }
         <div style={styles.buttonBar}>
-          {monitorPosition !== 'left' &&
+          {!onElectron && monitorPosition !== 'left' &&
             <Button
               Icon={LeftIcon}
               onClick={() => { this.openWindow('left'); }}
             />
           }
-          {monitorPosition !== 'right' &&
+          {!onElectron && monitorPosition !== 'right' &&
             <Button
               Icon={RightIcon}
               onClick={() => { this.openWindow('right'); }}
             />
           }
-          {monitorPosition !== 'bottom' &&
+          {!onElectron && monitorPosition !== 'bottom' &&
             <Button
               Icon={BottomIcon}
               onClick={() => { this.openWindow('bottom'); }}
@@ -110,10 +111,12 @@ export default class App extends Component {
           <SliderButton isOpen={this.state.sliderIsOpen} onClick={this.toggleSlider} />
           <ImportButton importState={store.liftedStore.importState} />
           <ExportButton exportState={store.liftedStore.getState} />
-          <Button
-            Icon={RemoteIcon}
-            onClick={() => { this.openWindow('remote'); }}
-          >Remote</Button>
+          {!onElectron &&
+            <Button
+              Icon={RemoteIcon}
+              onClick={() => { this.openWindow('remote'); }}
+            >Remote</Button>
+          }
           {chrome.runtime.openOptionsPage &&
             <Button
               Icon={SettingsIcon}
