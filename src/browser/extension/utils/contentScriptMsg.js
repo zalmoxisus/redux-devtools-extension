@@ -91,3 +91,13 @@ export function connect(config = {}) {
     send
   };
 }
+
+export function updateStore(stores) {
+  return function(newStore, instanceId) {
+    const store = stores[instanceId || Object.keys(stores)[0]];
+    // Mutate the store in order to keep the reference
+    store.liftedStore = newStore.liftedStore;
+    store.getState = newStore.getState;
+    store.dispatch = newStore.dispatch;
+  };
+}

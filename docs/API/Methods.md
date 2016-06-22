@@ -24,7 +24,7 @@ Show notifications for uncaught exceptions.
 
 - [`onError`] *Function* to call when there's an exceptions.
 
-### window.devToolsExtension.updateStore(store)
+### window.devToolsExtension.updateStore(store, instanceId)
 
 Specify a new `store` object to be used by the extension. For example, in case of Redux Saga we can use like this:
  
@@ -40,6 +40,11 @@ const store = createStore(
 sagaMiddleware.run(rootSaga);
 if (window.devToolsExtension) window.devToolsExtension.updateStore(store);
 ```
+
+##### Arguments
+
+- `store` *Object* to update.
+- [`instanceId`] *String* - instance id for which to update the store (in case your specified it in the config).  
 
 ### window.devToolsExtension.send(action, state, [shouldStringify, instanceId])
 

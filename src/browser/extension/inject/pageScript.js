@@ -6,10 +6,10 @@ import notifyErrors from '../utils/notifyErrors';
 import importState from '../utils/importState';
 import openWindow from '../utils/openWindow';
 import {
-  toContentScript, sendMessage, setListener, connect, disconnect, generateId
+  updateStore, toContentScript, sendMessage, setListener, connect, disconnect, generateId
 } from '../utils/contentScriptMsg';
 
-let store;
+let stores = {};
 
 window.devToolsExtension = function(reducer, preloadedState, config) {
   /* eslint-disable no-param-reassign */
@@ -19,6 +19,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
   /* eslint-enable no-param-reassign */
   if (!window.devToolsOptions) window.devToolsOptions = {};
 
+  let store;
   let shouldSerialize = config.serializeState || config.serializeAction;
   let lastAction;
   let errorOccurred = false;
@@ -139,7 +140,8 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
     return (reducer_, initialState_, enhancer_) => {
       if (!isAllowed(window.devToolsOptions)) return next(reducer_, initialState_, enhancer_);
 
-      store = configureStore(next, monitorReducer, config)(reducer_, initialState_, enhancer_);
+      store = stores[instanceId] =
+        configureStore(next, monitorReducer, config)(reducer_, initialState_, enhancer_);
 
       init();
       store.subscribe(() => {
@@ -154,10 +156,9 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
 };
 
 window.devToolsExtension.open = openWindow;
+window.devToolsExtension.updateStore = updateStore(stores);
 window.devToolsExtension.notifyErrors = notifyErrors;
 window.devToolsExtension.send = sendMessage;
 window.devToolsExtension.listen = setListener;
 window.devToolsExtension.connect = connect;
 window.devToolsExtension.disconnect = disconnect;
-
-window.devToolsExtension.updateStore = (newStore) => { store = newStore; };
