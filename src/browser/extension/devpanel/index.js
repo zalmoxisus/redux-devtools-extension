@@ -30,7 +30,7 @@ function showDevTools() {
       rendered = true;
     } catch (error) {
       render(
-        <div>{error.toString()}</div>,
+        <pre>{error.stack}</pre>,
         document.getElementById('root')
       );
     }
