@@ -9,6 +9,7 @@ import DispatcherButton from 'remotedev-app/lib/components/buttons/DispatcherBut
 import SliderButton from 'remotedev-app/lib/components/buttons/SliderButton';
 import ImportButton from 'remotedev-app/lib/components/buttons/ImportButton';
 import ExportButton from 'remotedev-app/lib/components/buttons/ExportButton';
+import TestGenerator from 'remotedev-app/lib/components/TestGenerator';
 import SettingsIcon from 'react-icons/lib/md/settings';
 import LeftIcon from 'react-icons/lib/md/border-left';
 import RightIcon from 'react-icons/lib/md/border-right';
@@ -18,10 +19,16 @@ import RemoteIcon from 'react-icons/lib/go/radio-tower';
 const monitorPosition = location.hash;
 
 let monitor;
+let selectedTemplate;
+let testTemplates;
 chrome.storage.local.get({
-  ['monitor' + monitorPosition]: 'InspectorMonitor'
+  ['monitor' + monitorPosition]: 'InspectorMonitor',
+  'test-templates': null,
+  'test-templates-sel': null
 }, options => {
   monitor = options['monitor' + monitorPosition];
+  selectedTemplate = options['test-templates-sel'];
+  testTemplates = options['test-templates'];
 });
 
 @enhance
@@ -36,6 +43,14 @@ export default class App extends Component {
     dispatcherIsOpen: false,
     sliderIsOpen: false
   };
+
+  componentWillMount() {
+    this.testComponent = (
+      <TestGenerator
+        testTemplates={testTemplates} selectedTemplate={selectedTemplate} useCodemirror
+      />
+    );
+  }
 
   handleSelectMonitor = (event, index, value) => {
     this.setState({ monitor: value });
@@ -72,7 +87,12 @@ export default class App extends Component {
               <Instances instances={instances} onSelect={this.handleSelectInstance} selected={instance} />
             }
           </div>
-        <DevTools monitor={monitor} store={store} key={`${monitor}-${instance}`} />
+        <DevTools
+          monitor={monitor}
+          store={store}
+          testComponent={this.testComponent}
+          key={`${monitor}-${instance}`}
+        />
         {this.state.sliderIsOpen && <div style={styles.sliderMonitor}>
           <DevTools monitor="SliderMonitor" store={store} key={`Slider-${instance}`} />
         </div>}
