@@ -17,16 +17,12 @@ import RemoteIcon from 'react-icons/lib/go/radio-tower';
 
 const monitorPosition = location.hash;
 
-// Mock localStorage when it is not allowed
-let localStorage;
-try {
-  localStorage = window.localStorage;
-} catch (error) {
-  localStorage = {
-    getItem: key => undefined,
-    setItem: () => {}
-  };
-}
+let monitor;
+chrome.storage.local.get({
+  ['monitor' + monitorPosition]: 'InspectorMonitor'
+}, options => {
+  monitor = options['monitor' + monitorPosition];
+});
 
 @enhance
 export default class App extends Component {
@@ -35,7 +31,7 @@ export default class App extends Component {
   };
 
   state = {
-    monitor: localStorage.getItem('monitor' + monitorPosition),
+    monitor,
     instance: 'auto',
     dispatcherIsOpen: false,
     sliderIsOpen: false
@@ -43,7 +39,7 @@ export default class App extends Component {
 
   handleSelectMonitor = (event, index, value) => {
     this.setState({ monitor: value });
-    localStorage.setItem('monitor' + monitorPosition, value);
+    chrome.storage.local.set({ ['monitor' + monitorPosition]: value });
   };
 
   handleSelectInstance = (event, index, value) => {
