@@ -98,7 +98,7 @@ gulp.task('copy:build:firefox', ['build:extension'], () => {
       gulp.src('./src/browser/firefox/manifest.json')
         .pipe(gulp.dest('./build/firefox'));
     });
-  copy('./build/extension');
+  copy('./build/firefox');
 });
 
 /*
