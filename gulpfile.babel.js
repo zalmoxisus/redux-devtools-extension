@@ -89,7 +89,7 @@ gulp.task('copy:build:extension', () => {
   gulp.src('./src/browser/extension/manifest.json')
     .pipe(rename('manifest.json'))
     .pipe(gulp.dest('./build/extension'));
-  copy('./dev');
+  copy('./build/extension');
 });
 
 gulp.task('copy:build:firefox', ['build:extension'], () => {
@@ -98,7 +98,7 @@ gulp.task('copy:build:firefox', ['build:extension'], () => {
       gulp.src('./src/browser/firefox/manifest.json')
         .pipe(gulp.dest('./build/firefox'));
     });
-  copy('./dev');
+  copy('./build/extension');
 });
 
 /*
