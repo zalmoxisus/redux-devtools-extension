@@ -21,15 +21,24 @@ const monitorPosition = location.hash;
 let monitor;
 let selectedTemplate;
 let testTemplates;
-chrome.storage.local.get({
-  ['monitor' + monitorPosition]: 'InspectorMonitor',
-  'test-templates': null,
-  'test-templates-sel': null
-}, options => {
-  monitor = options['monitor' + monitorPosition];
-  selectedTemplate = options['test-templates-sel'];
-  testTemplates = options['test-templates'];
-});
+
+// Electron: Not supported some chrome.* API
+if (chrome.storage.local) {
+  chrome.storage.local.get({
+    ['monitor' + monitorPosition]: 'InspectorMonitor',
+    'test-templates': null,
+    'test-templates-sel': null
+  }, options => {
+    monitor = options['monitor' + monitorPosition];
+    selectedTemplate = options['test-templates-sel'];
+    testTemplates = options['test-templates'];
+  });
+} else {
+  monitor = localStorage.getItem('monitor' + monitorPosition]) || 'InspectorMonitor';
+  selectedTemplate = localStorage.getItem('test-templates-sel');
+  testTemplates = localStorage.getItem('test-templates');
+}
+
 
 @enhance
 export default class App extends Component {
@@ -54,7 +63,13 @@ export default class App extends Component {
 
   handleSelectMonitor = (event, index, value) => {
     this.setState({ monitor: value });
-    chrome.storage.local.set({ ['monitor' + monitorPosition]: value });
+
+    // Electron: Not supported some chrome.* API
+    if (chrome.storage.local) {
+      chrome.storage.local.set({ ['monitor' + monitorPosition]: value });
+    } else {
+      localStorage.setItem('monitor' + monitorPosition, value);
+    }
   };
 
   handleSelectInstance = (event, index, value) => {
