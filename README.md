@@ -12,6 +12,8 @@
 #### 2. Use with [Redux](https://github.com/rackt/redux)
   Just update your [configureStore](https://github.com/zalmoxisus/redux-devtools-extension/commit/9c631ef66f53e51f34b55f4642bd9ff2cbc7a992):
   ```javascript
+  import { createStore, applyMiddleware, compose } from 'redux';
+  
   export default function configureStore(initialState) {
     const store = createStore(reducer, initialState, compose(
       applyMiddleware(...middleware)
