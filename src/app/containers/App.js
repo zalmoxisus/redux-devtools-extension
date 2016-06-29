@@ -18,7 +18,7 @@ import RemoteIcon from 'react-icons/lib/go/radio-tower';
 
 const monitorPosition = location.hash;
 
-let monitor;
+let initialMonitor;
 let selectedTemplate;
 let testTemplates;
 
@@ -29,12 +29,12 @@ if (chrome.storage.local) {
     'test-templates': null,
     'test-templates-sel': null
   }, options => {
-    monitor = options['monitor' + monitorPosition];
+    initialMonitor = options['monitor' + monitorPosition];
     selectedTemplate = options['test-templates-sel'];
     testTemplates = options['test-templates'];
   });
 } else {
-  monitor = localStorage.getItem('monitor' + monitorPosition]) || 'InspectorMonitor';
+  initialMonitor = localStorage.getItem('monitor' + monitorPosition) || 'InspectorMonitor';
   selectedTemplate = localStorage.getItem('test-templates-sel');
   testTemplates = localStorage.getItem('test-templates');
 }
@@ -47,7 +47,7 @@ export default class App extends Component {
   };
 
   state = {
-    monitor,
+    monitor: initialMonitor,
     instance: 'auto',
     dispatcherIsOpen: false,
     sliderIsOpen: false
