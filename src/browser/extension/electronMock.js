@@ -29,14 +29,18 @@ if (window.isElectron) {
       Object.keys(obj).forEach(key => {
         localStorage.setItem(key, obj[key]);
       });
-      callback();
+      if (callback) {
+        callback();
+      }
     },
     get(obj, callback) {
       const result = {};
       Object.keys(obj).forEach(key => {
         result[key] = localStorage.getItem(key) || obj[key];
       });
-      callback(result);
+      if (callback) {
+        callback(result);
+      }
     }
   };
 }
