@@ -15,6 +15,7 @@
     "clean": "rm -rf build/ && rm -rf dev/",
     "lint": "eslint .",
     "test:app": "BABEL_ENV=test mocha  --require test/app/setup.js --recursive test/app",
+    "test:chrome": "npm run build:extension && gulp test:chrome",
     "test": "npm run test:app"
   },
   "repository": {
@@ -40,12 +41,14 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "chromedriver": "^2.19.0",
+    "co-mocha": "^1.1.2",
     "eslint": "^1.7.1",
     "eslint-config-airbnb": "^0.1.0",
     "eslint-plugin-react": "^3.2.3",
     "expect": "^1.20.1",
     "gulp": "^3.9.0",
     "gulp-jade": "1.1.0",
+    "gulp-mocha": "^2.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.6",
     "gulp-zip": "^3.0.2",
@@ -55,7 +58,7 @@
     "react-addons-test-utils": "^15.1.0",
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.1",
-    "selenium-webdriver": "^2.48.0",
+    "selenium-webdriver": "^2.53.3",
     "sinon-chrome": "^1.1.2",
     "style-loader": "^0.12.4",
     "webpack": "^1.12.2"
