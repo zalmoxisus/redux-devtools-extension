@@ -17,7 +17,7 @@ chrome.runtime.getBackgroundPage(background => {
   const isValidRegex = str => {
     let isValid = true;
     try {
-      new RegExp(str);
+      new RegExp(str); // eslint-disable-line no-new
     } catch (e) {
       isValid = false;
     }
