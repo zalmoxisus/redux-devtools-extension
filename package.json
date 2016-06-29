@@ -4,7 +4,7 @@
   "description": "DevTools extension for Redux",
   "scripts": {
     "start": "gulp",
-    "prebuild:extension": "npm run lint",
+    "prebuild:extension": "npm run lint && npm run test",
     "prebuild:firefox": "npm run lint",
     "prebuild:examples": "npm run lint",
     "build:extension": "BABEL_ENV=production gulp build:extension",
@@ -13,7 +13,9 @@
     "compress:extension": "npm run build:extension && gulp compress:extension",
     "compress:firefox": "npm run build:firefox && gulp compress:firefox",
     "clean": "rm -rf build/ && rm -rf dev/",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:app": "BABEL_ENV=test mocha  --require test/app/setup.js --recursive test/app",
+    "test": "npm run test:app"
   },
   "repository": {
     "type": "git",
@@ -41,17 +43,20 @@
     "eslint": "^1.7.1",
     "eslint-config-airbnb": "^0.1.0",
     "eslint-plugin-react": "^3.2.3",
-    "expect": "^1.12.2",
+    "expect": "^1.20.1",
     "gulp": "^3.9.0",
     "gulp-jade": "1.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.6",
     "gulp-zip": "^3.0.2",
+    "jsdom": "^9.3.0",
     "mocha": "^2.3.3",
     "raw-loader": "^0.5.1",
+    "react-addons-test-utils": "^15.1.0",
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.1",
     "selenium-webdriver": "^2.48.0",
+    "sinon-chrome": "^1.1.2",
     "style-loader": "^0.12.4",
     "webpack": "^1.12.2"
   },
