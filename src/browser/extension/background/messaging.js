@@ -4,7 +4,7 @@ import openDevToolsWindow from './openWindow';
 let panelConnections = {};
 let tabConnections = {};
 let monitorConnections = {};
-let instancesConn = {}
+let instancesConn = {};
 let catchedErrors = {};
 let monitors = 0;
 let isMonitored = false;
@@ -41,13 +41,15 @@ function messaging(request, sender, sendResponse) {
     }
     if (request.type === 'ERROR') {
       // Electron: Not supported some chrome.* API
-      chrome.notifications && chrome.notifications.create('app-error', {
-        type: 'basic',
-        title: 'An error occurred in the app',
-        message: request.message,
-        iconUrl: 'img/logo/48x48.png',
-        isClickable: false
-      });
+      if (chrome.notifications) {
+        chrome.notifications.create('app-error', {
+          type: 'basic',
+          title: 'An error occurred in the app',
+          message: request.message,
+          iconUrl: 'img/logo/48x48.png',
+          isClickable: false
+        });
+      }
       return true;
     }
 
@@ -156,16 +158,19 @@ chrome.runtime.onConnect.addListener(onConnect);
 chrome.runtime.onMessage.addListener(messaging);
 
 // Electron: Not supported some chrome.* API
-chrome.runtime.onConnectExternal &&
+if (chrome.runtime.onConnectExternal) {
   chrome.runtime.onConnectExternal.addListener(onConnect);
-chrome.runtime.onMessageExternal && 
+}
+if (chrome.runtime.onMessageExternal) {
   chrome.runtime.onMessageExternal.addListener(messaging);
+}
 
-chrome.notifications &&
+if (chrome.notifications) {
   chrome.notifications.onClicked.addListener(id => {
     chrome.notifications.clear(id);
     if (id === 'redux-error') openDevToolsWindow('devtools-right');
   });
+}
 
 export function toContentScript(type, action, id, state) {
   const message = { type, action, state, id };
