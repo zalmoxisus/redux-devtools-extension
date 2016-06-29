@@ -2,14 +2,15 @@ import path from 'path';
 import webpack from 'webpack';
 
 const extpath = path.join(__dirname, '../src/browser/extension/');
+const electronMock = `${extpath}electronMock`;
 
 const baseConfig = (params) => ({
   entry: params.input || {
-    background: [ `${extpath}background/index` ],
+    background: [ electronMock, `${extpath}background/index` ],
     options: [ `${extpath}options/index` ],
     window: [ `${extpath}window/index` ],
     remote: [ `${extpath}window/remote` ],
-    devpanel: [ `${extpath}devpanel/index` ],
+    devpanel: [ electronMock, `${extpath}devpanel/index` ],
     devtools: [ `${extpath}devtools/index` ],
     content: [ `${extpath}inject/contentScript` ],
     pagewrap: [ `${extpath}inject/pageScriptWrap` ],
