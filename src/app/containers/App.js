@@ -22,23 +22,15 @@ let initialMonitor;
 let selectedTemplate;
 let testTemplates;
 
-// Electron: Not supported some chrome.* API
-if (chrome.storage.local) {
-  chrome.storage.local.get({
-    ['monitor' + monitorPosition]: 'InspectorMonitor',
-    'test-templates': null,
-    'test-templates-sel': null
-  }, options => {
-    initialMonitor = options['monitor' + monitorPosition];
-    selectedTemplate = options['test-templates-sel'];
-    testTemplates = options['test-templates'];
-  });
-} else {
-  initialMonitor = localStorage.getItem('monitor' + monitorPosition) || 'InspectorMonitor';
-  selectedTemplate = localStorage.getItem('test-templates-sel');
-  testTemplates = localStorage.getItem('test-templates');
-}
-
+chrome.storage.local.get({
+  ['monitor' + monitorPosition]: 'InspectorMonitor',
+  'test-templates': null,
+  'test-templates-sel': null
+}, options => {
+  initialMonitor = options['monitor' + monitorPosition];
+  selectedTemplate = options['test-templates-sel'];
+  testTemplates = options['test-templates'];
+});
 
 @enhance
 export default class App extends Component {
@@ -64,12 +56,7 @@ export default class App extends Component {
   handleSelectMonitor = (event, index, value) => {
     this.setState({ monitor: value });
 
-    // Electron: Not supported some chrome.* API
-    if (chrome.storage.local) {
-      chrome.storage.local.set({ ['monitor' + monitorPosition]: value });
-    } else {
-      localStorage.setItem('monitor' + monitorPosition, value);
-    }
+    chrome.storage.local.set({ ['monitor' + monitorPosition]: value });
   };
 
   handleSelectInstance = (event, index, value) => {
@@ -93,7 +80,6 @@ export default class App extends Component {
     const { store } = this.props;
     const instances = store.instances;
     const { instance, monitor } = this.state;
-    const onElectron = navigator.userAgent.indexOf('Electron') !== -1;
     return (
       <div style={styles.container}>
           <div style={styles.buttonBar}>
@@ -118,19 +104,19 @@ export default class App extends Component {
           />
         }
         <div style={styles.buttonBar}>
-          {!onElectron && monitorPosition !== 'left' &&
+          {!window.isElectron && monitorPosition !== 'left' &&
             <Button
               Icon={LeftIcon}
               onClick={() => { this.openWindow('left'); }}
             />
           }
-          {!onElectron && monitorPosition !== 'right' &&
+          {!window.isElectron && monitorPosition !== 'right' &&
             <Button
               Icon={RightIcon}
               onClick={() => { this.openWindow('right'); }}
             />
           }
-          {!onElectron && monitorPosition !== 'bottom' &&
+          {!window.isElectron && monitorPosition !== 'bottom' &&
             <Button
               Icon={BottomIcon}
               onClick={() => { this.openWindow('bottom'); }}
@@ -142,7 +128,7 @@ export default class App extends Component {
           <SliderButton isOpen={this.state.sliderIsOpen} onClick={this.toggleSlider} />
           <ImportButton importState={store.liftedStore.importState} />
           <ExportButton exportState={store.liftedStore.getState} />
-          {!onElectron &&
+          {!window.isElectron &&
             <Button
               Icon={RemoteIcon}
               onClick={() => { this.openWindow('remote'); }}
