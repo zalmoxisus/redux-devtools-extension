@@ -7,16 +7,16 @@
     "prebuild:extension": "npm run lint && npm run test",
     "prebuild:firefox": "npm run lint",
     "prebuild:examples": "npm run lint",
-    "build:extension": "BABEL_ENV=production gulp build:extension",
-    "build:firefox": "BABEL_ENV=production gulp build:firefox",
+    "build:extension": "cross-env BABEL_ENV=production gulp build:extension",
+    "build:firefox": "cross-env BABEL_ENV=production gulp build:firefox",
     "build:examples": "babel-node examples/buildAll.js",
     "compress:extension": "npm run build:extension && gulp compress:extension",
     "compress:firefox": "npm run build:firefox && gulp compress:firefox",
     "clean": "rm -rf build/ && rm -rf dev/",
     "lint": "eslint .",
-    "test:app": "BABEL_ENV=test mocha  --require test/app/setup.js --recursive test/app",
-    "test:chrome": "npm run build:extension && gulp test:chrome",
-    "test": "npm run test:app"
+    "test:app": "cross-env BABEL_ENV=test mocha --require test/app/setup.js --recursive test/app",
+    "test:chrome": "cross-env BABEL_ENV=production gulp build:extension && gulp test:chrome",
+    "test": "npm run test:app && npm run test:chrome"
   },
   "repository": {
     "type": "git",
@@ -40,8 +40,11 @@
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
+    "babel-register": "^6.9.0",
     "chromedriver": "^2.19.0",
     "co-mocha": "^1.1.2",
+    "cross-env": "^1.0.8",
+    "enzyme": "^2.3.0",
     "eslint": "^1.7.1",
     "eslint-config-airbnb": "^0.1.0",
     "eslint-plugin-react": "^3.2.3",
@@ -73,6 +76,6 @@
     "redux": "^3.5.2",
     "redux-devtools": "^3.3.1",
     "redux-devtools-instrument": "^1.0.1",
-    "remotedev-app": "^0.4.2"
+    "remotedev-app": "^0.5.0-alpha-2"
   }
 }
