@@ -51,6 +51,8 @@ window.addEventListener('message', function(event) {
     if (message.type === 'INIT_INSTANCE') bg.postMessage({ name: 'INIT_INSTANCE' });
     else bg.postMessage({ name: 'RELAY', message });
   } catch (err) {
+    /* eslint-disable no-console */
     if (process.env.NODE_ENV !== 'production') console.error('Failed to send message', err);
+    /* eslint-enable no-console */
   }
 }, false);

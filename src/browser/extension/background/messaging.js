@@ -51,7 +51,7 @@ function messaging(request, sender, sendResponse) {
     }
 
     if (!instancesConn[request.id]) instancesConn[request.id] = tabId;
-    const payload = updateState(store, request, handleInstancesChanged, store.instance);
+    const payload = updateState(window.store, request, handleInstancesChanged, window.store.instance);
     if (!payload) return true;
 
     // Relay the message to the devTools panel
@@ -76,12 +76,14 @@ function messaging(request, sender, sendResponse) {
           iconUrl: 'img/logo/48x48.png',
           isClickable: true
         });
-        if (typeof store.id === 'number') {
-          // chrome.pageAction.setIcon({tabId: store.id, path: 'img/logo/error.png'});
-          catchedErrors.tab = store.id;
+        if (typeof window.store.id === 'number') {
+          // chrome.pageAction.setIcon({tabId: window.store.id, path: 'img/logo/error.png'});
+          catchedErrors.tab = window.store.id;
         }
-      } else if (catchedErrors.last && typeof store.id === 'number' && catchedErrors.tab === store.id) {
-        chrome.pageAction.setIcon({tabId: store.id, path: 'img/logo/38x38.png'});
+      } else if (
+        catchedErrors.last && typeof window.store.id === 'number' && catchedErrors.tab === window.store.id
+      ) {
+        chrome.pageAction.setIcon({tabId: window.store.id, path: 'img/logo/38x38.png'});
       }
       catchedErrors.last = error;
     });
@@ -136,7 +138,7 @@ function onConnect(port) {
   } else {
     connections = panelConnections; id = port.name;
     monitorInstances(true);
-    if (id !== store.id) port.postMessage(naMessage);
+    if (id !== window.store.id) port.postMessage(naMessage);
     disconnect = () => {
       monitorInstances(false);
     };

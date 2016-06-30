@@ -1,4 +1,4 @@
-import React, { cloneElement, Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import styles from 'remotedev-app/lib/styles';
 import enhance from 'remotedev-app/lib/hoc';
 import DevTools from 'remotedev-app/lib/containers/DevTools';
