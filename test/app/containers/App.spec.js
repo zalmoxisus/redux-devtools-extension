@@ -44,9 +44,11 @@ describe('App container', () => {
     expect(component.find('.actionPreview--jss-0-20 ul').first().text()).toMatch(/counter.+:1/);
   });
 
+/*
   it('should show Test', () => {
     component.find('.actionPreview--jss-0-20 .selectorButton--jss-0-35').at(3).simulate('click');
     expect(component.find('.ReactCodeMirror textarea').text())
       .toInclude('expect(reducers({"counter":0}, {"type":"INCREMENT_COUNTER"}).toEqual({"counter":1}));');
   });
+*/
 });
