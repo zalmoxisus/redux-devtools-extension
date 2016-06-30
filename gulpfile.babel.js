@@ -138,6 +138,13 @@ gulp.task('test:chrome', () => {
     .on('end', () => crdv.stop());
 });
 
+gulp.task('test:electron', () => {
+  crdv.start();
+  return gulp.src('./test/electron/*.spec.js')
+    .pipe(mocha({ require: ['babel-polyfill', 'co-mocha'] }))
+    .on('end', () => crdv.stop());
+});
+
 gulp.task('default', ['replace-webpack-code', 'webpack:dev', 'views:dev', 'copy:dev', 'views:watch', 'copy:watch']);
 gulp.task('build:extension', ['replace-webpack-code', 'webpack:build:extension', 'views:build:extension', 'copy:build:extension']);
 gulp.task('build:firefox', ['copy:build:firefox']);

@@ -1,5 +1,8 @@
 {
   "env": {
     "mocha": true
+  },
+  "globals": {
+    "WebInspector": true
   }
 }

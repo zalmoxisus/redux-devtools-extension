@@ -16,6 +16,7 @@
     "lint": "eslint .",
     "test:app": "cross-env BABEL_ENV=test mocha --require test/app/setup.js --recursive test/app",
     "test:chrome": "cross-env BABEL_ENV=production gulp build:extension && gulp test:chrome",
+    "test:electron": "cross-env BABEL_ENV=production gulp build:extension && gulp test:electron",
     "test": "npm run test:app && npm run test:chrome"
   },
   "repository": {
@@ -44,6 +45,7 @@
     "chromedriver": "^2.19.0",
     "co-mocha": "^1.1.2",
     "cross-env": "^1.0.8",
+    "electron-prebuilt": "^1.2.5",
     "enzyme": "^2.3.0",
     "eslint": "^1.7.1",
     "eslint-config-airbnb": "^0.1.0",
