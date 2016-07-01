@@ -4,20 +4,19 @@
   "description": "DevTools extension for Redux",
   "scripts": {
     "start": "gulp",
-    "prebuild:extension": "npm run lint && npm run test",
-    "prebuild:firefox": "npm run lint",
-    "prebuild:examples": "npm run lint",
     "build:extension": "cross-env BABEL_ENV=production gulp build:extension",
     "build:firefox": "cross-env BABEL_ENV=production gulp build:firefox",
     "build:examples": "babel-node examples/buildAll.js",
-    "compress:extension": "npm run build:extension && gulp compress:extension",
-    "compress:firefox": "npm run build:firefox && gulp compress:firefox",
+    "precompress:extension": "npm run lint && npm run build:extension && npm run test:app && npm run test:chrome && npm run test:electron",
+    "precompress:firefox": "npm run lint && npm run build:firefox && npm run test:app",
+    "compress:extension": "gulp compress:extension",
+    "compress:firefox": "gulp compress:firefox",
     "clean": "rm -rf build/ && rm -rf dev/",
     "lint": "eslint .",
     "test:app": "cross-env BABEL_ENV=test mocha --require test/app/setup.js --recursive test/app",
-    "test:chrome": "cross-env BABEL_ENV=production gulp build:extension && gulp test:chrome",
-    "test:electron": "cross-env BABEL_ENV=production gulp build:extension && gulp test:electron && rm -rf test/electron/tmp",
-    "test": "npm run test:app && npm run test:chrome && npm run test:electron"
+    "test:chrome": "gulp test:chrome",
+    "test:electron": "gulp test:electron && rm -rf test/electron/tmp",
+    "test": "npm run build:extension && npm run test:app && npm run test:chrome && npm run test:electron"
   },
   "repository": {
     "type": "git",
