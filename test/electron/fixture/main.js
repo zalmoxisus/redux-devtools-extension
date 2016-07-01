@@ -1,6 +1,8 @@
 const path = require('path');
 const { app, BrowserWindow } = require('electron');
 
+app.setPath('userData', path.join(__dirname, '../tmp'));
+
 app.on('window-all-closed', app.quit);
 app.on('ready', () => {
   BrowserWindow.addDevToolsExtension(
