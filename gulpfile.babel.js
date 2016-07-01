@@ -134,7 +134,7 @@ gulp.task('copy:watch', () => {
 gulp.task('test:chrome', () => {
   crdv.start();
   return gulp.src('./test/chrome/*.spec.js')
-    .pipe(mocha({ require: ['co-mocha'] }))
+    .pipe(mocha({ require: ['babel-polyfill', 'co-mocha'] }))
     .on('end', () => crdv.stop());
 });
 
