@@ -17,7 +17,7 @@
     "test:app": "cross-env BABEL_ENV=test mocha --require test/app/setup.js --recursive test/app",
     "test:chrome": "cross-env BABEL_ENV=production gulp build:extension && gulp test:chrome",
     "test:electron": "cross-env BABEL_ENV=production gulp build:extension && gulp test:electron && rm -rf test/electron/tmp",
-    "test": "npm run test:app && npm run test:chrome"
+    "test": "npm run test:app && npm run test:chrome && npm run test:electron"
   },
   "repository": {
     "type": "git",
