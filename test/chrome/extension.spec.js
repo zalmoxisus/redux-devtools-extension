@@ -12,7 +12,7 @@ describe('Chrome extension', function() {
   this.timeout(15000);
 
   before(async () => {
-    delay(1000);
+    delay(2000);
     this.driver = new webdriver.Builder()
       .usingServer(`http://localhost:${port}`)
       .withCapabilities({
