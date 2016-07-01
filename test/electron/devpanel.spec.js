@@ -2,15 +2,16 @@ import { join } from 'path';
 import webdriver from 'selenium-webdriver';
 import electronPath from 'electron-prebuilt';
 import expect from 'expect';
+import { switchMonitorTests, delay } from '../utils/e2e';
 
 const port = 9515;
-const delay = time => new Promise(resolve => setTimeout(resolve, time));
 const devPanelPath = 'chrome-extension://redux-devtools/devpanel.html';
 
 describe('DevTools panel for Electron', function() {
   this.timeout(10000);
 
   before(async () => {
+    delay(1000);
     this.driver = new webdriver.Builder()
       .usingServer(`http://localhost:${port}`)
       .withCapabilities({
@@ -52,40 +53,19 @@ describe('DevTools panel for Electron', function() {
     await delay(1000);
   });
 
-  it('should contain an one action list', async () => {
+  it('should contain INIT action', async () => {
     const val = await this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "actionListRows--jss-")]'))
       .getText();
     expect(val).toMatch(/@@INIT/);
   });
 
-  it('should contain inspector monitor\'s component', async () => {
+  it('should contain Inspector monitor\'s component', async () => {
     const val = await this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "inspector--jss-")]'))
       .getText();
     expect(val).toExist();
   });
 
-  it('should switch to Log Monitor', async () => {
-    await this.driver.findElement(webdriver.By.xpath('//div[text()="Inspector"]')).click();
-    await delay(500);
-    await this.driver.findElement(webdriver.By.xpath('//div[text()="Log monitor"]')).click();
-    await delay(500);
-    await this.driver.findElement(webdriver.By.xpath('//div[a[text()="Reset"] and .//a[text()="Revert"]]'));
-    await delay(500);
-  });
-
-  it('should switch to Chart Monitor', async () => {
-    await this.driver.findElement(webdriver.By.xpath('//div[text()="Log monitor"]')).click();
-    await delay(500);
-    await this.driver.findElement(webdriver.By.xpath('//div[text()="Chart"]')).click();
-    await delay(500);
-    await this.driver.findElement(webdriver.By.xpath('//*[@class="nodeText" and text()="state"]'));
-    await delay(500);
-  });
-
-  it('should switch back to Inspector Monitor', async () => {
-    await this.driver.findElement(webdriver.By.xpath('//div[text()="Chart"]')).click();
-    await delay(500);
-    await this.driver.findElement(webdriver.By.xpath('//div[text()="Inspector"]')).click();
-    await delay(1500);
-  });
+  Object.keys(switchMonitorTests).forEach(description =>
+    it(description, switchMonitorTests[description].bind(this))
+  );
 });

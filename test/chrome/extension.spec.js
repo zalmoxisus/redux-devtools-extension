@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import webdriver from 'selenium-webdriver';
 import expect from 'expect';
-import { switchMonitorTests } from '../utils/e2e';
+import { switchMonitorTests, delay } from '../utils/e2e';
 
 const port = 9515;
 const path = resolve('build/extension');
@@ -9,9 +9,10 @@ const extensionId = 'lmhkpmbekcpmknklioeibfkpmmfibljd';
 const actionsPattern = /^@@INIT(.|\n)+@@reduxReactRouter\/routerDidChange(.|\n)+@@reduxReactRouter\/initRoutes(.|\n)+$/;
 
 describe('Chrome extension', function() {
-  this.timeout(10000);
+  this.timeout(15000);
 
   before(async () => {
+    delay(1000);
     this.driver = new webdriver.Builder()
       .usingServer(`http://localhost:${port}`)
       .withCapabilities({
@@ -54,7 +55,7 @@ describe('Chrome extension', function() {
   );
 
   it('should get actions list', async () => {
-    this.driver.executeScript('window.open(\'http://zalmoxisus.github.io/redux-devtools-extension/examples/router/#/Standard Todo?_k=b5am7j\')');
+    this.driver.executeScript('window.open(\'http://zalmoxisus.github.io/redux-devtools-extension/examples/router/\')');
 
     await this.driver.wait(() => (
       this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "actionListRows--jss-")]'))
