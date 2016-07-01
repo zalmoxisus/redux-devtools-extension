@@ -23,8 +23,8 @@ export default function createMenu() {
       contexts: ['all']
     });
   });
-
-  chrome.contextMenus.onClicked.addListener(({ menuItemId }) => {
-    openDevToolsWindow(menuItemId);
-  });
 }
+
+chrome.contextMenus.onClicked.addListener(({ menuItemId }) => {
+  openDevToolsWindow(menuItemId);
+});
