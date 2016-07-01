@@ -1,9 +1,9 @@
 import { resolve } from 'path';
 import webdriver from 'selenium-webdriver';
 import expect from 'expect';
+import { switchMonitorTests } from '../utils/e2e';
 
 const port = 9515;
-const delay = time => new Promise(resolve => setTimeout(resolve, time));
 const path = resolve('build/extension');
 const extensionId = 'lmhkpmbekcpmknklioeibfkpmmfibljd';
 const actionsPattern = /^@@INIT(.|\n)+@@reduxReactRouter\/routerDidChange(.|\n)+@@reduxReactRouter\/initRoutes(.|\n)+$/;
@@ -49,28 +49,9 @@ describe('Chrome extension', function() {
     expect(val).toBe('');
   });
 
-  it('should switch to Log Monitor', async () => {
-    await this.driver.findElement(webdriver.By.xpath('//div[text()="Inspector"]')).click();
-    await this.driver.findElement(webdriver.By.xpath('//div[text()="Log monitor"]')).click();
-    await this.driver.findElement(webdriver.By.xpath('//div[a[text()="Reset"] and .//a[text()="Revert"]]'));
-    await delay(500);
-  });
-
-  it('should switch to Chart Monitor', async () => {
-    await this.driver.findElement(webdriver.By.xpath('//div[text()="Log monitor"]')).click();
-    await delay(500); // Wait till menu is fully opened
-    await this.driver.findElement(webdriver.By.xpath('//div[text()="Chart"]')).click();
-    await delay(500);
-    await this.driver.findElement(webdriver.By.xpath('//*[@class="nodeText" and text()="state"]'));
-    await delay(500); // Wait till menu is closed
-  });
-
-  it('should switch back to Inspector Monitor', async () => {
-    await this.driver.findElement(webdriver.By.xpath('//div[text()="Chart"]')).click();
-    await delay(500); // Wait till menu is fully opened
-    await this.driver.findElement(webdriver.By.xpath('//div[text()="Inspector"]')).click();
-    await delay(1500); // Wait till menu is closed
-  });
+  Object.keys(switchMonitorTests).forEach(description =>
+    it(description, switchMonitorTests[description].bind(this))
+  );
 
   it('should get actions list', async () => {
     this.driver.executeScript('window.open(\'http://zalmoxisus.github.io/redux-devtools-extension/examples/router/#/Standard Todo?_k=b5am7j\')');
