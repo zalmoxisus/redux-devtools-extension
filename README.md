@@ -1,5 +1,7 @@
 # Redux DevTools Extension
 
+[![Build Status](https://travis-ci.org/zalmoxisus/redux-devtools-extension.svg)](https://travis-ci.org/zalmoxisus/redux-devtools-extension) [![Build status Windows](https://ci.appveyor.com/api/projects/status/1wh9bjvldj7wq3wn?svg=true)](https://ci.appveyor.com/project/zalmoxisus/redux-devtools-extension)
+
 ![Demo](demo/v1.3.0.png)
 
 ## Implementation
@@ -72,7 +74,7 @@
     - [disconnect](docs/API/Methods.md#windowdevtoolsextensiondisconnect)
 - [Troubleshooting](docs/Troubleshooting.md)
 - [Change Log](https://github.com/zalmoxisus/redux-devtools-extension/releases)
-- [Feedback](https://github.com/zalmoxisus/redux-devtools-extension/releases)
+- [Feedback](docs/Feedback.md)
 
 ##📺 Videos
 
@@ -93,7 +95,7 @@ Also you may run them from `./examples` folder (on port 4001 and 4002 by default
 
 ## Credits
 
- - Built with our [browser-redux](https://github.com/zalmoxisus/browser-redux) boilerplate.
+ - Built using [Crossbuilder](https://github.com/zalmoxisus/crossbuilder) boilerplate.
  - Includes [Dan Abramov](https://github.com/gaearon)'s [redux-devtools](https://github.com/gaearon/redux-devtools).
  - Inspired from [Taylor Hakes](https://github.com/taylorhakes)' [work](https://github.com/taylorhakes/redux-devtools/tree/chrome-devtools).
  - [The logo icon](https://github.com/rackt/redux/issues/151#issuecomment-150060367) made by [Keith Yong](https://github.com/keithyong) .
