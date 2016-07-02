@@ -41,7 +41,7 @@ export function sendMessage(action, state, shouldStringify, id) {
 }
 
 function handleMessages(event) {
-  if (!event || event.source !== window) return;
+  if (process.env.BABEL_ENV !== 'test' && (!event || event.source !== window)) return;
   const message = event.data;
   if (!message || message.source !== '@devtools-extension') return;
   Object.keys(listeners).forEach(id => {

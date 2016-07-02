@@ -12,6 +12,6 @@ export function listenMessage(f) {
       resolve(message);
     };
     window.addEventListener('message', listener);
-    f();
+    if (f) f();
   });
 }
