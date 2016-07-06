@@ -25,8 +25,6 @@ export default function createMenu() {
   });
 }
 
-if (chrome.contextMenus) {
-  chrome.contextMenus.onClicked.addListener(({ menuItemId }) => {
-    openDevToolsWindow(menuItemId);
-  });
-}
+chrome.contextMenus.onClicked.addListener(({ menuItemId }) => {
+  openDevToolsWindow(menuItemId);
+});

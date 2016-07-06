@@ -21,6 +21,11 @@ if (
     create() {},
     clear() {}
   };
+  chrome.contextMenus = {
+    onClicked: {
+      addListener() {}
+    },
+  };
 }
 
 if (window.isElectron) {
