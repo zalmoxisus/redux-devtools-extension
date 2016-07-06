@@ -24,25 +24,27 @@ if (
 }
 
 if (window.isElectron) {
-  chrome.storage.local = {
-    set(obj, callback) {
-      Object.keys(obj).forEach(key => {
-        localStorage.setItem(key, obj[key]);
-      });
-      if (callback) {
-        callback();
+  if (!chrome.storage.local) {
+    chrome.storage.local = {
+      set(obj, callback) {
+        Object.keys(obj).forEach(key => {
+          localStorage.setItem(key, obj[key]);
+        });
+        if (callback) {
+          callback();
+        }
+      },
+      get(obj, callback) {
+        const result = {};
+        Object.keys(obj).forEach(key => {
+          result[key] = localStorage.getItem(key) || obj[key];
+        });
+        if (callback) {
+          callback(result);
+        }
       }
-    },
-    get(obj, callback) {
-      const result = {};
-      Object.keys(obj).forEach(key => {
-        result[key] = localStorage.getItem(key) || obj[key];
-      });
-      if (callback) {
-        callback(result);
-      }
-    }
-  };
+    };
+  }
   // Avoid error: chrome.runtime.sendMessage is not supported responseCallback
   const originSendMessage = chrome.runtime.sendMessage;
   chrome.runtime.sendMessage = function() {
