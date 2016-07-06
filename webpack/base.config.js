@@ -12,7 +12,7 @@ const baseConfig = (params) => ({
     remote: [ `${extpath}window/remote` ],
     devpanel: [ electronMock, `${extpath}devpanel/index` ],
     devtools: [ `${extpath}devtools/index` ],
-    content: [ `${extpath}inject/contentScript` ],
+    content: [ electronMock, `${extpath}inject/contentScript` ],
     pagewrap: [ `${extpath}inject/pageScriptWrap` ],
     inject: [ `${extpath}inject/index` ],
     ...params.inputExtra
