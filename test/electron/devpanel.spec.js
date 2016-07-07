@@ -32,7 +32,8 @@ describe('DevTools panel for Electron', function() {
     expect(await this.driver.getCurrentUrl())
       .toMatch(/chrome-devtools:\/\/devtools\/bundled\/inspector.html/);
 
-    await delay(1000); // wait loading of redux devtools
+    await this.driver.manage().timeouts().pageLoadTimeout(5000);
+
     const id = await this.driver.executeScript(function() {
       const tabs = WebInspector.inspectorView._tabbedPane._tabs;
       const lastPanelId = tabs[tabs.length - 1].id;
