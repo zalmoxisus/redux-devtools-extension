@@ -80,12 +80,24 @@ export function connect(config = {}) {
     delete listeners[instanceId];
   };
 
-  const send = (action, state) => sendMessage(action, state, config.shouldStringify, id);
+  const send = (action, state) => {
+    sendMessage(action, state, config.shouldStringify, id);
+  };
+
+  const init = (state) => {
+    const name = config.name || document.title;
+    toContentScript(
+      { type: 'INIT', payload: state, action: { timestamp: Date.now() }, id, name, source },
+      config.shouldStringify
+    );
+  };
 
   window.addEventListener('message', handleMessages, false);
 
+  toContentScript({ type: 'INIT_INSTANCE', id, source});
 
   return {
+    init,
     subscribe,
     unsubscribe,
     send

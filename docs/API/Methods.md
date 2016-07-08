@@ -78,6 +78,7 @@ Send a new action and state manually to be shown on the monitor.
 - `subscribe(listener)` - adds a change listener. It will be called any time an action is dispatched form the monitor.
 - `unsubscribe()` - unsubscribes the change listener. You can use [window.devToolsExtension.disconnect](#windowdevtoolsextensiondisconnect) to remove all listeners.
 - `send(action, state)` - sends a new action and state manually to be shown on the monitor. If action is `null` then we suppose we send `liftedState`. 
+- `init(state)` - sends the initial state to the monitor.
 
 [See the example for an example on usage](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/examples/react-counter-messaging/components/Counter.js).
 
