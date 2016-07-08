@@ -1,6 +1,7 @@
 import { stringify } from 'jsan';
 
 const listeners = {};
+export const source = '@devtools-page';
 
 /*
 function stringify(obj) {
@@ -26,7 +27,7 @@ export function toContentScript(message, shouldStringify, serializeState, serial
 export function sendMessage(action, state, shouldStringify, id) {
   const message = {
     payload: state,
-    source: '@devtools-page',
+    source,
     name: document.title,
     id
   };
@@ -58,7 +59,7 @@ export function setListener(onMessage, instanceId) {
 
 export function disconnect() {
   window.removeEventListener('message', handleMessages);
-  toContentScript({ type: 'DISCONNECT', source: '@devtools-page' });
+  toContentScript({ type: 'DISCONNECT', source });
 }
 
 export function connect(config = {}) {
@@ -83,7 +84,6 @@ export function connect(config = {}) {
 
   window.addEventListener('message', handleMessages, false);
 
-  toContentScript({ type: 'INIT_INSTANCE', source: '@devtools-page' });
 
   return {
     subscribe,
