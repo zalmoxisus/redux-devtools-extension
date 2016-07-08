@@ -12,54 +12,60 @@
  - or run it in dev mode with `npm i & npm start` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./dev`.
 
 #### 2. Use with [Redux](https://github.com/rackt/redux)
-  Just update your [configureStore](https://github.com/zalmoxisus/redux-devtools-extension/commit/9c631ef66f53e51f34b55f4642bd9ff2cbc7a992):
+##### 2.1 Basic store
+  
+  If you have a basic [store](http://redux.js.org/docs/api/createStore.html) as described in the official [redux-docs](http://redux.js.org/index.html), simply replace:
+  ```javascript
+  let store = createStore(reducer);
+  ```
+  with
+  ```javascript
+  let store = createStore(reducer, window.devToolsExtension && window.devToolsExtension());
+  ```
+
+##### 2.2 Advanced store setup
+  - If you setup your store with [middleware and enhancers](http://redux.js.org/docs/api/applyMiddleware.html), change this:
   ```javascript
   import { createStore, applyMiddleware, compose } from 'redux';
   
-  export default function configureStore(initialState) {
-    const store = createStore(reducer, initialState, compose(
-      applyMiddleware(...middleware)
-    ));
-    return store;
-  }
+  let store = createStore(reducer, initialState, compose(
+    applyMiddleware(...middleware)
+  ));
   ```
-  *becomes*
+  to this:
   ```javascript
-  export default function configureStore(initialState) {
-    const store = createStore(reducer, initialState, compose(
-      applyMiddleware(...middleware),
-      window.devToolsExtension ? window.devToolsExtension() : f => f
-    ));
-    return store;
-  }
+  let store = createStore(reducer, initialState, compose(
+    applyMiddleware(...middleware),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  ));
   ```
-  or [if you don't have other store enhancers and middlewares](https://github.com/zalmoxisus/redux-devtools-extension/commit/f26975cccff37f477001158019be7c9c9cb721b1):
+  - Or with [initialState](http://redux.js.org/docs/api/createStore.html) but without middleware and enhancers arguments:
+  
   ```javascript
-  export default function configureStore(initialState) {
-    const store = createStore(reducer, initialState, 
-      window.devToolsExtension && window.devToolsExtension()
-    );
-    return store;
-  }
+  let store = createStore(reducer, initialState, 
+    window.devToolsExtension && window.devToolsExtension()
+  );
   ```
-  *or for universal (isomorphic) apps*
-  ```javascript
-    typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
-  ```
-  You can use it together with vanilla Redux DevTools as a fallback, but not both simultaneously:
+  Note: passing enhancer as last argument requires redux@>=3.1.0. For older versions apply it like [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/todomvc/store/configureStore.js) or [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/counter/store/configureStore.js#L7-L12).
+##### 2.3 Together with Redux DevTools
+  You can use this extension together with vanilla [Redux DevTools](https://github.com/gaearon/redux-devtools) as a fallback, but not both simultaneously:
   ```js
   window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
   ```
+  
   [Make sure not to render DevTools when using the extension](https://github.com/zalmoxisus/redux-devtools-extension/issues/57) or you'll probably want to render the monitor from vanilla DevTools as follows: 
   ```js
   { !window.devToolsExtension ? <DevTools /> : null }
   ```
   
-  Note: passing enhancer as last argument requires redux@>=3.1.0. For older versions apply it like [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/todomvc/store/configureStore.js) or [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/counter/store/configureStore.js#L7-L12).
-
-#### For React Native, hybrid, desktop and server side Redux apps
+  
+#### 3. Use with universal (isomorphic) apps
+```javascript
+  typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+```
+#### 4. For React Native, hybrid, desktop and server side Redux apps
   Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools), and from the extension's context menu choose 'Open Remote DevTools' or press Alt+Shift+arrow up for remote monitoring.
-
+  
 ## Documentation
 
 - [FAQ](docs/FAQ.md)
