@@ -40,18 +40,14 @@
   ));
   ```
   - Or with [initialState](http://redux.js.org/docs/api/createStore.html) but without middleware and enhancers arguments:
+  
   ```javascript
   let store = createStore(reducer, initialState, 
     window.devToolsExtension && window.devToolsExtension()
   );
   ```
-
-  - Or for universal (isomorphic) apps
-  ```javascript
-    typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
-  ```
   
-#### With Redux DevTools
+##### 2.3 Together with Redux DevTools
   You can use this extension together with vanilla [Redux DevTools](https://github.com/gaearon/redux-devtools) as a fallback, but not both simultaneously:
   ```js
   window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
@@ -63,10 +59,13 @@
   ```
   
   Note: passing enhancer as last argument requires redux@>=3.1.0. For older versions apply it like [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/todomvc/store/configureStore.js) or [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/counter/store/configureStore.js#L7-L12).
-
-#### For React Native, hybrid, desktop and server side Redux apps
+#### 3. Use with universal (isomorphic) apps
+```javascript
+  typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+```
+#### 4. For React Native, hybrid, desktop and server side Redux apps
   Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools), and from the extension's context menu choose 'Open Remote DevTools' or press Alt+Shift+arrow up for remote monitoring.
-
+  
 ## Documentation
 
 - [FAQ](docs/FAQ.md)
