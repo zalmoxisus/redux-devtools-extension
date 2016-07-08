@@ -24,7 +24,7 @@
   ```
 
 ##### 2.2 Advanced store setup
-  If you setup your store with [middleware and enhancers](http://redux.js.org/docs/api/applyMiddleware.html):
+  - If you setup your store with [middleware and enhancers](http://redux.js.org/docs/api/applyMiddleware.html), change this:
   ```javascript
   import { createStore, applyMiddleware, compose } from 'redux';
   
@@ -32,28 +32,31 @@
     applyMiddleware(...middleware)
   ));
   ```
-  *becomes*
+  to this:
   ```javascript
   let store = createStore(reducer, initialState, compose(
     applyMiddleware(...middleware),
     window.devToolsExtension ? window.devToolsExtension() : f => f
   ));
   ```
-  **Or** with [initialState](http://redux.js.org/docs/api/createStore.html) but without middleware and enhancers arguments:
+  - Or with [initialState](http://redux.js.org/docs/api/createStore.html) but without middleware and enhancers arguments:
   ```javascript
   let store = createStore(reducer, initialState, 
     window.devToolsExtension && window.devToolsExtension()
   );
   ```
 
-  **Or** for universal (isomorphic) apps
+  - Or for universal (isomorphic) apps
   ```javascript
     typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
   ```
-  You can use it together with vanilla Redux DevTools as a fallback, but not both simultaneously:
+  
+#### With Redux DevTools
+  You can use this extension together with vanilla [Redux DevTools](https://github.com/gaearon/redux-devtools) as a fallback, but not both simultaneously:
   ```js
   window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
   ```
+  
   [Make sure not to render DevTools when using the extension](https://github.com/zalmoxisus/redux-devtools-extension/issues/57) or you'll probably want to render the monitor from vanilla DevTools as follows: 
   ```js
   { !window.devToolsExtension ? <DevTools /> : null }
