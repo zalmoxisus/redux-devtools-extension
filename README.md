@@ -47,6 +47,7 @@
   );
   ```
   Note: passing enhancer as last argument requires redux@>=3.1.0. For older versions apply it like [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/todomvc/store/configureStore.js) or [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/counter/store/configureStore.js#L7-L12).
+
 ##### 2.3 Together with Redux DevTools
   You can use this extension together with vanilla [Redux DevTools](https://github.com/gaearon/redux-devtools) as a fallback, but not both simultaneously:
   ```js
