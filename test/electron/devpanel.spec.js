@@ -22,6 +22,7 @@ describe('DevTools panel for Electron', function() {
       })
       .forBrowser('electron')
       .build();
+    await this.driver.manage().timeouts().setScriptTimeout(10000);
   });
 
   after(async () => {
@@ -32,12 +33,25 @@ describe('DevTools panel for Electron', function() {
     expect(await this.driver.getCurrentUrl())
       .toMatch(/chrome-devtools:\/\/devtools\/bundled\/inspector.html/);
 
-    await delay(1000); // wait loading of redux devtools
-    const id = await this.driver.executeScript(function() {
-      const tabs = WebInspector.inspectorView._tabbedPane._tabs;
-      const lastPanelId = tabs[tabs.length - 1].id;
-      WebInspector.inspectorView.showPanel(lastPanelId);
-      return lastPanelId;
+    await this.driver.manage().timeouts().pageLoadTimeout(5000);
+
+    const id = await this.driver.executeAsyncScript(function(callback) {
+      let attempts = 5;
+      function showReduxPanel() {
+        if (attempts === 0) {
+          return callback('Redux panel not found');
+        }
+        const tabs = WebInspector.inspectorView._tabbedPane._tabs;
+        const idList = tabs.map(tab => tab.id);
+        const reduxPanelId = 'chrome-extension://redux-devtoolsRedux';
+        if (idList.indexOf(reduxPanelId) !== -1) {
+          WebInspector.inspectorView.showPanel(reduxPanelId);
+          return callback(reduxPanelId);
+        }
+        attempts--;
+        setTimeout(showReduxPanel, 500);
+      }
+      showReduxPanel();
     });
     expect(id).toBe('chrome-extension://redux-devtoolsRedux');
 
@@ -68,4 +82,14 @@ describe('DevTools panel for Electron', function() {
   Object.keys(switchMonitorTests).forEach(description =>
     it(description, switchMonitorTests[description].bind(this))
   );
+
+  it('should be no logs in console of main window', async () => {
+    const handles = await this.driver.getAllWindowHandles();
+    await this.driver.switchTo().window(handles[1]); // Change to main window
+
+    expect(await this.driver.getTitle()).toBe('Electron Test');
+
+    const logs = await this.driver.manage().logs().get(webdriver.logging.Type.BROWSER);
+    expect(logs).toEqual([]);
+  });
 });
