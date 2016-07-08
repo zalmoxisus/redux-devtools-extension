@@ -12,6 +12,7 @@
  - or run it in dev mode with `npm i & npm start` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./dev`.
 
 #### 2. Use with [Redux](https://github.com/rackt/redux)
+##### 2.1 Basic store
   
   If you have a basic [store](http://redux.js.org/docs/api/createStore.html) as described in the official [redux-docs](http://redux.js.org/index.html), simply replace:
   ```javascript
@@ -22,7 +23,8 @@
   let store = createStore(reducer, window.devToolsExtension && window.devToolsExtension());
   ```
 
-  For a setup with [middleware and enhancers](http://redux.js.org/docs/api/applyMiddleware.html):
+##### 2.2 Advanced store setup
+  If you setup your store with [middleware and enhancers](http://redux.js.org/docs/api/applyMiddleware.html):
   ```javascript
   import { createStore, applyMiddleware, compose } from 'redux';
   
@@ -37,13 +39,14 @@
     window.devToolsExtension ? window.devToolsExtension() : f => f
   ));
   ```
-  with [initialState](http://redux.js.org/docs/api/createStore.html) but without middleware and enhancers arguments:
+  **Or** with [initialState](http://redux.js.org/docs/api/createStore.html) but without middleware and enhancers arguments:
   ```javascript
   let store = createStore(reducer, initialState, 
     window.devToolsExtension && window.devToolsExtension()
   );
   ```
-  *or for universal (isomorphic) apps*
+
+  **Or** for universal (isomorphic) apps
   ```javascript
     typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
   ```
