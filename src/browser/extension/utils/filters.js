@@ -1,5 +1,11 @@
 import mapValues from 'lodash/mapValues';
 
+export const FilterState = {
+  DO_NOT_FILTER: 'DO_NOT_FILTER',
+  BLACKLIST_SPECIFIC: 'BLACKLIST_SPECIFIC',
+  WHITELIST_SPECIFIC: 'WHITELIST_SPECIFIC'
+};
+
 export function getLocalFilter(config) {
   if (config.actionsBlacklist || config.actionsWhitelist) {
     return {
@@ -11,7 +17,7 @@ export function getLocalFilter(config) {
 }
 
 export function isFiltered(action, localFilter) {
-  if (!localFilter && !window.devToolsOptions.filter) return false;
+  if (!localFilter && window.devToolsOptions.filter === FilterState.DO_NOT_FILTER) return false;
 
   const { whitelist, blacklist } = localFilter || window.devToolsOptions;
   return (
@@ -38,7 +44,7 @@ export function filterState(state, type, localFilter, statesFilter, actionsFilte
   if (type === 'ACTION') return !statesFilter ? state : statesFilter(state, nextActionId - 1);
   else if (type !== 'STATE') return state;
 
-  if (localFilter || window.devToolsOptions.filter) {
+  if (localFilter || window.devToolsOptions.filter !== FilterState.DO_NOT_FILTER) {
     const filteredStagedActionIds = [];
     const filteredComputedStates = [];
     const filteredActionsById = actionsFilter && {};

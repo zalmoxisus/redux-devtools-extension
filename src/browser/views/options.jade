@@ -10,59 +10,87 @@ html
       min-width: 380px;
     }
 
-    .option {
-      display: flex;
-      margin-bottom: 10px;
+    .option-group {
+      /* Reset the default fieldset styles */
+      margin: initial;
+      border: initial;
+      padding: initial;
     }
 
-    .option__caption {
-      margin-right: 5px;
-    }
-    .option__comment {
-      color: #999;
-      margin-left: 5px;
+    .option-group + .option-group {
+      margin-top: 15px;
     }
 
-    .option_type_input .option__caption,
-    .option_type_textarea .option__caption,
-    .option_type_select .option__caption {
-      flex: none;
-      width: 105px;
+    .option-group__title {
+      /* Reset the default legend styles */
+      margin: initial;
+      padding: initial;
+
+      font-weight: bold;
+      margin-bottom: 4px;
     }
 
-    /* Input styling */
-    .option_type_input {
-      align-items: baseline;
+    .option + .option {
+      margin-top: 5px;
     }
+
+    .option__textarea {
+      margin-top: 2px;
+      width: 300px;
+      min-height: 50px;
+    }
+
+    .option__hint {
+      margin-top: 2px;
+      font-size: 10px;
+    }
+
+    .option__textarea + .option__hint {
+      margin-top: -2px;
+    }
+
+    /* Checkbox and radio styling */
+    .option_type_checkbox .option__element,
+    .option_type_radio .option__element {
+      vertical-align: bottom;
+    }
+
+    .option_type_checkbox .option__label,
+    .option_type_radio .option__label {
+      margin-left: 4px;
+    }
+
+    .option_type_checkbox .option__textarea,
+    .option_type_checkbox .option__hint,
+    .option_type_radio .option__textarea,
+    .option_type_radio .option__hint {
+      margin-left: 20px;
+    }
+
 
     /* Checkbox styling */
     .option_type_checkbox .option__element {
-      margin-right: 5px;
-    }
-
-    /* Textarea styling */
-    .option_type_textarea .option__caption {
-      /* Baseline-align the caption and the element. See the commit message for more. */
-      margin-top: 4px;
-    }
-    .option_type_textarea .option__element {
-      flex: 1;
-      height: 50px;
-    }
-
-    /* Select styling */
-    .option_type_select .option__caption {
-      /* Baseline-align the caption and the element. See the commit message for more. */
-      line-height: 24px;
-    }
-    .option_type_select .option__element {
-      flex: 1;
+      /* Radio button in Chrome is 2px narrower than the checkbox.
+         These margins align them. */
+      margin-left: 1px;
+      /* ...margin-right is 2px instead of 1px
+         because both radios and checkboxes have initial margin-right of 1px */
+      margin-right: 2px;
     }
 
     /* Value-based styling */
-    .option_value_maxAge .option__element {
+    .option_value_max-age {
+      margin-left: 20px;
+    }
+
+    .option_value_max-age .option__element {
       width: 25px;
       text-align: center;
+    }
+
+    /* A BEM mixin for shifting elements right to align them with the labels */
+    .shifted {
+      margin-left: 20px;
     }
 
   body
