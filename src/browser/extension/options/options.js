@@ -3,8 +3,8 @@ import React from 'react';
 export default ({ options, saveOption, saveUrls }) => (
   <div>
     <div className="option option_type_input option_value_max-age">
-      <label className="option__caption" htmlFor="limit">Actions history limit:</label>
-      <input className="option__element" id="limit" type="text" value={options.maxAge} onChange={saveOption}/>
+      <label className="option__caption" htmlFor="maxAge">Actions history limit:</label>
+      <input className="option__element" id="maxAge" type="text" value={options.maxAge} onChange={saveOption}/>
       <span className="option__comment">(the oldest removed once it's reached)</span>
     </div>
     <div className="option option_type_checkbox option_value_filter">
