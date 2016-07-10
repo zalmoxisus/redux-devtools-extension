@@ -12,7 +12,8 @@ export default ({ options, saveOption }) => {
         {' '}
         <input className="option__element"
                id="maxAge"
-               type="text"
+               type="number"
+               min="1"
                value={options.maxAge}
                onChange={(e) => saveOption('maxAge', Number(e.target.value))}/>
         {' '}
