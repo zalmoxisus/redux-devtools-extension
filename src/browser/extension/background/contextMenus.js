@@ -1,41 +1,30 @@
 import openDevToolsWindow from './openWindow';
 
-const menus = [
-  { id: 'devtools-left', title: 'To left' },
-  { id: 'devtools-right', title: 'To right' },
-  { id: 'devtools-bottom', title: 'To bottom' },
-  { id: 'devtools-panel', title: 'Open in a chrome panel (enable in Chrome settings)' },
-  { id: 'devtools-remote', title: 'Open Remote DevTools' }
-];
-let pageUrl;
-let pageTab;
+export default function createMenu() {
+  const menus = [
+    { id: 'devtools-left', title: 'To left' },
+    { id: 'devtools-right', title: 'To right' },
+    { id: 'devtools-bottom', title: 'To bottom' },
+    { id: 'devtools-panel', title: 'Open in a chrome panel (enable in Chrome settings)' },
+    { id: 'devtools-remote', title: 'Open Remote DevTools' }
+  ];
 
-let shortcuts = {};
-chrome.commands.getAll(commands => {
-  commands.forEach(({ name, shortcut }) => {
-    shortcuts[name] = shortcut;
+  let shortcuts = {};
+  chrome.commands.getAll(commands => {
+    commands.forEach(({ name, shortcut }) => {
+      shortcuts[name] = shortcut;
+    });
   });
-});
-
-export default function createMenu(forUrl, tabId) {
-  if (typeof tabId !== 'number') return; // It is an extension's background page
-  chrome.pageAction.show(tabId);
-  if (tabId === pageTab) return;
-
-  let url = forUrl;
-  let hash = forUrl.indexOf('#');
-  if (hash !== -1) url = forUrl.substr(0, hash);
-  if (pageUrl === url) return;
-  pageUrl = url; pageTab = tabId;
-  chrome.contextMenus.removeAll();
 
   menus.forEach(({ id, title }) => {
     chrome.contextMenus.create({
       id: id,
       title: title + (shortcuts[id] ? ' (' + shortcuts[id] + ')' : ''),
-      contexts: ['all'],
-      documentUrlPatterns: [url],
-      onclick: () => { openDevToolsWindow(id); }
+      contexts: ['all']
     });
   });
 }
+
+chrome.contextMenus.onClicked.addListener(({ menuItemId }) => {
+  openDevToolsWindow(menuItemId);
+});

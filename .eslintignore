@@ -3,3 +3,4 @@ build
 dev
 webpack/replace
 examples
+test/app/setup.js

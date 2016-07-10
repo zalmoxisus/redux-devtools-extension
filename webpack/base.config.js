@@ -2,16 +2,17 @@ import path from 'path';
 import webpack from 'webpack';
 
 const extpath = path.join(__dirname, '../src/browser/extension/');
+const electronMock = `${extpath}electronMock`;
 
 const baseConfig = (params) => ({
   entry: params.input || {
-    background: [ `${extpath}background/index` ],
+    background: [ electronMock, `${extpath}background/index` ],
     options: [ `${extpath}options/index` ],
     window: [ `${extpath}window/index` ],
     remote: [ `${extpath}window/remote` ],
-    devpanel: [ `${extpath}devpanel/index` ],
+    devpanel: [ electronMock, `${extpath}devpanel/index` ],
     devtools: [ `${extpath}devtools/index` ],
-    content: [ `${extpath}inject/contentScript` ],
+    content: [ electronMock, `${extpath}inject/contentScript` ],
     pagewrap: [ `${extpath}inject/pageScriptWrap` ],
     inject: [ `${extpath}inject/index` ],
     ...params.inputExtra
@@ -25,13 +26,7 @@ const baseConfig = (params) => ({
     new webpack.DefinePlugin(params.globals),
     ...(params.plugins ? params.plugins :
       [
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-          comments: false,
-          compressor: {
-            warnings: false
-          }
-        })
+        new webpack.optimize.DedupePlugin()
       ])
   ],
   resolve: {
@@ -46,7 +41,7 @@ const baseConfig = (params) => ({
       ...(params.loaders ? params.loaders : [{
         test: /\.js$/,
         loader: 'babel',
-        exclude: /node_modules/
+        exclude: /(node_modules|tmp\/page\.bundle)/
       }]),
       {
         test: /\.css?$/,

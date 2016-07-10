@@ -1,18 +1,16 @@
-import { connect } from 'crossmessaging';
 import React from 'react';
 import { render } from 'react-dom';
 import updateState from 'remotedev-app/lib/store/updateState';
 import createDevStore from 'remotedev-app/lib/store/createDevStore';
-import DevTools from '../../../app/containers/DevTools';
+import ConnectedApp from '../../../app/containers/ConnectedApp';
 
-const backgroundPageConnection = connect();
-
-function dispatch(action) {
+function dispatch(type, action, id, state) {
   chrome.devtools.inspectedWindow.eval(
     'window.postMessage({' +
-    'type: \'DISPATCH\',' +
+    'type: \'' + type + '\',' +
     'payload: ' + JSON.stringify(action) + ',' +
-    'source: \'redux-cs\'' +
+    'state: \'' + state + '\',' +
+    'source: \'@devtools-extension\'' +
     '}, \'*\');',
     { useContentScriptContext: false }
   );
@@ -24,39 +22,47 @@ let rendered = false;
 
 function showDevTools() {
   if (!rendered) {
-    render(
-      <DevTools store={store} />,
-      document.getElementById('root')
-    );
-    rendered = true;
-  }
-}
-
-backgroundPageConnection.onMessage.addListener((message) => {
-  switch (message.type) {
-    case 'NA':
+    try {
       render(
-        <div>No store found. Make sure to follow <a href="https://github.com/zalmoxisus/redux-devtools-extension#implementation" target="_blank">the instructions</a>.</div>,
+        <ConnectedApp store={store}/>,
         document.getElementById('root')
       );
-      rendered = false;
-      break;
-    case 'DISPATCH':
-      dispatch(message.action);
-      break;
-    default:
-      if (updateState(store, message)) showDevTools();
+      rendered = true;
+    } catch (error) {
+      render(
+        <pre>{error.stack}</pre>,
+        document.getElementById('root')
+      );
+    }
   }
-});
+}
 
 function init(id) {
   chrome.devtools.inspectedWindow.eval(
     'window.postMessage({' +
     'type: \'UPDATE\',' +
-    'source: \'redux-cs\'' +
+    'source: \'@devtools-extension\'' +
     '}, \'*\');'
   );
-  backgroundPageConnection.postMessage({ name: 'init', tabId: id });
+
+  const bg = chrome.runtime.connect({ name: id.toString() });
+
+  bg.onMessage.addListener(message => {
+    switch (message.type) {
+      case 'NA':
+        render(
+          <div>No store found. Make sure to follow <a href="https://github.com/zalmoxisus/redux-devtools-extension#implementation" target="_blank">the instructions</a>.</div>,
+          document.getElementById('root')
+        );
+        rendered = false;
+        break;
+      case 'DISPATCH':
+        dispatch(message.action);
+        break;
+      default:
+        if (updateState(store, message)) showDevTools();
+    }
+  });
 }
 
 if (chrome.devtools.inspectedWindow.tabId) {

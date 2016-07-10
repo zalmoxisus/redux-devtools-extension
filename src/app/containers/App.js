@@ -1,74 +1,146 @@
-import React, { cloneElement, Component, PropTypes } from 'react';
-import { sendToBg } from 'crossmessaging';
+import React, { Component, PropTypes } from 'react';
 import styles from 'remotedev-app/lib/styles';
+import enhance from 'remotedev-app/lib/hoc';
+import DevTools from 'remotedev-app/lib/containers/DevTools';
+import MonitorSelector from 'remotedev-app/lib/components/MonitorSelector';
 import Instances from 'remotedev-app/lib/components/Instances';
 import Button from 'remotedev-app/lib/components/Button';
+import DispatcherButton from 'remotedev-app/lib/components/buttons/DispatcherButton';
+import SliderButton from 'remotedev-app/lib/components/buttons/SliderButton';
+import ImportButton from 'remotedev-app/lib/components/buttons/ImportButton';
+import ExportButton from 'remotedev-app/lib/components/buttons/ExportButton';
+import TestGenerator from 'remotedev-app/lib/components/TestGenerator';
 import SettingsIcon from 'react-icons/lib/md/settings';
 import LeftIcon from 'react-icons/lib/md/border-left';
 import RightIcon from 'react-icons/lib/md/border-right';
 import BottomIcon from 'react-icons/lib/md/border-bottom';
 import RemoteIcon from 'react-icons/lib/go/radio-tower';
-import Monitor from './Monitor';
 
-let monitorPosition;
-if (location.hash) monitorPosition = location.hash.substr(location.hash.indexOf('-') + 1);
+const monitorPosition = location.hash;
 
+let initialMonitor;
+let selectedTemplate;
+let testTemplates;
+
+chrome.storage.local.get({
+  ['monitor' + monitorPosition]: 'InspectorMonitor',
+  'test-templates': null,
+  'test-templates-sel': null
+}, options => {
+  initialMonitor = options['monitor' + monitorPosition];
+  selectedTemplate = options['test-templates-sel'];
+  testTemplates = options['test-templates'];
+});
+
+@enhance
 export default class App extends Component {
   static propTypes = {
     store: PropTypes.object
   };
 
-  static update = () => ({});
+  state = {
+    monitor: initialMonitor,
+    instance: 'auto',
+    dispatcherIsOpen: false,
+    sliderIsOpen: false
+  };
 
-  handleSelectInstance = e => {
-    this.props.store.instance = e.target.value;
-    this.props.store.setInstance(this.props.store.instance, true);
+  componentWillMount() {
+    this.testComponent = (
+      <TestGenerator
+        testTemplates={testTemplates} selectedTemplate={selectedTemplate} useCodemirror
+      />
+    );
+  }
+
+  handleSelectMonitor = (event, index, value) => {
+    this.setState({ monitor: value });
+
+    chrome.storage.local.set({ ['monitor' + monitorPosition]: value });
+  };
+
+  handleSelectInstance = (event, index, value) => {
+    this.setState({ instance: value });
+    this.props.store.setInstance(value);
   };
 
   openWindow = (position) => {
-    sendToBg({ type: 'OPEN', position });
+    chrome.runtime.sendMessage({ type: 'OPEN', position });
+  };
+
+  toggleDispatcher = () => {
+    this.setState({ dispatcherIsOpen: !this.state.dispatcherIsOpen });
+  };
+
+  toggleSlider = () => {
+    this.setState({ sliderIsOpen: !this.state.sliderIsOpen });
   };
 
   render() {
-    const { store, ...childProps } = this.props;
+    const { store } = this.props;
+    const instances = store.instances;
+    const { instance, monitor } = this.state;
     return (
       <div style={styles.container}>
-        {store.instances ?
           <div style={styles.buttonBar}>
-           <Instances instances={store.instances} onSelect={this.handleSelectInstance}/>
+            <MonitorSelector selected={this.state.monitor} onSelect={this.handleSelectMonitor}/>
+            {instances &&
+              <Instances instances={instances} onSelect={this.handleSelectInstance} selected={instance} />
+            }
           </div>
-        : null }
-        <Monitor {...childProps} />
-        {chrome.runtime.openOptionsPage ?
-          <div style={styles.buttonBar}>
-            {monitorPosition !== 'left' ?
-              <Button
-                Icon={LeftIcon}
-                onClick={() => { this.openWindow('left'); }}
-              />
-            : null }
-            {monitorPosition !== 'right' ?
-              <Button
-                Icon={RightIcon}
-                onClick={() => { this.openWindow('right'); }}
-              />
-            : null }
-            {monitorPosition !== 'bottom' ?
-              <Button
-                Icon={BottomIcon}
-                onClick={() => { this.openWindow('bottom'); }}
-              />
-            : null }
+        <DevTools
+          monitor={monitor}
+          store={store}
+          testComponent={this.testComponent}
+          key={`${monitor}-${instance}`}
+        />
+        {this.state.sliderIsOpen && <div style={styles.sliderMonitor}>
+          <DevTools monitor="SliderMonitor" store={store} key={`Slider-${instance}`} />
+        </div>}
+        {this.state.dispatcherIsOpen &&
+          <DevTools monitor="DispatchMonitor"
+            store={store} dispatchFn={store.dispatch}
+            key={`Dispatch-${instance}`}
+          />
+        }
+        <div style={styles.buttonBar}>
+          {!window.isElectron && monitorPosition !== 'left' &&
+            <Button
+              Icon={LeftIcon}
+              onClick={() => { this.openWindow('left'); }}
+            />
+          }
+          {!window.isElectron && monitorPosition !== 'right' &&
+            <Button
+              Icon={RightIcon}
+              onClick={() => { this.openWindow('right'); }}
+            />
+          }
+          {!window.isElectron && monitorPosition !== 'bottom' &&
+            <Button
+              Icon={BottomIcon}
+              onClick={() => { this.openWindow('bottom'); }}
+            />
+          }
+          <DispatcherButton
+            dispatcherIsOpen={this.state.dispatcherIsOpen} onClick={this.toggleDispatcher}
+          />
+          <SliderButton isOpen={this.state.sliderIsOpen} onClick={this.toggleSlider} />
+          <ImportButton importState={store.liftedStore.importState} />
+          <ExportButton exportState={store.liftedStore.getState} />
+          {!window.isElectron &&
             <Button
               Icon={RemoteIcon}
               onClick={() => { this.openWindow('remote'); }}
             >Remote</Button>
+          }
+          {chrome.runtime.openOptionsPage &&
             <Button
               Icon={SettingsIcon}
               onClick={() => { chrome.runtime.openOptionsPage(); }}
             >Settings</Button>
-          </div>
-        : null }
+          }
+        </div>
       </div>
     );
   }

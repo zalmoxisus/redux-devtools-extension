@@ -1,0 +1,43 @@
+{
+  "name": "react-counter-example",
+  "version": "0.0.0",
+  "description": "React counter example",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zalmoxisus/redux-devtools-extension.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zalmoxisus/redux-devtools-extension/issues"
+  },
+  "homepage": "https://github.com/zalmoxisus/redux-devtools-extension",
+  "dependencies": {
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.3.15",
+    "babel-loader": "^6.2.0",
+    "babel-plugin-add-module-exports": "^0.1.1",
+    "babel-plugin-react-transform": "^2.0.0",
+    "babel-plugin-transform-decorators-legacy": "^1.2.0",
+    "babel-polyfill": "^6.3.14",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-react-hmre": "^1.0.1",
+    "babel-preset-stage-0": "^6.3.13",
+    "expect": "^1.6.0",
+    "express": "^4.13.3",
+    "jsdom": "^5.6.1",
+    "mocha": "^2.2.5",
+    "node-libs-browser": "^0.5.2",
+    "react-addons-test-utils": "^15.1.0",
+    "react-transform-hmr": "^1.0.0",
+    "webpack": "^1.13.1",
+    "webpack-dev-middleware": "^1.2.0",
+    "webpack-hot-middleware": "^2.2.0"
+  }
+}

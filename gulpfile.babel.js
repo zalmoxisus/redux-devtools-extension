@@ -5,9 +5,17 @@ import jade from 'gulp-jade';
 import rename from 'gulp-rename';
 import zip from 'gulp-zip';
 import webpack from 'webpack';
+import mocha from 'gulp-mocha';
+import crdv from 'chromedriver';
 import devConfig from './webpack/dev.config';
 import prodConfig from './webpack/prod.config';
 import wrapConfig from './webpack/wrap.config';
+
+function copy(dest) {
+  gulp.src('./src/assets/**/*').pipe(gulp.dest(dest));
+  gulp.src('./node_modules/codemirror/lib/codemirror.css').pipe(gulp.dest(`${dest}/css`));
+  gulp.src('./node_modules/codemirror/theme/night.css').pipe(gulp.dest(`${dest}/css`));
+}
 
 /*
  * common tasks
@@ -49,7 +57,7 @@ gulp.task('copy:dev', () => {
   gulp.src('./src/browser/extension/manifest.json')
     .pipe(rename('manifest.json'))
     .pipe(gulp.dest('./dev'));
-  gulp.src('./src/assets/**/*').pipe(gulp.dest('./dev'));
+  copy('./dev');
 });
 
 /*
@@ -83,7 +91,7 @@ gulp.task('copy:build:extension', () => {
   gulp.src('./src/browser/extension/manifest.json')
     .pipe(rename('manifest.json'))
     .pipe(gulp.dest('./build/extension'));
-  gulp.src('./src/assets/**/*').pipe(gulp.dest('./build/extension'));
+  copy('./build/extension');
 });
 
 gulp.task('copy:build:firefox', ['build:extension'], () => {
@@ -92,6 +100,7 @@ gulp.task('copy:build:firefox', ['build:extension'], () => {
       gulp.src('./src/browser/firefox/manifest.json')
         .pipe(gulp.dest('./build/firefox'));
     });
+  copy('./build/firefox');
 });
 
 /*
@@ -120,6 +129,20 @@ gulp.task('views:watch', () => {
 
 gulp.task('copy:watch', () => {
   gulp.watch(['./src/browser/extension/manifest.json', './src/assets/**/*'], ['copy:dev']);
+});
+
+gulp.task('test:chrome', () => {
+  crdv.start();
+  return gulp.src('./test/chrome/*.spec.js')
+    .pipe(mocha({ require: ['babel-polyfill', 'co-mocha'] }))
+    .on('end', () => crdv.stop());
+});
+
+gulp.task('test:electron', () => {
+  crdv.start();
+  return gulp.src('./test/electron/*.spec.js')
+    .pipe(mocha({ require: ['babel-polyfill', 'co-mocha'] }))
+    .on('end', () => crdv.stop());
 });
 
 gulp.task('default', ['replace-webpack-code', 'webpack:dev', 'views:dev', 'copy:dev', 'views:watch', 'copy:watch']);

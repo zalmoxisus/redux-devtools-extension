@@ -21,7 +21,7 @@ const nextErrorTimeout = createExpBackoffTimer(1000);
 function postError(message) {
   if (handleError && !handleError()) return;
   window.postMessage({
-    source: 'redux-page',
+    source: '@devtools-page',
     type: 'ERROR',
     message: message
   }, '*');

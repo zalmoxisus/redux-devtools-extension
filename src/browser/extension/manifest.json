@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0.6",
+  "version": "2.2.1",
   "name": "Redux DevTools",
   "short_name": "Redux DevTools",
   "description": "DevTools for Redux with actions history, undo and replay.",
@@ -7,7 +7,7 @@
   "page_action": {
     "default_icon": "img/logo/38x38.png",
     "default_title": "Redux DevTools",
-    "default_popup": "window.html"
+    "default_popup": "window.html#popup"
   },
   "commands": {
     "devtools-left": {
@@ -49,7 +49,8 @@
     "chrome_style": true
   },
   "background": {
-    "page": "background.html"
+    "scripts": ["js/background.bundle.js"],
+    "persistent": false
   },
   "content_scripts": [
     {
