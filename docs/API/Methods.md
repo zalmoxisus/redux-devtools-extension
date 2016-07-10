@@ -1,5 +1,7 @@
 ## Communicate with the extension directly
 
+> Note that this API is still excremental and is subject to future changes. 
+
 Use the following methods of `window.devToolsExtension`:
 
 - [open](#windowdevtoolsextensionopenposition)
