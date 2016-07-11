@@ -11,11 +11,11 @@
     "precompress:firefox": "npm run lint && npm run build:firefox && npm run test:app",
     "compress:extension": "gulp compress:extension",
     "compress:firefox": "gulp compress:firefox",
-    "clean": "rm -rf build/ && rm -rf dev/",
+    "clean": "rimraf build/ && rimraf dev/",
     "lint": "eslint .",
     "test:app": "cross-env BABEL_ENV=test mocha --require test/app/setup.js --recursive test/app",
     "test:chrome": "gulp test:chrome",
-    "test:electron": "gulp test:electron && rm -rf test/electron/tmp",
+    "test:electron": "gulp test:electron && rimraf test/electron/tmp",
     "test": "npm run test:app && npm run build:extension && npm run test:chrome && npm run test:electron"
   },
   "repository": {
@@ -62,6 +62,7 @@
     "react-addons-test-utils": "^15.1.0",
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.1",
+    "rimraf": "^2.5.3",
     "selenium-webdriver": "^2.53.3",
     "sinon-chrome": "^1.1.2",
     "style-loader": "^0.12.4",
