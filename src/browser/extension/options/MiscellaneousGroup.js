@@ -19,7 +19,7 @@ export default ({ options, saveOption }) => {
         {' '}
         <label className="option__label" htmlFor="maxAge">items</label>
         <div className="option__hint">
-          When the number is reached, DevTools starts removing the oldest actions. Improves the DevTools performance.
+          When the number is reached, DevTools start removing the oldest actions. Improves the DevTools performance.
           {' '}<a href="https://github.com/zalmoxisus/redux-devtools-extension/pull/54#issuecomment-188167725">More info</a>
         </div>
       </div>
