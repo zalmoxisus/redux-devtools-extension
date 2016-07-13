@@ -59,6 +59,19 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
     }
   }
 
+  function relayState() {
+    relay('STATE', store.liftedStore.getState());
+  }
+
+  function start() {
+    isMonitored = true;
+    relayState();
+  }
+
+  function stop() {
+    isMonitored = false;
+  }
+
   function onMessage(message) {
     switch (message.type) {
       case 'DISPATCH':
@@ -71,17 +84,16 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
         const nextLiftedState = importState(message.state, config);
         if (!nextLiftedState) return;
         store.liftedStore.dispatch({type: 'IMPORT_STATE', nextLiftedState});
-        relay('STATE', store.liftedStore.getState());
+        relayState();
         return;
       case 'UPDATE':
-        relay('STATE', store.liftedStore.getState());
+        relayState();
         return;
       case 'START':
-        isMonitored = true;
-        relay('STATE', store.liftedStore.getState());
+        start();
         return;
       case 'STOP':
-        isMonitored = false;
+        stop();
     }
   }
 
@@ -105,9 +117,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
     lastAction = action.type;
     if (lastAction === '@@redux/INIT' && store.liftedStore) {
       // Send new lifted state on hot-reloading
-      setTimeout(() => {
-        relay('STATE', store.liftedStore.getState());
-      }, 0);
+      setTimeout(relayState, 0);
     }
     return state;
   }
