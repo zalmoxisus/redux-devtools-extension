@@ -47,9 +47,10 @@ describe('Redux enhancer', () => {
       window.store.dispatch({ type: 'INCREMENT' });
       expect(window.store.getState()).toBe(2);
     });
-    expect(message.type).toBe('ACTION');
-    expect(message.action.action.type).toBe('INCREMENT');
-    expect(message.payload).toBe(2);
+    expect(message.type).toBe('STATE');
+    const count = message.payload.computedStates.length - 1;
+    expect(message.payload.actionsById[count].action.type).toBe('INCREMENT');
+    expect(message.payload.computedStates[count].state).toBe(2);
   });
 
   it('should dispatch actions remotely', async () => {

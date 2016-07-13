@@ -22,6 +22,8 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
   let store;
   let shouldSerialize = config.serializeState || config.serializeAction;
   let lastAction;
+  let lastTime;
+  let waitingTimeout;
   let errorOccurred = false;
   let isMonitored = false;
   let isExcess;
@@ -70,6 +72,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
 
   function stop() {
     isMonitored = false;
+    clearTimeout(waitingTimeout);
   }
 
   function onMessage(message) {
@@ -125,6 +128,16 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
   const monitorActions = [
     'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE', 'IMPORT_STATE'
   ];
+  function isWaiting() {
+    const currentTime = Date.now();
+    if (lastTime && currentTime - lastTime < 200) { // no more frequently than once in 200ms
+      stop();
+      waitingTimeout = setTimeout(start, 1000);
+      return true;
+    }
+    lastTime = currentTime;
+    return false;
+  }
 
   function handleChange(state, liftedState) {
     if (!isMonitored) return;
@@ -134,7 +147,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
     if (action.type === '@@INIT') {
       relay('INIT', state, { timestamp: Date.now() });
     } else if (!errorOccurred && monitorActions.indexOf(lastAction) === -1) {
-      if (lastAction === 'JUMP_TO_STATE' || isFiltered(action, localFilter)) return;
+      if (lastAction === 'JUMP_TO_STATE' || isFiltered(action, localFilter) || isWaiting()) return;
       const { maxAge } = window.devToolsOptions;
       relay('ACTION', state, liftedAction, nextActionId);
       if (!isExcess && maxAge) isExcess = liftedState.stagedActionIds.length >= maxAge;
