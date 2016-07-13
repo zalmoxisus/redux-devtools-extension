@@ -33,7 +33,9 @@ export function sendMessage(action, state, shouldStringify, id) {
   };
   if (action) {
     message.type = 'ACTION';
-    message.action = typeof action === 'object' ? action : { type: action };
+    message.action = action.action ? action :
+      { action: typeof action === 'object' ? action : { type: action } };
+    message.action.timestamp = Date.now();
   } else {
     message.type = 'STATE';
   }

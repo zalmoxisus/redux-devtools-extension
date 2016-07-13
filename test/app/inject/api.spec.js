@@ -31,9 +31,9 @@ describe('API', () => {
     let message = await listenMessage(() => {
       window.devToolsExtension.send('hi');
     });
-    expect(message).toEqual({
+    expect(message).toInclude({
       type: 'ACTION',
-      action: { type: 'hi' },
+      action: { action: { type: 'hi' } },
       payload: undefined,
       id: undefined,
       name: '',
@@ -43,9 +43,9 @@ describe('API', () => {
     message = await listenMessage(() => {
       window.devToolsExtension.send({ type: 'hi' }, { counter: 1 }, false, 1);
     });
-    expect(message).toEqual({
+    expect(message).toInclude({
       type: 'ACTION',
-      action: { type: 'hi' },
+      action: { action: { type: 'hi' } },
       payload: { counter: 1 },
       id: 1,
       name: '',
@@ -55,14 +55,14 @@ describe('API', () => {
     message = await listenMessage(() => {
       window.devToolsExtension.send({ type: 'hi' }, { counter: 1 }, true, 1);
     });
-    expect(message).toEqual({
+    expect(message).toInclude({
       type: 'ACTION',
-      action: '{"type":"hi"}',
       payload: '{"counter":1}',
       id: 1,
       name: '',
       source: '@devtools-page'
     });
+    expect(message.action).toInclude('{"action":{"type":"hi"},"timestamp"');
 
     message = await listenMessage(() => {
       window.devToolsExtension.send(undefined, { counter: 1 }, false, 1);
