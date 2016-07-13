@@ -2,6 +2,7 @@ import { stringify } from 'jsan';
 
 const listeners = {};
 export const source = '@devtools-page';
+let isCircular;
 
 /*
 function stringify(obj) {
@@ -16,12 +17,28 @@ export function generateId(instanceId) {
   return instanceId || Math.random().toString(36).substr(2);
 }
 
+
+function tryCatch(fn, args) {
+  try {
+    return fn(args);
+  } catch (err) {
+    isCircular = true;
+    toContentScript(args);
+  }
+}
+
+function send(message) {
+  window.postMessage(message, '*');
+}
+
 export function toContentScript(message, shouldStringify, serializeState, serializeAction) {
-  if (shouldStringify) {
+  if (shouldStringify || isCircular) {
     if (message.payload) message.payload = stringify(message.payload, serializeState);
     if (message.action) message.action = stringify(message.action, serializeAction);
+    send(message);
+  } else {
+    tryCatch(send, message);
   }
-  window.postMessage(message, '*');
 }
 
 export function sendMessage(action, state, shouldStringify, id) {

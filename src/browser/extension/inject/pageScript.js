@@ -52,12 +52,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
     if (shouldSerialize || window.devToolsOptions.serialize) {
       toContentScript(message, true, config.serializeState, config.serializeAction);
     } else {
-      try {
-        toContentScript(message);
-      } catch (err) {
-        toContentScript(message, true);
-        shouldSerialize = true;
-      }
+      toContentScript(message);
     }
   }
 
