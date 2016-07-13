@@ -27,6 +27,10 @@ function updateMonitors() {
 function messaging(request, sender, sendResponse) {
   const tabId = sender.tab ? sender.tab.id : sender.id;
   if (tabId) {
+    if (request.type === 'STOP') {
+      window.store.clear();
+      return true;
+    }
     if (request.type === 'GET_OPTIONS') {
       window.syncOptions.get(options => {
         sendResponse({options: options});
@@ -185,6 +189,5 @@ function monitorInstances(shouldMonitor) {
     || isMonitored === shouldMonitor
   ) return;
   toAllTabs({ type: shouldMonitor ? 'START' : 'STOP' });
-  if (!shouldMonitor) window.store.clear();
   isMonitored = shouldMonitor;
 }

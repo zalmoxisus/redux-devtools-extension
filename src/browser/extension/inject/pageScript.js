@@ -97,6 +97,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
         return;
       case 'STOP':
         stop();
+        relay('STOP');
     }
   }
 
