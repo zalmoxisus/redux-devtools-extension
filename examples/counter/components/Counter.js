@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { isMonitorAction } from '../store/configureStore';
 
 class Counter extends Component {
   render() {
@@ -6,6 +7,10 @@ class Counter extends Component {
     return (
       <p>
         Clicked: {counter} times
+        {
+          process.env.NODE_ENV === 'production' || !isMonitorAction() ? '*' :
+          <strong> (changed by monitor) </strong>
+        }
         {' '}
         <button onClick={increment}>+</button>
         {' '}

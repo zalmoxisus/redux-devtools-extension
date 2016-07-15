@@ -3,10 +3,13 @@ import thunk from 'redux-thunk';
 import invariant from 'redux-immutable-state-invariant';
 import reducer from '../reducers';
 
+export let isMonitorAction;
 export default function configureStore(initialState) {
   const store = createStore(reducer, initialState, compose(
     applyMiddleware(invariant(), thunk),
-    window.devToolsExtension ? window.devToolsExtension() : f => f
+    window.devToolsExtension ? window.devToolsExtension({
+      getMonitor: (monitor) => { isMonitorAction = monitor.isMonitorAction; }
+    }) : f => f
   ));
 
   if (module.hot) {
