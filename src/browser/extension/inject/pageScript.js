@@ -2,13 +2,13 @@ import createStore from '../../../app/store/createStore';
 import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
 import Monitor from '../../../app/service/Monitor';
-import { getLocalFilter, isFiltered, filterState } from '../utils/filters';
-import notifyErrors from '../utils/notifyErrors';
-import importState from '../utils/importState';
-import openWindow from '../utils/openWindow';
+import { getLocalFilter, isFiltered, filterState } from '../../../app/api/filters';
+import notifyErrors from '../../../app/api/notifyErrors';
+import importState from '../../../app/api/importState';
+import openWindow from '../../../app/api/openWindow';
 import {
   updateStore, toContentScript, sendMessage, setListener, connect, disconnect, generateId
-} from '../utils/contentScriptMsg';
+} from '../../../app/api';
 
 let stores = {};
 
