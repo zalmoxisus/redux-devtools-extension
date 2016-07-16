@@ -1,36 +1,66 @@
 {
-  "version": "0.0.0",
+  "version": "2.3.1",
   "name": "Redux DevTools",
   "manifest_version": 2,
-  "description": "Redux DevTools",
+  "description": "DevTools for Redux with actions history, undo and replay.",
+  "homepage_url": "https://github.com/zalmoxisus/redux-devtools-extension",
   "applications": {
     "gecko": {
-      "id": "extension@redux.devtools"
+      "id": "extension@redux.devtools",
+      "strict_min_version": "48.0"
     }
   },
   "page_action": {
     "default_icon": "img/logo/38x38.png",
     "default_title": "Redux DevTools",
-    "default_popup": "window.html"
+    "default_popup": "window.html#popup"
+  },
+  "commands": {
+    "devtools-left": {
+      "suggested_key": {
+        "default": "Alt+Shift+Left"
+      },
+      "description": "DevTools window to left"
+    },
+    "devtools-right": {
+      "suggested_key": {
+        "default": "Alt+Shift+Right"
+      },
+      "description": "DevTools window to right"
+    },
+    "devtools-bottom": {
+      "suggested_key": {
+        "default": "Alt+Shift+Down"
+      },
+      "description": "DevTools window to bottom"
+    },
+    "devtools-remote": {
+      "suggested_key": {
+        "default": "Alt+Shift+Up"
+      },
+      "description": "Remote DevTools"
+    }
   },
   "icons": {
     "16": "img/logo/16x16.png",
     "48": "img/logo/48x48.png",
-    "128": "img/logo/128x128.png",
-    "scalable": "img/logo/scalable.png"
+    "128": "img/logo/128x128.png"
+  },
+  "options_ui": {
+    "page": "options.html"
   },
   "background": {
-    "page": "background.html"
+    "scripts": ["js/background.bundle.js"]
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["js/content.bundle.js"],
-      "run_at": "document_start"
+      "js": ["js/content.bundle.js", "js/pagewrap.bundle.js"],
+      "run_at": "document_start",
+      "all_frames": true
     }
   ],
-  "devtools_page": "devtools.html",
-  "web_accessible_resources": ["js/page.bundle.js"],
-  "permissions": [ "contextMenus", "tabs", "storage", "<all_urls>" ],
+  "web_accessible_resources": ["js/page.bundle.js", "js/inject.bundle.js"],
+  "permissions": ["notifications", "contextMenus", "tabs", "storage", "<all_urls>"],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; style-src * 'unsafe-inline'; img-src 'self' data:;"
 }

@@ -1,8 +1,9 @@
 {
-  "version": "2.3.0",
+  "version": "2.3.1",
   "name": "Redux DevTools",
   "short_name": "Redux DevTools",
   "description": "DevTools for Redux with actions history, undo and replay.",
+  "homepage_url": "https://github.com/zalmoxisus/redux-devtools-extension",
   "manifest_version": 2,
   "page_action": {
     "default_icon": "img/logo/38x38.png",

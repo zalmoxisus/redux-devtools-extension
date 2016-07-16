@@ -7,7 +7,7 @@ const electronMock = `${extpath}electronMock`;
 const baseConfig = (params) => ({
   entry: params.input || {
     background: [ electronMock, `${extpath}background/index` ],
-    options: [ `${extpath}options/index` ],
+    options: [ electronMock, `${extpath}options/index` ],
     window: [ `${extpath}window/index` ],
     remote: [ `${extpath}window/remote` ],
     devpanel: [ electronMock, `${extpath}devpanel/index` ],
@@ -26,7 +26,13 @@ const baseConfig = (params) => ({
     new webpack.DefinePlugin(params.globals),
     ...(params.plugins ? params.plugins :
       [
-        new webpack.optimize.DedupePlugin()
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+          comments: false,
+          compressor: {
+            warnings: false
+          }
+        })
       ])
   ],
   resolve: {

@@ -5,7 +5,7 @@ export default function createMenu() {
     { id: 'devtools-left', title: 'To left' },
     { id: 'devtools-right', title: 'To right' },
     { id: 'devtools-bottom', title: 'To bottom' },
-    { id: 'devtools-panel', title: 'Open in a chrome panel (enable in Chrome settings)' },
+    { id: 'devtools-panel', title: 'Open in a panel (enable in browser settings)' },
     { id: 'devtools-remote', title: 'Open Remote DevTools' }
   ];
 
@@ -14,13 +14,13 @@ export default function createMenu() {
     commands.forEach(({ name, shortcut }) => {
       shortcuts[name] = shortcut;
     });
-  });
 
-  menus.forEach(({ id, title }) => {
-    chrome.contextMenus.create({
-      id: id,
-      title: title + (shortcuts[id] ? ' (' + shortcuts[id] + ')' : ''),
-      contexts: ['all']
+    menus.forEach(({ id, title }) => {
+      chrome.contextMenus.create({
+        id: id,
+        title: title + (shortcuts[id] ? ' (' + shortcuts[id] + ')' : ''),
+        contexts: ['all']
+      });
     });
   });
 }
