@@ -1,4 +1,4 @@
-// Mock not supported some chrome.* API for Firefox and Electron
+// Mock not supported chrome.* API for Firefox and Electron
 
 window.isElectron = window.navigator &&
   window.navigator.userAgent.indexOf('Electron') !== -1;

@@ -2,17 +2,17 @@ import path from 'path';
 import webpack from 'webpack';
 
 const extpath = path.join(__dirname, '../src/browser/extension/');
-const electronMock = `${extpath}electronMock`;
+const mock = `${extpath}chromeAPIMock.js`;
 
 const baseConfig = (params) => ({
   entry: params.input || {
-    background: [ electronMock, `${extpath}background/index` ],
-    options: [ electronMock, `${extpath}options/index` ],
+    background: [ mock, `${extpath}background/index` ],
+    options: [ mock, `${extpath}options/index` ],
     window: [ `${extpath}window/index` ],
     remote: [ `${extpath}window/remote` ],
-    devpanel: [ electronMock, `${extpath}devpanel/index` ],
+    devpanel: [ mock, `${extpath}devpanel/index` ],
     devtools: [ `${extpath}devtools/index` ],
-    content: [ electronMock, `${extpath}inject/contentScript` ],
+    content: [ mock, `${extpath}inject/contentScript` ],
     pagewrap: [ `${extpath}inject/pageScriptWrap` ],
     inject: [ `${extpath}inject/index` ],
     ...params.inputExtra
