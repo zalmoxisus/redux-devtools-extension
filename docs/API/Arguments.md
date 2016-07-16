@@ -52,12 +52,14 @@
       }));
       ```
   - **getMonitor** (*function*) - return monitor object with the following properties:
+    - **active** (*boolean*) - is `true` if the application is monitored (the monitor is open).
     - **start** (*function*) - starts monitoring (relaying logs to the monitor).
     - **stop** (*function*) - stop monitoring (the monitor will not get new changes till you `start` it again with the function above).
     - **update** (*function*) - update state history. Usually you want to use it when stopped monitoring (with the function above) and want to update the logs explicitly (useful for apps which dispatch actions too frequently).   
     - **isHotReloaded** (*function*) - return `true` if reducers just got hot reloaded (useful for dealing with side effects, which didn't get hot-reloaded).
     - **isMonitorAction** (*function*) - return `true` if the last action was dispatched by the monitor (was: 'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE', 'IMPORT_STATE').
     - **isTimeTraveling** (*function*) - return `true` if the state was set by moving back and forth (the last action was dispatched by the monitor was 'JUMP_TO_STATE'). Usually you want to use it to skip side effects. 
+      
       Example of usage:
       
       ```js
