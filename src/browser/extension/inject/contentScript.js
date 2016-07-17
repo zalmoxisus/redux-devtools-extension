@@ -35,6 +35,22 @@ function connect() {
   });
 }
 
+function tryCatch(fn, args) {
+  try {
+    return fn(args);
+  } catch (err) {
+    /* eslint-disable no-console */
+    if (process.env.NODE_ENV !== 'production') console.error('Failed to send message', err);
+    /* eslint-enable no-console */
+  }
+}
+
+function send(message) {
+  if (!bg) connect();
+  if (message.type === 'INIT_INSTANCE') bg.postMessage({ name: 'INIT_INSTANCE' });
+  else bg.postMessage({ name: 'RELAY', message });
+}
+
 // Resend messages from the page to the background script
 window.addEventListener('message', function(event) {
   if (!isAllowed()) return;
@@ -46,13 +62,5 @@ window.addEventListener('message', function(event) {
     return;
   }
 
-  try {
-    if (!bg) connect();
-    if (message.type === 'INIT_INSTANCE') bg.postMessage({ name: 'INIT_INSTANCE' });
-    else bg.postMessage({ name: 'RELAY', message });
-  } catch (err) {
-    /* eslint-disable no-console */
-    if (process.env.NODE_ENV !== 'production') console.error('Failed to send message', err);
-    /* eslint-enable no-console */
-  }
+  tryCatch(send, message);
 }, false);

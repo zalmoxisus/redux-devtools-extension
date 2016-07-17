@@ -1,4 +1,4 @@
-// Electron: Not supported some chrome.* API
+// Mock not supported chrome.* API for Firefox and Electron
 
 window.isElectron = window.navigator &&
   window.navigator.userAgent.indexOf('Electron') !== -1;
@@ -6,7 +6,8 @@ window.isElectron = window.navigator &&
 // Background page only
 if (
   window.isElectron &&
-  location.pathname === '/_generated_background_page.html'
+  location.pathname === '/_generated_background_page.html' ||
+  navigator.userAgent.indexOf('Firefox') !== -1
 ) {
   chrome.runtime.onConnectExternal = {
     addListener() {}
@@ -14,18 +15,26 @@ if (
   chrome.runtime.onMessageExternal = {
     addListener() {}
   };
-  chrome.notifications = {
-    onClicked: {
-      addListener() {}
-    },
-    create() {},
-    clear() {}
-  };
-  chrome.contextMenus = {
-    onClicked: {
-      addListener() {}
-    },
-  };
+
+  if (window.isElectron) {
+    chrome.notifications = {
+      onClicked: {
+        addListener() {}
+      },
+      create() {},
+      clear() {}
+    };
+    chrome.contextMenus = {
+      onClicked: {
+        addListener() {}
+      }
+    };
+  } else {
+    chrome.storage.sync = chrome.storage.local;
+    chrome.runtime.onInstalled = {
+      addListener: cb => cb()
+    };
+  }
 }
 
 if (window.isElectron) {

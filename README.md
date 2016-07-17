@@ -1,15 +1,26 @@
 # Redux DevTools Extension
 
-[![Build Status](https://travis-ci.org/zalmoxisus/redux-devtools-extension.svg)](https://travis-ci.org/zalmoxisus/redux-devtools-extension) [![Build status Windows](https://ci.appveyor.com/api/projects/status/1wh9bjvldj7wq3wn?svg=true)](https://ci.appveyor.com/project/zalmoxisus/redux-devtools-extension)
+[![Build Status](https://travis-ci.org/zalmoxisus/redux-devtools-extension.svg)](https://travis-ci.org/zalmoxisus/redux-devtools-extension) [![Build status Windows](https://ci.appveyor.com/api/projects/status/9c6rxgyjye98lhxg?svg=true)](https://ci.appveyor.com/project/zalmoxisus/redux-devtools-extension)
 
 ![Demo](demo/v1.3.0.png)
 
-## Implementation
+## Usage
 
 #### 1. Get the extension
+##### 1.1 For Chrome
  - from [Chrome Web Store](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
  - or build it with `npm i & npm run build:extension` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./build/extension`
  - or run it in dev mode with `npm i & npm start` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./dev`.
+
+##### 1.2 For Firefox
+ - from [AMO](https://addons.mozilla.org/en-US/firefox/addon/remotedev/)
+ - or build it with `npm i & npm run build:firefox` and [load the extension's folder](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Temporary_Installation_in_Firefox) `./build/firefox`.
+
+##### 1.3 For Electron
+  - just specify `REDUX_DEVTOOLS` in [`electron-devtools-installer`](https://github.com/GPMDP/electron-devtools-installer).
+
+##### 1.4 For other browsers and non-browser environment
+  - apply [`remote-redux-devtools`](https://github.com/zalmoxisus/redux-devtools-extension). 
 
 #### 2. Use with [Redux](https://github.com/rackt/redux)
 ##### 2.1 Basic store
@@ -85,7 +96,7 @@
 
 ##📺 Videos
 
-- [Debugging flux applications in production at React Europe 2016](https://youtu.be/cbXLohVbzNI)
+- [Debugging flux applications in production at React Europe 2016](https://youtu.be/YU8jQ2HtqH4)
 - [Hot Reloading with Time Travel at React Europe 2015](https://youtu.be/xsSnOQynTHs)
 - [Getting Started with Redux DevTools Extension](https://egghead.io/lessons/javascript-getting-started-with-redux-dev-tools)
 

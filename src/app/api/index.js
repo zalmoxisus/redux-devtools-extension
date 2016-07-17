@@ -1,6 +1,8 @@
 import { stringify } from 'jsan';
 
 const listeners = {};
+export const source = '@devtools-page';
+let isCircular;
 
 /*
 function stringify(obj) {
@@ -15,24 +17,41 @@ export function generateId(instanceId) {
   return instanceId || Math.random().toString(36).substr(2);
 }
 
+function tryCatch(fn, args) {
+  try {
+    return fn(args);
+  } catch (err) {
+    isCircular = true;
+    toContentScript(args);
+  }
+}
+
+function post(message) {
+  window.postMessage(message, '*');
+}
+
 export function toContentScript(message, shouldStringify, serializeState, serializeAction) {
-  if (shouldStringify) {
+  if (shouldStringify || isCircular) {
     if (message.payload) message.payload = stringify(message.payload, serializeState);
     if (message.action) message.action = stringify(message.action, serializeAction);
+    post(message);
+  } else {
+    tryCatch(post, message);
   }
-  window.postMessage(message, '*');
 }
 
 export function sendMessage(action, state, shouldStringify, id) {
   const message = {
     payload: state,
-    source: '@devtools-page',
+    source,
     name: document.title,
     id
   };
   if (action) {
     message.type = 'ACTION';
-    message.action = typeof action === 'object' ? action : { type: action };
+    message.action = action.action ? action :
+      { action: typeof action === 'object' ? action : { type: action } };
+    message.action.timestamp = Date.now();
   } else {
     message.type = 'STATE';
   }
@@ -58,7 +77,7 @@ export function setListener(onMessage, instanceId) {
 
 export function disconnect() {
   window.removeEventListener('message', handleMessages);
-  toContentScript({ type: 'DISCONNECT', source: '@devtools-page' });
+  toContentScript({ type: 'DISCONNECT', source });
 }
 
 export function connect(config = {}) {
@@ -79,13 +98,24 @@ export function connect(config = {}) {
     delete listeners[instanceId];
   };
 
-  const send = (action, state) => sendMessage(action, state, config.shouldStringify, id);
+  const send = (action, state) => {
+    sendMessage(action, state, config.shouldStringify, id);
+  };
+
+  const init = (state) => {
+    const name = config.name || document.title;
+    toContentScript(
+      { type: 'INIT', payload: state, action: { timestamp: Date.now() }, id, name, source },
+      config.shouldStringify
+    );
+  };
 
   window.addEventListener('message', handleMessages, false);
 
-  toContentScript({ type: 'INIT_INSTANCE', source: '@devtools-page' });
+  toContentScript({ type: 'INIT_INSTANCE', id, source});
 
   return {
+    init,
     subscribe,
     unsubscribe,
     send
