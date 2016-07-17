@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default ({ options, saveOption }) => {
-  const browserName = typeof chrome === 'undefined' ? 'Firefox' : 'Chrome';
+  const browserName = navigator.userAgent.includes('Firefox') ? 'Firefox' : 'Chrome';
 
   return (
     <fieldset className="option-group">
