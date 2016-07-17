@@ -1,4 +1,4 @@
-import { FilterState } from '../utils/filters';
+import { FilterState } from '../../../app/api/filters';
 
 let options;
 let subscribers = [];

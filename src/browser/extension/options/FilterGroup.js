@@ -1,5 +1,5 @@
 import React from 'react';
-import { FilterState } from '../utils/filters';
+import { FilterState } from '../../../app/api/filters';
 
 export default ({ options, saveOption }) => {
   return (
