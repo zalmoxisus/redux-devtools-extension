@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Options from './options';
+import Options from './Options';
 
 chrome.runtime.getBackgroundPage(background => {
   const syncOptions = background.syncOptions;
