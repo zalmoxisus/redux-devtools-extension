@@ -43,8 +43,8 @@ export default ({ options, saveOption }) => {
         <input className="option__element"
                id="notifyErrors"
                type="checkbox"
-               checked={options.notifyErrors}
-               onChange={(e) => saveOption('notifyErrors', e.target.checked)}/>
+               checked={options.shouldCatchErrors}
+               onChange={(e) => saveOption('shouldCatchErrors', e.target.checked)}/>
         <label className="option__label" htmlFor="notifyErrors">Show errors</label>
         <div className="option__hint">
           Show the {browserName} notifications when errors occur in the app

@@ -67,7 +67,7 @@ function messaging(request, sender, sendResponse) {
 
     // Notify when errors occur in the app
     window.syncOptions.get(options => {
-      if (!options.notifyErrors) return;
+      if (!options.shouldCatchErrors) return;
       const computedState = payload.computedStates[payload.currentStateIndex];
       if (!computedState) return;
       const error = computedState.error;
