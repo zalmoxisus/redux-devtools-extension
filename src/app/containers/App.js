@@ -46,9 +46,9 @@ export default class App extends Component {
   };
 
   componentWillMount() {
-    this.testComponent = (
+    this.testComponent = (props) => (
       <TestGenerator
-        testTemplates={testTemplates} selectedTemplate={selectedTemplate} useCodemirror
+        testTemplates={testTemplates} selectedTemplate={selectedTemplate} useCodemirror {...props}
       />
     );
   }
