@@ -1,4 +1,7 @@
+import { FilterState } from '../../../app/api/filters';
+
 let options;
+let subscribers = [];
 
 const save = (toAllTabs) => (key, value) => {
   let obj = {};
@@ -6,6 +9,24 @@ const save = (toAllTabs) => (key, value) => {
   chrome.storage.sync.set(obj);
   options[key] = value;
   toAllTabs({ options: options });
+  subscribers.forEach(s => s(options));
+};
+
+const migrateOldOptions = (oldOptions) => {
+  let newOptions = Object.assign({}, oldOptions);
+
+  // Migrate the old `filter` option from 2.2.1
+  if (typeof oldOptions.filter === 'boolean') {
+    if (oldOptions.filter && oldOptions.whitelist.length > 0) {
+      newOptions.filter = FilterState.WHITELIST_SPECIFIC;
+    } else if (oldOptions.filter) {
+      newOptions.filter = FilterState.BLACKLIST_SPECIFIC;
+    } else {
+      newOptions.filter = FilterState.DO_NOT_FILTER;
+    }
+  }
+
+  return newOptions;
 };
 
 const get = callback => {
@@ -13,7 +34,7 @@ const get = callback => {
   else {
     chrome.storage.sync.get({
       maxAge: 50,
-      filter: false,
+      filter: FilterState.DO_NOT_FILTER,
       whitelist: '',
       blacklist: '',
       serialize: true,
@@ -21,19 +42,23 @@ const get = callback => {
       inject: true,
       urls: '^https?://localhost|0\\.0\\.0\\.0:\\d+\n^https?://.+\\.github\\.io'
     }, function(items) {
-      options = items;
-      callback(items);
+      options = migrateOldOptions(items);
+      callback(options);
     });
   }
 };
 
+const subscribe = callback => {
+  subscribers = subscribers.concat(callback);
+};
+
 const toReg = str => (
-  str !== '' ? str.split('\n').join('|') : null
+  str !== '' ? str.split('\n').filter(Boolean).join('|') : null
 );
 
 export const injectOptions = newOptions => {
   if (!newOptions) return;
-  if (newOptions.filter) {
+  if (newOptions.filter !== FilterState.DO_NOT_FILTER) {
     newOptions.whitelist = toReg(newOptions.whitelist);
     newOptions.blacklist = toReg(newOptions.blacklist);
   }
@@ -62,6 +87,7 @@ export const isAllowed = (localOptions = options) => (
 export default function syncOptions(toAllTabs) {
   return {
     save: save(toAllTabs),
-    get: get
+    get: get,
+    subscribe: subscribe
   };
 }
