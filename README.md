@@ -20,7 +20,7 @@
   - just specify `REDUX_DEVTOOLS` in [`electron-devtools-installer`](https://github.com/GPMDP/electron-devtools-installer).
 
 ##### 1.4 For other browsers and non-browser environment
-  - apply [`remote-redux-devtools`](https://github.com/zalmoxisus/redux-devtools-extension). 
+  - apply [`remote-redux-devtools`](https://github.com/zalmoxisus/remote-redux-devtools). 
 
 #### 2. Use with [Redux](https://github.com/rackt/redux)
 ##### 2.1 Basic store
