@@ -1,17 +1,18 @@
-import { stringify } from 'jsan';
+import jsan from 'jsan';
 
 const listeners = {};
 export const source = '@devtools-page';
 let isCircular;
 
-/*
-function stringify(obj) {
-   return jsan.stringify(obj, function(key, value) {
-   if (value && value.toJS) { return value.toJS(); }
-   return value;
-   }, null, true);
+export default function stringify(obj, replacer, type) {
+  if (type === 2) { // Deep serialization
+    return jsan.stringify(obj, function(key, value) {
+      if (value && value.toJS) { return value.toJS(); }
+      return value;
+    }, null, true);
+  }
+  return jsan.stringify(obj, replacer);
 }
-*/
 
 export function generateId(instanceId) {
   return instanceId || Math.random().toString(36).substr(2);
@@ -50,7 +51,7 @@ export function sendMessage(action, state, shouldStringify, id) {
   if (action) {
     message.type = 'ACTION';
     message.action = action.action ? action :
-      { action: typeof action === 'object' ? action : { type: action } };
+      { type: 'PERFORM_ACTION', action: typeof action === 'object' ? action : { type: action } };
     message.action.timestamp = Date.now();
   } else {
     message.type = 'STATE';
