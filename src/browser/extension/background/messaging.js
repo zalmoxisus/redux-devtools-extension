@@ -55,7 +55,7 @@ function messaging(request, sender, sendResponse) {
     }
 
     if (!instancesConn[request.id]) instancesConn[request.id] = tabId;
-    const payload = updateState(window.store, request, handleInstancesChanged, window.store.instance);
+    const payload = updateState(window.store, request, handleInstancesChanged);
     if (!payload) return true;
 
     // Relay the message to the devTools panel

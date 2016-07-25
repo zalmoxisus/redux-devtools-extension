@@ -40,7 +40,7 @@ export default class App extends Component {
 
   state = {
     monitor: initialMonitor,
-    instance: 'auto',
+    instance: null,
     dispatcherIsOpen: false,
     sliderIsOpen: false
   };
