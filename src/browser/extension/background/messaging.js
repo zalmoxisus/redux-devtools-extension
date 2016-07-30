@@ -149,7 +149,7 @@ function onConnect(port) {
     };
   } else {
     connections = panelConnections; id = port.name;
-    monitorInstances(true);
+    isMonitored = true;
     if (id !== window.store.id) port.postMessage(naMessage);
     disconnect = () => {
       monitorInstances(false);

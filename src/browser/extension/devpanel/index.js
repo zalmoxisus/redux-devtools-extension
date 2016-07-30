@@ -41,7 +41,7 @@ function showDevTools() {
 function init(id) {
   chrome.devtools.inspectedWindow.eval(
     'window.postMessage({' +
-    'type: \'UPDATE\',' +
+    'type: \'START\',' +
     'source: \'@devtools-extension\'' +
     '}, \'*\');'
   );
