@@ -1,3 +1,4 @@
+import { getActionsArray, evalAction } from 'remotedev-utils';
 import createStore from '../../../app/store/createStore';
 import configureStore from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
@@ -24,6 +25,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
   let shouldSerialize = config.serializeState || config.serializeAction;
   let errorOccurred = false;
   let isExcess;
+  let actionCreators;
   const instanceId = generateId(config.instanceId);
   const localFilter = getLocalFilter(config);
   const { statesFilter, actionsFilter } = config;
@@ -56,8 +58,17 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
     }
   }
 
-  function relayState() {
-    relay('STATE', store.liftedStore.getState());
+  function relayState(actions) {
+    relay('STATE', store.liftedStore.getState(), actions);
+  }
+
+  function dispatchRemotely(action) {
+    try {
+      const result = evalAction(action, actionCreators);
+      store.dispatch(result);
+    } catch (e) {
+      relay('ERROR', e.message);
+    }
   }
 
   function onMessage(message) {
@@ -66,7 +77,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
         store.liftedStore.dispatch(message.payload);
         return;
       case 'ACTION':
-        store.dispatch(message.payload);
+        dispatchRemotely(message.payload);
         return;
       case 'IMPORT':
         const nextLiftedState = importState(message.state, config);
@@ -78,7 +89,11 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
         relayState();
         return;
       case 'START':
-        monitor.start();
+        monitor.start(true);
+        if (!actionCreators && config.actionCreators) {
+          actionCreators = getActionsArray(config.actionCreators);
+        }
+        relayState(JSON.stringify(actionCreators));
         return;
       case 'STOP':
         monitor.stop();

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import styles from 'remotedev-app/lib/styles';
 import enhance from 'remotedev-app/lib/hoc';
 import DevTools from 'remotedev-app/lib/containers/DevTools';
+import Dispatcher from 'remotedev-app/lib/containers/monitors/Dispatcher';
 import MonitorSelector from 'remotedev-app/lib/components/MonitorSelector';
 import Instances from 'remotedev-app/lib/components/Instances';
 import Button from 'remotedev-app/lib/components/Button';
@@ -35,12 +36,14 @@ chrome.storage.local.get({
 @enhance
 export default class App extends Component {
   static propTypes = {
-    store: PropTypes.object
+    store: PropTypes.object,
+    onMessage: PropTypes.object
   };
 
   state = {
     monitor: initialMonitor,
     instance: null,
+    error: null,
     dispatcherIsOpen: false,
     sliderIsOpen: false
   };
@@ -51,6 +54,15 @@ export default class App extends Component {
         testTemplates={testTemplates} selectedTemplate={selectedTemplate} useCodemirror {...props}
       />
     );
+  }
+
+  componentDidMount() {
+    if (!this.props.onMessage) return;
+    this.props.onMessage.addListener(message => {
+      if (message.type === 'ERROR') {
+        this.setState({ error: message.payload });
+      }
+    });
   }
 
   handleSelectMonitor = (event, index, value) => {
@@ -66,6 +78,10 @@ export default class App extends Component {
 
   openWindow = (position) => {
     chrome.runtime.sendMessage({ type: 'OPEN', position });
+  };
+
+  clearError = () => {
+    this.setState({ error: null });
   };
 
   toggleDispatcher = () => {
@@ -98,10 +114,12 @@ export default class App extends Component {
           <DevTools monitor="SliderMonitor" store={store} key={`Slider-${instance}`} />
         </div>}
         {this.state.dispatcherIsOpen &&
-          <DevTools monitor="DispatchMonitor"
-            store={store} dispatchFn={store.dispatch}
-            key={`Dispatch-${instance}`}
-          />
+        <Dispatcher
+          store={store}
+          error={this.state.error}
+          clearError={this.clearError}
+          key={`Dispatcher-${instance}`}
+        />
         }
         <div style={styles.buttonBar}>
           {!window.isElectron && monitorPosition !== 'left' &&

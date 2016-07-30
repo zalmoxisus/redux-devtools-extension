@@ -19,12 +19,13 @@ function dispatch(type, action, id, state) {
 const store = createDevStore(dispatch);
 
 let rendered = false;
+let bg;
 
 function showDevTools() {
   if (!rendered) {
     try {
       render(
-        <ConnectedApp store={store}/>,
+        <ConnectedApp store={store} onMessage={bg.onMessage} />,
         document.getElementById('root')
       );
       rendered = true;
@@ -45,7 +46,7 @@ function init(id) {
     '}, \'*\');'
   );
 
-  const bg = chrome.runtime.connect({ name: id.toString() });
+  bg = chrome.runtime.connect({ name: id.toString() });
 
   bg.onMessage.addListener(message => {
     switch (message.type) {
@@ -58,6 +59,8 @@ function init(id) {
         break;
       case 'DISPATCH':
         dispatch(message.action);
+        break;
+      case 'ERROR':
         break;
       default:
         if (updateState(store, message)) showDevTools();

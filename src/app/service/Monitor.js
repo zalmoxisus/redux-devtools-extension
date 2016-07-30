@@ -15,9 +15,9 @@ export default class Monitor {
     }
     return state;
   };
-  start = () => {
+  start = (skipUpdate) => {
     this.active = true;
-    this.update();
+    if (!skipUpdate) this.update();
   };
   stop = () => {
     this.active = false;

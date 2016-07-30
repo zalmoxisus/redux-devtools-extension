@@ -33,8 +33,12 @@ function post(message) {
 
 export function toContentScript(message, shouldStringify, serializeState, serializeAction) {
   if (shouldStringify || isCircular) {
-    if (message.payload) message.payload = stringify(message.payload, serializeState);
-    if (message.action) message.action = stringify(message.action, serializeAction);
+    if (message.type !== 'ERROR' && message.payload) {
+      message.payload = stringify(message.payload, serializeState);
+    }
+    if (message.type !== 'STATE' && message.action) {
+      message.action = stringify(message.action, serializeAction);
+    }
     post(message);
   } else {
     tryCatch(post, message);

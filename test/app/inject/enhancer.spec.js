@@ -57,7 +57,7 @@ describe('Redux enhancer', () => {
     let message = await listenMessage(() => {
       window.postMessage({
         type: 'ACTION',
-        payload: { type: 'INCREMENT' },
+        payload: '{ type: \'INCREMENT\' }',
         source: '@devtools-extension'
       }, '*');
     });

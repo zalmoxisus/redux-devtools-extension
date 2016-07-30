@@ -38,11 +38,12 @@ chrome.runtime.getBackgroundPage(({ store }) => {
         return currentState;
       },
       dispatch: (action) => {
-        store.liftedStore.dispatch(action);
-        if (action.type === 'JUMP_TO_STATE') update();
+        store.liftedStore.dispatch(action, currentInstance);
+        if (action.type === 'JUMP_TO_STATE' || action.type === 'SWEEP') update();
       },
       subscribe
     },
+    getActionCreators: () => store.getActionCreators(currentInstance),
     setInstance: instance => {
       currentInstance = instance;
       currentState = undefined;
@@ -50,7 +51,10 @@ chrome.runtime.getBackgroundPage(({ store }) => {
   };
 
   render(
-    <ConnectedApp store={localStore} />,
+    <ConnectedApp
+      store={localStore}
+      onMessage={bg.onMessage}
+    />,
     document.getElementById('root')
   );
 });

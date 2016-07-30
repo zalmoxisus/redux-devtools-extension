@@ -17,10 +17,17 @@ function handleInstancesChanged(instance, name) {
   window.store.instances[instance] = name || instance;
 }
 
-function updateMonitors() {
+function sendToMonitors(msg) {
   Object.keys(monitorConnections).forEach(id => {
-    monitorConnections[id].postMessage({ type: 'UPDATE' });
+    monitorConnections[id].postMessage(msg || { type: 'UPDATE' });
   });
+}
+
+// Relay the message to the devTools panel
+function sendToDevPanel(tabId, request) {
+  if (tabId in panelConnections) {
+    panelConnections[tabId].postMessage(request);
+  }
 }
 
 // Receive message from content script
@@ -44,6 +51,11 @@ function messaging(request, sender, sendResponse) {
       return true;
     }
     if (request.type === 'ERROR') {
+      if (request.payload) {
+        sendToMonitors(request);
+        sendToDevPanel(tabId, request);
+        return true;
+      }
       chrome.notifications.create('app-error', {
         type: 'basic',
         title: 'An error occurred in the app',
@@ -58,12 +70,8 @@ function messaging(request, sender, sendResponse) {
     const payload = updateState(window.store, request, handleInstancesChanged);
     if (!payload) return true;
 
-    // Relay the message to the devTools panel
-    if (tabId in panelConnections) {
-      panelConnections[tabId].postMessage(request);
-    }
-
-    updateMonitors();
+    sendToDevPanel(tabId, request);
+    sendToMonitors();
 
     // Notify when errors occur in the app
     window.syncOptions.get(options => {
@@ -127,7 +135,7 @@ function onConnect(port) {
           delete instancesConn[instance];
         }
       });
-      updateMonitors();
+      sendToMonitors();
     };
   } else if (port.name === 'monitor') {
     connections = monitorConnections; id = getId(port);

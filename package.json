@@ -79,6 +79,7 @@
     "redux": "^3.5.2",
     "redux-devtools": "^3.3.1",
     "redux-devtools-instrument": "^1.0.1",
-    "remotedev-app": "^0.5.0"
+    "remotedev-app": "^0.6.0-alpha-1",
+    "remotedev-utils": "0.0.1"
   }
 }
