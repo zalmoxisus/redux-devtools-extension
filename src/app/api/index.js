@@ -55,8 +55,7 @@ export function sendMessage(action, state, shouldStringify, id) {
   if (action) {
     message.type = 'ACTION';
     message.action = action.action ? action :
-      { type: 'PERFORM_ACTION', action: typeof action === 'object' ? action : { type: action } };
-    message.action.timestamp = Date.now();
+      { action: typeof action === 'object' ? action : { type: action } };
   } else {
     message.type = 'STATE';
   }
@@ -107,12 +106,20 @@ export function connect(config = {}) {
     sendMessage(action, state, config.shouldStringify, id);
   };
 
-  const init = (state) => {
+  const init = (state, action) => {
     const name = config.name || document.title;
     toContentScript(
-      { type: 'INIT', payload: state, action: { timestamp: Date.now() }, id, name, source },
+      {
+        type: 'INIT', payload: state,
+        action: action || {},
+        id, name, source
+      },
       config.shouldStringify
     );
+  };
+
+  const error = (payload) => {
+    post({ type: 'ERROR', payload, id, source });
   };
 
   window.addEventListener('message', handleMessages, false);
@@ -123,7 +130,8 @@ export function connect(config = {}) {
     init,
     subscribe,
     unsubscribe,
-    send
+    send,
+    error
   };
 }
 

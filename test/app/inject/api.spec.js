@@ -62,7 +62,7 @@ describe('API', () => {
       name: '',
       source: '@devtools-page'
     });
-    expect(message.action).toInclude('{"type":"PERFORM_ACTION","action":{"type":"hi"},"timestamp"');
+    expect(message.action).toBe('{"action":{"type":"hi"}}');
 
     message = await listenMessage(() => {
       window.devToolsExtension.send(undefined, { counter: 1 }, false, 1);

@@ -41,9 +41,12 @@ chrome.runtime.getBackgroundPage(({ store }) => {
         store.liftedStore.dispatch(action, currentInstance);
         if (action.type === 'JUMP_TO_STATE' || action.type === 'SWEEP') update();
       },
+      importState: (state) => store.liftedStore.importState(state, currentInstance),
       subscribe
     },
+    dispatch: (action) => store.dispatch(action, currentInstance),
     getActionCreators: () => store.getActionCreators(currentInstance),
+    isRedux: () => store.isRedux(currentInstance),
     setInstance: instance => {
       currentInstance = instance;
       currentState = undefined;
