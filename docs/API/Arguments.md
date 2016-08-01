@@ -8,6 +8,7 @@
 ### `window.devToolsExtension([config])`
 - [`config`] *(object)*: options
   - **name** (*string*) - the instance name to be showed on the monitor page. Default value is `document.title`.
+  - **actionCreators** (*array* or *object*) - action creators to dispatch remotely. See [the example](https://github.com/zalmoxisus/redux-devtools-extension/commit/477e69d8649dfcdc9bf84dd45605dab7d9775c03).
   - **deserializeState(state): transformedState** (*function*) - optional transformation of state deserialized from debug session (useful if state is not plain object. Example: immutable-js state)
     - state, transformedState - Redux state objects.
       Example of usage:
