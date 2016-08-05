@@ -49,8 +49,11 @@ export default class App extends Component {
   };
 
   componentWillMount() {
+    const { store } = this.props;
     this.testComponent = (props) => (
       <TestGenerator
+        name={store.instances[this.state.instance || store.liftedStore.getInstance()]}
+        store={store}
         testTemplates={testTemplates} selectedTemplate={selectedTemplate} useCodemirror {...props}
       />
     );
