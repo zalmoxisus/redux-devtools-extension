@@ -21,7 +21,7 @@
 
 #### How to filter actions
 On the options page you may enable actions filtering and specify either actions to be hidden or shown in DevTools. If the latter is specified, other than those actions will be hidden.
-You can overwrite these settings for an individual project using `actionsBlacklist` and `actionsWhitelist` [config options](#API).
+You can overwrite these settings for an individual project using `actionsBlacklist` and `actionsWhitelist` [config options](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md#windowdevtoolsextensionconfig).
 #### How to disable/enable it in production
 A good practice (for other libraries as React as well) is to have a global variable set in webpack config, which indicates the environment like
 ```js
