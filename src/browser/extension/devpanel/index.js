@@ -23,17 +23,25 @@ let bg;
 
 function showDevTools() {
   if (!rendered) {
-    try {
+    if (process.env.NODE_ENV !== 'production') {
+      try {
+        render(
+          <ConnectedApp store={store} onMessage={bg.onMessage} />,
+          document.getElementById('root')
+        );
+        rendered = true;
+      } catch (error) {
+        render(
+          <pre>{error.stack}</pre>,
+          document.getElementById('root')
+        );
+      }
+    } else {
       render(
         <ConnectedApp store={store} onMessage={bg.onMessage} />,
         document.getElementById('root')
       );
       rendered = true;
-    } catch (error) {
-      render(
-        <pre>{error.stack}</pre>,
-        document.getElementById('root')
-      );
     }
   }
 }
