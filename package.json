@@ -78,8 +78,8 @@
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-devtools": "^3.3.1",
-    "redux-devtools-instrument": "^1.0.1",
-    "remotedev-app": "^0.6.1",
+    "redux-devtools-instrument": "^1.1.2",
+    "remotedev-app": "^0.6.3",
     "remotedev-utils": "0.0.1"
   }
 }
