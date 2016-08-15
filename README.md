@@ -22,7 +22,7 @@
 ##### 1.4 For other browsers and non-browser environment
   - apply [`remote-redux-devtools`](https://github.com/zalmoxisus/remote-redux-devtools). 
 
-#### 2. Use with [Redux](https://github.com/rackt/redux)
+#### 2. Use with [Redux](https://github.com/reactjs/redux)
 ##### 2.1 Basic store
   
   If you have a basic [store](http://redux.js.org/docs/api/createStore.html) as described in the official [redux-docs](http://redux.js.org/index.html), simply replace:
@@ -107,7 +107,7 @@ Open these urls to test the extension:
  - [TodoMVC](http://zalmoxisus.github.io/redux-devtools-extension/examples/todomvc/)
  - [Redux Form](http://erikras.github.io/redux-form/#/examples/simple)
  - [Redux Router](http://zalmoxisus.github.io/redux-devtools-extension/examples/router/)
- - [Implemented in a Chrome app and extension](https://github.com/zalmoxisus/browser-redux)
+ - [Implemented in a Chrome app and extension](https://github.com/zalmoxisus/crossbuilder)
 
 Also you may run them from `./examples` folder (on port 4001 and 4002 by default).
 
@@ -116,7 +116,7 @@ Also you may run them from `./examples` folder (on port 4001 and 4002 by default
  - Built using [Crossbuilder](https://github.com/zalmoxisus/crossbuilder) boilerplate.
  - Includes [Dan Abramov](https://github.com/gaearon)'s [redux-devtools](https://github.com/gaearon/redux-devtools).
  - Inspired from [Taylor Hakes](https://github.com/taylorhakes)' [work](https://github.com/taylorhakes/redux-devtools/tree/chrome-devtools).
- - [The logo icon](https://github.com/rackt/redux/issues/151#issuecomment-150060367) made by [Keith Yong](https://github.com/keithyong) .
+ - [The logo icon](https://github.com/reactjs/redux/issues/151) made by [Keith Yong](https://github.com/keithyong) .
  - Examples from [Redux](https://github.com/rackt/redux/tree/master/examples).
 
 ## LICENSE
