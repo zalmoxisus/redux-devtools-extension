@@ -35,7 +35,7 @@ export default function openDevToolsWindow(position) {
   let url = 'window.html';
   switch (position) {
     case 'devtools-right':
-      params.left = window.screen.availWidth - params.width;
+      params.left = window.screen.availLeft + window.screen.availWidth - params.width;
       break;
     case 'devtools-bottom':
       params.height = 350;
