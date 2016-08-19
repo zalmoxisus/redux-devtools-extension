@@ -83,7 +83,7 @@ describe('DevTools panel for Electron', function() {
     it(description, switchMonitorTests[description].bind(this))
   );
 
-  it('should be no logs in console of main window', async () => {
+/*  it('should be no logs in console of main window', async () => {
     const handles = await this.driver.getAllWindowHandles();
     await this.driver.switchTo().window(handles[1]); // Change to main window
 
@@ -92,4 +92,5 @@ describe('DevTools panel for Electron', function() {
     const logs = await this.driver.manage().logs().get(webdriver.logging.Type.BROWSER);
     expect(logs).toEqual([]);
   });
+*/
 });
