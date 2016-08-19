@@ -1,6 +1,6 @@
 import { getActionsArray, evalAction } from 'remotedev-utils';
 import createStore from '../../../app/store/createStore';
-import configureStore from '../../../app/store/configureStore';
+import configureStore, { getUrlParam } from '../../../app/store/configureStore';
 import { isAllowed } from '../options/syncOptions';
 import Monitor from '../../../app/service/Monitor';
 import { getLocalFilter, isFiltered, filterState } from '../../../app/api/filters';
@@ -12,6 +12,7 @@ import {
 } from '../../../app/api';
 
 let stores = {};
+let reportId;
 
 window.devToolsExtension = function(reducer, preloadedState, config) {
   /* eslint-disable no-param-reassign */
@@ -94,6 +95,11 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
           actionCreators = getActionsArray(config.actionCreators);
         }
         relayState(JSON.stringify(actionCreators));
+
+        if (reportId) {
+          relay('GET_REPORT', reportId);
+          reportId = null;
+        }
         return;
       case 'STOP':
         monitor.stop();
@@ -114,6 +120,11 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
     });
 
     relay('INIT_INSTANCE');
+
+    if (typeof reportId === 'undefined') {
+      reportId = getUrlParam('remotedev_report');
+      if (reportId) openWindow();
+    }
   }
 
   function handleChange(state, liftedState) {

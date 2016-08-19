@@ -1,6 +1,8 @@
 import updateState from 'remotedev-app/lib/store/updateState';
 import syncOptions from '../options/syncOptions';
 import openDevToolsWindow from './openWindow';
+import { getReport } from './logging';
+
 let panelConnections = {};
 let tabConnections = {};
 let monitorConnections = {};
@@ -42,6 +44,10 @@ function messaging(request, sender, sendResponse) {
       window.syncOptions.get(options => {
         sendResponse({options: options});
       });
+      return true;
+    }
+    if (request.type === 'GET_REPORT') {
+      getReport(request.payload, request.id);
       return true;
     }
     if (request.type === 'OPEN') {

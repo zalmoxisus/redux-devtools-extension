@@ -33,7 +33,7 @@ function post(message) {
 
 export function toContentScript(message, shouldStringify, serializeState, serializeAction) {
   if (shouldStringify || isCircular) {
-    if (message.type !== 'ERROR' && message.payload) {
+    if (message.type !== 'ERROR' && message.type !== 'GET_REPORT' && message.payload) {
       message.payload = stringify(message.payload, serializeState);
     }
     if (message.type !== 'STATE' && message.action) {
