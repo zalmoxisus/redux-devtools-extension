@@ -16,7 +16,7 @@ window.syncOptions = syncOptions(toAllTabs); // Used in the options page
 const naMessage = { type: 'NA' };
 
 function handleInstancesChanged(instance, name) {
-  window.store.instances[instance] = name || instance;
+  window.store.instances[instance.id] = name || instance;
 }
 
 function sendToMonitors(msg) {
