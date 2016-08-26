@@ -1,5 +1,7 @@
 # Redux DevTools Extension
 
+[![Join the chat at https://gitter.im/zalmoxisus/redux-devtools-extension](https://badges.gitter.im/zalmoxisus/redux-devtools-extension.svg)](https://gitter.im/zalmoxisus/redux-devtools-extension?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/zalmoxisus/redux-devtools-extension.svg)](https://travis-ci.org/zalmoxisus/redux-devtools-extension) [![Build status Windows](https://ci.appveyor.com/api/projects/status/9c6rxgyjye98lhxg?svg=true)](https://ci.appveyor.com/project/zalmoxisus/redux-devtools-extension)
 
 ![Demo](demo/v1.3.0.png)
