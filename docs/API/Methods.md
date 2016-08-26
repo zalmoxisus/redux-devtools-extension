@@ -16,7 +16,7 @@ Open monitor window.
 
 ##### Arguments
 
-- [`position`] *String* - window position: `left`, `right`, `bottom`. Also can be `panel` to [open it in a Chrome panel](../docs/FAQ.md#how-to-keep-devtools-window-focused-all-the-time-in-a-chrome-panel). Or `remote` to [open remote monitor](..//docs/FAQ.md#how-to-get-it-work-with-webworkers-react-native-hybrid-desktop-and-server-side-apps). By default is `left`.
+- [`position`] *String* - window position: `left`, `right`, `bottom`. Also can be `panel` to [open it in a Chrome panel](../FAQ.md#how-to-keep-devtools-window-focused-all-the-time-in-a-chrome-panel). Or `remote` to [open remote monitor](../FAQ.md#how-to-get-it-work-with-webworkers-react-native-hybrid-desktop-and-server-side-apps). By default is `left`.
 
 ### window.devToolsExtension.notifyErrors([onError])
 
@@ -81,9 +81,38 @@ Send a new action and state manually to be shown on the monitor.
 - `unsubscribe()` - unsubscribes the change listener. You can use [window.devToolsExtension.disconnect](#windowdevtoolsextensiondisconnect) to remove all listeners.
 - `send(action, state)` - sends a new action and state manually to be shown on the monitor. If action is `null` then we suppose we send `liftedState`. 
 - `init(state)` - sends the initial state to the monitor.
-- `error(state)` - sends the initial state to the monitor.
+- `error(message)` - sends the error message to be shown in Dispatcher monitor.
 
-[See the example for an example on usage](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/examples/react-counter-messaging/components/Counter.js).
+Example of usage:
+
+```js
+let isStarted = false;
+let isLiftedAction = false;
+
+const devTools = window.devToolsExtension.connect();
+devTools.subscribe((message) => {
+  if (message.type === 'START') {
+    isStarted = true;
+    devTools.send(null, store.liftedStore.getState());
+  } else if (message.type === 'STOP') {
+    isStarted = false;
+  } else if (message.type === 'DISPATCH' && message.payload.type !== 'JUMP_TO_STATE') {
+    isLiftedAction = true;
+    store.liftedStore.dispatch(message.payload);
+  } else if (message.type === 'ACTION') { // Received a store action from Dispatch monitor
+    store.dispatch(message.payload);
+  } 
+});
+
+store.subscribe(() => {
+  if (!isStarted) return;
+  const liftedState = store.liftedStore.getState();
+  if (isLiftedAction) { devTools.send(null, liftedState); isLiftedAction = false; }
+  else devTools.send(liftedState.actionsById[liftedState.nextActionId - 1], store.getState());
+});
+```
+
+There's [a simpler example](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/examples/react-counter-messaging/components/Counter.js).
 
 ### window.devToolsExtension.disconnect()
 
