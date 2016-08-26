@@ -45,11 +45,11 @@ export function toContentScript(message, shouldStringify, serializeState, serial
   }
 }
 
-export function sendMessage(action, state, shouldStringify, id) {
+export function sendMessage(action, state, shouldStringify, id, name) {
   const message = {
     payload: state,
     source,
-    name: document.title,
+    name: name || '',
     id
   };
   if (action) {
@@ -86,6 +86,7 @@ export function disconnect() {
 
 export function connect(config = {}) {
   const id = generateId(config.instanceId);
+  const name = config.name || document.title || id;
 
   const subscribe = (listener) => {
     if (!listener) return undefined;
@@ -103,11 +104,10 @@ export function connect(config = {}) {
   };
 
   const send = (action, state) => {
-    sendMessage(action, state, config.shouldStringify, id);
+    sendMessage(action, state, config.shouldStringify, id, name);
   };
 
   const init = (state, action) => {
-    const name = config.name || document.title;
     toContentScript(
       {
         type: 'INIT', payload: state,
