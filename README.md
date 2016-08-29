@@ -8,12 +8,12 @@
 
 ### 1. For Chrome
  - from [Chrome Web Store](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
- - or build it with `npm i & npm run build:extension` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./build/extension`
- - or run it in dev mode with `npm i & npm start` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./dev`.
+ - or build it with `npm i && npm run build:extension` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./build/extension`
+ - or run it in dev mode with `npm i && npm start` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./dev`.
 
 ### 2. For Firefox
  - from [AMO](https://addons.mozilla.org/en-US/firefox/addon/remotedev/)
- - or build it with `npm i & npm run build:firefox` and [load the extension's folder](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Temporary_Installation_in_Firefox) `./build/firefox`.
+ - or build it with `npm i && npm run build:firefox` and [load the extension's folder](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Temporary_Installation_in_Firefox) `./build/firefox` (just select a file from inside the dir).
 
 ### 3. For Electron
   - just specify `REDUX_DEVTOOLS` in [`electron-devtools-installer`](https://github.com/GPMDP/electron-devtools-installer).
@@ -84,10 +84,10 @@
 ## Demo
 Open these urls to test the extension:
 
- - [Counter](http://zalmoxisus.github.io/redux-devtools-extension/examples/counter/)
- - [TodoMVC](http://zalmoxisus.github.io/redux-devtools-extension/examples/todomvc/)
+ - [Counter](http://zalmoxisus.github.io/examples/counter/)
+ - [TodoMVC](http://zalmoxisus.github.io/examples/todomvc/)
  - [Redux Form](http://erikras.github.io/redux-form/#/examples/simple)
- - [Redux Router](http://zalmoxisus.github.io/redux-devtools-extension/examples/router/)
+ - [Redux Router](http://zalmoxisus.github.io/examples/router/)
 
 Also you may run them from `./examples` folder.
 

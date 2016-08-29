@@ -55,7 +55,7 @@ describe('Chrome extension', function() {
   );
 
   it('should get actions list', async () => {
-    this.driver.executeScript('window.open(\'http://zalmoxisus.github.io/redux-devtools-extension/examples/router/\')');
+    this.driver.executeScript('window.open(\'http://zalmoxisus.github.io/examples/router/\')');
 
     await this.driver.wait(() => (
       this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "actionListRows--jss-")]'))
