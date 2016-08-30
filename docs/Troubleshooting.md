@@ -6,7 +6,9 @@ Make sure you [applied the enhancer](https://github.com/zalmoxisus/redux-devtool
 
 If you develop on your local filesystem, make sure to allow Redux DevTools access to `file:///` URLs in the settings of this extension.
 
-### It shows only the `@@INIT` action
+Don't mix the old Redux API with the new one. Pass enhancers and applyMiddleware as last createStore argument.
+
+### It shows only the `@@INIT` action or moving back and forth doesn't update the state
 
 Most likely you mutate the state. Check it by [adding `redux-immutable-state-invariant` middleware](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/examples/counter/store/configureStore.js#L3).
 

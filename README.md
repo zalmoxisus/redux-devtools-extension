@@ -43,6 +43,8 @@
   ```
 
   Note: passing enhancer as last argument requires **redux@>=3.1.0**. For older versions apply it like [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/todomvc/store/configureStore.js) or [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/counter/store/configureStore.js#L7-L12).
+  
+  Warning: Don't mix the old Redux API with the new one. Pass enhancers and applyMiddleware as last createStore argument.
 
 #### 1.2 Advanced store setup
   If you setup your store with [middleware and enhancers](http://redux.js.org/docs/api/applyMiddleware.html), change this:
@@ -79,7 +81,7 @@
 #### 1.5 For React Native, hybrid, desktop and server side Redux apps
   Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools)'s store enhancer, and from the extension's context menu choose 'Open Remote DevTools' or press Alt+Shift+arrow up for remote monitoring.
   
-### 2. For advanced usage with Redux or without it, see [our documentation](http://zalmoxisus.github.io/redux-devtools-extension/).
+### 2. For advanced usage see [our documentation](http://zalmoxisus.github.io/redux-devtools-extension/).
 
 ## Demo
 Open these urls to test the extension:
