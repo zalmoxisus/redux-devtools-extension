@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import expect from 'expect';
 import { createStore, compose } from 'redux';
-import { listenMessage } from '../../utils/inject';
+import { insertScript, listenMessage } from '../../utils/inject';
 import '../../../src/browser/extension/inject/pageScript';
 
 function counter(state = 0, action) {
@@ -20,6 +20,7 @@ describe('Redux enhancer', () => {
     });
     expect(message.type).toBe('INIT_INSTANCE');
     expect(window.store.getState()).toBe(0);
+    insertScript('window.devToolsOptions = { serialize: false }');
   });
 
   it('should start monitoring', async () => {
