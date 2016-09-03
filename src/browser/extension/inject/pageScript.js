@@ -83,7 +83,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
       case 'IMPORT':
         const nextLiftedState = importState(message.state, config);
         if (!nextLiftedState) return;
-        store.liftedStore.dispatch({type: 'IMPORT_STATE', nextLiftedState});
+        store.liftedStore.dispatch({type: 'IMPORT_STATE', ...nextLiftedState});
         relayState();
         return;
       case 'UPDATE':

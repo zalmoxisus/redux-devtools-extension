@@ -12,8 +12,9 @@ export function getReport(id, instance) {
     }).then(response => {
       return response.json();
     }).then(json => {
-      if (!json.payload) return;
-      window.store.liftedStore.importState(json.payload, instance);
+      const { payload, preloadedState } = json;
+      if (!payload) return;
+      window.store.liftedStore.importState(JSON.stringify({ payload, preloadedState }), instance);
     }).catch(function(err) {
       console.warn(err);
     });

@@ -3,7 +3,12 @@ import { parse } from 'jsan';
 
 export default function importState(state, { deserializeState, deserializeAction }) {
   if (!state) return undefined;
-  const nextLiftedState = parse(state);
+  let preloadedState;
+  let nextLiftedState = parse(state);
+  if (nextLiftedState.payload) {
+    if (nextLiftedState.preloadedState) preloadedState = parse(nextLiftedState.preloadedState);
+    nextLiftedState = parse(nextLiftedState.payload);
+  }
   if (deserializeState) {
     nextLiftedState.computedStates = nextLiftedState.computedStates.map(computedState => ({
       ...computedState,
@@ -20,5 +25,5 @@ export default function importState(state, { deserializeState, deserializeAction
     }));
   }
 
-  return nextLiftedState;
+  return { nextLiftedState, preloadedState };
 }
