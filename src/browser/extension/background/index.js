@@ -1,18 +1,17 @@
-import createDevStore from 'remotedev-app/lib/store/createDevStore';
+import configureStore from '../../../app/store/backgroundStore';
 import openDevToolsWindow from './openWindow';
-import { toContentScript } from './messaging';
 import createMenu from './contextMenus';
 
-const store = createDevStore(toContentScript);
+// Expose the extension's store globally to access it from the windows
+// via chrome.runtime.getBackgroundPage
+window.store = configureStore();
 
-// Expose objects globally in order to use them from windows via chrome.runtime.getBackgroundPage
-window.store = store;
-window.store.instances = {};
-
+// Listen for keyboard shortcuts
 chrome.commands.onCommand.addListener(shortcut => {
   openDevToolsWindow(shortcut);
 });
 
+// Create the context menu
 chrome.runtime.onInstalled.addListener(() => {
   createMenu();
 });
