@@ -1,6 +1,6 @@
 import { getActionsArray, evalAction } from 'remotedev-utils';
 import createStore from '../../../app/store/createStore';
-import configureStore, { getUrlParam } from '../../../app/store/configureStore';
+import configureStore, { getUrlParam } from '../../../app/store/enhancerStore';
 import { isAllowed } from '../options/syncOptions';
 import Monitor from '../../../app/service/Monitor';
 import { getLocalFilter, isFiltered, filterState } from '../../../app/api/filters';
