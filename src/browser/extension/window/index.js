@@ -2,7 +2,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import App from '../../../app/containers/App';
-import configureStore from 'remotedev-app/lib/store/configureStore';
+import configureStore from '../../../app/store/windowStore';
+import { UPDATE_STATES } from '../../../app/constants/actionTypes';
 
 const monitorPosition = location.hash;
 let monitor;
@@ -20,10 +21,11 @@ chrome.storage.local.get({
 });
 
 chrome.runtime.getBackgroundPage(({ store }) => {
-  const localStore = configureStore();
+  const localStore = configureStore(store);
   const bg = chrome.runtime.connect({ name: 'monitor' });
-  bg.onMessage.addListener(message => {
-  });
+  const update = () => { localStore.dispatch({ type: UPDATE_STATES }); };
+  bg.onMessage.addListener(update);
+  update();
 
   render(
     <Provider store={localStore}>
