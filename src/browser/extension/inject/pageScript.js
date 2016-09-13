@@ -39,7 +39,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
       type,
       payload: filterState(state, type, localFilter, statesFilter, actionsFilter, nextActionId),
       source: '@devtools-page',
-      id: instanceId
+      instanceId
     };
 
     if (type === 'ACTION') {
