@@ -1,0 +1,1 @@
+export const UPDATE_STATES = 'UPDATE_STATES';

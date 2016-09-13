@@ -28,30 +28,12 @@ export default class App extends Component {
     liftedDispatch: PropTypes.func.isRequired,
     selected: PropTypes.string,
     liftedState: PropTypes.object.isRequired,
-    options: PropTypes.object,
+    options: PropTypes.object.isRequired,
     monitor: PropTypes.string,
-    monitorPosition: PropTypes.string,
+    position: PropTypes.string,
     dispatcherIsOpen: PropTypes.bool,
-    sliderIsOpen: PropTypes.bool,
-    shouldSync: PropTypes.bool,
-    testTemplates: PropTypes.array,
-    useCodemirror: PropTypes.bool,
-    selectedTemplate: PropTypes.number
+    sliderIsOpen: PropTypes.bool
   };
-
-  componentWillMount() {
-    this.testComponent = (props) => (
-      !this.props.options ? null :
-        <TestGenerator
-          name={this.props.options.name}
-          isRedux={this.props.options.isRedux}
-          testTemplates={this.props.testTemplates}
-          selectedTemplate={this.props.selectedTemplate}
-          useCodemirror={this.props.useCodemirror}
-          {...props}
-        />
-    );
-  }
 
   openWindow = (position) => {
     chrome.runtime.sendMessage({ type: 'OPEN', position });
@@ -59,7 +41,7 @@ export default class App extends Component {
 
   render() {
     const {
-      monitor, monitorPosition,
+      monitor, position,
       dispatcherIsOpen, sliderIsOpen, options, liftedState
     } = this.props;
     return (
@@ -72,7 +54,7 @@ export default class App extends Component {
           monitor={monitor}
           liftedState={liftedState}
           dispatch={this.props.liftedDispatch}
-          testComponent={this.testComponent}
+          testComponent={options.lib === 'redux' && TestGenerator}
         />
         <Notification />
         {sliderIsOpen && <div style={styles.sliderMonitor}>
@@ -86,19 +68,19 @@ export default class App extends Component {
         <Dispatcher options={options} />
         }
         <div style={styles.buttonBar}>
-          {!window.isElectron && monitorPosition !== 'left' &&
+          {!window.isElectron && position !== 'left' &&
           <Button
             Icon={LeftIcon}
             onClick={() => { this.openWindow('left'); }}
           />
           }
-          {!window.isElectron && monitorPosition !== 'right' &&
+          {!window.isElectron && position !== 'right' &&
           <Button
             Icon={RightIcon}
             onClick={() => { this.openWindow('right'); }}
           />
           }
-          {!window.isElectron && monitorPosition !== 'bottom' &&
+          {!window.isElectron && position !== 'bottom' &&
           <Button
             Icon={BottomIcon}
             onClick={() => { this.openWindow('bottom'); }}
