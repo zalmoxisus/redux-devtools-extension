@@ -23,18 +23,6 @@ import RemoteIcon from 'react-icons/lib/go/radio-tower';
 
 @enhance
 export default class App extends Component {
-  static propTypes = {
-    bgStore: PropTypes.object,
-    liftedDispatch: PropTypes.func.isRequired,
-    selected: PropTypes.string,
-    liftedState: PropTypes.object.isRequired,
-    options: PropTypes.object.isRequired,
-    monitor: PropTypes.string,
-    position: PropTypes.string,
-    dispatcherIsOpen: PropTypes.bool,
-    sliderIsOpen: PropTypes.bool
-  };
-
   openWindow = (position) => {
     chrome.runtime.sendMessage({ type: 'OPEN', position });
   };
@@ -64,8 +52,8 @@ export default class App extends Component {
             dispatch={this.props.liftedDispatch}
           />
         </div>}
-        {dispatcherIsOpen && options &&
-        <Dispatcher options={options} />
+        {dispatcherIsOpen && options.connectionId &&
+          <Dispatcher options={options} />
         }
         <div style={styles.buttonBar}>
           {!window.isElectron && position !== 'left' &&
@@ -107,6 +95,18 @@ export default class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  bgStore: PropTypes.object,
+  liftedDispatch: PropTypes.func.isRequired,
+  selected: PropTypes.string,
+  liftedState: PropTypes.object.isRequired,
+  options: PropTypes.object.isRequired,
+  monitor: PropTypes.string,
+  position: PropTypes.string,
+  dispatcherIsOpen: PropTypes.bool,
+  sliderIsOpen: PropTypes.bool
+};
 
 function mapStateToProps(state) {
   const instances = state.instances;
