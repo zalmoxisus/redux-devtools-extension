@@ -5,7 +5,10 @@ import rootReducer from '../reducers/window';
 
 export default function configureStore(baseStore, position, preloadedState) {
   let enhancer;
-  const middlewares = applyMiddleware(syncStores(baseStore), persist(position));
+  const middlewares = applyMiddleware(
+    syncStores(baseStore, position === '#popup'),
+    persist(position)
+  );
   if (process.env.NODE_ENV === 'production') {
     enhancer = middlewares;
   } else {
