@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { liftedDispatch } from 'remotedev-app/lib/actions';
+import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
 import styles from 'remotedev-app/lib/styles';
 import enhance from 'remotedev-app/lib/hoc';
 import DevTools from 'remotedev-app/lib/containers/DevTools';
@@ -110,10 +111,9 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   const instances = state.instances;
-  const selected = instances.selected;
-  const id = selected || instances.current;
+  const id = getActiveInstance(instances);
   return {
-    selected,
+    selected: instances.selected,
     liftedState: instances.states[id],
     options: instances.options[id],
     monitor: state.monitor.selected,

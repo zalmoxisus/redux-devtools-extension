@@ -109,7 +109,7 @@ function onConnect(port) {
   if (port.name === 'tab') {
     if (port.sender.tab) { // from the browser's tab
       id = port.sender.tab.id;
-      chrome.pageAction.show(id);
+      if (chrome.pageAction) chrome.pageAction.show(id);
     } else { // from inside other extension
       id = port.sender.id;
     }

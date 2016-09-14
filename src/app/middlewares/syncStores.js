@@ -1,4 +1,5 @@
 import { UPDATE_STATE, LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
+import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
 
 const syncStores = baseStore => store => next => action => {
   if (action.type === UPDATE_STATE) {
@@ -9,7 +10,7 @@ const syncStores = baseStore => store => next => action => {
   }
   if (action.type === LIFTED_ACTION) {
     const instances = store.getState().instances;
-    const instanceId = instances.selected || instances.current;
+    const instanceId = getActiveInstance(instances);
     const id = instances.options[instanceId].connectionId;
     baseStore.dispatch({ ...action, instanceId, id });
   }
