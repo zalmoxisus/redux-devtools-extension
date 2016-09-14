@@ -1,4 +1,4 @@
-import configureStore from '../../../app/store/backgroundStore';
+import configureStore from '../../../app/stores/backgroundStore';
 import openDevToolsWindow from './openWindow';
 import createMenu from './contextMenus';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { Provider } from 'react-redux';
 import App from '../../../app/containers/App';
-import configureStore from '../../../app/store/panelStore';
+import configureStore from '../../../app/stores/panelStore';
 import getPreloadedState from '../background/getPreloadedState';
 
 const position = location.hash;

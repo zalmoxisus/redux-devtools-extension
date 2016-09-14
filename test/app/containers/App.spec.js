@@ -2,7 +2,7 @@ import expect from 'expect';
 import React from 'react';
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
-import configureStore from '../../../src/app/store/windowStore';
+import configureStore from '../../../src/app/stores/windowStore';
 import App from '../../../src/app/containers/App.js';
 
 const store = configureStore(store);

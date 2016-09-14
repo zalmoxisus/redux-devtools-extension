@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { UPDATE_STATE } from 'remotedev-app/lib/constants/actionTypes';
 import App from '../../../app/containers/App';
-import configureStore from '../../../app/store/windowStore';
+import configureStore from '../../../app/stores/windowStore';
 import getPreloadedState from '../background/getPreloadedState';
 
 const position = location.hash;
