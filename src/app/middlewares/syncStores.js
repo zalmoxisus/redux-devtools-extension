@@ -1,8 +1,7 @@
-import { LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
-import { UPDATE_STATES } from '../constants/actionTypes';
+import { UPDATE_STATE, LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
 
 const syncStores = baseStore => store => next => action => {
-  if (action.type === UPDATE_STATES) {
+  if (action.type === UPDATE_STATE) {
     return next({
       ...action,
       instances: baseStore.getState().instances
