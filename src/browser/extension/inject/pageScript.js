@@ -48,7 +48,6 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
       message.nextActionId = nextActionId;
     } else if (action) {
       message.action = action;
-    } else {
       message.name = config.name || document.title;
     }
 

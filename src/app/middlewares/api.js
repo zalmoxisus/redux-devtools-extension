@@ -36,9 +36,14 @@ function toAllTabs(msg) {
   });
 }
 
-function monitorInstances(shouldMonitor) {
-  if (isMonitored === shouldMonitor) return;
-  toAllTabs({ type: shouldMonitor ? 'START' : 'STOP' });
+function monitorInstances(shouldMonitor, id) {
+  if (!id && isMonitored === shouldMonitor) return;
+  const action = { type: shouldMonitor ? 'START' : 'STOP' };
+  if (id) {
+    connections.tab[id].postMessage(action);
+    return;
+  }
+  toAllTabs(action);
   isMonitored = shouldMonitor;
 }
 
@@ -107,15 +112,11 @@ function onConnect(port) {
   window.store.dispatch({ type: CONNECTED, port });
 
   if (port.name === 'tab') {
-    if (port.sender.tab) { // from the browser's tab
-      id = port.sender.tab.id;
-      if (chrome.pageAction) chrome.pageAction.show(id);
-    } else { // from inside other extension
-      id = port.sender.id;
-    }
+    id = getId(port.sender);
     connections.tab[id] = port;
     listener = msg => {
       if (msg.name === 'INIT_INSTANCE') {
+        if (typeof id === 'number') chrome.pageAction.show(id);
         if (isMonitored) port.postMessage({ type: 'START' });
         return;
       }
@@ -143,7 +144,7 @@ function onConnect(port) {
       type = 'panel';
     }
     connections[type][id] = port;
-    monitorInstances(true);
+    monitorInstances(true, type === 'panel' && id);
     monitors++;
     disconnect = () => {
       monitors--;

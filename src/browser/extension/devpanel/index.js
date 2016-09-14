@@ -17,30 +17,13 @@ function renderDevTools() {
   const node = document.getElementById('root');
   unmountComponentAtNode(node);
   clearTimeout(naTimeout);
-  if (process.env.NODE_ENV !== 'production') {
-    try {
-      store = configureStore(position, preloadedState);
-      render(
-        <Provider store={store}>
-          <App position={position} />
-        </Provider>,
-        node
-      );
-    } catch (error) {
-      render(
-        <pre>{error.stack}</pre>,
-        document.getElementById('root')
-      );
-    }
-  } else {
-    store = configureStore(position, preloadedState);
-    render(
-      <Provider store={store}>
-        <App position={position} />
-      </Provider>,
-      node
-    );
-  }
+  store = configureStore(position, preloadedState);
+  render(
+    <Provider store={store}>
+      <App position={position} />
+    </Provider>,
+    node
+  );
   rendered = true;
 }
 
