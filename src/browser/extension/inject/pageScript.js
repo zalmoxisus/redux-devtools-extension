@@ -114,7 +114,6 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
       const state = store.liftedStore.getState();
       if (state.computedStates[state.currentStateIndex].error) {
         relay('STATE', state);
-        return false;
       }
       return true;
     });
