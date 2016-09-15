@@ -1,19 +1,18 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import persist from 'remotedev-app/lib/middlewares/persist';
 import syncStores from '../middlewares/syncStores';
+import popupSelector from '../middlewares/popupSelector';
 import rootReducer from '../reducers/window';
 
 export default function configureStore(baseStore, position, preloadedState) {
   let enhancer;
-  const middlewares = applyMiddleware(
-    syncStores(baseStore, position === '#popup'),
-    persist(position)
-  );
+  const middlewares = [syncStores(baseStore), persist(position)];
+  if (position === '#popup') middlewares.push(popupSelector);
   if (process.env.NODE_ENV === 'production') {
-    enhancer = middlewares;
+    enhancer = applyMiddleware(...middlewares);
   } else {
     enhancer = compose(
-      middlewares,
+      applyMiddleware(...middlewares),
       window.devToolsExtension ? window.devToolsExtension() : noop => noop
     );
   }
