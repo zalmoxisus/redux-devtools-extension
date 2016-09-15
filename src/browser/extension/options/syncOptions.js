@@ -85,6 +85,7 @@ export const isAllowed = (localOptions = options) => (
 );
 
 export default function syncOptions(toAllTabs) {
+  if (toAllTabs && !options) get(() => {}); // Initialize
   return {
     save: save(toAllTabs),
     get: get,

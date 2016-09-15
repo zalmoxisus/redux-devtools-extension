@@ -50,7 +50,7 @@ export function sendMessage(action, state, shouldStringify, id, name) {
     payload: state,
     source,
     name: name || '',
-    id
+    instanceId: id
   };
   if (action) {
     message.type = 'ACTION';
@@ -112,7 +112,7 @@ export function connect(config = {}) {
       {
         type: 'INIT', payload: state,
         action: action || {},
-        id, name, source
+        instanceId: id, name, source
       },
       config.shouldStringify
     );
@@ -124,7 +124,7 @@ export function connect(config = {}) {
 
   window.addEventListener('message', handleMessages, false);
 
-  toContentScript({ type: 'INIT_INSTANCE', id, source});
+  toContentScript({ type: 'INIT_INSTANCE', instanceId: id, source});
 
   return {
     init,

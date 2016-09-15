@@ -1,6 +1,6 @@
 import { getActionsArray, evalAction } from 'remotedev-utils';
-import createStore from '../../../app/store/createStore';
-import configureStore, { getUrlParam } from '../../../app/store/configureStore';
+import createStore from '../../../app/stores/createStore';
+import configureStore, { getUrlParam } from '../../../app/stores/enhancerStore';
 import { isAllowed } from '../options/syncOptions';
 import Monitor from '../../../app/service/Monitor';
 import { getLocalFilter, isFiltered, filterState } from '../../../app/api/filters';
@@ -39,7 +39,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
       type,
       payload: filterState(state, type, localFilter, statesFilter, actionsFilter, nextActionId),
       source: '@devtools-page',
-      id: instanceId
+      instanceId
     };
 
     if (type === 'ACTION') {
@@ -48,7 +48,6 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
       message.nextActionId = nextActionId;
     } else if (action) {
       message.action = action;
-    } else {
       message.name = config.name || document.title;
     }
 
@@ -114,7 +113,6 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
       const state = store.liftedStore.getState();
       if (state.computedStates[state.currentStateIndex].error) {
         relay('STATE', state);
-        return false;
       }
       return true;
     });

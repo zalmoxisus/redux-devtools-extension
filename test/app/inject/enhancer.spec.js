@@ -148,10 +148,8 @@ describe('Redux enhancer', () => {
   });
 
   it('should create the store with config parameters', async () => {
-    const name = 'Some title';
     const message = await listenMessage(() => {
       window.store = createStore(counter, window.devToolsExtension({
-        name,
         actionsBlacklist: ['SOME_ACTION'],
         statesFilter: state => state,
         serializeState: (key, value) => value
@@ -159,7 +157,6 @@ describe('Redux enhancer', () => {
       expect(window.store).toBeA('object');
     });
     expect(message.type).toBe('INIT_INSTANCE');
-    expect(message.name).toBe(name);
   });
 
   it('should create the store using old Redux api', async () => {

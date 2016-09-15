@@ -1,63 +1,26 @@
 import React from 'react';
 import { render } from 'react-dom';
-import ConnectedApp from '../../../app/containers/ConnectedApp';
+import { Provider } from 'react-redux';
+import { UPDATE_STATE } from 'remotedev-app/lib/constants/actionTypes';
+import App from '../../../app/containers/App';
+import configureStore from '../../../app/stores/windowStore';
+import getPreloadedState from '../background/getPreloadedState';
+
+const position = location.hash;
+let preloadedState;
+getPreloadedState(position, state => { preloadedState = state; });
 
 chrome.runtime.getBackgroundPage(({ store }) => {
-  let currentState;
-  let currentInstance;
-  const listeners = [];
-  function update() {
-    currentState = undefined;
-    listeners.forEach(listener => listener());
-  }
-
+  const localStore = configureStore(store, position, preloadedState);
   const bg = chrome.runtime.connect({ name: 'monitor' });
-  bg.onMessage.addListener(message => {
-    if (message.type === 'UPDATE') update();
-  });
-
-  const subscribe = (listener) => {
-    listeners.push(listener);
-    return function unsubscribe() {
-      const index = listeners.indexOf(listener);
-      listeners.splice(index, 1);
-    };
-  };
-  const localStore = {
-    ...store,
-    subscribe,
-    liftedStore: {
-      ...store.liftedStore,
-      getState: () => {
-        if (currentState) return currentState;
-        currentState = store.liftedStore.getState(currentInstance, true);
-        if (!currentState) {
-          currentInstance = undefined;
-          currentState = store.liftedStore.getState();
-        }
-        return currentState;
-      },
-      dispatch: (action) => {
-        store.liftedStore.dispatch(action, currentInstance);
-        if (action.type === 'JUMP_TO_STATE' || action.type === 'SWEEP') update();
-      },
-      importState: (state) => store.liftedStore.importState(state, currentInstance),
-      subscribe
-    },
-    dispatch: (action) => store.dispatch(action, currentInstance),
-    getActionCreators: () => store.getActionCreators(currentInstance),
-    isRedux: () => store.isRedux(currentInstance),
-    setInstance: instance => {
-      currentInstance = instance;
-      currentState = undefined;
-    }
-  };
+  const update = action => { localStore.dispatch(action || { type: UPDATE_STATE }); };
+  bg.onMessage.addListener(update);
+  update();
 
   render(
-    <ConnectedApp
-      store={localStore}
-      onMessage={bg.onMessage}
-    />,
+    <Provider store={localStore}>
+      <App position={position} />
+    </Provider>,
     document.getElementById('root')
   );
 });

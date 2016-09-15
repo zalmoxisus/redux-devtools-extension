@@ -41,7 +41,7 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "babel-register": "^6.9.0",
-    "chromedriver": "^2.21.2",
+    "chromedriver": "2.21.2",
     "co-mocha": "^1.1.2",
     "cross-env": "^1.0.8",
     "electron-prebuilt": "^1.2.5",
@@ -79,7 +79,7 @@
     "redux": "^3.5.2",
     "redux-devtools": "^3.3.1",
     "redux-devtools-instrument": "^1.1.2",
-    "remotedev-app": "^0.7.0",
+    "remotedev-app": "^0.8.0-beta-2",
     "remotedev-utils": "0.0.1"
   }
 }

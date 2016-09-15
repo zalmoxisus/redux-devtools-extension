@@ -1,3 +1,3 @@
 chrome.devtools.panels.create(
-  'Redux', 'img/scalable.png', 'devpanel.html', function() {}
+  'Redux', 'img/logo/scalable.png', 'devpanel.html', function() {}
 );

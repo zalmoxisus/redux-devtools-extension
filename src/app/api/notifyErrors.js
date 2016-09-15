@@ -11,12 +11,12 @@ function createExpBackoffTimer(step) {
     }
     // Calculate next timeout
     let timeout = Math.pow(2, count - 1);
-    count += 1;
+    if (count < 5) count += 1;
     return timeout * step;
   };
 }
 
-const nextErrorTimeout = createExpBackoffTimer(1000);
+const nextErrorTimeout = createExpBackoffTimer(5000);
 
 function postError(message) {
   if (handleError && !handleError()) return;

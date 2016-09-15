@@ -1,77 +1,54 @@
 import React from 'react';
-import { render } from 'react-dom';
-import updateState from 'remotedev-app/lib/store/updateState';
-import createDevStore from 'remotedev-app/lib/store/createDevStore';
-import ConnectedApp from '../../../app/containers/ConnectedApp';
+import { render, unmountComponentAtNode } from 'react-dom';
+import { Provider } from 'react-redux';
+import App from '../../../app/containers/App';
+import configureStore from '../../../app/stores/panelStore';
+import getPreloadedState from '../background/getPreloadedState';
 
-function dispatch(type, action, id, state) {
-  chrome.devtools.inspectedWindow.eval(
-    'window.postMessage({' +
-    'type: \'' + type + '\',' +
-    'payload: ' + JSON.stringify(action) + ',' +
-    'state: \'' + state + '\',' +
-    'source: \'@devtools-extension\'' +
-    '}, \'*\');',
-    { useContentScriptContext: false }
+const position = location.hash;
+let rendered;
+let store;
+let bgConnection;
+let naTimeout;
+let preloadedState;
+getPreloadedState(position, state => { preloadedState = state; });
+
+function renderDevTools() {
+  const node = document.getElementById('root');
+  unmountComponentAtNode(node);
+  clearTimeout(naTimeout);
+  store = configureStore(position, preloadedState);
+  render(
+    <Provider store={store}>
+      <App position={position} />
+    </Provider>,
+    node
   );
+  rendered = true;
 }
 
-const store = createDevStore(dispatch);
-
-let rendered = false;
-let bg;
-
-function showDevTools() {
-  if (!rendered) {
-    if (process.env.NODE_ENV !== 'production') {
-      try {
-        render(
-          <ConnectedApp store={store} onMessage={bg.onMessage} />,
-          document.getElementById('root')
-        );
-        rendered = true;
-      } catch (error) {
-        render(
-          <pre>{error.stack}</pre>,
-          document.getElementById('root')
-        );
-      }
-    } else {
-      render(
-        <ConnectedApp store={store} onMessage={bg.onMessage} />,
-        document.getElementById('root')
-      );
-      rendered = true;
-    }
-  }
+function renderNA() {
+  if (rendered === false) return;
+  rendered = false;
+  naTimeout = setTimeout(() => {
+    render(
+      <div style={{ padding: '20px', width: '100%', textAlign: 'center' }}>
+        No store found. Make sure to follow <a href="https://github.com/zalmoxisus/redux-devtools-extension#usage" target="_blank">the instructions</a>.
+      </div>,
+      document.getElementById('root')
+    );
+  }, 1500);
 }
 
 function init(id) {
-  chrome.devtools.inspectedWindow.eval(
-    'window.postMessage({' +
-    'type: \'START\',' +
-    'source: \'@devtools-extension\'' +
-    '}, \'*\');'
-  );
-
-  bg = chrome.runtime.connect({ name: id.toString() });
-
-  bg.onMessage.addListener(message => {
-    switch (message.type) {
-      case 'NA':
-        render(
-          <div>No store found. Make sure to follow <a href="https://github.com/zalmoxisus/redux-devtools-extension#implementation" target="_blank">the instructions</a>.</div>,
-          document.getElementById('root')
-        );
-        rendered = false;
-        break;
-      case 'DISPATCH':
-        dispatch(message.action);
-        break;
-      case 'ERROR':
-        break;
-      default:
-        if (updateState(store, message)) showDevTools();
+  renderNA();
+  bgConnection = chrome.runtime.connect({ name: id.toString() });
+  bgConnection.onMessage.addListener(message => {
+    if (message.type === 'NA') {
+      renderNA();
+    } else {
+      if (!rendered) renderDevTools();
+      store.dispatch(message);
     }
   });
 }
