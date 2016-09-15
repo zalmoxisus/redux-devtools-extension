@@ -7,7 +7,7 @@
     "build:extension": "cross-env BABEL_ENV=production gulp build:extension",
     "build:firefox": "cross-env BABEL_ENV=production gulp build:firefox",
     "build:examples": "babel-node examples/buildAll.js",
-    "precompress:extension": "npm run lint && npm run build:extension && npm run test:app && npm run test:chrome && npm run test:electron",
+    "precompress:extension": "npm run lint && npm run test:app && npm run build:extension && npm run test:chrome && npm run test:electron",
     "precompress:firefox": "npm run lint && npm run build:firefox && npm run test:app",
     "compress:extension": "gulp compress:extension",
     "compress:firefox": "gulp compress:firefox",
