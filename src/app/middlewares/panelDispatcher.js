@@ -1,17 +1,20 @@
 import { LIFTED_ACTION, SELECT_INSTANCE } from 'remotedev-app/lib/constants/actionTypes';
+import { nonReduxDispatch } from 'remotedev-app/lib/store/monitorActions';
 import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
 
 export default function panelDispatcher(store) {
   let autoselected = false;
-  function inject({ message: type, action, state }) {
+  function inject({ message, action, state }) {
+    const instances = store.getState().instances;
+    const instanceId = getActiveInstance(instances);
     chrome.devtools.inspectedWindow.eval(
-      'window.postMessage({' +
-      'type: \'' + type + '\',' +
-      'payload: ' + JSON.stringify(action) + ',' +
-      'state: \'' + state + '\',' +
-      'id: \'' + getActiveInstance(store.getState().instances) + '\',' +
-      'source: \'@devtools-extension\'' +
-      '}, \'*\');',
+      `window.postMessage({
+       type: '${message}',
+       payload: ${JSON.stringify(action)},
+       state: '${nonReduxDispatch(store, message, instanceId, action, state, instances)}',
+       id: '${instanceId}',
+       source: '@devtools-extension'
+       }, '*');`,
       { useContentScriptContext: false }
     );
   }

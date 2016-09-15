@@ -1,7 +1,8 @@
+import { UPDATE_STATE, REMOVE_INSTANCE, LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
+import { nonReduxDispatch } from 'remotedev-app/lib/store/monitorActions';
 import syncOptions from '../../browser/extension/options/syncOptions';
 import openDevToolsWindow from '../../browser/extension/background/openWindow';
 import { getReport } from '../../browser/extension/background/logging';
-import { UPDATE_STATE, REMOVE_INSTANCE, LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
 
 const CONNECTED = 'socket/CONNECTED';
 const DISCONNECTED = 'socket/DISCONNECTED';
@@ -25,8 +26,13 @@ function toMonitors(action) {
   });
 }
 
-function toContentScript({ message: type, action, id, instanceId, state }) {
-  connections.tab[id].postMessage({ type, action, state, id: instanceId });
+function toContentScript({ message, action, id, instanceId, state }) {
+  connections.tab[id].postMessage({
+    type: message,
+    action,
+    state: nonReduxDispatch(window.store, message, instanceId, action, state),
+    id: instanceId
+  });
 }
 
 function toAllTabs(msg) {
