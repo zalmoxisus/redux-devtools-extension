@@ -67,7 +67,9 @@ function messaging(request, sender, sendResponse) {
   if (!tabId) return;
 
   if (request.type === 'STOP') {
-    window.store.dispatch({ type: DISCONNECTED });
+    if (!Object.keys(window.store.getState().instances.connections).length) {
+      window.store.dispatch({ type: DISCONNECTED });
+    }
     return;
   }
   if (request.type === 'GET_OPTIONS') {
