@@ -41,7 +41,7 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "babel-register": "^6.9.0",
-    "chromedriver": "^2.21.2",
+    "chromedriver": "2.21.2",
     "co-mocha": "^1.1.2",
     "cross-env": "^1.0.8",
     "electron-prebuilt": "^1.2.5",
