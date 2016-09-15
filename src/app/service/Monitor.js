@@ -23,17 +23,6 @@ export default class Monitor {
     this.active = false;
     clearTimeout(this.waitingTimeout);
   };
-  isWaiting = () => {
-    const currentTime = Date.now();
-    if (this.lastTime && currentTime - this.lastTime < 200) {
-      // no more frequently than once in 200ms
-      this.stop();
-      this.waitingTimeout = setTimeout(this.start, 1000);
-      return true;
-    }
-    this.lastTime = currentTime;
-    return false;
-  };
   isHotReloaded = () => this.lastAction === '@@redux/INIT';
   isMonitorAction = () => monitorActions.indexOf(this.lastAction) !== -1;
   isTimeTraveling = () => this.lastAction === 'JUMP_TO_STATE';
