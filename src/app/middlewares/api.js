@@ -47,9 +47,9 @@ function monitorInstances(shouldMonitor, id) {
   const action = { type: shouldMonitor ? 'START' : 'STOP' };
   if (id) {
     connections.tab[id].postMessage(action);
-    return;
+  } else {
+    toAllTabs(action);
   }
-  toAllTabs(action);
   isMonitored = shouldMonitor;
 }
 
