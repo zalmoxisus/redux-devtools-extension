@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { Provider } from 'react-redux';
+import { REMOVE_INSTANCE } from 'remotedev-app/lib/constants/actionTypes';
 import App from '../../../app/containers/App';
 import configureStore from '../../../app/stores/panelStore';
 import getPreloadedState from '../background/getPreloadedState';
@@ -31,12 +32,15 @@ function renderNA() {
   if (rendered === false) return;
   rendered = false;
   naTimeout = setTimeout(() => {
+    const node = document.getElementById('root');
+    unmountComponentAtNode(node);
     render(
       <div style={{ padding: '20px', width: '100%', textAlign: 'center' }}>
         No store found. Make sure to follow <a href="https://github.com/zalmoxisus/redux-devtools-extension#usage" target="_blank">the instructions</a>.
       </div>,
-      document.getElementById('root')
+      node
     );
+    store = undefined;
   }, 1500);
 }
 
@@ -45,7 +49,8 @@ function init(id) {
   bgConnection = chrome.runtime.connect({ name: id.toString() });
   bgConnection.onMessage.addListener(message => {
     if (message.type === 'NA') {
-      renderNA();
+      if (message.id === id) renderNA();
+      else store.dispatch({ type: REMOVE_INSTANCE, id: message.id });
     } else {
       if (!rendered) renderDevTools();
       store.dispatch(message);

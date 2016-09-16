@@ -6,7 +6,6 @@ import { getReport } from '../../browser/extension/background/logging';
 
 const CONNECTED = 'socket/CONNECTED';
 const DISCONNECTED = 'socket/DISCONNECTED';
-const naMessage = { type: 'NA' };
 const connections = {
   tab: {},
   panel: {},
@@ -116,7 +115,7 @@ function disconnect(type, id, listener) {
   return function disconnectListener() {
     if (type === 'tab') {
       window.store.dispatch({ type: REMOVE_INSTANCE, id });
-      toMonitors(naMessage);
+      toMonitors({ type: 'NA', id });
     } else {
       monitors--;
       if (!monitors) monitorInstances(false);
