@@ -34,7 +34,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
   const monitor = new Monitor(relayState);
   if (config.getMonitor) config.getMonitor(monitor);
 
-  function relay(type, state, action, nextActionId) {
+  function relay(type, state, action, nextActionId, shouldInit) {
     const message = {
       type,
       payload: filterState(state, type, localFilter, statesFilter, actionsFilter, nextActionId),
@@ -46,7 +46,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
       message.action = !actionsFilter ? action : actionsFilter(action.action, nextActionId - 1);
       message.isExcess = isExcess;
       message.nextActionId = nextActionId;
-    } else if (action) {
+    } else if (shouldInit) {
       message.action = action;
       message.name = config.name || document.title;
     }
@@ -58,8 +58,8 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
     }
   }
 
-  function relayState(actions) {
-    relay('STATE', store.liftedStore.getState(), actions);
+  function relayState(actions, shouldInit) {
+    relay('STATE', store.liftedStore.getState(), actions, undefined, shouldInit);
   }
 
   function dispatchRemotely(action) {
@@ -93,7 +93,7 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
         if (!actionCreators && config.actionCreators) {
           actionCreators = getActionsArray(config.actionCreators);
         }
-        relayState(JSON.stringify(actionCreators));
+        relayState(JSON.stringify(actionCreators), true);
 
         if (reportId) {
           relay('GET_REPORT', reportId);
