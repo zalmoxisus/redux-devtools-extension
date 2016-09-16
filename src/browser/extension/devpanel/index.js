@@ -17,7 +17,7 @@ function renderDevTools() {
   const node = document.getElementById('root');
   unmountComponentAtNode(node);
   clearTimeout(naTimeout);
-  store = configureStore(position, preloadedState);
+  store = configureStore(position, bgConnection, preloadedState);
   render(
     <Provider store={store}>
       <App position={position} />

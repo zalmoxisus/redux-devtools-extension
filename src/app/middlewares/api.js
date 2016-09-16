@@ -142,26 +142,35 @@ function onConnect(port) {
     };
     port.onMessage.addListener(listener);
     port.onDisconnect.addListener(disconnect);
-  } else {
-    let type;
-    if (port.name === 'monitor') {
-      id = getId(port.sender);
-      type = 'monitor';
-    } else {
-      id = port.name;
-      type = 'panel';
-    }
-    connections[type][id] = port;
-    monitorInstances(true, type === 'panel' && id);
+  } else if (port.name === 'monitor') {
+    id = getId(port.sender);
+    connections.monitor[id] = port;
+    monitorInstances(true);
     monitors++;
     disconnect = () => {
       monitors--;
-      connections[type][id].onDisconnect.removeListener(disconnect);
-      delete connections[type][id];
-      if (!monitors) {
-        monitorInstances(false);
-      }
+      connections.monitor[id].onDisconnect.removeListener(disconnect);
+      delete connections.monitor[id];
+      if (!monitors) monitorInstances(false);
     };
+    port.onDisconnect.addListener(disconnect);
+  } else {
+    id = port.name;
+    connections.panel[id] = port;
+    monitorInstances(true, id);
+    monitors++;
+    listener = msg => {
+      window.store.dispatch(msg);
+    };
+    disconnect = () => {
+      monitors--;
+      const p = connections.panel[id];
+      p.onMessage.removeListener(listener);
+      p.onDisconnect.removeListener(disconnect);
+      delete connections.panel[id];
+      if (!monitors) monitorInstances(false);
+    };
+    port.onMessage.addListener(listener);
     port.onDisconnect.addListener(disconnect);
   }
 }

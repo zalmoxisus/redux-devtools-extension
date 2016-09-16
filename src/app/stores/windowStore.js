@@ -1,6 +1,6 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import persist from 'remotedev-app/lib/middlewares/persist';
-import syncStores from '../middlewares/syncStores';
+import syncStores from '../middlewares/windowSync';
 import popupSelector from '../middlewares/popupSelector';
 import rootReducer from '../reducers/window';
 
