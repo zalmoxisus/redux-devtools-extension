@@ -112,10 +112,25 @@ function messaging(request, sender, sendResponse) {
   toMonitors(action, tabId);
 }
 
+function disconnect(type, id, listener) {
+  return function disconnectListener() {
+    if (type === 'tab') {
+      window.store.dispatch({ type: REMOVE_INSTANCE, id });
+      toMonitors(naMessage);
+    } else {
+      monitors--;
+      if (!monitors) monitorInstances(false);
+    }
+    const p = connections[type][id];
+    if (listener) p.onMessage.removeListener(listener);
+    p.onDisconnect.removeListener(disconnectListener);
+    delete connections[type][id];
+  };
+}
+
 function onConnect(port) {
   let id;
   let listener;
-  let disconnect;
 
   window.store.dispatch({ type: CONNECTED, port });
 
@@ -132,28 +147,14 @@ function onConnect(port) {
         messaging(msg.message, port.sender, id);
       }
     };
-    disconnect = () => {
-      const p = connections.tab[id];
-      p.onMessage.removeListener(listener);
-      p.onDisconnect.removeListener(disconnect);
-      delete connections.tab[id];
-      window.store.dispatch({ type: REMOVE_INSTANCE, id });
-      toMonitors(naMessage);
-    };
     port.onMessage.addListener(listener);
-    port.onDisconnect.addListener(disconnect);
+    port.onDisconnect.addListener(disconnect('tab', id, listener));
   } else if (port.name === 'monitor') {
     id = getId(port.sender);
     connections.monitor[id] = port;
     monitorInstances(true);
     monitors++;
-    disconnect = () => {
-      monitors--;
-      connections.monitor[id].onDisconnect.removeListener(disconnect);
-      delete connections.monitor[id];
-      if (!monitors) monitorInstances(false);
-    };
-    port.onDisconnect.addListener(disconnect);
+    port.onDisconnect.addListener(disconnect('monitor', id));
   } else {
     id = port.name;
     connections.panel[id] = port;
@@ -162,16 +163,8 @@ function onConnect(port) {
     listener = msg => {
       window.store.dispatch(msg);
     };
-    disconnect = () => {
-      monitors--;
-      const p = connections.panel[id];
-      p.onMessage.removeListener(listener);
-      p.onDisconnect.removeListener(disconnect);
-      delete connections.panel[id];
-      if (!monitors) monitorInstances(false);
-    };
     port.onMessage.addListener(listener);
-    port.onDisconnect.addListener(disconnect);
+    port.onDisconnect.addListener(disconnect('panel', id, listener));
   }
 }
 
