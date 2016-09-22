@@ -45,7 +45,7 @@ function monitorInstances(shouldMonitor, id) {
   if (!id && isMonitored === shouldMonitor) return;
   const action = { type: shouldMonitor ? 'START' : 'STOP' };
   if (id) {
-    connections.tab[id].postMessage(action);
+    if (connections.tab[id]) connections.tab[id].postMessage(action);
   } else {
     toAllTabs(action);
   }
@@ -113,6 +113,10 @@ function messaging(request, sender, sendResponse) {
 
 function disconnect(type, id, listener) {
   return function disconnectListener() {
+    const p = connections[type][id];
+    if (listener) p.onMessage.removeListener(listener);
+    p.onDisconnect.removeListener(disconnectListener);
+    delete connections[type][id];
     if (type === 'tab') {
       window.store.dispatch({ type: REMOVE_INSTANCE, id });
       toMonitors({ type: 'NA', id });
@@ -120,10 +124,6 @@ function disconnect(type, id, listener) {
       monitors--;
       if (!monitors) monitorInstances(false);
     }
-    const p = connections[type][id];
-    if (listener) p.onMessage.removeListener(listener);
-    p.onDisconnect.removeListener(disconnectListener);
-    delete connections[type][id];
   };
 }
 
