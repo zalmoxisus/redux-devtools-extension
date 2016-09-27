@@ -130,14 +130,13 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
     const nextActionId = liftedState.nextActionId;
     const liftedAction = liftedState.actionsById[nextActionId - 1];
     const action = liftedAction.action;
-    if (action.type === '@@INIT') {
-      relay('INIT', state, { timestamp: Date.now() });
-    } else if (!errorOccurred && !monitor.isMonitorAction()) {
-      if (monitor.isTimeTraveling() || isFiltered(action, localFilter)) return;
+    if (!errorOccurred && !monitor.isMonitorAction()) {
+      if (isFiltered(action, localFilter)) return;
       const { maxAge } = window.devToolsOptions;
       relay('ACTION', state, liftedAction, nextActionId);
       if (!isExcess && maxAge) isExcess = liftedState.stagedActionIds.length >= maxAge;
     } else {
+      if (monitor.isTimeTraveling()) return;
       if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) {
         errorOccurred = false;
       }

@@ -1,7 +1,3 @@
-const monitorActions = [
-  'TOGGLE_ACTION', 'SWEEP', 'SET_ACTIONS_ACTIVE', 'IMPORT_STATE'
-];
-
 export default class Monitor {
   constructor(update) {
     this.update = update;
@@ -24,6 +20,6 @@ export default class Monitor {
     clearTimeout(this.waitingTimeout);
   };
   isHotReloaded = () => this.lastAction === '@@redux/INIT';
-  isMonitorAction = () => monitorActions.indexOf(this.lastAction) !== -1;
+  isMonitorAction = () => this.lastAction && this.lastAction !== 'PERFORM_ACTION';
   isTimeTraveling = () => this.lastAction === 'JUMP_TO_STATE';
 }
