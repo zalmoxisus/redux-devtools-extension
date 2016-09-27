@@ -14,7 +14,7 @@ import {
 let stores = {};
 let reportId;
 
-window.devToolsExtension = function(reducer, preloadedState, config) {
+const devToolsExtension = function(reducer, preloadedState, config) {
   /* eslint-disable no-param-reassign */
   if (typeof reducer === 'object') {
     config = reducer; reducer = undefined;
@@ -163,6 +163,8 @@ window.devToolsExtension = function(reducer, preloadedState, config) {
   return createStore(reducer, preloadedState, enhance);
 };
 
+// noinspection JSAnnotator
+window.devToolsExtension = devToolsExtension;
 window.devToolsExtension.open = openWindow;
 window.devToolsExtension.updateStore = updateStore(stores);
 window.devToolsExtension.notifyErrors = notifyErrors;
@@ -170,3 +172,5 @@ window.devToolsExtension.send = sendMessage;
 window.devToolsExtension.listen = setListener;
 window.devToolsExtension.connect = connect;
 window.devToolsExtension.disconnect = disconnect;
+
+window.__REDUX_DEVTOOLS_EXTENSION__ = window.devToolsExtension;
