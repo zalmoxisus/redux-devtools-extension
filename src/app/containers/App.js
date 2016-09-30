@@ -25,7 +25,7 @@ import BottomIcon from 'react-icons/lib/md/border-bottom';
 import RemoteIcon from 'react-icons/lib/go/radio-tower';
 
 @enhance
-export default class App extends Component {
+class App extends Component {
   openWindow = (position) => {
     chrome.runtime.sendMessage({ type: 'OPEN', position });
   };

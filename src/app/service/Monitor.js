@@ -8,8 +8,7 @@ export default class Monitor {
     if (action.type === 'LOCK_CHANGES') {
       window.__REDUX_DEVTOOLS_EXTENSION_LOCKED__ = action.status;
     } else if (action.type === 'PAUSE_RECORDING') {
-      if (action.status) setTimeout(() => { this.paused = true; }, 0);
-      else this.paused = false;
+      this.paused = action.status;
     } else if (this.isHotReloaded()) {
       // Send new lifted state on hot-reloading
       setTimeout(this.update, 0);
@@ -27,5 +26,14 @@ export default class Monitor {
   isHotReloaded = () => this.lastAction === '@@redux/INIT';
   isMonitorAction = () => this.lastAction && this.lastAction !== 'PERFORM_ACTION';
   isTimeTraveling = () => this.lastAction === 'JUMP_TO_STATE';
-  isPaused = () => this.paused;
+  isPaused = () => {
+    if (this.paused) {
+      if (this.lastAction !== 'PAUSED_RECORDING') {
+        this.lastAction = 'PAUSED_RECORDING';
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
 }
