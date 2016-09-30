@@ -5,7 +5,12 @@ export default class Monitor {
   reducer = (state = {}, action) => {
     if (!this.active) return state;
     this.lastAction = action.type;
-    if (this.isHotReloaded()) {
+    if (action.type === 'LOCK_CHANGES') {
+      window.__REDUX_DEVTOOLS_EXTENSION_LOCKED__ = action.status;
+    } else if (action.type === 'PAUSE_RECORDING') {
+      if (action.status) setTimeout(() => { this.paused = true; }, 0);
+      else this.paused = false;
+    } else if (this.isHotReloaded()) {
       // Send new lifted state on hot-reloading
       setTimeout(this.update, 0);
     }
@@ -22,4 +27,5 @@ export default class Monitor {
   isHotReloaded = () => this.lastAction === '@@redux/INIT';
   isMonitorAction = () => this.lastAction && this.lastAction !== 'PERFORM_ACTION';
   isTimeTraveling = () => this.lastAction === 'JUMP_TO_STATE';
+  isPaused = () => this.paused;
 }

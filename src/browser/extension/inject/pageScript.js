@@ -12,7 +12,6 @@ import {
 } from '../../../app/api';
 
 let stores = {};
-let isLocked = false;
 let reportId;
 
 const devToolsExtension = function(reducer, preloadedState, config) {
@@ -137,7 +136,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       relay('ACTION', state, liftedAction, nextActionId);
       if (!isExcess && maxAge) isExcess = liftedState.stagedActionIds.length >= maxAge;
     } else {
-      if (monitor.isTimeTraveling()) return;
+      if (monitor.isPaused() || monitor.isTimeTraveling()) return;
       if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) {
         errorOccurred = false;
       }
@@ -200,7 +199,7 @@ window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = (...funcs) => {
         return {
           ...store,
           dispatch: (action) => (
-            isLocked ? action : store.dispatch(action)
+            window.__REDUX_DEVTOOLS_EXTENSION_LOCKED__ ? action : store.dispatch(action)
           )
         };
       };

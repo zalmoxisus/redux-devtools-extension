@@ -11,6 +11,8 @@ import MonitorSelector from 'remotedev-app/lib/components/MonitorSelector';
 import Notification from 'remotedev-app/lib/components/Notification';
 import Instances from 'remotedev-app/lib/components/Instances';
 import Button from 'remotedev-app/lib/components/Button';
+import RecordButton from 'remotedev-app/lib/components/buttons/RecordButton';
+import LockButton from 'remotedev-app/lib/components/buttons/LockButton';
 import DispatcherButton from 'remotedev-app/lib/components/buttons/DispatcherButton';
 import SliderButton from 'remotedev-app/lib/components/buttons/SliderButton';
 import ImportButton from 'remotedev-app/lib/components/buttons/ImportButton';
@@ -33,6 +35,7 @@ export default class App extends Component {
       monitor, position,
       dispatcherIsOpen, sliderIsOpen, options, liftedState
     } = this.props;
+    const isRedux = options.lib === 'redux';
     return (
       <div style={styles.container}>
         <div style={styles.buttonBar}>
@@ -43,7 +46,7 @@ export default class App extends Component {
           monitor={monitor}
           liftedState={liftedState}
           dispatch={this.props.liftedDispatch}
-          testComponent={options.lib === 'redux' && TestGenerator}
+          testComponent={isRedux && TestGenerator}
         />
         <Notification />
         {sliderIsOpen && <div style={styles.sliderMonitor}>
@@ -74,6 +77,12 @@ export default class App extends Component {
             Icon={BottomIcon}
             onClick={() => { this.openWindow('bottom'); }}
           />
+          }
+          {isRedux &&
+            <RecordButton paused={liftedState.isPaused} />
+          }
+          {isRedux &&
+            <LockButton locked={liftedState.isLocked} />
           }
           <DispatcherButton dispatcherIsOpen={dispatcherIsOpen} />
           <SliderButton isOpen={sliderIsOpen} />
