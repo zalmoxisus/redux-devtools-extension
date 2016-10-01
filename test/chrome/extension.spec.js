@@ -9,7 +9,7 @@ const extensionId = 'lmhkpmbekcpmknklioeibfkpmmfibljd';
 const actionsPattern = /^@@INIT(.|\n)+@@reduxReactRouter\/routerDidChange(.|\n)+@@reduxReactRouter\/initRoutes(.|\n)+$/;
 
 describe('Chrome extension', function() {
-  this.timeout(15000);
+  this.timeout(20000);
 
   before(async () => {
     delay(2000);
@@ -62,6 +62,6 @@ describe('Chrome extension', function() {
         .getText().then((val) => {
           return actionsPattern.test(val);
         })
-    ), 3000, 'it doesn\'t match actions pattern');
+    ), 15000, 'it doesn\'t match actions pattern');
   });
 });

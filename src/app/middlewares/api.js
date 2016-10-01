@@ -1,5 +1,5 @@
 import { UPDATE_STATE, REMOVE_INSTANCE, LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
-import { nonReduxDispatch } from 'remotedev-app/lib/store/monitorActions';
+import { nonReduxDispatch } from 'remotedev-app/lib/utils/monitorActions';
 import syncOptions from '../../browser/extension/options/syncOptions';
 import openDevToolsWindow from '../../browser/extension/background/openWindow';
 import { getReport } from '../../browser/extension/background/logging';
