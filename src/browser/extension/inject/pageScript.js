@@ -175,37 +175,38 @@ window.devToolsExtension.disconnect = disconnect;
 
 window.__REDUX_DEVTOOLS_EXTENSION__ = window.devToolsExtension;
 
-window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = (...funcs) => {
-  if (funcs.length === 0) {
-    return devToolsExtension;
-  }
+const preEnhancer = instanceId => next =>
+  (reducer, preloadedState, enhancer) => {
+    const store = next(reducer, preloadedState, enhancer);
 
-  if (funcs.length === 1 && typeof funcs[0] === 'object') {
-    return devToolsExtension(funcs[0]);
-  }
+    // Mutate the store in order to keep the reference
+    stores[instanceId].dispatch = store.dispatch;
+    stores[instanceId].liftedStore = store.liftedStore;
+    stores[instanceId].getState = store.getState;
 
-  return (config) => {
+    return {
+      ...store,
+      dispatch: (action) => (
+        window.__REDUX_DEVTOOLS_EXTENSION_LOCKED__ ? action : store.dispatch(action)
+      )
+    };
+  };
+
+const extensionCompose = (config) => (...funcs) => {
+  return (...args) => {
     const instanceId = generateId(config.instanceId);
-
-    const preEnhancer = (next) =>
-      (reducer, preloadedState, enhancer) => {
-        const store = next(reducer, preloadedState, enhancer);
-
-        // Mutate the store in order to keep the reference
-        stores[instanceId].dispatch = store.dispatch;
-        stores[instanceId].liftedStore = store.liftedStore;
-        stores[instanceId].getState = store.getState;
-
-        return {
-          ...store,
-          dispatch: (action) => (
-            window.__REDUX_DEVTOOLS_EXTENSION_LOCKED__ ? action : store.dispatch(action)
-          )
-        };
-      };
-
-    return (...args) => [preEnhancer, ...funcs].reduceRight(
+    return [preEnhancer(instanceId), ...funcs].reduceRight(
       (composed, f) => f(composed), devToolsExtension({ ...config, instanceId })(...args)
     );
   };
+};
+
+window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = (...funcs) => {
+  if (funcs.length === 0) {
+    return devToolsExtension();
+  }
+  if (funcs.length === 1 && typeof funcs[0] === 'object') {
+    return extensionCompose(funcs[0]);
+  }
+  return extensionCompose({})(...funcs);
 };
