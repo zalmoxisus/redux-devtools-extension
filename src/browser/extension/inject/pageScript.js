@@ -25,6 +25,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   let store;
   let shouldSerialize = config.serializeState || config.serializeAction;
   let errorOccurred = false;
+  let maxAge;
   let isExcess;
   let actionCreators;
   const instanceId = generateId(config.instanceId);
@@ -107,6 +108,8 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   }
 
   function init() {
+    maxAge = config.maxAge || window.devToolsOptions.maxAge || 50;
+
     setListener(onMessage, instanceId);
     notifyErrors(() => {
       errorOccurred = true;
@@ -136,7 +139,6 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       if (isFiltered(action, localFilter)) return;
       const stagedActionLength = liftedState.stagedActionIds.length;
       const state = liftedState.computedStates[stagedActionLength - 1].state;
-      const { maxAge } = window.devToolsOptions;
       relay('ACTION', state, liftedAction, nextActionId);
       if (!isExcess && maxAge) isExcess = stagedActionLength >= maxAge;
     } else {

@@ -7,15 +7,23 @@ export function getUrlParam(key) {
   return (matches && matches.length > 0) ? matches[1] : null;
 }
 
-export default function configureStore(
-  next, monitorReducer, { deserializeState, deserializeAction }
-) {
+export default function configureStore(next, monitorReducer, config) {
   return compose(
-    instrument(monitorReducer, window.devToolsOptions),
+    instrument(
+      monitorReducer,
+      {
+        maxAge: config.maxAge || window.devToolsOptions.maxAge || 50,
+        shouldCatchErrors: config.shouldCatchErrors || window.shouldCatchErrors,
+        shouldHotReload: config.shouldHotReload,
+        shouldRecordChanges: config.shouldRecordChanges,
+        shouldStartLocked: config.shouldStartLocked,
+        pauseActionType: config.pauseActionType || '@@PAUSED'
+      }
+    ),
     persistState(
       getUrlParam('debug_session'),
-      deserializeState,
-      deserializeAction
+      config.deserializeState,
+      config.deserializeAction
     )
   )(next);
 }
