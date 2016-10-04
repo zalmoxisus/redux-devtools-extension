@@ -2,6 +2,8 @@
 // <script src="chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/js/inject.bundle.js"></script>
 
 window.devToolsExtensionID = 'lmhkpmbekcpmknklioeibfkpmmfibljd';
+require('./contentScript');
+require('./pageScript');
 
 chrome.runtime.sendMessage(window.devToolsExtensionID, { type: 'GET_OPTIONS' }, function(response) {
   if (!response.options.inject) {
@@ -10,7 +12,5 @@ chrome.runtime.sendMessage(window.devToolsExtensionID, { type: 'GET_OPTIONS' }, 
   }
 
   window.devToolsOptions = response.options;
-  require('./contentScript');
-  require('./pageScript');
   window.devToolsExtension.notifyErrors();
 });
