@@ -38,7 +38,7 @@ const get = callback => {
       whitelist: '',
       blacklist: '',
       serialize: true,
-      shouldCatchErrors: true,
+      shouldCatchErrors: false,
       inject: true,
       urls: '^https?://localhost|0\\.0\\.0\\.0:\\d+\n^https?://.+\\.github\\.io'
     }, function(items) {
