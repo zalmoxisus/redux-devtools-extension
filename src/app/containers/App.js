@@ -23,9 +23,24 @@ import LeftIcon from 'react-icons/lib/md/border-left';
 import RightIcon from 'react-icons/lib/md/border-right';
 import BottomIcon from 'react-icons/lib/md/border-bottom';
 import RemoteIcon from 'react-icons/lib/go/radio-tower';
+import Joyride from 'react-joyride';
 
 @enhance
 class App extends Component {
+  componentDidUpdate() {
+    if (this.featured) return;
+    this.featured = true;
+    chrome.storage.local.get({ featured: null }, options => {
+      if (options.featured !== 'locking') this.joyride.start();
+    });
+  }
+
+  toolTipCb(status) {
+    if (status.type === 'finished') {
+      chrome.storage.local.set({ featured: 'locking' });
+    }
+  }
+
   openWindow = (position) => {
     chrome.runtime.sendMessage({ type: 'OPEN', position });
   };
@@ -38,6 +53,28 @@ class App extends Component {
     const isRedux = options.lib === 'redux';
     return (
       <div style={styles.container}>
+        <Joyride
+          ref={node => this.joyride = node}
+          steps={[{
+            title: 'New features added',
+            text: '<a href="https://medium.com/@zalmoxis/f0379227ff83" target="_blank">See details...</a>',
+            selector: '#toolTipButton',
+            position: 'top-left',
+            event: 'hover',
+            style: {
+              backgroundColor: 'rgba(79, 90, 101, 0.7)',
+              color: '#fff',
+              mainColor: 'rgb(79, 90, 101)',
+              width: '200px',
+              beacon: {
+                offsetY: 5,
+                inner: '#c2eee9',
+                outer: '#c2eee9'
+              }
+            }
+          }]}
+          callback={this.toolTipCb}
+        />
         <div style={styles.buttonBar}>
           <MonitorSelector selected={monitor}/>
           <Instances selected={this.props.selected} />
