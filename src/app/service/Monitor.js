@@ -28,12 +28,22 @@ export default class Monitor {
   isTimeTraveling = () => this.lastAction === 'JUMP_TO_STATE';
   isPaused = () => {
     if (this.paused) {
-      if (this.lastAction !== 'PAUSED_RECORDING') {
-        this.lastAction = 'PAUSED_RECORDING';
+      if (this.lastAction !== 'BLOCKED') {
+        if (!window.__REDUX_DEVTOOLS_EXTENSION_LOCKED__) this.lastAction = 'BLOCKED';
         return false;
       }
       return true;
     }
     return false;
-  }
+  };
+  isLocked = () => {
+    if (window.__REDUX_DEVTOOLS_EXTENSION_LOCKED__) {
+      if (this.lastAction !== 'BLOCKED') {
+        this.lastAction = 'BLOCKED';
+        return false;
+      }
+      return true;
+    }
+    return false;
+  };
 }

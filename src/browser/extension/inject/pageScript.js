@@ -125,18 +125,23 @@ const devToolsExtension = function(reducer, preloadedState, config) {
     }
   }
 
-  function handleChange(state, liftedState) {
+  function handleChange() {
     if (!monitor.active) return;
-    const nextActionId = liftedState.nextActionId;
-    const liftedAction = liftedState.actionsById[nextActionId - 1];
-    const action = liftedAction.action;
     if (!errorOccurred && !monitor.isMonitorAction()) {
+      const liftedState = store.liftedStore.getState();
+      const nextActionId = liftedState.nextActionId;
+      const currentActionId = nextActionId - 1;
+      const liftedAction = liftedState.actionsById[currentActionId];
+      const action = liftedAction.action;
       if (isFiltered(action, localFilter)) return;
+      const stagedActionLength = liftedState.stagedActionIds.length;
+      const state = liftedState.computedStates[stagedActionLength - 1].state;
       const { maxAge } = window.devToolsOptions;
       relay('ACTION', state, liftedAction, nextActionId);
-      if (!isExcess && maxAge) isExcess = liftedState.stagedActionIds.length >= maxAge;
+      if (!isExcess && maxAge) isExcess = stagedActionLength >= maxAge;
     } else {
-      if (monitor.isPaused() || monitor.isTimeTraveling()) return;
+      if (monitor.isPaused() || monitor.isLocked() || monitor.isTimeTraveling()) return;
+      const liftedState = store.liftedStore.getState();
       if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) {
         errorOccurred = false;
       }
@@ -152,9 +157,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
         configureStore(next, monitor.reducer, config)(reducer_, initialState_, enhancer_);
 
       init();
-      store.subscribe(() => {
-        handleChange(store.getState(), store.liftedStore.getState());
-      });
+      store.subscribe(handleChange);
       return store;
     };
   };
