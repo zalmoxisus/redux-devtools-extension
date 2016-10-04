@@ -17,10 +17,11 @@
   * Using in production
   * Getting reports from users
   * Dealing with side effects
-* API Reference
-  * [Apply as a Redux store enhancer](./API/Arguments.md#windowdevtoolsextensionconfig)
-  * [Create Redux store right in the extension](./API/Arguments.md#windowdevtoolsextensionreducer-preloadedstate-config)
-  * [Communicate with the extension directly](./API/Methods.md)
+* [API Reference](./API/README.md)
+  * [Parameters](./API/Arguments.md)
+  * [Methods](./API/Methods.md)
+  * [Create Redux store](./API/Methods.md)
+* [Videos](./Videos.md)
 * [FAQ](./FAQ.md)
 * [Troubleshooting](./Troubleshooting.md)
 * Project

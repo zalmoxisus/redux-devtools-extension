@@ -1,0 +1,13 @@
+{
+  "github": "zalmoxisus/redux-devtools-extension",
+  "markdown": {
+    "typographer": true,
+    "plugins": {
+      "decorate": {}
+    }
+  },
+  "plugins": {
+    "docpress-core": {},
+    "docpress-base": {}
+  }
+}

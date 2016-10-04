@@ -27,18 +27,18 @@
   
   If you have a basic [store](http://redux.js.org/docs/api/createStore.html) as described in the official [redux-docs](http://redux.js.org/index.html), simply replace:
   ```javascript
-  let store = createStore(reducer);
+  const store = createStore(reducer);
   ```
   with
   ```javascript
-  let store = createStore(reducer, window.devToolsExtension && window.devToolsExtension());
+  const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
   ```
 
-  Or with [initialState](http://redux.js.org/docs/api/createStore.html) but without middleware and enhancers arguments:
+  Or with [preloadedState](http://redux.js.org/docs/api/createStore.html) but without middleware and enhancers arguments:
   
   ```javascript
-  let store = createStore(reducer, initialState, 
-    window.devToolsExtension && window.devToolsExtension()
+  const store = createStore(reducer, preloadedState, 
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   );
   ```
 
@@ -51,45 +51,91 @@
   ```javascript
   import { createStore, applyMiddleware, compose } from 'redux';
   
-  let store = createStore(reducer, initialState, compose(
+  const store = createStore(reducer, preloadedState, compose(
     applyMiddleware(...middleware)
   ));
   ```
-  to this:
+  to:
   ```javascript
-  let store = createStore(reducer, initialState, compose(
-    applyMiddleware(...middleware),
-    window.devToolsExtension ? window.devToolsExtension() : f => f
+  import { createStore, applyMiddleware, compose } from 'redux';
+   
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const store = createStore(reducer, preloadedState, composeEnhancers(
+    applyMiddleware(...middleware)
   ));
   ```
+  When the extension is not installed, we’re using Redux compose here.
+  
+  In case you don’t want to allow the extension in production, [envify the code](https://github.com/gaearon/redux-devtools/blob/master/docs/Walkthrough.md#exclude-devtools-from-production-builds) and add `process.env.NODE_ENV !== 'production' && ` before `window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__`.
+  
+  To specify [extension’s options](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md#windowdevtoolsextensionconfig) use it like that:
+  ```js
+  const composeEnhancers =
+    process.env.NODE_ENV !== 'production' &&
+    typeof window === 'object' &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        name: 'MyApp', actionsBlacklist: ['REDUX_STORAGE_SAVE']
+      }) : compose;
 
-#### 1.3 Together with Redux DevTools
-  You can use this extension together with vanilla [Redux DevTools](https://github.com/gaearon/redux-devtools) as a fallback, but not both simultaneously:
-  ```js
-  window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
+  const enhancer = composeEnhancers(
+    applyMiddleware(...middleware),
+    // other store enhancers if any
+  );
+  const store = createStore(reducer, enhancer);
   ```
   
-  [Make sure not to render DevTools when using the extension](https://github.com/zalmoxisus/redux-devtools-extension/issues/57) or you'll probably want to render the monitor from vanilla DevTools as follows: 
-  ```js
-  { !window.devToolsExtension ? <DevTools /> : null }
+  [See the post for more details](https://medium.com/@zalmoxis/improve-your-development-workflow-with-redux-devtools-extension-f0379227ff83).
+
+#### 1.3 Use `redux-devtools-extension` package from npm
+
+  To make things easier, there's a npm package to install:
   ```
-  
-#### 1.4 Use with universal (isomorphic) apps
-```javascript
-  typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
-```
+  npm install --save redux-devtools-extension
+  ```
+  and to use like that:
+  ```js
+  import { createStore, applyMiddleware } from 'redux';
+  import { composeWithDevTools } from 'redux-devtools-extension';
+
+  const store = createStore(reducer, composeWithDevTools(
+    applyMiddleware(...middleware),
+    // other store enhancers if any
+  ));
+  ```
+  or if needed to apply [extension’s options](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md#windowdevtoolsextensionconfig):
+  ```js
+  import { createStore, applyMiddleware } from 'redux';
+  import { composeWithDevTools } from 'redux-devtools-extension';
+
+  const composeEnhancers = composeWithDevTools({
+    name: 'MyApp', actionsBlacklist: ['REDUX_STORAGE_SAVE']
+  });
+  const store = createStore(reducer, composeEnhancers(
+    applyMiddleware(...middleware),
+    // other store enhancers if any
+  ));
+  ```  
+  There’re just [few lines of code](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/npm-package/index.js). If you don’t want to allow the extension in production, just use ‘redux-devtools-extension/developmentOnly’ instead of ‘redux-devtools-extension’.
+
 #### 1.5 For React Native, hybrid, desktop and server side Redux apps
   Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools)'s store enhancer, and from the extension's context menu choose 'Open Remote DevTools' or press Alt+Shift+arrow up for remote monitoring.
   
-### 2. For advanced usage see [our documentation](http://zalmoxisus.github.io/redux-devtools-extension/).
+### 2. Without Redux
+  See [the post](https://medium.com/@zalmoxis/redux-devtools-without-redux-or-how-to-have-a-predictable-state-with-any-architecture-61c5f5a7716f) for more details on how to use the extension with any architecture.
+  
+## API Reference
+  - [Parameters](docs/API/Arguments.md)
+  - [Methods](docs/API/Methods.md)
+  - [Create Redux store right in the extension](docs/API/Methods.md).
 
 ## Demo
 Open these urls to test the extension:
 
  - [Counter](http://zalmoxisus.github.io/examples/counter/)
  - [TodoMVC](http://zalmoxisus.github.io/examples/todomvc/)
- - [Redux Form](http://erikras.github.io/redux-form/#/examples/simple)
  - [Redux Router](http://zalmoxisus.github.io/examples/router/)
+ - [Redux Form](http://erikras.github.io/redux-form/#/examples/simple)
 
 Also you may run them from `./examples` folder.
 
