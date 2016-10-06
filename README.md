@@ -78,7 +78,7 @@
     typeof window === 'object' &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
       window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        name: 'MyApp', actionsBlacklist: ['REDUX_STORAGE_SAVE']
+        // Specify here name, actionsBlacklist, actionsCreators and other options
       }) : compose;
 
   const enhancer = composeEnhancers(
@@ -112,7 +112,7 @@
   import { composeWithDevTools } from 'redux-devtools-extension';
 
   const composeEnhancers = composeWithDevTools({
-    name: 'MyApp', actionsBlacklist: ['REDUX_STORAGE_SAVE']
+    // Specify here name, actionsBlacklist, actionsCreators and other options
   });
   const store = createStore(reducer, composeEnhancers(
     applyMiddleware(...middleware),
