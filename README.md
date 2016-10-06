@@ -22,6 +22,9 @@
   - use [`remote-redux-devtools`](https://github.com/zalmoxisus/remote-redux-devtools). 
 
 ## Usage
+
+> Note that before v2.7, instead of `window.__REDUX_DEVTOOLS_EXTENSION__` / `window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__`, it was used `window.devToolsExtension`, which is [being deprecated](https://github.com/zalmoxisus/redux-devtools-extension/issues/220). 
+
 ### 1. With Redux
 #### 1.1 Basic store
   
