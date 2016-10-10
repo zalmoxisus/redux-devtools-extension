@@ -7,6 +7,8 @@ import configureStore from '../../../app/stores/panelStore';
 import getPreloadedState from '../background/getPreloadedState';
 
 const position = location.hash;
+const messageStyle = { padding: '20px', width: '100%', textAlign: 'center' };
+
 let rendered;
 let store;
 let bgConnection;
@@ -32,15 +34,27 @@ function renderNA() {
   if (rendered === false) return;
   rendered = false;
   naTimeout = setTimeout(() => {
-    const node = document.getElementById('root');
-    unmountComponentAtNode(node);
-    render(
-      <div style={{ padding: '20px', width: '100%', textAlign: 'center' }}>
-        No store found. Make sure to follow <a href="https://github.com/zalmoxisus/redux-devtools-extension#usage" target="_blank">the instructions</a>.
-      </div>,
-      node
-    );
-    store = undefined;
+    chrome.devtools.inspectedWindow.getResources(resources => {
+      let message;
+      if (resources[0].url.substr(0, 4) === 'file') {
+        message = (
+          <div style={messageStyle}>
+            No store found. Most likely you didn't allow access to file URLs. <a href="https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/Troubleshooting.md#access-file-url-file" target="_blank">See details</a>.
+          </div>
+        );
+      } else {
+        message = (
+          <div style={messageStyle}>
+            No store found. Make sure to follow <a href="https://github.com/zalmoxisus/redux-devtools-extension#usage" target="_blank">the instructions</a>.
+          </div>
+        );
+      }
+
+      const node = document.getElementById('root');
+      unmountComponentAtNode(node);
+      render(message, node);
+      store = undefined;
+    });
   }, 1500);
 }
 
