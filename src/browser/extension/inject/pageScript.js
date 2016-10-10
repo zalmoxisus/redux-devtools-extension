@@ -185,9 +185,11 @@ const preEnhancer = instanceId => next =>
     const store = next(reducer, preloadedState, enhancer);
 
     // Mutate the store in order to keep the reference
-    stores[instanceId].dispatch = store.dispatch;
-    stores[instanceId].liftedStore = store.liftedStore;
-    stores[instanceId].getState = store.getState;
+    if (stores[instanceId]) {
+      stores[instanceId].dispatch = store.dispatch;
+      stores[instanceId].liftedStore = store.liftedStore;
+      stores[instanceId].getState = store.getState;
+    }
 
     return {
       ...store,
