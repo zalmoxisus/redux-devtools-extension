@@ -46,7 +46,16 @@
   ```
 
   Note: passing enhancer as last argument requires **redux@>=3.1.0**. For older versions apply it like [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/todomvc/store/configureStore.js) or [here](https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/counter/store/configureStore.js#L7-L12).
-  
+
+  In case the linter doesn't allow using the underscore dangle, you need to wrap it like so:
+  ```js
+  /* eslint-disable no-underscore-dangle */
+  const store = createStore(reducer, preloadedState, 
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  );
+  /* eslint-enable */
+  ```
+
   Warning: Don't mix the old Redux API with the new one. Pass enhancers and applyMiddleware as last createStore argument.
 
 #### 1.2 Advanced store setup
