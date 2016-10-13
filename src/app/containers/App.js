@@ -18,6 +18,7 @@ import DispatcherButton from 'remotedev-app/lib/components/buttons/DispatcherBut
 import SliderButton from 'remotedev-app/lib/components/buttons/SliderButton';
 import ImportButton from 'remotedev-app/lib/components/buttons/ImportButton';
 import ExportButton from 'remotedev-app/lib/components/buttons/ExportButton';
+import PrintButton from 'remotedev-app/lib/components/buttons/PrintButton';
 import TestGenerator from 'remotedev-app/lib/components/TestGenerator';
 import SettingsIcon from 'react-icons/lib/md/settings';
 import LeftIcon from 'react-icons/lib/md/border-left';
@@ -94,6 +95,7 @@ class App extends Component {
           <SliderButton isOpen={sliderIsOpen} />
           <ImportButton />
           <ExportButton liftedState={liftedState} />
+          <PrintButton />
           {!window.isElectron &&
           <Button
             Icon={RemoteIcon}
