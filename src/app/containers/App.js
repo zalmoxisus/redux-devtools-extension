@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { liftedDispatch } from 'remotedev-app/lib/actions';
+import SliderMonitor from 'remotedev-slider';
+import { liftedDispatch, getReport } from 'remotedev-app/lib/actions';
 import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
 import styles from 'remotedev-app/lib/styles';
 import enhance from 'remotedev-app/lib/hoc';
@@ -49,13 +50,18 @@ class App extends Component {
           testComponent={isRedux && TestGenerator}
         />
         <Notification />
-        {sliderIsOpen && <div style={styles.sliderMonitor}>
-          <DevTools
+        {sliderIsOpen && options.connectionId &&
+          <SliderMonitor
             monitor="SliderMonitor"
             liftedState={liftedState}
             dispatch={this.props.liftedDispatch}
+            getReport={this.props.getReport}
+            reports={this.props.reports}
+            showActions={monitor === 'ChartMonitor'}
+            style={{ padding: '15px 5px' }}
+            fillColor="rgb(120, 144, 156)"
           />
-        </div>}
+        }
         {dispatcherIsOpen && options.connectionId &&
           <Dispatcher options={options} />
         }
@@ -109,11 +115,13 @@ class App extends Component {
 App.propTypes = {
   bgStore: PropTypes.object,
   liftedDispatch: PropTypes.func.isRequired,
+  getReport: PropTypes.func.isRequired,
   selected: PropTypes.string,
   liftedState: PropTypes.object.isRequired,
   options: PropTypes.object.isRequired,
   monitor: PropTypes.string,
   position: PropTypes.string,
+  reports: PropTypes.array.isRequired,
   dispatcherIsOpen: PropTypes.bool,
   sliderIsOpen: PropTypes.bool
 };
@@ -128,12 +136,16 @@ function mapStateToProps(state) {
     monitor: state.monitor.selected,
     dispatcherIsOpen: state.monitor.dispatcherIsOpen,
     sliderIsOpen: state.monitor.sliderIsOpen,
+    reports: state.reports.data,
     shouldSync: state.instances.sync
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return { liftedDispatch: bindActionCreators(liftedDispatch, dispatch) };
+  return {
+    liftedDispatch: bindActionCreators(liftedDispatch, dispatch),
+    getReport: bindActionCreators(getReport, dispatch)
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
