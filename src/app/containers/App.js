@@ -67,19 +67,19 @@ class App extends Component {
           <Dispatcher options={options} />
         }
         <div style={styles.buttonBar}>
-          {!window.isElectron && position !== 'left' &&
+          {!window.isElectron && position !== '#left' &&
           <Button
             Icon={LeftIcon}
             onClick={() => { this.openWindow('left'); }}
           />
           }
-          {!window.isElectron && position !== 'right' &&
+          {!window.isElectron && position !== '#right' &&
           <Button
             Icon={RightIcon}
             onClick={() => { this.openWindow('right'); }}
           />
           }
-          {!window.isElectron && position !== 'bottom' &&
+          {!window.isElectron && position !== '#bottom' &&
           <Button
             Icon={BottomIcon}
             onClick={() => { this.openWindow('bottom'); }}
@@ -95,7 +95,9 @@ class App extends Component {
           <SliderButton isOpen={sliderIsOpen} />
           <ImportButton />
           <ExportButton liftedState={liftedState} />
-          <PrintButton />
+          {position && (position !== '#popup' || navigator.userAgent.indexOf('Firefox') !== -1) &&
+            <PrintButton />
+          }
           {!window.isElectron &&
           <Button
             Icon={RemoteIcon}

@@ -26,6 +26,9 @@ export default function openDevToolsWindow(position) {
         options.url = chrome.extension.getURL(url + '#' + position.substr(position.indexOf('-') + 1));
         chrome.windows.create(options, (win) => {
           windows[position] = win.id;
+          if (navigator.userAgent.indexOf('Firefox') !== -1) {
+            chrome.windows.update(win.id, { focused: true, ...customOptions });
+          }
         });
       }
     });
