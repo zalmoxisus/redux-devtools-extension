@@ -33,7 +33,7 @@ describe('API', () => {
     });
     expect(message).toInclude({
       type: 'ACTION',
-      action: { action: { type: 'hi' } },
+      action: '{"action":{"type":"hi"}}',
       payload: undefined,
       id: undefined,
       name: '',
@@ -45,8 +45,8 @@ describe('API', () => {
     });
     expect(message).toInclude({
       type: 'ACTION',
-      action: { action: { type: 'hi' } },
-      payload: { counter: 1 },
+      action: '{"action":{"type":"hi"}}',
+      payload: '{"counter":1}',
       instanceId: 1,
       name: '',
       source: '@devtools-page'
@@ -70,6 +70,9 @@ describe('API', () => {
     expect(message).toEqual({
       type: 'STATE',
       payload: { counter: 1 },
+      actionsById: undefined,
+      computedStates: undefined,
+      committedState: undefined,
       instanceId: 1,
       name: '',
       source: '@devtools-page'

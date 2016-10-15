@@ -31,8 +31,8 @@ describe('Redux enhancer', () => {
 
     message = await listenMessage();
     expect(message.type).toBe('STATE');
-    expect(message.payload.actionsById[0].action.type).toBe('@@INIT');
-    expect(message.payload.computedStates[0].state).toBe(0);
+    expect(message.actionsById).toInclude('{"0":{"type":"PERFORM_ACTION","action":{"type":"@@INIT"},"');
+    expect(message.computedStates).toBe('[{"state":0}]');
   });
 
   it('should perform actions', async () => {
@@ -41,16 +41,16 @@ describe('Redux enhancer', () => {
       expect(window.store.getState()).toBe(1);
     });
     expect(message.type).toBe('ACTION');
-    expect(message.action.action.type).toBe('INCREMENT');
-    expect(message.payload).toBe(1);
+    expect(message.action).toInclude('{"type":"PERFORM_ACTION","action":{"type":"INCREMENT"},');
+    expect(message.payload).toBe('1');
 
     message = await listenMessage(() => {
       window.store.dispatch({ type: 'INCREMENT' });
       expect(window.store.getState()).toBe(2);
     });
     expect(message.type).toBe('ACTION');
-    expect(message.action.action.type).toBe('INCREMENT');
-    expect(message.payload).toBe(2);
+    expect(message.action).toInclude('{"type":"PERFORM_ACTION","action":{"type":"INCREMENT"},');
+    expect(message.payload).toBe('2');
   });
 
   it('should dispatch actions remotely', async () => {
@@ -65,8 +65,8 @@ describe('Redux enhancer', () => {
 
     message = await listenMessage();
     expect(message.type).toBe('ACTION');
-    expect(message.action.action.type).toBe('INCREMENT');
-    expect(message.payload).toBe(3);
+    expect(message.action).toInclude('{"type":"PERFORM_ACTION","action":{"type":"INCREMENT"},');
+    expect(message.payload).toBe('3');
   });
 
   it('should cancel (toggle) action', async () => {
@@ -81,7 +81,6 @@ describe('Redux enhancer', () => {
 
     message = await listenMessage();
     expect(message.type).toBe('STATE');
-    expect(message.payload.computedStates[message.payload.computedStates.length - 1].state).toBe(2);
     expect(window.store.getState()).toBe(2);
 
     message = await listenMessage(() => {

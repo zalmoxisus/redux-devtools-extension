@@ -1,30 +1,10 @@
-import jsan from 'jsan';
+import { stringify } from 'jsan';
 
 const listeners = {};
 export const source = '@devtools-page';
-let isCircular;
-
-export default function stringify(obj, replacer, type) {
-  if (type === 2) { // Deep serialization
-    return jsan.stringify(obj, function(key, value) {
-      if (value && value.toJS) { return value.toJS(); }
-      return value;
-    }, null, true);
-  }
-  return jsan.stringify(obj, replacer);
-}
 
 export function generateId(instanceId) {
   return instanceId || Math.random().toString(36).substr(2);
-}
-
-function tryCatch(fn, args) {
-  try {
-    return fn(args);
-  } catch (err) {
-    isCircular = true;
-    toContentScript(args);
-  }
 }
 
 function post(message) {
@@ -32,17 +12,17 @@ function post(message) {
 }
 
 export function toContentScript(message, shouldStringify, serializeState, serializeAction) {
-  if (shouldStringify || isCircular) {
-    if (message.type !== 'ERROR' && message.type !== 'GET_REPORT' && message.payload) {
-      message.payload = stringify(message.payload, serializeState);
-    }
-    if (message.type !== 'STATE' && message.action) {
-      message.action = stringify(message.action, serializeAction);
-    }
-    post(message);
-  } else {
-    tryCatch(post, message);
+  if (message.type === 'ACTION') {
+    message.action = stringify(message.action, serializeAction);
+    message.payload = stringify(message.payload, serializeState);
+  } else if (message.type === 'STATE') {
+    const { actionsById, computedStates, committedState, ...rest } = message.payload;
+    message.payload = rest;
+    message.actionsById = stringify(actionsById, serializeAction);
+    message.computedStates = stringify(computedStates, serializeState);
+    message.committedState = stringify(committedState, serializeState);
   }
+  post(message);
 }
 
 export function sendMessage(action, state, shouldStringify, id, name) {
