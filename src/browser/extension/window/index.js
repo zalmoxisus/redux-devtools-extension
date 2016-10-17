@@ -24,3 +24,5 @@ chrome.runtime.getBackgroundPage(({ store }) => {
     document.getElementById('root')
   );
 });
+
+if (position !== '#popup') document.body.style.minHeight = '100%';
