@@ -66,6 +66,4 @@ Just find `Redux DevTools` on the extensions page (`chrome://extensions/`) and c
 #### How to get it work with WebWorkers, React Native, hybrid, desktop and server side apps
 Of course, it is not possible to inject extension's script there and to communicate directly. To solve this we use [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools). Just find `Remote` button or press `Alt`+`Shift`+`arrow up` for remote monitoring. 
 #### Keyboard shortcuts
-Use `Cmd`+`Ctrl`+Arrows for OSX and `Alt`+`Shift`+Arrows for Windows, Linux and ChromeOS. Arrow down, left and right indicate the position of the DevTools window. Use `arrow up` to open Remote monitoring to communicate with [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools). To change the shortcuts, click "Keyboard shortcuts" button on the bottom of the extensions page (`chrome://extensions/`).
-#### How to change keyboard shortcuts
-On the bottom of `chrome://extensions/` page there's a "Keyboard shortcuts" link where you can customize the extension's shortcuts.
+To set/change the keyboard shortcuts, click "Keyboard shortcuts" button on the bottom of the extensions page (`chrome://extensions/`). By default only `Cmd` (`Ctrl`) + `Shift` + `E` is available, which will open the extension popup (only when the Redux store is available in the current page).

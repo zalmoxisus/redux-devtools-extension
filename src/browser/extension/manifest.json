@@ -12,32 +12,21 @@
   },
   "commands": {
     "devtools-left": {
-      "suggested_key": {
-        "default": "Alt+Shift+Left",
-        "mac": "Command+MacCtrl+Left"
-      },
       "description": "DevTools window to left"
     },
     "devtools-right": {
-      "suggested_key": {
-        "default": "Alt+Shift+Right",
-        "mac": "Command+MacCtrl+Right"
-      },
       "description": "DevTools window to right"
     },
     "devtools-bottom": {
-      "suggested_key": {
-        "default": "Alt+Shift+Down",
-        "mac": "Command+MacCtrl+Down"
-      },
       "description": "DevTools window to bottom"
     },
     "devtools-remote": {
-      "suggested_key": {
-        "default": "Alt+Shift+Up",
-        "mac": "Command+MacCtrl+Up"
-      },
       "description": "Remote DevTools"
+    },
+    "_execute_page_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E"
+      }
     }
   },
   "icons": {
