@@ -15,7 +15,7 @@
 - [How to change keyboard shortcuts](#how-to-change-keyboard-shortcuts)
 
 #### How to get it work
-- Check the extension with [Counter](http://zalmoxisus.github.io/redux-devtools-extension/examples/counter/) or [TodoMVC](http://zalmoxisus.github.io/redux-devtools-extension/examples/todomvc/) demo.
+- Check the extension with [Counter](http://zalmoxisus.github.io/examples/counter/) or [TodoMVC](http://zalmoxisus.github.io/examples/todomvc/) demo.
 - Reload the extension on the extensions page (`chrome://extensions/`).
 - If something goes wrong, [open an issue](https://github.com/zalmoxisus/redux-devtools-extension/issues) or tweet me: [@mdiordiev](https://twitter.com/mdiordiev).
 
