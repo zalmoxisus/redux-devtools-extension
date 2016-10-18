@@ -8,7 +8,8 @@ import notifyErrors from '../../../app/api/notifyErrors';
 import importState from '../../../app/api/importState';
 import openWindow from '../../../app/api/openWindow';
 import {
-  updateStore, toContentScript, sendMessage, setListener, connect, disconnect, generateId
+  updateStore, toContentScript, sendMessage, setListener, connect, disconnect,
+  generateId, isInIframe
 } from '../../../app/api';
 
 let stores = {};
@@ -159,7 +160,8 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       store = stores[instanceId] =
         configureStore(next, monitor.reducer, config)(reducer_, initialState_, enhancer_);
 
-      setTimeout(init, 3000);
+      setTimeout(init, isInIframe() ? 3000 : 0);
+
       return store;
     };
   };
