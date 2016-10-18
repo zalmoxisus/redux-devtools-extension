@@ -103,7 +103,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
         return;
       case 'STOP':
         monitor.stop();
-        relay('STOP');
+        if (!message.failed) relay('STOP');
     }
   }
 
