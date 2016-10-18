@@ -121,6 +121,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
     });
 
     relay('INIT_INSTANCE');
+    store.subscribe(handleChange);
 
     if (typeof reportId === 'undefined') {
       reportId = getUrlParam('remotedev_report');
@@ -158,8 +159,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       store = stores[instanceId] =
         configureStore(next, monitor.reducer, config)(reducer_, initialState_, enhancer_);
 
-      init();
-      store.subscribe(handleChange);
+      setTimeout(init, 3000);
       return store;
     };
   };

@@ -55,7 +55,7 @@ function renderNA() {
       render(message, node);
       store = undefined;
     });
-  }, 1500);
+  }, 3500);
 }
 
 function init(id) {
