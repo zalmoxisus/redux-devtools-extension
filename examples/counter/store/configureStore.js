@@ -1,17 +1,15 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import invariant from 'redux-immutable-state-invariant';
 import reducer from '../reducers';
 import * as actionCreators from '../actions/counter'; 
 
 export let isMonitorAction;
-export default function configureStore(initialState) {
-  const store = createStore(reducer, initialState, compose(
-    applyMiddleware(invariant(), thunk),
-    window.devToolsExtension ? window.devToolsExtension({
-      getMonitor: (monitor) => { isMonitorAction = monitor.isMonitorAction; },
-      actionCreators
-    }) : f => f
+export default function configureStore(preloadedState) {
+  const composeEnhancers = composeWithDevTools({ actionCreators });
+  const store = createStore(reducer, preloadedState, composeEnhancers(
+    applyMiddleware(invariant(), thunk)
   ));
 
   if (module.hot) {

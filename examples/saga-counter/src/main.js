@@ -13,16 +13,12 @@ import rootSaga from './sagas'
 
 
 const sagaMiddleware = createSagaMiddleware(/* {sagaMonitor} */)
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   reducer,
-  compose(
-    applyMiddleware(sagaMiddleware),
-    window.devToolsExtension && window.devToolsExtension()
-  )
+  composeEnhancers(applyMiddleware(sagaMiddleware))
 )
 sagaMiddleware.run(rootSaga)
-
-if (window.devToolsExtension) window.devToolsExtension.updateStore(store)
 
 const action = type => store.dispatch({type})
 

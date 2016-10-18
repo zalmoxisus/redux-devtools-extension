@@ -7,10 +7,6 @@ class Counter extends Component {
     return (
       <p>
         Clicked: {counter} times
-        {
-          process.env.NODE_ENV === 'production' || !isMonitorAction() ? '*' :
-          <strong> (changed by monitor) </strong>
-        }
         {' '}
         <button onClick={increment}>+</button>
         {' '}
