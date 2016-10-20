@@ -37,7 +37,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   let actionCreators;
   const instanceId = generateId(config.instanceId);
   const localFilter = getLocalFilter(config);
-  let { statesFilter, actionsFilter, stateSanitizer, actionSanitizer } = config;
+  let { statesFilter, actionsFilter, stateSanitizer, actionSanitizer, predicate } = config;
 
   // Deprecate statesFilter and actionsFilter
   if (statesFilter) {
@@ -55,7 +55,9 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   function relay(type, state, action, nextActionId, shouldInit) {
     const message = {
       type,
-      payload: filterState(state, type, localFilter, stateSanitizer, actionSanitizer, nextActionId),
+      payload: filterState(
+        state, type, localFilter, stateSanitizer, actionSanitizer, nextActionId, predicate
+      ),
       source: '@devtools-page',
       instanceId
     };
@@ -157,6 +159,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       if (isFiltered(action, localFilter)) return;
       const stagedActionLength = liftedState.stagedActionIds.length;
       const state = liftedState.computedStates[stagedActionLength - 1].state;
+      if (predicate && !predicate(state, action)) return;
       relay('ACTION', state, liftedAction, nextActionId);
       if (!isExcess && maxAge) isExcess = stagedActionLength >= maxAge;
     } else {

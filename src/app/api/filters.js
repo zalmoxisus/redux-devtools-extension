@@ -40,11 +40,11 @@ function filterStates(computedStates, stateSanitizer) {
   ));
 }
 
-export function filterState(state, type, localFilter, stateSanitizer, actionSanitizer, nextActionId) {
+export function filterState(state, type, localFilter, stateSanitizer, actionSanitizer, nextActionId, predicate) {
   if (type === 'ACTION') return !stateSanitizer ? state : stateSanitizer(state, nextActionId - 1);
   else if (type !== 'STATE') return state;
 
-  if (localFilter || window.devToolsOptions.filter !== FilterState.DO_NOT_FILTER) {
+  if (predicate || localFilter || window.devToolsOptions.filter !== FilterState.DO_NOT_FILTER) {
     const filteredStagedActionIds = [];
     const filteredComputedStates = [];
     const filteredActionsById = actionSanitizer && {};
@@ -52,18 +52,23 @@ export function filterState(state, type, localFilter, stateSanitizer, actionSani
     const { computedStates } = state;
 
     state.stagedActionIds.forEach((id, idx) => {
-      if (!isFiltered(actionsById[id].action, localFilter)) {
-        filteredStagedActionIds.push(id);
-        filteredComputedStates.push(
-          stateSanitizer ?
-          { ...computedStates[idx], state: stateSanitizer(computedStates[idx].state, idx) } :
-          computedStates[idx]
-        );
-        if (actionSanitizer) {
-          filteredActionsById[id] = {
-            ...actionsById[id], action: actionSanitizer(actionsById[id].action, id)
-          };
-        }
+      const liftedAction = actionsById[id];
+      const currAction = liftedAction.action;
+      const liftedState = computedStates[idx];
+      const currState = liftedState.state;
+      if (idx) {
+        if (predicate && !predicate(currState, currAction)) return;
+        if (isFiltered(currAction, localFilter)) return;
+      }
+
+      filteredStagedActionIds.push(id);
+      filteredComputedStates.push(
+        stateSanitizer ? { ...liftedState, state: stateSanitizer(currState, idx) } : liftedState
+      );
+      if (actionSanitizer) {
+        filteredActionsById[id] = {
+          ...liftedAction, action: actionSanitizer(currAction, id)
+        };
       }
     });
 

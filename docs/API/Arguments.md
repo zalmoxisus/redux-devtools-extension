@@ -53,3 +53,11 @@ Use `window.__REDUX_DEVTOOLS_EXTENSION__([config])` or `window.__REDUX_DEVTOOLS_
         stateSanitizer: (state) => state.data ? { ...state, data: '<<LONG_BLOB>>' } : state
       }));
       ```
+  - **predicate** (*function*) - called for every action before sending, takes `state` and `action` object, and returns `true` in case it allows sending the current data to the monitor. Use it as a more advanced version of `actionsBlacklist`/`actionsWhitelist` parameters.
+      Example of usage:
+      
+      ```js
+      const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
+        predicate: (state, action) => state.dev.logLevel === VERBOSE && !action.forwarded
+      }));
+      ```
