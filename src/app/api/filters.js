@@ -26,28 +26,28 @@ export function isFiltered(action, localFilter) {
   );
 }
 
-function filterActions(actionsById, actionsFilter) {
-  if (!actionsFilter) return actionsById;
+function filterActions(actionsById, actionSanitizer) {
+  if (!actionSanitizer) return actionsById;
   return mapValues(actionsById, (action, id) => (
-    { ...action, action: actionsFilter(action.action, id) }
+    { ...action, action: actionSanitizer(action.action, id) }
   ));
 }
 
-function filterStates(computedStates, statesFilter) {
-  if (!statesFilter) return computedStates;
+function filterStates(computedStates, stateSanitizer) {
+  if (!stateSanitizer) return computedStates;
   return computedStates.map((state, idx) => (
-    { ...state, state: statesFilter(state.state, idx) }
+    { ...state, state: stateSanitizer(state.state, idx) }
   ));
 }
 
-export function filterState(state, type, localFilter, statesFilter, actionsFilter, nextActionId) {
-  if (type === 'ACTION') return !statesFilter ? state : statesFilter(state, nextActionId - 1);
+export function filterState(state, type, localFilter, stateSanitizer, actionSanitizer, nextActionId) {
+  if (type === 'ACTION') return !stateSanitizer ? state : stateSanitizer(state, nextActionId - 1);
   else if (type !== 'STATE') return state;
 
   if (localFilter || window.devToolsOptions.filter !== FilterState.DO_NOT_FILTER) {
     const filteredStagedActionIds = [];
     const filteredComputedStates = [];
-    const filteredActionsById = actionsFilter && {};
+    const filteredActionsById = actionSanitizer && {};
     const { actionsById } = state;
     const { computedStates } = state;
 
@@ -55,13 +55,13 @@ export function filterState(state, type, localFilter, statesFilter, actionsFilte
       if (!isFiltered(actionsById[id].action, localFilter)) {
         filteredStagedActionIds.push(id);
         filteredComputedStates.push(
-          statesFilter ?
-          { ...computedStates[idx], state: statesFilter(computedStates[idx].state, idx) } :
+          stateSanitizer ?
+          { ...computedStates[idx], state: stateSanitizer(computedStates[idx].state, idx) } :
           computedStates[idx]
         );
-        if (actionsFilter) {
+        if (actionSanitizer) {
           filteredActionsById[id] = {
-            ...actionsById[id], action: actionsFilter(actionsById[id].action, id)
+            ...actionsById[id], action: actionSanitizer(actionsById[id].action, id)
           };
         }
       }
@@ -75,10 +75,10 @@ export function filterState(state, type, localFilter, statesFilter, actionsFilte
     };
   }
 
-  if (!statesFilter && !actionsFilter) return state;
+  if (!stateSanitizer && !actionSanitizer) return state;
   return {
     ...state,
-    actionsById: filterActions(state.actionsById, actionsFilter),
-    computedStates: filterStates(state.computedStates, statesFilter)
+    actionsById: filterActions(state.actionsById, actionSanitizer),
+    computedStates: filterStates(state.computedStates, stateSanitizer)
   };
 }

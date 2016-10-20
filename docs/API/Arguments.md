@@ -39,17 +39,17 @@ Use `window.__REDUX_DEVTOOLS_EXTENSION__([config])` or `window.__REDUX_DEVTOOLS_
   - **serializeAction(key, value): transformedAction** (*function*) - optional serialization function (useful if actions are not plain object. Example: for mori data structures in actions payload)
   - **actionsBlacklist** (*array*) - actions to be hidden in DevTools. Overwrites corresponding global setting in the options page.
   - **actionsWhitelist** (*array*) - all other actions will be hidden in DevTools. Overwrites corresponding global setting in the options page.
-  - **actionsFilter** (*function*) - function which takes `action` object and id number as arguments, and should return `action` object back. See the example bellow.
-  - **statesFilter** (*function*) - function which takes `state` object and index as arguments, and should return `state` object back.
+  - **actionSanitizer** (*function*) - function which takes `action` object and id number as arguments, and should return `action` object back. See the example bellow.
+  - **stateSanitizer** (*function*) - function which takes `state` object and index as arguments, and should return `state` object back.
       Example of usage:
       
       ```js
-      const actionsFilter = (action) => (
+      const actionSanitizer = (action) => (
         action.type === 'FILE_DOWNLOAD_SUCCESS' && action.data ?
         { ...action, data: '<<LONG_BLOB>>' } : action
       );
       const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
-        actionsFilter,
-        statesFilter: (state) => state.data ? { ...state, data: '<<LONG_BLOB>>' } : state
+        actionSanitizer,
+        stateSanitizer: (state) => state.data ? { ...state, data: '<<LONG_BLOB>>' } : state
       }));
       ```

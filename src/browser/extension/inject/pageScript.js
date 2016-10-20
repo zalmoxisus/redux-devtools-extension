@@ -15,6 +15,12 @@ import {
 let stores = {};
 let reportId;
 
+function deprecateParam(oldParam, newParam) {
+  /* eslint-disable no-console */
+  console.warn(`${oldParam} parameter is deprecated, use ${newParam} instead: https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md`);
+  /* eslint-enable no-console */
+}
+
 const devToolsExtension = function(reducer, preloadedState, config) {
   /* eslint-disable no-param-reassign */
   if (typeof reducer === 'object') {
@@ -31,7 +37,17 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   let actionCreators;
   const instanceId = generateId(config.instanceId);
   const localFilter = getLocalFilter(config);
-  const { statesFilter, actionsFilter } = config;
+  let { statesFilter, actionsFilter, stateSanitizer, actionSanitizer } = config;
+
+  // Deprecate statesFilter and actionsFilter
+  if (statesFilter) {
+    deprecateParam('statesFilter', 'stateSanitizer');
+    stateSanitizer = statesFilter; // eslint-disable-line no-param-reassign
+  }
+  if (actionsFilter) {
+    deprecateParam('actionsFilter', 'actionSanitizer');
+    actionSanitizer = actionsFilter; // eslint-disable-line no-param-reassign
+  }
 
   const monitor = new Monitor(relayState);
   if (config.getMonitor) config.getMonitor(monitor);
@@ -39,13 +55,13 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   function relay(type, state, action, nextActionId, shouldInit) {
     const message = {
       type,
-      payload: filterState(state, type, localFilter, statesFilter, actionsFilter, nextActionId),
+      payload: filterState(state, type, localFilter, stateSanitizer, actionSanitizer, nextActionId),
       source: '@devtools-page',
       instanceId
     };
 
     if (type === 'ACTION') {
-      message.action = !actionsFilter ? action : actionsFilter(action.action, nextActionId - 1);
+      message.action = !actionSanitizer ? action : actionSanitizer(action.action, nextActionId - 1);
       message.isExcess = isExcess;
       message.nextActionId = nextActionId;
     } else if (shouldInit) {
