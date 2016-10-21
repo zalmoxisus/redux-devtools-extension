@@ -16,6 +16,6 @@ describe('App container', () => {
   it('should contain an empty action list', () => {
     expect(
       component.find('div.actionListRows--jss-0-4').html()
-    ).toBe('<div class=" actionListRows--jss-0-4"></div>');
+    ).toBe('<div class="actionListRows--jss-0-4"></div>');
   });
 });
