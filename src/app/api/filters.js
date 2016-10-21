@@ -47,7 +47,7 @@ export function filterState(state, type, localFilter, stateSanitizer, actionSani
   if (predicate || localFilter || window.devToolsOptions.filter !== FilterState.DO_NOT_FILTER) {
     const filteredStagedActionIds = [];
     const filteredComputedStates = [];
-    const filteredActionsById = actionSanitizer && {};
+    const sanitizedActionsById = actionSanitizer && {};
     const { actionsById } = state;
     const { computedStates } = state;
 
@@ -66,7 +66,7 @@ export function filterState(state, type, localFilter, stateSanitizer, actionSani
         stateSanitizer ? { ...liftedState, state: stateSanitizer(currState, idx) } : liftedState
       );
       if (actionSanitizer) {
-        filteredActionsById[id] = {
+        sanitizedActionsById[id] = {
           ...liftedAction, action: actionSanitizer(currAction, id)
         };
       }
@@ -74,7 +74,7 @@ export function filterState(state, type, localFilter, stateSanitizer, actionSani
 
     return {
       ...state,
-      actionsById: filteredActionsById || actionsById,
+      actionsById: sanitizedActionsById || actionsById,
       stagedActionIds: filteredStagedActionIds,
       computedStates: filteredComputedStates
     };
