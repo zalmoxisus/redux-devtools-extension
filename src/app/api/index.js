@@ -117,6 +117,11 @@ export function connect(config = {}) {
 
 export function updateStore(stores) {
   return function(newStore, instanceId) {
+    /* eslint-disable no-console */
+    console.warn('`devToolsExtension.updateStore` is deprecated, remove it and just use ' +
+      '`__REDUX_DEVTOOLS_EXTENSION_COMPOSE__` instead of the extension\'s store enhancer: ' +
+      'https://github.com/zalmoxisus/redux-devtools-extension#12-advanced-store-setup');
+    /* eslint-enable no-console */
     const store = stores[instanceId || Object.keys(stores)[0]];
     // Mutate the store in order to keep the reference
     store.liftedStore = newStore.liftedStore;
