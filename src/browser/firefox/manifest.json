@@ -60,7 +60,11 @@
       "all_frames": true
     }
   ],
-  "web_accessible_resources": ["js/page.bundle.js", "js/inject.bundle.js"],
+  "web_accessible_resources": [
+    "js/page.bundle.js",
+    "js/inject.bundle.js",
+    "js/redux-devtools-extension.js"
+  ],
   "permissions": ["notifications", "contextMenus", "tabs", "storage", "<all_urls>"],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; style-src * 'unsafe-inline'; img-src 'self' data:;"
 }

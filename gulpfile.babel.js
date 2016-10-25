@@ -65,16 +65,27 @@ gulp.task('copy:dev', () => {
  */
 
 gulp.task('webpack:build:extension', (callback) => {
-  function webpackProcess(config, next) {
-    webpack(config, (err, stats) => {
-      if (err) {
-        throw new gutil.PluginError('webpack:build', err);
-      }
-      gutil.log('[webpack:build]', stats.toString({ colors: true }));
-      next();
-    });
+  function webpackProcess(config) {
+    return new Promise((resolve, reject) =>
+      webpack(config, (err, stats) => {
+        if (err) {
+          reject(new gutil.PluginError('webpack:build', err));
+        }
+        gutil.log('[webpack:build]', stats.toString({ colors: true }));
+        resolve();
+      })
+    );
   }
-  webpackProcess(wrapConfig, () => { webpackProcess(prodConfig, callback); });
+  webpackProcess(wrapConfig)
+    .then(() => webpackProcess(prodConfig))
+    .then(() => {
+      const dest = './build/extension';
+      fs.rename(
+        `${dest}/js/redux-devtools-extension.bundle.js`,
+        `${dest}/js/redux-devtools-extension.js`,
+        callback
+      );
+    });
 });
 
 gulp.task('views:build:extension', () => {

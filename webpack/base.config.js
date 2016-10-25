@@ -14,7 +14,8 @@ const baseConfig = (params) => ({
     devtools: [ `${extpath}devtools/index` ],
     content: [ mock, `${extpath}inject/contentScript` ],
     pagewrap: [ `${extpath}inject/pageScriptWrap` ],
-    inject: [ `${extpath}inject/index` ],
+    'redux-devtools-extension': [ `${extpath}inject/index` ],
+    inject: [ `${extpath}inject/index`, `${extpath}inject/deprecatedWarn` ],
     ...params.inputExtra
   },
   output: {
