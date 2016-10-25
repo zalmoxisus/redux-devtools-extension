@@ -26,8 +26,10 @@ Use `window.__REDUX_DEVTOOLS_EXTENSION__([config])` or `window.__REDUX_DEVTOOLS_
       ```
   - **deserializeAction(action): transformedAction** (*function*) - optional transformation of actions deserialized from debug session (useful if actions are not plain object. Example: immutable-js action payload)
     - action, transformedAction - Redux action objects
-  - **serializeState(key, value): transformedState** (*function*) - optional serialization function (useful if state is not plain object. Example: for mori data structures)
-      Example of usage:
+  - **serializeState** (*boolean or function or object*) - specify how and what should be handled during serialization (useful if state is not plain object). Could be:
+    - `false` - handle only circular references.
+    - `true` - handle also dates, regexes, undefined, error objects, and functions.
+    - `function(key, value)` - JSON replacer. Example of usage with mori data structures:
       
       ```js
       const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
@@ -36,7 +38,20 @@ Use `window.__REDUX_DEVTOOLS_EXTENSION__([config])` or `window.__REDUX_DEVTOOLS_
         )
       }));
       ```
-  - **serializeAction(key, value): transformedAction** (*function*) - optional serialization function (useful if actions are not plain object. Example: for mori data structures in actions payload)
+
+    - object (`{ replacer: function, options: object } `) - in addition to the replacer function, specify an options object, which contains `date`, `regexe`, `undefined`, `error`, and `function` keys. Fo each of them you can indicate whether to include (if set as `true`). For `function` key you can also specify a custom function which handles serialization. See [`jsan`](https://github.com/kolodny/jsan) for more details. Example:
+      ```js
+      const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
+        serializeState: { 
+          options: {
+           undefined: true,
+           function: function(fn) { return fn.toString() }
+          }
+        }
+      }));
+      ```       
+
+  - **serializeAction** (*boolean or function or object*) - same as `serializeState` but used for actions payloads.
   - **actionsBlacklist** (*array*) - actions to be hidden in DevTools. Overwrites corresponding global setting in the options page.
   - **actionsWhitelist** (*array*) - all other actions will be hidden in DevTools. Overwrites corresponding global setting in the options page.
   - **actionSanitizer** (*function*) - function which takes `action` object and id number as arguments, and should return `action` object back. See the example bellow.

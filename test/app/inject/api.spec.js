@@ -41,7 +41,7 @@ describe('API', () => {
     });
 
     message = await listenMessage(() => {
-      window.devToolsExtension.send({ type: 'hi' }, { counter: 1 }, false, 1);
+      window.devToolsExtension.send({ type: 'hi' }, { counter: 1 }, 1);
     });
     expect(message).toInclude({
       type: 'ACTION',
@@ -53,7 +53,7 @@ describe('API', () => {
     });
 
     message = await listenMessage(() => {
-      window.devToolsExtension.send({ type: 'hi' }, { counter: 1 }, true, 1);
+      window.devToolsExtension.send({ type: 'hi' }, { counter: 1 }, 1);
     });
     expect(message).toInclude({
       type: 'ACTION',
@@ -65,11 +65,12 @@ describe('API', () => {
     expect(message.action).toBe('{"action":{"type":"hi"}}');
 
     message = await listenMessage(() => {
-      window.devToolsExtension.send(undefined, { counter: 1 }, false, 1);
+      window.devToolsExtension.send(undefined, { counter: 1 }, 1);
     });
     expect(message).toEqual({
       type: 'STATE',
       payload: { counter: 1 },
+      serialize: undefined,
       actionsById: undefined,
       computedStates: undefined,
       committedState: undefined,

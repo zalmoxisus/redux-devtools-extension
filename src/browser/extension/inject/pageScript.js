@@ -34,6 +34,9 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   let maxAge;
   let isExcess;
   let actionCreators;
+  let shouldSerialize;
+  let serializeState;
+  let serializeAction;
   const instanceId = generateId(config.instanceId);
   const localFilter = getLocalFilter(config);
   let { statesFilter, actionsFilter, stateSanitizer, actionSanitizer, predicate } = config;
@@ -46,6 +49,17 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   if (actionsFilter) {
     deprecateParam('actionsFilter', 'actionSanitizer');
     actionSanitizer = actionsFilter; // eslint-disable-line no-param-reassign
+  }
+
+  if (config.serializeState) {
+    serializeState = config.serializeState;
+    if (typeof serializeState === 'function') serializeState = { replacer: serializeState };
+    else shouldSerialize = true;
+  }
+  if (config.serializeAction) {
+    serializeAction = config.serializeAction;
+    if (typeof serializeAction === 'function') serializeAction = { replacer: serializeAction };
+    else shouldSerialize = true;
   }
 
   const monitor = new Monitor(relayState);
@@ -70,7 +84,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       message.name = config.name || document.title;
     }
 
-    toContentScript(message, config.serializeState, config.serializeAction);
+    toContentScript(message, serializeState, serializeAction, shouldSerialize);
   }
 
   function relayState(actions, shouldInit) {

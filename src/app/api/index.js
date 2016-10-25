@@ -1,7 +1,20 @@
-import { stringify } from 'jsan';
+import jsan from 'jsan';
 
 const listeners = {};
 export const source = '@devtools-page';
+
+function stringify(obj, serialize) {
+  if (typeof serialize === 'undefined') {
+    return jsan.stringify(obj);
+  }
+  if (serialize === true) {
+    return jsan.stringify(obj, function(key, value) {
+      if (value && value.toJS) { return value.toJS(); }
+      return value;
+    }, null, true);
+  }
+  return jsan.stringify(obj, serialize.replacer, null, serialize.options);
+}
 
 export function generateId(instanceId) {
   return instanceId || Math.random().toString(36).substr(2);
@@ -11,17 +24,22 @@ function post(message) {
   window.postMessage(message, '*');
 }
 
-export function toContentScript(message, serializeState, serializeAction) {
+export function toContentScript(message, serializeState, serializeAction, shouldSerialize) {
   if (message.type === 'ACTION') {
     message.action = stringify(message.action, serializeAction);
     message.payload = stringify(message.payload, serializeState);
   } else if (message.type === 'STATE') {
-    const { actionsById, computedStates, committedState, ...rest } = message.payload;
-    message.payload = rest;
-    message.actionsById = stringify(actionsById, serializeAction);
-    message.computedStates = stringify(computedStates, serializeState);
-    message.committedState = stringify(committedState, serializeState);
+    if (serializeState === false) {
+      message.payload = jsan.stringify(message.payload, null, null, false);
+    } else {
+      const { actionsById, computedStates, committedState, ...rest } = message.payload;
+      message.payload = rest;
+      message.actionsById = stringify(actionsById, serializeAction);
+      message.computedStates = stringify(computedStates, serializeState);
+      message.committedState = stringify(committedState, serializeState);
+    }
   }
+  message.serialize = shouldSerialize;
   post(message);
 }
 
