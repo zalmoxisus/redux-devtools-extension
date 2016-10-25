@@ -50,7 +50,7 @@ Send a new action and state manually to be shown on the monitor.
 
 ##### Arguments
 
-- [`config`] *Object* intended to be the same as for [Redux store enhancer](Arguments.md#windowdevtoolsextensionconfig). For now only `instanceId` and `shouldStringify` should be specified.
+- [`config`] *Object* intended to be the same as for [Redux store enhancer](Arguments.md#windowdevtoolsextensionconfig).
 
 ##### Returns
 *Object* containing the following methods:

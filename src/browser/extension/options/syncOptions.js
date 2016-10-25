@@ -37,7 +37,6 @@ const get = callback => {
       filter: FilterState.DO_NOT_FILTER,
       whitelist: '',
       blacklist: '',
-      serialize: true,
       shouldCatchErrors: false,
       inject: true,
       urls: '^https?://localhost|0\\.0\\.0\\.0:\\d+\n^https?://.+\\.github\\.io'

@@ -30,7 +30,6 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   if (!window.devToolsOptions) window.devToolsOptions = {};
 
   let store;
-  let shouldSerialize = config.serializeState || config.serializeAction;
   let errorOccurred = false;
   let maxAge;
   let isExcess;
@@ -71,11 +70,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       message.name = config.name || document.title;
     }
 
-    if (shouldSerialize || window.devToolsOptions.serialize !== false) {
-      toContentScript(message, true, config.serializeState, config.serializeAction);
-    } else {
-      toContentScript(message);
-    }
+    toContentScript(message, config.serializeState, config.serializeAction);
   }
 
   function relayState(actions, shouldInit) {

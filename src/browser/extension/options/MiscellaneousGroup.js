@@ -27,20 +27,6 @@ export default ({ options, saveOption }) => {
 
       <div className="option option_type_checkbox">
         <input className="option__element"
-               id="serialize"
-               type="checkbox"
-               checked={options.serialize}
-               onChange={(e) => saveOption('serialize', e.target.checked)}/>
-        <label className="option__label" htmlFor="serialize">Serialize the state</label>
-        <div className="option__hint">
-          Recommended. Required for ImmutableJS state, optional in most other cases.
-          {' '}
-          <a href="https://github.com/zalmoxisus/redux-devtools-extension/pull/54#issuecomment-188167725">More info</a>
-        </div>
-      </div>
-
-      <div className="option option_type_checkbox">
-        <input className="option__element"
                id="notifyErrors"
                type="checkbox"
                checked={options.shouldCatchErrors}

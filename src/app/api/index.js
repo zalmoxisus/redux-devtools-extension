@@ -11,7 +11,7 @@ function post(message) {
   window.postMessage(message, '*');
 }
 
-export function toContentScript(message, shouldStringify, serializeState, serializeAction) {
+export function toContentScript(message, serializeState, serializeAction) {
   if (message.type === 'ACTION') {
     message.action = stringify(message.action, serializeAction);
     message.payload = stringify(message.payload, serializeState);
@@ -25,7 +25,7 @@ export function toContentScript(message, shouldStringify, serializeState, serial
   post(message);
 }
 
-export function sendMessage(action, state, shouldStringify, id, name) {
+export function sendMessage(action, state, id, name) {
   const message = {
     payload: state,
     source,
@@ -40,7 +40,7 @@ export function sendMessage(action, state, shouldStringify, id, name) {
     message.type = 'STATE';
   }
 
-  toContentScript(message, shouldStringify);
+  toContentScript(message);
 }
 
 function handleMessages(event) {
@@ -84,7 +84,7 @@ export function connect(config = {}) {
   };
 
   const send = (action, state) => {
-    sendMessage(action, state, config.shouldStringify, id, name);
+    sendMessage(action, state, id, name);
   };
 
   const init = (state, action) => {
@@ -93,8 +93,7 @@ export function connect(config = {}) {
         type: 'INIT', payload: state,
         action: action || {},
         instanceId: id, name, source
-      },
-      config.shouldStringify
+      }
     );
   };
 
@@ -104,7 +103,7 @@ export function connect(config = {}) {
 
   window.addEventListener('message', handleMessages, false);
 
-  toContentScript({ type: 'INIT_INSTANCE', instanceId: id, source});
+  toContentScript({ type: 'INIT_INSTANCE', instanceId: id, source });
 
   return {
     init,
