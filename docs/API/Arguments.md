@@ -26,9 +26,11 @@ Use `window.__REDUX_DEVTOOLS_EXTENSION__([config])` or `window.__REDUX_DEVTOOLS_
       ```
   - **deserializeAction(action): transformedAction** (*function*) - optional transformation of actions deserialized from debug session (useful if actions are not plain object. Example: immutable-js action payload)
     - action, transformedAction - Redux action objects
-  - **serializeState** (*boolean or function or object*) - specify how and what should be handled during serialization (useful if state is not plain object). Could be:
+  - **serializeState** (*boolean or function or object*) - specify how and what should be handled during serialization (useful if state is not plain object). It will affect the extension's performance significantly!
+  Could be:
+    - `undefined` - use regular `JSON.stringify` to send data - the fast mode.
     - `false` - handle only circular references.
-    - `true` - handle also dates, regexes, undefined, error objects, and functions.
+    - `true` - handle also dates, regexes, undefined, error objects, symbols, and functions.
     - `function(key, value)` - JSON replacer. Example of usage with mori data structures:
       
       ```js
