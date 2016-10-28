@@ -47,7 +47,7 @@ describe('API', () => {
       type: 'ACTION',
       action: '{"action":{"type":"hi"}}',
       payload: '{"counter":1}',
-      instanceId: 1,
+      instanceId: undefined,
       name: '',
       source: '@devtools-page'
     });
@@ -58,7 +58,7 @@ describe('API', () => {
     expect(message).toInclude({
       type: 'ACTION',
       payload: '{"counter":1}',
-      instanceId: 1,
+      instanceId: undefined,
       name: '',
       source: '@devtools-page'
     });
@@ -74,7 +74,7 @@ describe('API', () => {
       actionsById: undefined,
       computedStates: undefined,
       committedState: undefined,
-      instanceId: 1,
+      instanceId: undefined,
       name: '',
       source: '@devtools-page'
     });
