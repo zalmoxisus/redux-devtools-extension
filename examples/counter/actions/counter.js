@@ -1,6 +1,8 @@
 export const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
 export const DECREMENT_COUNTER = 'DECREMENT_COUNTER';
 
+let t;
+
 export function increment() {
   return {
     type: INCREMENT_COUNTER
@@ -13,15 +15,16 @@ export function decrement() {
   };
 }
 
-export function incrementIfOdd() {
-  return (dispatch, getState) => {
-    const { counter } = getState();
-
-    if (counter % 2 === 0) {
+export function autoIncrement(delay = 10) {
+  return dispatch => {
+    if (t) {
+      clearInterval(t);
+      t = undefined;
       return;
     }
-
-    dispatch(increment());
+    t = setInterval(() => {
+      dispatch(increment());
+    }, delay);
   };
 }
 

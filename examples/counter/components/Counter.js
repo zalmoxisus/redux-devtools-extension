@@ -3,7 +3,7 @@ import { isMonitorAction } from '../store/configureStore';
 
 class Counter extends Component {
   render() {
-    const { increment, incrementIfOdd, incrementAsync, decrement, counter } = this.props;
+    const { increment, autoIncrement, incrementAsync, decrement, counter } = this.props;
     return (
       <p>
         Clicked: {counter} times
@@ -12,9 +12,9 @@ class Counter extends Component {
         {' '}
         <button onClick={decrement}>-</button>
         {' '}
-        <button onClick={incrementIfOdd}>Increment if odd</button>
+        <button onClick={incrementAsync}>Increment async</button>
         {' '}
-        <button onClick={() => incrementAsync()}>Increment async</button>
+        <button onClick={autoIncrement}>Auto increment</button>
       </p>
     );
   }
@@ -22,7 +22,7 @@ class Counter extends Component {
 
 Counter.propTypes = {
   increment: PropTypes.func.isRequired,
-  incrementIfOdd: PropTypes.func.isRequired,
+  autoIncrement: PropTypes.func.isRequired,
   incrementAsync: PropTypes.func.isRequired,
   decrement: PropTypes.func.isRequired,
   counter: PropTypes.number.isRequired
