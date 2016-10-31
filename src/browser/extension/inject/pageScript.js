@@ -3,7 +3,7 @@ import createStore from '../../../app/stores/createStore';
 import configureStore, { getUrlParam } from '../../../app/stores/enhancerStore';
 import { isAllowed } from '../options/syncOptions';
 import Monitor from '../../../app/service/Monitor';
-import { getLocalFilter, isFiltered, filterState } from '../../../app/api/filters';
+import { getLocalFilter, isFiltered, filterState, startingFrom } from '../../../app/api/filters';
 import notifyErrors from '../../../app/api/notifyErrors';
 import importState from '../../../app/api/importState';
 import openWindow from '../../../app/api/openWindow';
@@ -31,14 +31,17 @@ const devToolsExtension = function(reducer, preloadedState, config) {
 
   let store;
   let errorOccurred = false;
+  let sendingActionTimeout;
+  let sendingStateTimeout;
+  let sendingActionId;
   let maxAge;
-  let isExcess;
   let actionCreators;
   let shouldSerialize;
   let serializeState;
   let serializeAction;
   const instanceId = generateId(config.instanceId);
   const localFilter = getLocalFilter(config);
+  const latency = config.latency || 500;
   let { statesFilter, actionsFilter, stateSanitizer, actionSanitizer, predicate } = config;
 
   // Deprecate statesFilter and actionsFilter
@@ -77,7 +80,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
 
     if (type === 'ACTION') {
       message.action = !actionSanitizer ? action : actionSanitizer(action.action, nextActionId - 1);
-      message.isExcess = isExcess;
+      message.maxAge = maxAge;
       message.nextActionId = nextActionId;
     } else if (shouldInit) {
       message.action = action;
@@ -89,6 +92,27 @@ const devToolsExtension = function(reducer, preloadedState, config) {
 
   function relayState(actions, shouldInit) {
     relay('STATE', store.liftedStore.getState(), actions, undefined, shouldInit);
+  }
+
+  function relayPending() {
+    const liftedState = store.liftedStore.getState();
+    const payload = startingFrom(
+      sendingActionId,
+      liftedState,
+      localFilter, stateSanitizer, actionSanitizer, predicate
+    );
+    if (typeof payload === 'undefined') return;
+    if (typeof payload.skippedActionIds !== 'undefined') {
+      relay('STATE', payload);
+      return;
+    }
+    toContentScript({
+      type: 'PARTIAL_STATE',
+      payload,
+      source: '@devtools-page',
+      instanceId,
+      maxAge
+    }, serializeState, serializeAction, shouldSerialize);
   }
 
   function dispatchRemotely(action) {
@@ -158,7 +182,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   }
 
   function handleChange() {
-    if (!monitor.active) return;
+    if (!monitor.active || sendingStateTimeout) return;
     if (!errorOccurred && !monitor.isMonitorAction()) {
       const liftedState = store.liftedStore.getState();
       const nextActionId = liftedState.nextActionId;
@@ -166,13 +190,31 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       const liftedAction = liftedState.actionsById[currentActionId];
       const action = liftedAction.action;
       if (isFiltered(action, localFilter)) return;
-      const stagedActionLength = liftedState.stagedActionIds.length;
-      const state = liftedState.computedStates[stagedActionLength - 1].state;
+      const state = liftedState.computedStates[liftedState.stagedActionIds.length - 1].state;
       if (predicate && !predicate(state, action)) return;
-      relay('ACTION', state, liftedAction, nextActionId);
-      if (!isExcess && maxAge) isExcess = stagedActionLength >= maxAge;
+      if (sendingActionTimeout) {
+        clearTimeout(sendingActionTimeout);
+        sendingStateTimeout = setTimeout(() => {
+          sendingStateTimeout = undefined;
+          sendingActionTimeout = undefined;
+          relayPending();
+        }, latency);
+        return;
+      }
+      sendingActionTimeout = setTimeout(() => {
+        sendingActionTimeout = undefined;
+        relay('ACTION', state, liftedAction, nextActionId);
+      }, latency);
+      sendingActionId = currentActionId;
     } else {
       if (monitor.isPaused() || monitor.isLocked() || monitor.isTimeTraveling()) return;
+      if (sendingStateTimeout) {
+        clearTimeout(sendingStateTimeout);
+        sendingStateTimeout = undefined;
+      } else if (sendingActionTimeout) {
+        clearTimeout(sendingActionTimeout);
+        sendingActionTimeout = undefined;
+      }
       const liftedState = store.liftedStore.getState();
       if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) {
         errorOccurred = false;

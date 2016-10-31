@@ -4,6 +4,7 @@ Use `window.__REDUX_DEVTOOLS_EXTENSION__([config])` or `window.__REDUX_DEVTOOLS_
 - [`config`] *(object)*: options
   - **name** (*string*) - the instance name to be showed on the monitor page. Default value is `document.title`.
   - **actionCreators** (*array* or *object*) - action creators to dispatch remotely. See [the example](https://github.com/zalmoxisus/redux-devtools-extension/commit/477e69d8649dfcdc9bf84dd45605dab7d9775c03).
+  - **latency** (*number (in ms)*) - if more than one action is dispatched in the indicated interval, all new actions will be collected and sent at once. It determines the performance vs speed. When setting it to `0`, all actions will be sent instantly. Default is `500 ms`.
   - **maxAge** (*number*) - maximum allowed actions to be stored on the history tree, the oldest actions are removed once maxAge is reached. Default is `50`.
   - **shouldCatchErrors** (*boolean*) - if specified as `true`, whenever there's an exception in reducers, the monitors will show the error message, and next actions will not be dispatched.
   - **shouldRecordChanges** (*boolean*) - if specified as `false`, it will not record the changes till clicking on `Start recording` button. Default is `true`.

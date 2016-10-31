@@ -29,7 +29,7 @@ export function toContentScript(message, serializeState, serializeAction, should
   if (message.type === 'ACTION') {
     message.action = stringify(message.action, serializeAction);
     message.payload = stringify(message.payload, serializeState);
-  } else if (message.type === 'STATE') {
+  } else if (message.type === 'STATE' || message.type === 'PARTIAL_STATE') {
     if (serializeState === false) {
       message.payload = jsan.stringify(message.payload, null, null, false);
     } else {

@@ -87,3 +87,44 @@ export function filterState(state, type, localFilter, stateSanitizer, actionSani
     computedStates: filterStates(state.computedStates, stateSanitizer)
   };
 }
+
+export function startingFrom(
+  sendingActionId, state, localFilter, stateSanitizer, actionSanitizer, predicate
+) {
+  const stagedActionIds = state.stagedActionIds;
+  if (sendingActionId <= stagedActionIds[1]) return state;
+  const index = stagedActionIds.indexOf(sendingActionId);
+  if (index === -1) return state;
+
+  const actionsById = state.actionsById;
+  const computedStates = state.computedStates;
+  const newActionsById = {};
+  const newComputedStates = [];
+  let key;
+  let currAction;
+  let currState;
+
+  for (let i = index; i < stagedActionIds.length; i++) {
+    key = stagedActionIds[i];
+    currAction = actionsById[key];
+    currState = computedStates[i];
+    if (predicate && !predicate(currState, currAction) || isFiltered(currAction, localFilter)) {
+      continue;
+    }
+    newActionsById[key] = !actionSanitizer ? currAction :
+      { ...currAction, action: actionSanitizer(currAction, key) };
+    newComputedStates.push(
+      !stateSanitizer ? currState : { ...currState, state: stateSanitizer(currState, i) }
+    );
+  }
+
+  if (newComputedStates.length === 0) return undefined;
+
+  return {
+    actionsById: newActionsById,
+    computedStates: newComputedStates,
+    stagedActionIds,
+    currentStateIndex: state.currentStateIndex,
+    nextActionId: state.nextActionId
+  };
+}
