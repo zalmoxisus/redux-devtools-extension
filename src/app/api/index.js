@@ -93,13 +93,13 @@ export function connect(config = {}) {
     listeners[id].push(listener);
 
     return function unsubscribe() {
-      const index = listeners.indexOf(listener);
+      const index = listeners[id].indexOf(listener);
       listeners[id].splice(index, 1);
     };
   };
 
-  const unsubscribe = (instanceId) => {
-    delete listeners[instanceId];
+  const unsubscribe = () => {
+    delete listeners[id];
   };
 
   const send = (action, state) => {
