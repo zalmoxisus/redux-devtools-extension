@@ -122,9 +122,9 @@ export function startingFrom(
     }
 
     newActionsById[key] = !actionSanitizer ? currAction :
-      { ...currAction, action: actionSanitizer(currAction, key) };
+      { ...currAction, action: actionSanitizer(currAction.action, key) };
     newComputedStates.push(
-      !stateSanitizer ? currState : { ...currState, state: stateSanitizer(currState, i) }
+      !stateSanitizer ? currState : { ...currState, state: stateSanitizer(currState.state, i) }
     );
   }
 
