@@ -4,5 +4,8 @@
   },
   "globals": {
     "WebInspector": true
+  },
+  "rules": {
+    "no-unused-expressions": 0
   }
 }

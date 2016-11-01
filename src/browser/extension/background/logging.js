@@ -16,7 +16,9 @@ export function getReport(id, instance) {
       if (!payload) return;
       window.store.liftedStore.importState(JSON.stringify({ payload, preloadedState }), instance);
     }).catch(function(err) {
+      /* eslint-disable no-console */
       console.warn(err);
+      /* eslint-enable no-console */
     });
   });
 }
