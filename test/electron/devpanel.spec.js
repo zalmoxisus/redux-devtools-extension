@@ -1,6 +1,6 @@
 import { join } from 'path';
 import webdriver from 'selenium-webdriver';
-import electronPath from 'electron-prebuilt';
+import electronPath from 'electron';
 import expect from 'expect';
 import { switchMonitorTests, delay } from '../utils/e2e';
 
