@@ -37,7 +37,7 @@ export function toContentScript(message, serializeState, serializeAction, should
       message.payload = rest;
       message.actionsById = stringify(actionsById, serializeAction);
       message.computedStates = stringify(computedStates, serializeState);
-      message.committedState = stringify(committedState, serializeState);
+      message.committedState = typeof committedState !== 'undefined';
     }
   }
   message.serialize = shouldSerialize;

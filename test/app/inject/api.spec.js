@@ -73,7 +73,7 @@ describe('API', () => {
       serialize: undefined,
       actionsById: undefined,
       computedStates: undefined,
-      committedState: undefined,
+      committedState: false,
       instanceId: undefined,
       name: '',
       source: '@devtools-page'
