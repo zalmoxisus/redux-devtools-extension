@@ -96,6 +96,9 @@ export function startingFrom(
   const index = stagedActionIds.indexOf(sendingActionId);
   if (index === -1) return state;
 
+  const shouldFilter = predicate || localFilter ||
+    window.devToolsOptions.filter !== FilterState.DO_NOT_FILTER;
+  const filteredStagedActionIds = shouldFilter ? [0] : stagedActionIds;
   const actionsById = state.actionsById;
   const computedStates = state.computedStates;
   const newActionsById = {};
@@ -104,13 +107,20 @@ export function startingFrom(
   let currAction;
   let currState;
 
-  for (let i = index; i < stagedActionIds.length; i++) {
+  for (let i = shouldFilter ? 1 : index; i < stagedActionIds.length; i++) {
     key = stagedActionIds[i];
     currAction = actionsById[key];
     currState = computedStates[i];
-    if (predicate && !predicate(currState, currAction) || isFiltered(currAction, localFilter)) {
-      continue;
+
+    if (shouldFilter) {
+      if (
+        predicate && !predicate(currState.state, currAction.action) ||
+        isFiltered(currAction.action, localFilter)
+      ) continue;
+      filteredStagedActionIds.push(key);
+      if (i < index) continue;
     }
+
     newActionsById[key] = !actionSanitizer ? currAction :
       { ...currAction, action: actionSanitizer(currAction, key) };
     newComputedStates.push(
@@ -123,7 +133,7 @@ export function startingFrom(
   return {
     actionsById: newActionsById,
     computedStates: newComputedStates,
-    stagedActionIds,
+    stagedActionIds: filteredStagedActionIds,
     currentStateIndex: state.currentStateIndex,
     nextActionId: state.nextActionId
   };
