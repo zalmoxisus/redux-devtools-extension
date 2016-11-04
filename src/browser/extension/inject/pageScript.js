@@ -118,7 +118,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   function dispatchRemotely(action) {
     try {
       const result = evalAction(action, actionCreators);
-      store.dispatch(result);
+      (store.initialDispatch || store.dispatch)(result);
     } catch (e) {
       relay('ERROR', e.message);
     }
@@ -259,7 +259,7 @@ const preEnhancer = instanceId => next =>
 
     // Mutate the store in order to keep the reference
     if (stores[instanceId]) {
-      stores[instanceId].dispatch = store.dispatch;
+      stores[instanceId].initialDispatch = store.dispatch;
       stores[instanceId].liftedStore = store.liftedStore;
       stores[instanceId].getState = store.getState;
     }
