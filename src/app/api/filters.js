@@ -17,7 +17,10 @@ export function getLocalFilter(config) {
 }
 
 export function isFiltered(action, localFilter) {
-  if (!localFilter && window.devToolsOptions.filter === FilterState.DO_NOT_FILTER) return false;
+  if (
+    !localFilter && window.devToolsOptions.filter === FilterState.DO_NOT_FILTER ||
+    typeof action.type.match !== 'function'
+  ) return false;
 
   const { whitelist, blacklist } = localFilter || window.devToolsOptions;
   return (

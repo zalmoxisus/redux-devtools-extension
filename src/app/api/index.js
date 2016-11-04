@@ -9,7 +9,7 @@ function stringify(obj, serialize) {
   }
   if (serialize === true) {
     return jsan.stringify(obj, function(key, value) {
-      if (typeof value === 'object' && value.toJS) return value.toJS();
+      if (typeof value === 'object' && typeof value.toJS === 'function') return value.toJS();
       if (typeof value === 'symbol') return String(value);
       return value;
     }, null, true);
