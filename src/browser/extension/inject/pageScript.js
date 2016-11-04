@@ -94,7 +94,18 @@ const devToolsExtension = function(reducer, preloadedState, config) {
     relay('STATE', store.liftedStore.getState(), actions, undefined, shouldInit);
   }
 
-  function relayPending() {
+  function relayPendingAction() {
+    sendingActionTimeout = undefined;
+    const liftedState = store.liftedStore.getState();
+    const nextActionId = liftedState.nextActionId;
+    const state = liftedState.computedStates[liftedState.computedStates.length - 1].state;
+    relay('ACTION', state, liftedState.actionsById[nextActionId - 1], nextActionId);
+  }
+
+  function relayPendingActions() {
+    sendingStateTimeout = undefined;
+    sendingActionTimeout = undefined;
+
     const liftedState = store.liftedStore.getState();
     const payload = startingFrom(
       sendingActionId,
@@ -190,21 +201,16 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       const liftedAction = liftedState.actionsById[currentActionId];
       const action = liftedAction.action;
       if (isFiltered(action, localFilter)) return;
-      const state = liftedState.computedStates[liftedState.stagedActionIds.length - 1].state;
-      if (predicate && !predicate(state, action)) return;
+      if (
+        predicate &&
+        !predicate(liftedState.computedStates[liftedState.computedStates.length - 1].state, action)
+      ) return;
       if (sendingActionTimeout) {
         clearTimeout(sendingActionTimeout);
-        sendingStateTimeout = setTimeout(() => {
-          sendingStateTimeout = undefined;
-          sendingActionTimeout = undefined;
-          relayPending();
-        }, latency);
+        sendingStateTimeout = setTimeout(relayPendingActions, latency);
         return;
       }
-      sendingActionTimeout = setTimeout(() => {
-        sendingActionTimeout = undefined;
-        relay('ACTION', state, liftedAction, nextActionId);
-      }, latency);
+      sendingActionTimeout = setTimeout(relayPendingAction, latency);
       sendingActionId = currentActionId;
     } else {
       if (monitor.isPaused() || monitor.isLocked() || monitor.isTimeTraveling()) return;
