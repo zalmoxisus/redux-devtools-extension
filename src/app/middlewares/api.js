@@ -78,7 +78,7 @@ function messaging(request, sender, sendResponse) {
     return;
   }
   if (request.type === 'GET_REPORT') {
-    getReport(request.payload, request.id);
+    getReport(request.payload, tabId, request.instanceId);
     return;
   }
   if (request.type === 'OPEN') {
