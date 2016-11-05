@@ -166,6 +166,10 @@ const devToolsExtension = function(reducer, preloadedState, config) {
         return;
       case 'STOP':
         monitor.stop();
+        clearTimeout(sendingActionTimeout);
+        clearTimeout(sendingStateTimeout);
+        sendingStateTimeout = undefined;
+        sendingActionTimeout = undefined;
         if (!message.failed) relay('STOP');
     }
   }
