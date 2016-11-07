@@ -63,7 +63,7 @@
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.1",
     "rimraf": "^2.5.3",
-    "selenium-webdriver": "^3.0.0-beta-3",
+    "selenium-webdriver": "2.53.3",
     "sinon-chrome": "^1.1.2",
     "style-loader": "^0.12.4",
     "webpack": "^1.13.3"
