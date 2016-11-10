@@ -38,7 +38,7 @@ if (
 }
 
 if (window.isElectron) {
-  if (!chrome.storage.local) {
+  if (!chrome.storage.local || !chrome.storage.local.remove) {
     chrome.storage.local = {
       set(obj, callback) {
         Object.keys(obj).forEach(key => {
@@ -55,6 +55,19 @@ if (window.isElectron) {
         });
         if (callback) {
           callback(result);
+        }
+      },
+      // Electron ~ 1.4.6
+      remove(items, callback) {
+        if (!Array.isArray(items)) {
+          items.forEach(name => {
+            localStorage.removeItem(name);
+          });
+        } else {
+          localStorage.removeItem(items);
+        }
+        if (callback) {
+          callback();
         }
       }
     };
