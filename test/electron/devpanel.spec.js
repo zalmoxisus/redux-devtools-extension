@@ -68,13 +68,13 @@ describe('DevTools panel for Electron', function() {
   });
 
   it('should contain INIT action', async () => {
-    const val = await this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "actionListRows--jss-")]'))
+    const val = await this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "actionListRows-")]'))
       .getText();
     expect(val).toMatch(/@@INIT/);
   });
 
   it('should contain Inspector monitor\'s component', async () => {
-    const val = await this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "inspector--jss-")]'))
+    const val = await this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "inspector-")]'))
       .getText();
     expect(val).toExist();
   });

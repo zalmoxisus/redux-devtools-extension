@@ -10,12 +10,12 @@ const component = mount(<Provider store={store}><App /></Provider>);
 
 describe('App container', () => {
   it('should render inspector monitor\'s component', () => {
-    expect(component.find('div.inspector--jss-0-0').html()).toExist();
+    expect(component.find('DevtoolsInspector').html()).toExist();
   });
 
   it('should contain an empty action list', () => {
     expect(
-      component.find('div.actionListRows--jss-0-4').html()
-    ).toBe('<div class="actionListRows--jss-0-4"></div>');
+      component.find('ActionList').html()
+    ).toMatch(/<div class="actionListRows-[0-9]+"><\/div>/);
   });
 });

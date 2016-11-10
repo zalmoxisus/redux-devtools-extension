@@ -39,13 +39,13 @@ describe('Chrome extension', function() {
   });
 
   it('should contain inspector monitor\'s component', async () => {
-    const val = this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "inspector--jss-")]'))
+    const val = this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "inspector-")]'))
       .getText();
     expect(val).toExist();
   });
 
   it('should contain an empty actions list', async () => {
-    const val = await this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "actionListRows--jss-")]'))
+    const val = await this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "actionListRows-")]'))
       .getText();
     expect(val).toBe('');
   });
@@ -58,7 +58,7 @@ describe('Chrome extension', function() {
     this.driver.executeScript('window.open(\'http://zalmoxisus.github.io/examples/router/\')');
 
     await this.driver.wait(() => (
-      this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "actionListRows--jss-")]'))
+      this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "actionListRows-")]'))
         .getText().then((val) => {
           return actionsPattern.test(val);
         })
