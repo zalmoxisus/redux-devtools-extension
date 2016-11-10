@@ -54,12 +54,12 @@ const devToolsExtension = function(reducer, preloadedState, config) {
     actionSanitizer = actionsFilter; // eslint-disable-line no-param-reassign
   }
 
-  if (config.serializeState) {
+  if (typeof config.serializeState !== 'undefined') {
     serializeState = config.serializeState;
     if (typeof serializeState === 'function') serializeState = { replacer: serializeState };
     else shouldSerialize = true;
   }
-  if (config.serializeAction) {
+  if (typeof config.serializeAction !== 'undefined') {
     serializeAction = config.serializeAction;
     if (typeof serializeAction === 'function') serializeAction = { replacer: serializeAction };
     else shouldSerialize = true;
