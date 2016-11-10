@@ -46,7 +46,7 @@ gulp.task('webpack:dev', (callback) => {
 });
 
 gulp.task('views:dev', () => {
-  gulp.src('./src/browser/views/*.jade')
+  gulp.src('./src/browser/views/*.pug')
     .pipe(jade({
       locals: { env: 'dev' }
     }))
@@ -90,7 +90,7 @@ gulp.task('webpack:build:extension', (callback) => {
 
 gulp.task('views:build:extension', () => {
   gulp.src([
-    './src/browser/views/*.jade'
+    './src/browser/views/*.pug'
   ])
     .pipe(jade({
       locals: { env: 'prod' }
@@ -139,7 +139,7 @@ gulp.task('compress:firefox', () => {
  */
 
 gulp.task('views:watch', () => {
-  gulp.watch('./src/browser/views/*.jade', ['views:dev']);
+  gulp.watch('./src/browser/views/*.pug', ['views:dev']);
 });
 
 gulp.task('copy:watch', () => {
