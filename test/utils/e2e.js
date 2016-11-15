@@ -23,7 +23,7 @@ export const switchMonitorTests = {
 
   'should switch back to Inspector Monitor': async function() {
     await this.driver.findElement(webdriver.By.xpath('//div[text()="Chart"]')).click();
-    await delay(500); // Wait till menu is fully opened
+    await delay(1000); // Wait till menu is fully opened
     await this.driver.findElement(webdriver.By.xpath('//div[text()="Inspector"]')).click();
     await delay(1500); // Wait till menu is closed
   }
