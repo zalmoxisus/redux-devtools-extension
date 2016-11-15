@@ -61,7 +61,7 @@ if (window.isElectron) {
       },
       // Electron ~ 1.4.6
       remove(items, callback) {
-        if (!Array.isArray(items)) {
+        if (Array.isArray(items)) {
           items.forEach(name => {
             localStorage.removeItem(name);
           });
