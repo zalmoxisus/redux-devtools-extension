@@ -19,7 +19,7 @@ export function getReport(reportId, tabId, instanceId) {
       window.store.dispatch({
         type: LIFTED_ACTION,
         message: 'IMPORT',
-        state: JSON.stringify({ payload, preloadedState }),
+        state: `{"payload":${payload}, "preloadedState":${preloadedState}}`,
         id: tabId,
         instanceId
       });

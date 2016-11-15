@@ -6,14 +6,16 @@ export default function importState(state, { deserializeState, deserializeAction
   let preloadedState;
   let nextLiftedState = parse(state);
   if (nextLiftedState.payload) {
-    if (nextLiftedState.preloadedState) preloadedState = parse(nextLiftedState.preloadedState);
-    nextLiftedState = parse(nextLiftedState.payload);
+    if (nextLiftedState.preloadedState) preloadedState = nextLiftedState.preloadedState;
+    nextLiftedState = nextLiftedState.payload;
   }
   if (deserializeState) {
-    nextLiftedState.computedStates = nextLiftedState.computedStates.map(computedState => ({
-      ...computedState,
-      state: deserializeState(computedState.state)
-    }));
+    if (typeof nextLiftedState.computedStates !== 'undefined') {
+      nextLiftedState.computedStates = nextLiftedState.computedStates.map(computedState => ({
+        ...computedState,
+        state: deserializeState(computedState.state)
+      }));
+    }
     if (typeof nextLiftedState.committedState !== 'undefined') {
       nextLiftedState.committedState = deserializeState(nextLiftedState.committedState);
     }
