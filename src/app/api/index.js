@@ -30,15 +30,14 @@ export function toContentScript(message, serializeState, serializeAction, should
     message.action = stringify(message.action, serializeAction);
     message.payload = stringify(message.payload, serializeState);
   } else if (message.type === 'STATE' || message.type === 'PARTIAL_STATE') {
-    if (serializeState === false) {
-      message.payload = jsan.stringify(message.payload, null, null, false);
-    } else {
-      const { actionsById, computedStates, committedState, ...rest } = message.payload;
-      message.payload = rest;
-      message.actionsById = stringify(actionsById, serializeAction);
-      message.computedStates = stringify(computedStates, serializeState);
-      message.committedState = typeof committedState !== 'undefined';
-    }
+    const { actionsById, computedStates, committedState, ...rest } = message.payload;
+    message.payload = rest;
+    message.actionsById = stringify(actionsById, serializeAction);
+    message.computedStates = stringify(computedStates, serializeState);
+    message.committedState = typeof committedState !== 'undefined';
+  } else if (message.type === 'EXPORT') {
+    message.payload = stringify(message.payload, serializeAction);
+    message.committedState = stringify(message.committedState, serializeState);
   }
   message.serialize = shouldSerialize;
   post(message);

@@ -95,7 +95,7 @@ class App extends Component {
           <DispatcherButton dispatcherIsOpen={dispatcherIsOpen} />
           <SliderButton isOpen={sliderIsOpen} />
           <ImportButton />
-          <ExportButton liftedState={liftedState} />
+          <ExportButton />
           {position && (position !== '#popup' || navigator.userAgent.indexOf('Firefox') !== -1) &&
             <PrintButton />
           }

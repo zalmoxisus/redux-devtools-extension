@@ -12,6 +12,7 @@ import {
   generateId, isInIframe
 } from '../../../app/api';
 
+const source = '@devtools-page';
 let stores = {};
 let reportId;
 
@@ -68,13 +69,26 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   const monitor = new Monitor(relayState);
   if (config.getMonitor) config.getMonitor(monitor);
 
+  function exportState() {
+    const liftedState = store.liftedStore.getState();
+    const actionsById = liftedState.actionsById;
+    const payload = [];
+    liftedState.stagedActionIds.slice(1).forEach(id => {
+      // if (isFiltered(actionsById[id].action, localFilter)) return;
+      payload.push(actionsById[id].action);
+    });
+    toContentScript({
+      type: 'EXPORT', payload, committedState: liftedState.committedState, source, instanceId
+    }, serializeState, serializeAction, shouldSerialize);
+  }
+
   function relay(type, state, action, nextActionId, shouldInit) {
     const message = {
       type,
       payload: filterState(
         state, type, localFilter, stateSanitizer, actionSanitizer, nextActionId, predicate
       ),
-      source: '@devtools-page',
+      source,
       instanceId
     };
 
@@ -120,7 +134,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
     toContentScript({
       type: 'PARTIAL_STATE',
       payload,
-      source: '@devtools-page',
+      source,
       instanceId,
       maxAge
     }, serializeState, serializeAction, shouldSerialize);
@@ -148,6 +162,9 @@ const devToolsExtension = function(reducer, preloadedState, config) {
         if (!nextLiftedState) return;
         store.liftedStore.dispatch({type: 'IMPORT_STATE', ...nextLiftedState});
         relayState();
+        return;
+      case 'EXPORT':
+        exportState();
         return;
       case 'UPDATE':
         relayState();

@@ -16,9 +16,11 @@ let isMonitored = false;
 
 const getId = sender => sender.tab ? sender.tab.id : sender.id;
 
-function toMonitors(action) {
+function toMonitors(action, tabId, verbose) {
   Object.keys(connections.monitor).forEach(id => {
-    connections.monitor[id].postMessage(action.type === 'ERROR' ? action : { type: UPDATE_STATE });
+    connections.monitor[id].postMessage(
+      verbose || action.type === 'ERROR' ? action : { type: UPDATE_STATE }
+    );
   });
   Object.keys(connections.panel).forEach(id => {
     connections.panel[id].postMessage(action);
@@ -108,7 +110,12 @@ function messaging(request, sender, sendResponse) {
 
   const action = { type: UPDATE_STATE, request, id: tabId };
   window.store.dispatch(action);
-  toMonitors(action, tabId);
+
+  if (request.type === 'EXPORT') {
+    toMonitors(action, tabId, true);
+  } else {
+    toMonitors(action, tabId);
+  }
 }
 
 function disconnect(type, id, listener) {
