@@ -2,8 +2,8 @@ export default class Monitor {
   constructor(update) {
     this.update = update;
   }
-  reducer = (state = {}, action) => {
-    if (!this.active) return state;
+  reducer = (state, action) => {
+    if (!this.active) return undefined;
     this.lastAction = action.type;
     if (action.type === 'LOCK_CHANGES') {
       window.__REDUX_DEVTOOLS_EXTENSION_LOCKED__ = action.status;
@@ -13,7 +13,7 @@ export default class Monitor {
       // Send new lifted state on hot-reloading
       setTimeout(this.update, 0);
     }
-    return state;
+    return undefined;
   };
   start = (skipUpdate) => {
     this.active = true;
