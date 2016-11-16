@@ -120,12 +120,17 @@ const devToolsExtension = function(reducer, preloadedState, config) {
     sendingStateTimeout = undefined;
     sendingActionTimeout = undefined;
 
+    if (sendingActionId === undefined) {
+      relayState(); return;
+    }
+
     const liftedState = store.liftedStore.getState();
     const payload = startingFrom(
       sendingActionId,
       liftedState,
       localFilter, stateSanitizer, actionSanitizer, predicate
     );
+    sendingActionId = undefined;
     if (typeof payload === 'undefined') return;
     if (typeof payload.skippedActionIds !== 'undefined') {
       relay('STATE', payload);
@@ -246,6 +251,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       if (sendingStateTimeout) {
         clearTimeout(sendingStateTimeout);
         sendingStateTimeout = undefined;
+        sendingActionTimeout = undefined;
       } else if (sendingActionTimeout) {
         clearTimeout(sendingActionTimeout);
         sendingActionTimeout = undefined;
