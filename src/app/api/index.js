@@ -37,7 +37,9 @@ export function toContentScript(message, serializeState, serializeAction, should
     message.committedState = typeof committedState !== 'undefined';
   } else if (message.type === 'EXPORT') {
     message.payload = stringify(message.payload, serializeAction);
-    message.committedState = stringify(message.committedState, serializeState);
+    if (typeof message.committedState !== 'undefined') {
+      message.committedState = stringify(message.committedState, serializeState);
+    }
   }
   message.serialize = shouldSerialize;
   post(message);

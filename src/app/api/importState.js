@@ -6,8 +6,8 @@ export default function importState(state, { deserializeState, deserializeAction
   let preloadedState;
   let nextLiftedState = parse(state);
   if (nextLiftedState.payload) {
-    if (nextLiftedState.preloadedState) preloadedState = nextLiftedState.preloadedState;
-    nextLiftedState = nextLiftedState.payload;
+    if (nextLiftedState.preloadedState) preloadedState = parse(nextLiftedState.preloadedState);
+    nextLiftedState = parse(nextLiftedState.payload);
   }
   if (deserializeState) {
     if (typeof nextLiftedState.computedStates !== 'undefined') {
