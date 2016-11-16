@@ -149,6 +149,17 @@ const devToolsExtension = function(reducer, preloadedState, config) {
     }
   }
 
+  function importPayloadFrom(state) {
+    try {
+      const nextLiftedState = importState(state, config);
+      if (!nextLiftedState) return;
+      store.liftedStore.dispatch({type: 'IMPORT_STATE', ...nextLiftedState});
+      relayState();
+    } catch (e) {
+      relay('ERROR', e.message);
+    }
+  }
+
   function onMessage(message) {
     switch (message.type) {
       case 'DISPATCH':
@@ -158,10 +169,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
         dispatchRemotely(message.payload);
         return;
       case 'IMPORT':
-        const nextLiftedState = importState(message.state, config);
-        if (!nextLiftedState) return;
-        store.liftedStore.dispatch({type: 'IMPORT_STATE', ...nextLiftedState});
-        relayState();
+        importPayloadFrom(message.state);
         return;
       case 'EXPORT':
         exportState();
