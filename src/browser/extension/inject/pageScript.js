@@ -1,4 +1,5 @@
 import { getActionsArray, evalAction } from 'remotedev-utils';
+import throttle from 'lodash/throttle';
 import createStore from '../../../app/stores/createStore';
 import configureStore, { getUrlParam } from '../../../app/stores/enhancerStore';
 import { isAllowed } from '../options/syncOptions';
@@ -32,18 +33,17 @@ const devToolsExtension = function(reducer, preloadedState, config) {
 
   let store;
   let errorOccurred = false;
-  let sendingActionTimeout;
-  let sendingStateTimeout;
-  let sendingActionId;
   let maxAge;
   let actionCreators;
   let shouldSerialize;
   let serializeState;
   let serializeAction;
+  let sendingActionId = 1;
   const instanceId = generateId(config.instanceId);
   const localFilter = getLocalFilter(config);
-  const latency = config.latency || 500;
-  let { statesFilter, actionsFilter, stateSanitizer, actionSanitizer, predicate } = config;
+  let {
+    statesFilter, actionsFilter, stateSanitizer, actionSanitizer, predicate, latency = 500
+  } = config;
 
   // Deprecate statesFilter and actionsFilter
   if (statesFilter) {
@@ -104,33 +104,40 @@ const devToolsExtension = function(reducer, preloadedState, config) {
     toContentScript(message, serializeState, serializeAction, shouldSerialize);
   }
 
-  function relayState(actions, shouldInit) {
-    relay('STATE', store.liftedStore.getState(), actions, undefined, shouldInit);
-  }
+  const relayState = throttle((liftedState, actions, shouldInit) => {
+    relayAction.cancel();
+    const state = liftedState || store.liftedStore.getState();
+    sendingActionId = state.nextActionId;
+    relay('STATE', state, actions, undefined, shouldInit);
+  }, latency);
 
-  function relayPendingAction() {
-    sendingActionTimeout = undefined;
+  const relayAction = throttle(() => {
     const liftedState = store.liftedStore.getState();
     const nextActionId = liftedState.nextActionId;
-    const state = liftedState.computedStates[liftedState.computedStates.length - 1].state;
-    relay('ACTION', state, liftedState.actionsById[nextActionId - 1], nextActionId);
-  }
+    const currentActionId = nextActionId - 1;
+    const liftedAction = liftedState.actionsById[currentActionId];
 
-  function relayPendingActions() {
-    sendingStateTimeout = undefined;
-    sendingActionTimeout = undefined;
-
-    if (sendingActionId === undefined) {
-      relayState(); return;
+    // Send a single action
+    if (sendingActionId === currentActionId) {
+      sendingActionId = nextActionId;
+      const action = liftedAction.action;
+      const computedStates = liftedState.computedStates;
+      if (
+        isFiltered(action, localFilter) ||
+        predicate && !predicate(computedStates[computedStates.length - 1].state, action)
+      ) return;
+      const state = liftedState.computedStates[liftedState.computedStates.length - 1].state;
+      relay('ACTION', state, liftedState.actionsById[nextActionId - 1], nextActionId);
+      return;
     }
 
-    const liftedState = store.liftedStore.getState();
+    // Send multiple actions
     const payload = startingFrom(
       sendingActionId,
       liftedState,
       localFilter, stateSanitizer, actionSanitizer, predicate
     );
-    sendingActionId = undefined;
+    sendingActionId = nextActionId;
     if (typeof payload === 'undefined') return;
     if (typeof payload.skippedActionIds !== 'undefined') {
       relay('STATE', payload);
@@ -143,7 +150,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       instanceId,
       maxAge
     }, serializeState, serializeAction, shouldSerialize);
-  }
+  }, latency);
 
   function dispatchRemotely(action) {
     try {
@@ -187,7 +194,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
         if (!actionCreators && config.actionCreators) {
           actionCreators = getActionsArray(config.actionCreators);
         }
-        relayState(JSON.stringify(actionCreators), true);
+        relayState(undefined, JSON.stringify(actionCreators), true);
 
         if (reportId) {
           relay('GET_REPORT', reportId);
@@ -196,10 +203,8 @@ const devToolsExtension = function(reducer, preloadedState, config) {
         return;
       case 'STOP':
         monitor.stop();
-        clearTimeout(sendingActionTimeout);
-        clearTimeout(sendingStateTimeout);
-        sendingStateTimeout = undefined;
-        sendingActionTimeout = undefined;
+        relayAction.cancel();
+        relayState.cancel();
         if (!message.failed) relay('STOP');
     }
   }
@@ -212,7 +217,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       errorOccurred = true;
       const state = store.liftedStore.getState();
       if (state.computedStates[state.currentStateIndex].error) {
-        relay('STATE', state);
+        relayState(state);
       }
       return true;
     });
@@ -227,41 +232,17 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   }
 
   function handleChange() {
-    if (!monitor.active || sendingStateTimeout) return;
+    if (!monitor.active) return;
     if (!errorOccurred && !monitor.isMonitorAction()) {
-      const liftedState = store.liftedStore.getState();
-      const nextActionId = liftedState.nextActionId;
-      const currentActionId = nextActionId - 1;
-      const liftedAction = liftedState.actionsById[currentActionId];
-      const action = liftedAction.action;
-      if (isFiltered(action, localFilter)) return;
-      if (
-        predicate &&
-        !predicate(liftedState.computedStates[liftedState.computedStates.length - 1].state, action)
-      ) return;
-      if (sendingActionTimeout) {
-        clearTimeout(sendingActionTimeout);
-        sendingStateTimeout = setTimeout(relayPendingActions, latency);
-        return;
-      }
-      sendingActionTimeout = setTimeout(relayPendingAction, latency);
-      sendingActionId = currentActionId;
-    } else {
-      if (monitor.isPaused() || monitor.isLocked() || monitor.isTimeTraveling()) return;
-      if (sendingStateTimeout) {
-        clearTimeout(sendingStateTimeout);
-        sendingStateTimeout = undefined;
-        sendingActionTimeout = undefined;
-      } else if (sendingActionTimeout) {
-        clearTimeout(sendingActionTimeout);
-        sendingActionTimeout = undefined;
-      }
-      const liftedState = store.liftedStore.getState();
-      if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) {
-        errorOccurred = false;
-      }
-      relay('STATE', liftedState);
+      relayAction();
+      return;
     }
+    if (monitor.isPaused() || monitor.isLocked() || monitor.isTimeTraveling()) return;
+    const liftedState = store.liftedStore.getState();
+    if (errorOccurred && !liftedState.computedStates[liftedState.currentStateIndex].error) {
+      errorOccurred = false;
+    }
+    relayState(liftedState);
   }
 
   const enhance = () => (next) => {
