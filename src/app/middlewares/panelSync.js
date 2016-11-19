@@ -1,4 +1,4 @@
-import { LIFTED_ACTION, SELECT_INSTANCE } from 'remotedev-app/lib/constants/actionTypes';
+import { LIFTED_ACTION, UPDATE_STATE, SELECT_INSTANCE } from 'remotedev-app/lib/constants/actionTypes';
 import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
 
 function panelDispatcher(bgConnection) {
@@ -7,7 +7,7 @@ function panelDispatcher(bgConnection) {
 
   return store => next => action => {
     const result = next(action);
-    if (!autoselected) {
+    if (!autoselected && action.type === UPDATE_STATE) {
       autoselected = true;
       const connections = store.getState()
         .instances.connections[tabId];
