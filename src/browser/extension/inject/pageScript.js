@@ -172,10 +172,22 @@ const devToolsExtension = function(reducer, preloadedState, config) {
     }
   }
 
+  function dispatchMonitorAction(action) {
+    const type = action.type;
+    if (type === 'JUMP_TO_STATE') {
+      const liftedState = store.liftedStore.getState();
+      const index = liftedState.stagedActionIds.indexOf(action.actionId);
+      if (index === -1) return;
+      store.liftedStore.dispatch({ type, index });
+      return;
+    }
+    store.liftedStore.dispatch(action);
+  }
+
   function onMessage(message) {
     switch (message.type) {
       case 'DISPATCH':
-        store.liftedStore.dispatch(message.payload);
+        dispatchMonitorAction(message.payload);
         return;
       case 'ACTION':
         dispatchRemotely(message.payload);
