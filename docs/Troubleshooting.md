@@ -15,3 +15,17 @@ If you develop on your local filesystem, make sure to allow Redux DevTools acces
 ### It shows only the `@@INIT` action or moving back and forth doesn't update the state
 
 Most likely you mutate the state. Check it by [adding `redux-immutable-state-invariant` middleware](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/examples/counter/store/configureStore.js#L3).
+
+### It doesn't work with other store enhancers 
+
+Usually the extension's store enhancer should be last in the compose. When you're using `window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__` or `composeWithDevTools` helper you don't have to worry about the enhancers order. However some enhancers ([like `redux-batched-subscribe`](https://github.com/zalmoxisus/redux-devtools-extension/issues/261)) also have this requirement to be the last in the compose. In this case you can use it like so:
+
+```js
+const store = createStore(reducer, preloadedState, compose(
+  // applyMiddleware(thunk),
+  window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : noop => noop,
+  batchedSubscribe(/* ... */)
+));
+```
+
+Where `batchedSubscribe` is `redux-batched-subscribe` store enhancer.
