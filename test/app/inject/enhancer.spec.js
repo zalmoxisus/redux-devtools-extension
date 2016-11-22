@@ -101,7 +101,7 @@ describe('Redux enhancer', () => {
     let message = await listenMessage(() => {
       window.postMessage({
         type: 'DISPATCH',
-        payload: {type: 'JUMP_TO_STATE', index: 2},
+        payload: {type: 'JUMP_TO_STATE', index: 2, actionId: 2},
         source: '@devtools-extension'
       }, '*');
     });
@@ -111,7 +111,7 @@ describe('Redux enhancer', () => {
     message = await listenMessage(() => {
       window.postMessage({
         type: 'DISPATCH',
-        payload: {type: 'JUMP_TO_STATE', index: 3},
+        payload: {type: 'JUMP_TO_STATE', index: 3, actionId: 3},
         source: '@devtools-extension'
       }, '*');
     });

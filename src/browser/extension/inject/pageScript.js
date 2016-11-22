@@ -35,7 +35,6 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   let errorOccurred = false;
   let maxAge;
   let actionCreators;
-  let shouldSerialize;
   let serializeState;
   let serializeAction;
   let sendingActionId = 1;
@@ -58,12 +57,10 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   if (typeof config.serializeState !== 'undefined') {
     serializeState = config.serializeState;
     if (typeof serializeState === 'function') serializeState = { replacer: serializeState };
-    else shouldSerialize = true;
   }
   if (typeof config.serializeAction !== 'undefined') {
     serializeAction = config.serializeAction;
     if (typeof serializeAction === 'function') serializeAction = { replacer: serializeAction };
-    else shouldSerialize = true;
   }
 
   const monitor = new Monitor(relayState);
@@ -79,7 +76,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
     });
     toContentScript({
       type: 'EXPORT', payload, committedState: liftedState.committedState, source, instanceId
-    }, serializeState, serializeAction, shouldSerialize);
+    }, true, true);
   }
 
   function relay(type, state, action, nextActionId, shouldInit) {
@@ -101,7 +98,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       message.name = config.name || document.title;
     }
 
-    toContentScript(message, serializeState, serializeAction, shouldSerialize);
+    toContentScript(message, serializeState, serializeAction);
   }
 
   const relayState = throttle((liftedState, actions, shouldInit) => {
@@ -149,7 +146,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       source,
       instanceId,
       maxAge
-    }, serializeState, serializeAction, shouldSerialize);
+    }, serializeState, serializeAction);
   }, latency);
 
   function dispatchRemotely(action) {

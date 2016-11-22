@@ -3,14 +3,24 @@ import jsan from 'jsan';
 const listeners = {};
 export const source = '@devtools-page';
 
+function tryCatchStringify(obj) {
+  try {
+    return JSON.stringify(obj);
+  } catch (err) {
+    /* eslint-disable no-console */
+    if (process.env.NODE_ENV !== 'production') console.log('Failed to stringify', err);
+    /* eslint-enable no-console */
+    return jsan.stringify(obj, null, null, { circular: '[CIRCULAR]' });
+  }
+}
+
 function stringify(obj, serialize) {
   if (typeof serialize === 'undefined') {
-    return jsan.stringify(obj);
+    return tryCatchStringify(obj);
   }
   if (serialize === true) {
     return jsan.stringify(obj, function(key, value) {
       if (value && typeof value.toJS === 'function') return value.toJS();
-      if (typeof value === 'symbol') return String(value);
       return value;
     }, null, true);
   }
@@ -25,7 +35,7 @@ function post(message) {
   window.postMessage(message, '*');
 }
 
-export function toContentScript(message, serializeState, serializeAction, shouldSerialize) {
+export function toContentScript(message, serializeState, serializeAction) {
   if (message.type === 'ACTION') {
     message.action = stringify(message.action, serializeAction);
     message.payload = stringify(message.payload, serializeState);
@@ -41,7 +51,6 @@ export function toContentScript(message, serializeState, serializeAction, should
       message.committedState = stringify(message.committedState, serializeState);
     }
   }
-  message.serialize = shouldSerialize;
   post(message);
 }
 

@@ -70,7 +70,6 @@ describe('API', () => {
     expect(message).toEqual({
       type: 'STATE',
       payload: { counter: 1 },
-      serialize: undefined,
       actionsById: undefined,
       computedStates: undefined,
       committedState: false,
