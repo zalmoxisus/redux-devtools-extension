@@ -27,11 +27,11 @@ function toMonitors(action, tabId, verbose) {
   });
 }
 
-function toContentScript({ message, action, id, instanceId }) {
+function toContentScript({ message, action, id, instanceId, state }) {
   connections.tab[id].postMessage({
     type: message,
     action,
-    state: nonReduxDispatch(window.store, message, instanceId, action),
+    state: nonReduxDispatch(window.store, message, instanceId, action, state),
     id: instanceId
   });
 }
