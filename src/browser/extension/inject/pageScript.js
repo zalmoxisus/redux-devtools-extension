@@ -163,7 +163,6 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       const nextLiftedState = importState(state, config);
       if (!nextLiftedState) return;
       store.liftedStore.dispatch({type: 'IMPORT_STATE', ...nextLiftedState});
-      relayState();
     } catch (e) {
       relay('ERROR', e.message);
     }
