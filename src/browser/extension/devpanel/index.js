@@ -1,3 +1,4 @@
+import 'remotedev-monitor-components/lib/presets';
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { Provider } from 'react-redux';
