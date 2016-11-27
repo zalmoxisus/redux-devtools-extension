@@ -64,7 +64,15 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   }
 
   const monitor = new Monitor(relayState);
-  if (config.getMonitor) config.getMonitor(monitor);
+  if (config.getMonitor) {
+    /* eslint-disable no-console */
+    console.warn('Redux DevTools extension\'s `getMonitor` parameter is deprecated and will be not ' +
+      'supported in the next version, please remove it and just use ' +
+      '`__REDUX_DEVTOOLS_EXTENSION_COMPOSE__` instead: ' +
+      'https://github.com/zalmoxisus/redux-devtools-extension#12-advanced-store-setup');
+    /* eslint-enable no-console */
+    config.getMonitor(monitor);
+  }
 
   function exportState() {
     const liftedState = store.liftedStore.getState();
