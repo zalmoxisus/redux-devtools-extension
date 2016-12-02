@@ -1,4 +1,5 @@
 import jsan from 'jsan';
+import importState from './importState';
 
 const listeners = {};
 export const source = '@devtools-page';
@@ -78,6 +79,14 @@ function handleMessages(event) {
   if (!message || message.source !== '@devtools-extension') return;
   Object.keys(listeners).forEach(id => {
     if (message.id && id !== message.id) return;
+    if (message.type === 'IMPORT') {
+      message.type = 'DISPATCH';
+      message.payload = {
+        type: 'IMPORT_STATE',
+        ...importState(message.state, {})
+      };
+      message.state = undefined;
+    }
     if (typeof listeners[id] === 'function') listeners[id](message);
     else listeners[id].forEach(fn => { fn(message); });
   });

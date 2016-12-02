@@ -139,7 +139,8 @@ describe('Redux enhancer', () => {
         source: '@devtools-extension'
       }, '*');
     });
-    expect(message.type).toBe('IMPORT');
+    expect(message.type).toBe('DISPATCH');
+    expect(message.payload.type).toBe('IMPORT_STATE');
     message = await listenMessage();
     expect(message.type).toBe('STATE');
     expect(window.store.getState()).toBe(2);

@@ -78,7 +78,7 @@
     "redux": "^3.5.2",
     "redux-devtools": "^3.3.1",
     "redux-devtools-instrument": "^1.3.3",
-    "remotedev-app": "^0.10.0",
+    "remotedev-app": "^0.10.1",
     "remotedev-monitor-components": "^0.0.4",
     "remotedev-slider": "^1.1.1",
     "remotedev-utils": "0.0.1"
