@@ -66,5 +66,5 @@
     "js/redux-devtools-extension.js"
   ],
   "permissions": ["notifications", "contextMenus", "tabs", "storage", "<all_urls>"],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; style-src * 'unsafe-inline'; img-src 'self' data:;"
+  "content_security_policy": "script-src 'self'; object-src 'self'; style-src * 'unsafe-inline'; img-src 'self' data:;"
 }
