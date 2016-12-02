@@ -87,7 +87,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
     }, true, true);
   }
 
-  function relay(type, state, action, nextActionId, shouldInit) {
+  function relay(type, state, action, nextActionId, libConfig) {
     const message = {
       type,
       payload: filterState(
@@ -101,19 +101,18 @@ const devToolsExtension = function(reducer, preloadedState, config) {
       message.action = !actionSanitizer ? action : actionSanitizer(action.action, nextActionId - 1);
       message.maxAge = maxAge;
       message.nextActionId = nextActionId;
-    } else if (shouldInit) {
-      message.action = action;
-      message.name = config.name || document.title;
+    } else if (libConfig) {
+      message.libConfig = libConfig;
     }
 
     toContentScript(message, serializeState, serializeAction);
   }
 
-  const relayState = throttle((liftedState, actions, shouldInit) => {
+  const relayState = throttle((liftedState, libConfig) => {
     relayAction.cancel();
     const state = liftedState || store.liftedStore.getState();
     sendingActionId = state.nextActionId;
-    relay('STATE', state, actions, undefined, shouldInit);
+    relay('STATE', state, undefined, undefined, libConfig);
   }, latency);
 
   const relayAction = throttle(() => {
@@ -210,7 +209,11 @@ const devToolsExtension = function(reducer, preloadedState, config) {
         if (!actionCreators && config.actionCreators) {
           actionCreators = getActionsArray(config.actionCreators);
         }
-        relayState(undefined, JSON.stringify(actionCreators), true);
+        relayState(undefined, {
+          name: config.name || document.title,
+          actionCreators: JSON.stringify(actionCreators),
+          type: 'redux'
+        });
 
         if (reportId) {
           relay('GET_REPORT', reportId);
