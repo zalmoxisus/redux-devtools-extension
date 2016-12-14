@@ -31,11 +31,9 @@ if (
     };
   } else {
     chrome.storage.sync = chrome.storage.local;
-    if (!chrome.runtime.onInstalled) {
-      chrome.runtime.onInstalled = {
-        addListener: cb => cb()
-      };
-    }
+    chrome.runtime.onInstalled = {
+      addListener: cb => cb()
+    };
   }
 }
 
