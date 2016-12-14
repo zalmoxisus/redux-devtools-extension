@@ -1,5 +1,5 @@
 {
-  "version": "2.8.0",
+  "version": "2.11.1",
   "name": "Redux DevTools",
   "manifest_version": 2,
   "description": "DevTools for Redux with actions history, undo and replay.",
@@ -39,6 +39,11 @@
         "default": "Alt+Shift+Up"
       },
       "description": "Remote DevTools"
+    },
+    "_execute_page_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E"
+      }
     }
   },
   "icons": {
