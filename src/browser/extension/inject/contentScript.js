@@ -70,7 +70,10 @@ function handleMessages(event) {
   const message = event.data;
   if (message.source !== '@devtools-page') return;
   if (message.type === 'DISCONNECT') {
-    if (bg) bg.disconnect();
+    if (bg) {
+      bg.disconnect();
+      connected = false;
+    }
     return;
   }
 
