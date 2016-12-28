@@ -59,8 +59,11 @@ function tryCatch(fn, args) {
 
 function send(message) {
   if (!connected) connect();
-  if (message.type === 'INIT_INSTANCE') bg.postMessage({ name: 'INIT_INSTANCE' });
-  else bg.postMessage({ name: 'RELAY', message });
+  if (message.type === 'INIT_INSTANCE') {
+    bg.postMessage({ name: 'INIT_INSTANCE', instanceId: message.instanceId });
+  } else {
+    bg.postMessage({ name: 'RELAY', message });
+  }
 }
 
 // Resend messages from the page to the background script

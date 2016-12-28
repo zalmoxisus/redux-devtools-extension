@@ -1,3 +1,4 @@
+import { stringify } from 'jsan';
 import { UPDATE_STATE, REMOVE_INSTANCE, LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
 import { nonReduxDispatch } from 'remotedev-app/lib/utils/monitorActions';
 import syncOptions from '../../browser/extension/options/syncOptions';
@@ -60,6 +61,17 @@ function getReducerError() {
   const computedState = payload.computedStates[payload.currentStateIndex];
   if (!computedState) return false;
   return computedState.error;
+}
+
+function togglePersist() {
+  const state = window.store.getState();
+  if (state.persistStates) {
+    Object.keys(state.instances.connections).forEach(id => {
+      if (connections.tab[id]) return;
+      window.store.dispatch({ type: REMOVE_INSTANCE, id });
+      toMonitors({ type: 'NA', id });
+    });
+  }
 }
 
 // Receive messages from content scripts
@@ -128,8 +140,10 @@ function disconnect(type, id, listener) {
     p.onDisconnect.removeListener(disconnectListener);
     delete connections[type][id];
     if (type === 'tab') {
-      window.store.dispatch({ type: REMOVE_INSTANCE, id });
-      toMonitors({ type: 'NA', id });
+      if (!window.store.getState().persistStates) {
+        window.store.dispatch({ type: REMOVE_INSTANCE, id });
+        toMonitors({ type: 'NA', id });
+      }
     } else {
       monitors--;
       if (!monitors) monitorInstances(false);
@@ -150,6 +164,19 @@ function onConnect(port) {
       if (msg.name === 'INIT_INSTANCE') {
         if (typeof id === 'number') chrome.pageAction.show(id);
         if (isMonitored) port.postMessage({ type: 'START' });
+
+        const state = window.store.getState();
+        if (state.persistStates) {
+          const instanceId = `${id}/${msg.instanceId}`;
+          const persistedState = state.instances.states[instanceId];
+          if (!persistedState) return;
+          toContentScript({
+            message: 'IMPORT',
+            id, instanceId,
+            state: stringify(persistedState)
+          });
+        }
+
         return;
       }
       if (msg.name === 'RELAY') {
@@ -192,6 +219,7 @@ window.syncOptions = syncOptions(toAllTabs); // Expose to the options page
 export default function api() {
   return next => action => {
     if (action.type === LIFTED_ACTION) toContentScript(action);
+    else if (action.type === 'TOGGLE_PERSIST') togglePersist();
     return next(action);
   };
 }
