@@ -32,7 +32,7 @@ function toContentScript({ message, action, id, instanceId, state }) {
     type: message,
     action,
     state: nonReduxDispatch(window.store, message, instanceId, action, state),
-    id: instanceId
+    id: instanceId.replace(/^[^\/]+\//, '')
   });
 }
 
@@ -109,6 +109,9 @@ function messaging(request, sender, sendResponse) {
   }
 
   const action = { type: UPDATE_STATE, request, id: tabId };
+  if (request.instanceId) {
+    action.request.instanceId = `${tabId}/${request.instanceId}`;
+  }
   window.store.dispatch(action);
 
   if (request.type === 'EXPORT') {

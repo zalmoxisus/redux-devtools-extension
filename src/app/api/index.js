@@ -1,5 +1,6 @@
 import jsan from 'jsan';
 import importState from './importState';
+import generateId from './generateInstanceId';
 
 const listeners = {};
 export const source = '@devtools-page';
@@ -26,10 +27,6 @@ function stringify(obj, serialize) {
     }, null, true);
   }
   return jsan.stringify(obj, serialize.replacer, null, serialize.options);
-}
-
-export function generateId(instanceId) {
-  return instanceId || Math.random().toString(36).substr(2);
 }
 
 function post(message) {
