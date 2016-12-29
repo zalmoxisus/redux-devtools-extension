@@ -1,6 +1,6 @@
 ## Communicate with the extension directly
 
-> Note that this API is still excremental and is subject to future changes. 
+> Note that this API is still experimental and is subject to future changes. 
 
 Use the following methods of `window.__REDUX_DEVTOOLS_EXTENSION__`:
 
