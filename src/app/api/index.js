@@ -15,15 +15,17 @@ function tryCatchStringify(obj) {
   }
 }
 
-function stringify(obj, serialize) {
+function defaultReplacer(key, value) {
+  if (value && typeof value.toJS === 'function') return value.toJS();
+  return value;
+}
+
+function stringify(obj, serialize, replacer) {
   if (typeof serialize === 'undefined') {
     return tryCatchStringify(obj);
   }
   if (serialize === true) {
-    return jsan.stringify(obj, function(key, value) {
-      if (value && typeof value.toJS === 'function') return value.toJS();
-      return value;
-    }, null, true);
+    return jsan.stringify(obj, replacer && replacer.replacer || defaultReplacer, null, true);
   }
   return jsan.stringify(obj, serialize.replacer, null, serialize.options);
 }
@@ -47,9 +49,9 @@ export function toContentScript(message, serializeState, serializeAction) {
     message.computedStates = stringify(computedStates, serializeState);
     message.committedState = typeof committedState !== 'undefined';
   } else if (message.type === 'EXPORT') {
-    message.payload = stringify(message.payload, serializeAction);
+    message.payload = stringify(message.payload, true, serializeAction);
     if (typeof message.committedState !== 'undefined') {
-      message.committedState = stringify(message.committedState, serializeState);
+      message.committedState = stringify(message.committedState, true, serializeState);
     }
   }
   post(message);

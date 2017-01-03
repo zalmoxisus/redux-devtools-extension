@@ -84,7 +84,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
     });
     toContentScript({
       type: 'EXPORT', payload, committedState: liftedState.committedState, source, instanceId
-    }, true, true);
+    }, serializeState, serializeAction);
   }
 
   function relay(type, state, action, nextActionId, libConfig) {
