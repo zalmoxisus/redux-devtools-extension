@@ -8,9 +8,9 @@ import { getLocalFilter, isFiltered, filterState, startingFrom } from '../../../
 import notifyErrors from '../../../app/api/notifyErrors';
 import importState from '../../../app/api/importState';
 import openWindow from '../../../app/api/openWindow';
+import generateId from '../../../app/api/generateInstanceId';
 import {
-  updateStore, toContentScript, sendMessage, setListener, connect, disconnect,
-  generateId, isInIframe
+  updateStore, toContentScript, sendMessage, setListener, connect, disconnect, isInIframe
 } from '../../../app/api';
 
 const source = '@devtools-page';

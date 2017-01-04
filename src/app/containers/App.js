@@ -24,6 +24,7 @@ import LeftIcon from 'react-icons/lib/md/border-left';
 import RightIcon from 'react-icons/lib/md/border-right';
 import BottomIcon from 'react-icons/lib/md/border-bottom';
 import RemoteIcon from 'react-icons/lib/go/radio-tower';
+import PersistIcon from 'react-icons/lib/go/pin';
 
 @enhance
 class App extends Component {
@@ -33,7 +34,7 @@ class App extends Component {
 
   render() {
     const {
-      monitor, position,
+      monitor, position, togglePersist,
       dispatcherIsOpen, sliderIsOpen, options, liftedState
     } = this.props;
     const isRedux = options.lib === 'redux';
@@ -91,6 +92,10 @@ class App extends Component {
           {isRedux &&
             <LockButton locked={liftedState.isLocked} />
           }
+          <Button
+            Icon={PersistIcon}
+            onClick={togglePersist}
+          >Persist</Button>
           <DispatcherButton dispatcherIsOpen={dispatcherIsOpen} />
           <SliderButton isOpen={sliderIsOpen} />
           <ImportButton />
@@ -120,6 +125,7 @@ App.propTypes = {
   bgStore: PropTypes.object,
   liftedDispatch: PropTypes.func.isRequired,
   getReport: PropTypes.func.isRequired,
+  togglePersist: PropTypes.func.isRequired,
   selected: PropTypes.string,
   liftedState: PropTypes.object.isRequired,
   monitorState: PropTypes.object,
@@ -150,7 +156,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     liftedDispatch: bindActionCreators(liftedDispatch, dispatch),
-    getReport: bindActionCreators(getReport, dispatch)
+    getReport: bindActionCreators(getReport, dispatch),
+    togglePersist: () => { dispatch({ type: 'TOGGLE_PERSIST' }); }
   };
 }
 
