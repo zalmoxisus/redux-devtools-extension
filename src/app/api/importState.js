@@ -19,6 +19,9 @@ export default function importState(state, { deserializeState, deserializeAction
     if (typeof nextLiftedState.committedState !== 'undefined') {
       nextLiftedState.committedState = deserializeState(nextLiftedState.committedState);
     }
+    if (typeof preloadedState !== 'undefined') {
+      preloadedState = deserializeState(preloadedState);
+    }
   }
   if (deserializeAction) {
     nextLiftedState.actionsById = mapValues(nextLiftedState.actionsById, liftedAction => ({
