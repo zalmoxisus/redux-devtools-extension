@@ -78,14 +78,6 @@ function handleMessages(event) {
   if (!message || message.source !== '@devtools-extension') return;
   Object.keys(listeners).forEach(id => {
     if (message.id && id !== message.id) return;
-    if (message.type === 'IMPORT') {
-      message.type = 'DISPATCH';
-      message.payload = {
-        type: 'IMPORT_STATE',
-        ...importState(message.state, {})
-      };
-      message.state = undefined;
-    }
     if (typeof listeners[id] === 'function') listeners[id](message);
     else listeners[id].forEach(fn => { fn(message); });
   });
@@ -95,6 +87,20 @@ export function setListener(onMessage, instanceId) {
   listeners[instanceId] = onMessage;
   window.addEventListener('message', handleMessages, false);
 }
+
+const liftListener = (listener, config) => message => {
+  let data = {};
+  if (message.type === 'IMPORT') {
+    data.type = 'DISPATCH';
+    data.payload = {
+      type: 'IMPORT_STATE',
+      ...importState(message.state, config)
+    };
+  } else {
+    data = message;
+  }
+  listener(data);
+};
 
 export function disconnect() {
   window.removeEventListener('message', handleMessages);
@@ -108,10 +114,11 @@ export function connect(config = {}) {
   const subscribe = (listener) => {
     if (!listener) return undefined;
     if (!listeners[id]) listeners[id] = [];
-    listeners[id].push(listener);
+    const liftedListener = liftListener(listener, config);
+    listeners[id].push(liftedListener);
 
     return function unsubscribe() {
-      const index = listeners[id].indexOf(listener);
+      const index = listeners[id].indexOf(liftedListener);
       listeners[id].splice(index, 1);
     };
   };
