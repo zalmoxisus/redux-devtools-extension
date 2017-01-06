@@ -10,7 +10,8 @@ import importState from '../../../app/api/importState';
 import openWindow from '../../../app/api/openWindow';
 import generateId from '../../../app/api/generateInstanceId';
 import {
-  updateStore, toContentScript, sendMessage, setListener, connect, disconnect, isInIframe
+  updateStore, toContentScript, sendMessage, setListener, connect, disconnect,
+  isInIframe, getSeralizeParameter
 } from '../../../app/api';
 
 const source = '@devtools-page';
@@ -35,11 +36,11 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   let errorOccurred = false;
   let maxAge;
   let actionCreators;
-  let serializeState;
-  let serializeAction;
   let sendingActionId = 1;
   const instanceId = generateId(config.instanceId);
   const localFilter = getLocalFilter(config);
+  const serializeState = getSeralizeParameter(config.serializeState);
+  const serializeAction = getSeralizeParameter(config.serializeAction);
   let {
     statesFilter, actionsFilter, stateSanitizer, actionSanitizer, predicate, latency = 500
   } = config;
@@ -52,15 +53,6 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   if (actionsFilter) {
     deprecateParam('actionsFilter', 'actionSanitizer');
     actionSanitizer = actionsFilter; // eslint-disable-line no-param-reassign
-  }
-
-  if (typeof config.serializeState !== 'undefined') {
-    serializeState = config.serializeState;
-    if (typeof serializeState === 'function') serializeState = { replacer: serializeState };
-  }
-  if (typeof config.serializeAction !== 'undefined') {
-    serializeAction = config.serializeAction;
-    if (typeof serializeAction === 'function') serializeAction = { replacer: serializeAction };
   }
 
   const monitor = new Monitor(relayState);

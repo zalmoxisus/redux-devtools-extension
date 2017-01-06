@@ -16,19 +16,18 @@ function tryCatchStringify(obj) {
   }
 }
 
-function defaultReplacer(key, value) {
-  if (value && typeof value.toJS === 'function') return value.toJS();
-  return value;
-}
-
-function stringify(obj, serialize, replacer) {
+function stringify(obj, serialize) {
   if (typeof serialize === 'undefined') {
     return tryCatchStringify(obj);
   }
-  if (serialize === true) {
-    return jsan.stringify(obj, replacer && replacer.replacer || defaultReplacer, null, true);
-  }
   return jsan.stringify(obj, serialize.replacer, null, serialize.options);
+}
+
+export function getSeralizeParameter(value) {
+  if (typeof value === 'undefined') return undefined;
+  if (typeof serializeState === 'boolean') return { options: value };
+  if (typeof serializeState === 'function') return { replacer: value };
+  return value;
 }
 
 function post(message) {
