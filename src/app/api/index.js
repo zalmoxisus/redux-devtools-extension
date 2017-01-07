@@ -23,7 +23,13 @@ function stringify(obj, serialize) {
   return jsan.stringify(obj, serialize.replacer, null, serialize.options);
 }
 
-export function getSeralizeParameter(value) {
+export function getSeralizeParameter(config, param) {
+  if (config.serialize) {
+    if (!config.serialize.replacer) return { options: config.serialize.options };
+    return { replacer: config.serialize.replacer, options: config.serialize.options || true };
+  }
+
+  const value = config[param];
   if (typeof value === 'undefined') return undefined;
   if (typeof serializeState === 'boolean') return { options: value };
   if (typeof serializeState === 'function') return { replacer: value };
@@ -45,9 +51,9 @@ export function toContentScript(message, serializeState, serializeAction) {
     message.computedStates = stringify(computedStates, serializeState);
     message.committedState = typeof committedState !== 'undefined';
   } else if (message.type === 'EXPORT') {
-    message.payload = stringify(message.payload, true, serializeAction);
+    message.payload = stringify(message.payload, serializeAction);
     if (typeof message.committedState !== 'undefined') {
-      message.committedState = stringify(message.committedState, true, serializeState);
+      message.committedState = stringify(message.committedState, serializeState);
     }
   }
   post(message);

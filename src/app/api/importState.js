@@ -1,8 +1,9 @@
 import mapValues from 'lodash/mapValues';
-import { parse } from 'jsan';
+import jsan from 'jsan';
 
-export default function importState(state, { deserializeState, deserializeAction }) {
+export default function importState(state, { deserializeState, deserializeAction, serialize }) {
   if (!state) return undefined;
+  let parse = serialize ? v => jsan.parse(v, serialize.reviver) : jsan.parse;
   let preloadedState;
   let nextLiftedState = parse(state);
   if (nextLiftedState.payload) {

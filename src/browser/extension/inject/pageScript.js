@@ -39,8 +39,8 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   let sendingActionId = 1;
   const instanceId = generateId(config.instanceId);
   const localFilter = getLocalFilter(config);
-  const serializeState = getSeralizeParameter(config.serializeState);
-  const serializeAction = getSeralizeParameter(config.serializeAction);
+  const serializeState = getSeralizeParameter(config, 'serializeState');
+  const serializeAction = getSeralizeParameter(config, 'serializeAction');
   let {
     statesFilter, actionsFilter, stateSanitizer, actionSanitizer, predicate, latency = 500
   } = config;
@@ -204,6 +204,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
         relayState(undefined, {
           name: config.name || document.title,
           actionCreators: JSON.stringify(actionCreators),
+          serialize: !!config.serialize,
           type: 'redux'
         });
 
