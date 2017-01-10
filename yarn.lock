@@ -1142,9 +1142,9 @@ chrome-storage-local@^0.1.6:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/chrome-storage-local/-/chrome-storage-local-0.1.7.tgz#bb2a3689d663b3a1f4d394592f83914fddc4adba"
 
-chromedriver@2.25.1:
-  version "2.25.1"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-2.25.1.tgz#04de1a9242ffe3182786410dbefaae147435e67e"
+chromedriver@2.26:
+  version "2.26.2"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-2.26.2.tgz#ba069e808e799e3aa79cbf47206a4f0a53699df7"
   dependencies:
     adm-zip "^0.4.7"
     kew "^0.5.0"
