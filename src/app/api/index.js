@@ -39,6 +39,8 @@ export function getSeralizeParameter(config, param) {
 
   const value = config[param];
   if (typeof value === 'undefined') return undefined;
+  console.warn(`\`${param}\` parameter for Redux DevTools Extension is deprecated. Use \`serialize\` parameter instead: https://github.com/zalmoxisus/redux-devtools-extension/releases/tag/v2.12.1`); // eslint-disable-line
+
   if (typeof serializeState === 'boolean') return { options: value };
   if (typeof serializeState === 'function') return { replacer: value };
   return value;

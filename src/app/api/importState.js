@@ -2,6 +2,10 @@ import mapValues from 'lodash/mapValues';
 import jsan from 'jsan';
 import seralizeImmutable from 'remotedev-serialize/immutable/serialize';
 
+function deprecate(param) {
+  console.warn(`\`${param}\` parameter for Redux DevTools Extension is deprecated. Use \`serialize\` parameter instead: https://github.com/zalmoxisus/redux-devtools-extension/releases/tag/v2.12.1`); // eslint-disable-line
+}
+
 export default function importState(state, { deserializeState, deserializeAction, serialize }) {
   if (!state) return undefined;
   let parse = jsan.parse;
@@ -20,6 +24,7 @@ export default function importState(state, { deserializeState, deserializeAction
     nextLiftedState = parse(nextLiftedState.payload);
   }
   if (deserializeState) {
+    deprecate('deserializeState');
     if (typeof nextLiftedState.computedStates !== 'undefined') {
       nextLiftedState.computedStates = nextLiftedState.computedStates.map(computedState => ({
         ...computedState,
@@ -34,6 +39,7 @@ export default function importState(state, { deserializeState, deserializeAction
     }
   }
   if (deserializeAction) {
+    deprecate('deserializeAction');
     nextLiftedState.actionsById = mapValues(nextLiftedState.actionsById, liftedAction => ({
       ...liftedAction,
       action: deserializeAction(liftedAction.action)

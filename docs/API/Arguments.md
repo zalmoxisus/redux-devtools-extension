@@ -11,7 +11,7 @@ Use `window.__REDUX_DEVTOOLS_EXTENSION__([config])` or `window.__REDUX_DEVTOOLS_
   - **pauseActionType** (*string*) - if specified, whenever clicking on `Pause recording` button and there are actions in the history log, will add this action type. If not specified, will commit when paused. Default is `@@PAUSED`.
   - **shouldStartLocked** (*boolean*) - if specified as `true`, it will not allow any non-monitor actions to be dispatched till clicking on `Unlock changes` button. Default is `false`.
   - **shouldHotReload** *boolean* - if set to `false`, will not recompute the states on hot reloading (or on replacing the reducers). Default to `true`.
-  - **deserializeState(state): transformedState** / **deserializeAction(action): transformedAction** (*function*) - optional transformation of state / action deserialized from debug session (useful if state is not plain object. Example: immutable-js state). *These are legacy parameters. Use `serialize` instead!*
+  - **deserializeState(state): transformedState** / **deserializeAction(action): transformedAction** (*function*) - optional transformation of state / action deserialized from debug session (useful if state is not plain object. Example: immutable-js state). ***Deprecated**. Use `serialize` instead!*
       Example of usage:
       
       ```js
