@@ -1,4 +1,4 @@
-import { stringify } from 'jsan';
+import stringifyJSON from 'remotedev-app/lib/utils/stringifyJSON';
 import { UPDATE_STATE, REMOVE_INSTANCE, LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
 import { nonReduxDispatch } from 'remotedev-app/lib/utils/monitorActions';
 import syncOptions from '../../browser/extension/options/syncOptions';
@@ -173,10 +173,9 @@ function onConnect(port) {
           toContentScript({
             message: 'IMPORT',
             id, instanceId,
-            state: stringify(persistedState)
+            state: stringifyJSON(persistedState, state.instances.options[instanceId].serialize)
           });
         }
-
         return;
       }
       if (msg.name === 'RELAY') {
