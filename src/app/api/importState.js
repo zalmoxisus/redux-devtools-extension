@@ -1,9 +1,18 @@
 import mapValues from 'lodash/mapValues';
 import jsan from 'jsan';
+import seralizeImmutable from 'remotedev-serialize/immutable/serialize';
 
 export default function importState(state, { deserializeState, deserializeAction, serialize }) {
   if (!state) return undefined;
-  let parse = serialize ? v => jsan.parse(v, serialize.reviver) : jsan.parse;
+  let parse = jsan.parse;
+  if (serialize) {
+    if (serialize.immutable) {
+      parse = v => jsan.parse(v, seralizeImmutable(serialize.immutable, serialize.refs).reviver);
+    } else if (serialize.reviver) {
+      parse = v => jsan.parse(v, serialize.reviver);
+    }
+  }
+
   let preloadedState;
   let nextLiftedState = parse(state);
   if (nextLiftedState.payload) {

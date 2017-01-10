@@ -1,4 +1,5 @@
 import jsan from 'jsan';
+import seralizeImmutable from 'remotedev-serialize/immutable/serialize';
 import importState from './importState';
 import generateId from './generateInstanceId';
 
@@ -24,9 +25,16 @@ function stringify(obj, serialize) {
 }
 
 export function getSeralizeParameter(config, param) {
-  if (config.serialize) {
-    if (!config.serialize.replacer) return { options: config.serialize.options };
-    return { replacer: config.serialize.replacer, options: config.serialize.options || true };
+  const serialize = config.serialize;
+  if (serialize) {
+    if (serialize.immutable) {
+      return {
+        replacer: seralizeImmutable(serialize.immutable, serialize.refs).replacer,
+        options: serialize.options || true
+      };
+    }
+    if (!serialize.replacer) return { options: serialize.options };
+    return { replacer: serialize.replacer, options: serialize.options || true };
   }
 
   const value = config[param];
