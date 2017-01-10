@@ -1,19 +1,18 @@
 environment:
   matrix:
-    - nodejs_version: '4'
+    - nodejs_version: '6'
 
 cache:
-  - node_modules -> package.json
+  - "%LOCALAPPDATA%/Yarn"
+  - node_modules
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm -g install npm@2
-  - set PATH=%APPDATA%\npm;%PATH%
-  - npm install --msvs_version=2013
+  - yarn install
 
 test_script:
   - node --version
-  - npm --version
-  - cmd: npm test
+  - yarn --version
+  - yarn test
 
 build: off
