@@ -69,21 +69,26 @@ export function toContentScript(message, serializeState, serializeAction) {
   post(message);
 }
 
-export function sendMessage(action, state, shouldStringify, id, name) {
+export function sendMessage(action, state, config) {
+  if (typeof config !== 'object') config = {}; // eslint-disable-line no-param-reassign
   const message = {
     payload: state,
     source,
-    name: name || '',
-    instanceId: id
+    name: config.name,
+    instanceId: config.instanceId || 1
   };
   if (action) {
     message.type = 'ACTION';
-    message.action = action.action ? action :
-      { action: typeof action === 'object' ? action : { type: action } };
+    if (config.getActionType) message.action = config.getActionType(action);
+    else {
+      if (typeof action === 'string') message.action = { type: action };
+      else if (!action.type) message.action = { type: 'update' };
+      else if (action.action) message.action = action;
+      else message.action = { action };
+    }
   } else {
     message.type = 'STATE';
   }
-
   toContentScript(message);
 }
 
@@ -122,9 +127,11 @@ export function disconnect() {
   post({ type: 'DISCONNECT', source });
 }
 
-export function connect(config = {}) {
+export function connect(preConfig) {
+  const config = preConfig || {};
   const id = generateId(config.instanceId);
-  const name = config.name || document.title || id;
+  if (!config.instanceId) config.instanceId = id;
+  if (!config.name) config.name = document.title && id === 1 ? document.title : `Instance ${id}`;
 
   const subscribe = (listener) => {
     if (!listener) return undefined;
@@ -143,15 +150,18 @@ export function connect(config = {}) {
   };
 
   const send = (action, state) => {
-    sendMessage(action, state, true, id, name);
+    sendMessage(action, state, config);
   };
 
   const init = (state, action) => {
     post(
       {
-        type: 'INIT', payload: stringify(state),
+        type: 'INIT',
+        payload: stringify(state),
         action: stringify(action || {}),
-        instanceId: id, name, source
+        instanceId: id,
+        name: config.name,
+        source
       }
     );
   };

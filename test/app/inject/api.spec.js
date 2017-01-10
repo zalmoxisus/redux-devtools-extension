@@ -33,10 +33,10 @@ describe('API', () => {
     });
     expect(message).toInclude({
       type: 'ACTION',
-      action: '{"action":{"type":"hi"}}',
+      action: '{"type":"hi"}',
       payload: undefined,
-      id: undefined,
-      name: '',
+      instanceId: 1,
+      name: undefined,
       source: '@devtools-page'
     });
 
@@ -47,8 +47,8 @@ describe('API', () => {
       type: 'ACTION',
       action: '{"action":{"type":"hi"}}',
       payload: '{"counter":1}',
-      instanceId: undefined,
-      name: '',
+      instanceId: 1,
+      name: undefined,
       source: '@devtools-page'
     });
 
@@ -58,8 +58,8 @@ describe('API', () => {
     expect(message).toInclude({
       type: 'ACTION',
       payload: '{"counter":1}',
-      instanceId: undefined,
-      name: '',
+      instanceId: 1,
+      name: undefined,
       source: '@devtools-page'
     });
     expect(message.action).toBe('{"action":{"type":"hi"}}');
@@ -73,8 +73,8 @@ describe('API', () => {
       actionsById: undefined,
       computedStates: undefined,
       committedState: false,
-      instanceId: undefined,
-      name: '',
+      instanceId: 1,
+      name: undefined,
       source: '@devtools-page'
     });
   });
