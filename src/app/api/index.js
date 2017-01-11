@@ -69,13 +69,13 @@ export function toContentScript(message, serializeState, serializeAction) {
   post(message);
 }
 
-export function sendMessage(action, state, config) {
+export function sendMessage(action, state, config, instanceId, name) {
   if (typeof config !== 'object') config = {}; // eslint-disable-line no-param-reassign
   const message = {
     payload: state,
     source,
-    name: config.name,
-    instanceId: config.instanceId || 1
+    name: config.name || name,
+    instanceId: config.instanceId || instanceId || 1
   };
   if (action) {
     message.type = 'ACTION';
