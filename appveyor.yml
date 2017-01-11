@@ -8,10 +8,11 @@ cache:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm install
+  - yarn install
 
 test_script:
   - node --version
-  - npm test
+  - yarn --version
+  - yarn test
 
 build: off
