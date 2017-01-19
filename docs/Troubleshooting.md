@@ -78,3 +78,15 @@ React synthetic event cannot be reused for performance reason. So, it's not poss
      }
    }));
    ```
+### Symbols or other unserializable data not shown 
+
+To get data which cannot be serialized by `JSON.stringify`, use `serialize` parameter, setting `options` to `true`:
+```js
+const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
+   serialize: { 
+     options: true
+  }
+}));
+```
+
+It will handle dates, regexes, undefined, error objects, symbols and functions.
