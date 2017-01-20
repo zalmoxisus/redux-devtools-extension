@@ -89,7 +89,7 @@
     typeof window === 'object' &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
       window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        // Specify here name, actionsBlacklist, actionsCreators and other options
+        // Specify extension’s options like here name, actionsBlacklist, actionsCreators or immutablejs support
       }) : compose;
 
   const enhancer = composeEnhancers(

@@ -32,7 +32,6 @@ Use `window.__REDUX_DEVTOOLS_EXTENSION__([config])` or `window.__REDUX_DEVTOOLS_
        - `false` - handle only circular references.
        - `true` - handle also dates, regexes, undefined, error objects, symbols, and functions.
        - object, which contains `date`, `regex`, `undefined`, `error`, and `function` keys. Fo each of them you can indicate whether to include (if set as `true`). For `function` key you can also specify a custom function which handles serialization. See [`jsan`](https://github.com/kolodny/jsan) for more details. Example:
-
      ```js
      const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
        serialize: { 
@@ -43,6 +42,18 @@ Use `window.__REDUX_DEVTOOLS_EXTENSION__([config])` or `window.__REDUX_DEVTOOLS_
        }
      }));
      ```
+    - **immutable** `object`: Automatically serialize/deserialize immutablejs via [remotedev-serialize](https://github.com/zalmoxisus/remotedev-serialize)
+    ```js
+        import Immutable from 'immutable'; // https://facebook.github.io/immutable-js/
+        // ...
+        // Like above, only showing off compose this time. Reminder you might not want this in prod.
+        const composeEnhancers = typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ !== 'undefined' ?
+                                   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+                                     serialize: {
+                                       immutable: Immutable
+                                     }
+                                   }) : compose;
+    ```
 
     Example of usage with mori data structures:
       ```js
