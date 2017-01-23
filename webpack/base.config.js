@@ -33,6 +33,10 @@ const baseConfig = (params) => ({
           comments: false,
           compressor: {
             warnings: false
+          },
+          mangle: {
+            screw_ie8: true,
+            keep_fnames: true
           }
         })
       ])
