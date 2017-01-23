@@ -33,7 +33,7 @@ function toContentScript({ message, action, id, instanceId, state }) {
     type: message,
     action,
     state: nonReduxDispatch(window.store, message, instanceId, action, state),
-    id: instanceId.replace(/^[^\/]+\//, '')
+    id: instanceId.toString().replace(/^[^\/]+\//, '')
   });
 }
 
