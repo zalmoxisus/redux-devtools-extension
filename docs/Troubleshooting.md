@@ -34,7 +34,7 @@ Where `batchedSubscribe` is `redux-batched-subscribe` store enhancer.
 
 React synthetic event cannot be reused for performance reason. So, it's not possible to serialize event objects you pass to action payloads.
  
-1. The best solution is not to pass the whole event object to reducers, but the data you need:
+1. The best solution is **not to pass the whole event object to reducers, but the data you need**:
   ```diff
   function click(event) {
     return {
@@ -45,15 +45,25 @@ React synthetic event cannot be reused for performance reason. So, it's not poss
   }
   ```
 
-2. Another solution would be to use `event.persist()` (in the example above) as suggested in [React Docs](https://facebook.github.io/react/docs/events.html#event-pooling), but it will consume RAM while not needed.
+2. If you cannot pick data from the event object or, for some reason, you need the whole object, use `event.persist()` as suggested in [React Docs](https://facebook.github.io/react/docs/events.html#event-pooling), but it will consume RAM while not needed.
+   
+   ```diff
+   function increment(event) {
+   + event.persist();
+     return {
+       type: ELEMENT_CLICKED,
+       event: event,
+     };
+   }
+   ```
 
-3. If you still need to pass it to an action, you can override this key of the stringified payload in your action creator, by adding a custom `toJSON` function (which will be called by the extension before accessing the object):
+3. A workaround, to pass the whole object and at the same time not to persist it, is to override this key of the stringified payload in your action creator. Add a custom `toJSON` function right in the action object (which will be called by the extension before accessing the object):
    
    ```diff
    function increment(event) {
      return {
-       type: INCREMENT_COUNTER,
-       event,
+       type: ELEMENT_CLICKED,
+       event: event,
    +   toJSON: function (){
    +     return { ...this, event: '[Event]' };
    +   }
@@ -62,22 +72,8 @@ React synthetic event cannot be reused for performance reason. So, it's not poss
    ```
    Note that it shouldn't be arrow function as we want to have access to the function's `this`.
    
-   As we don't have access to the original object, skipping and recomputing actions during hot reloading will not work in this case. So better to use the required value from the event than the whole event object.
+   As we don't have access to the original object, skipping and recomputing actions during hot reloading will not work in this case. We recommend to use the first solution whenever possible.
 
-4. If you don't want to add `toJSON` to action creators, a solution to prevent this, would be to use `serialize` parameter and to check if it's an instance of `SyntheticEvent` like so:
-   ```js
-   import SyntheticEvent from 'react/lib/SyntheticEvent';
-   // ...
-   
-   const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
-     serialize: {
-       replacer: (key, value) => {
-         if (value && value instanceof SyntheticEvent) return '[Event]';
-         return value;
-       }
-     }
-   }));
-   ```
 ### Symbols or other unserializable data not shown 
 
 To get data which cannot be serialized by `JSON.stringify`, use `serialize` parameter, setting `options` to `true`:
