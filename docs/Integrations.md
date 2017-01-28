@@ -1,7 +1,7 @@
 # Integrations for different languages and frameworks
 
 Mostly functional:
-- [Angular @ngrx/store](#angular-ngrxstore)
+- [Angular](#angular)
 - [Cycle](#cycle)
 - [Ember](#ember)
 - [Fable](#fable)
@@ -35,8 +35,38 @@ class appStore {
 export default remotedev(appStore);
 ````
 
-### [Angular @ngrx/store](https://github.com/ngrx/store)
-#### [`@ngrx/store-devtools`](https://github.com/ngrx/store-devtools)
+### [Angular](https://github.com/angular/angular)
+#### [ng2-redux](https://github.com/angular-redux/ng2-redux)
+```js
+import { NgReduxModule, NgRedux, DevToolsExtension } from 'ng2-redux';
+
+@NgModule({
+  /* ... */
+  imports: [ /* ... */, NgReduxModule ]
+})export class AppModule {
+  constructor(
+    private ngRedux: NgRedux,
+    private devTools: DevToolsExtension) {
+
+    let enhancers = [];
+    // ... add whatever other enhancers you want.
+
+    // You probably only want to expose this tool in devMode.
+    if (__DEVMODE__ && devTools.isEnabled()) {
+      enhancers = [ ...enhancers, devTools.enhancer() ];
+    }
+
+    this.ngRedux.configureStore(
+      rootReducer,
+      initialState,
+      [],
+      enhancers);
+  }
+}
+```
+For Angular 1 see [ng-redux](https://github.com/angular-redux/ng-redux).
+
+#### [Angular @ngrx/store](https://github.com/ngrx/store) + [`@ngrx/store-devtools`](https://github.com/ngrx/store-devtools)
 ```js
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
