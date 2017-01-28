@@ -1,4 +1,4 @@
-# Integrations for frameworks and languages
+# Integrations for different languages and frameworks
 
 Mostly functional:
 - [Angular @ngrx/store](#angular-ngrxstore)
@@ -92,6 +92,21 @@ var State = new Freezer({hello: 'world'});
 supportChromeExtension( State );
 ```
 
+### [Horizon](https://github.com/rethinkdb/horizon)
+#### [`horizon-remotedev`](https://github.com/zalmoxisus/horizon-remotedev)
+```js
+// import hzRemotedev from 'horizon-remotedev';
+// or import hzRemotedev from 'horizon-remotedev/lib/dev'
+// in case you want to use it in production or don't have process.env.NODE_ENV === 'development'
+
+//Setup Horizon connection
+const horizon = Horizon();
+
+// ...
+// Specify the horizon instance to monitor 
+hzRemotedev(horizon("react_messages"))
+```
+
 ### [Fable](https://github.com/fable-compiler/Fable)
 #### [`purescript-react-redux`](fable-elmish)
 ```fsharp
@@ -120,25 +135,10 @@ Program.mkProgram init update view
 ### [ClojureScript](https://github.com/clojure/clojurescript)
 [`Example of integration`](http://gitlab.xet.ru:9999/publicpr/clojurescript-redux/tree/master#dev-setup)
 
-### [Horizon](https://github.com/rethinkdb/horizon)
-#### [`horizon-remotedev`](https://github.com/zalmoxisus/horizon-remotedev)
-```js
-// import hzRemotedev from 'horizon-remotedev';
-// or import hzRemotedev from 'horizon-remotedev/lib/dev'
-// in case you want to use it in production or don't have process.env.NODE_ENV === 'development'
-
-//Setup Horizon connection
-const horizon = Horizon();
-
-// ...
-// Specify the horizon instance to monitor 
-hzRemotedev(horizon("react_messages"))
-```
-
 ### [Python](https://www.python.org/)
 #### [`pyredux`](https://github.com/peterpeter5/pyredux)
-WIP
+[WIP](https://github.com/zalmoxisus/remotedev-server/issues/34)
 
 ### [Swift](https://github.com/apple/swift)
 #### [`katana-swift`](https://github.com/BendingSpoons/katana-swift)
-WIP
+[WIP](https://github.com/zalmoxisus/redux-devtools-extension/issues/288)

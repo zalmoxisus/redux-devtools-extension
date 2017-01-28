@@ -44,15 +44,15 @@ Use `window.__REDUX_DEVTOOLS_EXTENSION__([config])` or `window.__REDUX_DEVTOOLS_
      ```
     - **immutable** `object`: Automatically serialize/deserialize immutablejs via [remotedev-serialize](https://github.com/zalmoxisus/remotedev-serialize)
     ```js
-        import Immutable from 'immutable'; // https://facebook.github.io/immutable-js/
-        // ...
-        // Like above, only showing off compose this time. Reminder you might not want this in prod.
-        const composeEnhancers = typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ !== 'undefined' ?
-                                   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-                                     serialize: {
-                                       immutable: Immutable
-                                     }
-                                   }) : compose;
+    import Immutable from 'immutable'; // https://facebook.github.io/immutable-js/
+    // ...
+    // Like above, only showing off compose this time. Reminder you might not want this in prod.
+    const composeEnhancers = typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ !== 'undefined' ?
+     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+       serialize: {
+         immutable: Immutable
+       }
+    }) : compose;
     ```
 
     Example of usage with mori data structures:
