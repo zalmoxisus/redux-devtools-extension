@@ -1,8 +1,10 @@
 # Redux DevTools Extension
 
 [![Join the chat at https://gitter.im/zalmoxisus/redux-devtools-extension](https://badges.gitter.im/zalmoxisus/redux-devtools-extension.svg)](https://gitter.im/zalmoxisus/redux-devtools-extension?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=round-square)](http://makeapullrequest.com)
 [![OpenCollective](https://opencollective.com/redux-devtools-extension/backers/badge.svg)](#backers) 
 [![OpenCollective](https://opencollective.com/redux-devtools-extension/sponsors/badge.svg)](#sponsors)
+[![Tweet](https://img.shields.io/twitter/url/https/github.com/zalmoxisus/redux-devtools-extension.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20Redux%20DevTools%20Extension:%20https://github.com/zalmoxisus/redux-devtools-extension%20%F0%9F%91%8D)
 
 ![Demo](https://cloud.githubusercontent.com/assets/7957859/18002950/aacb82fc-6b93-11e6-9ae9-609862c18302.png)
 
@@ -136,7 +138,7 @@
   Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools)'s store enhancer, and from the extension's context menu choose 'Open Remote DevTools' or press Alt+Shift+arrow up for remote monitoring.
   
 ### 2. Without Redux
-  See [the post](https://medium.com/@zalmoxis/redux-devtools-without-redux-or-how-to-have-a-predictable-state-with-any-architecture-61c5f5a7716f) for more details on how to use the extension with any architecture.
+  See [integrations](docs/Integrations.md) and [the blog post](https://medium.com/@zalmoxis/redux-devtools-without-redux-or-how-to-have-a-predictable-state-with-any-architecture-61c5f5a7716f) for more details on how to use the extension with any architecture.
   
 ## API Reference
   - [Parameters](docs/API/Arguments.md)
