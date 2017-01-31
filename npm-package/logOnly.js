@@ -44,3 +44,8 @@ exports.composeWithDevTools = function() {
   return compose.apply(null, arguments);
 };
 
+exports.devToolsEnhancer = (
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ ?
+    enhancer :
+    function() { return function(noop) { return noop; } }
+);

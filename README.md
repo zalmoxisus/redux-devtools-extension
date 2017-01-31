@@ -91,7 +91,7 @@
     typeof window === 'object' &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
       window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        // Specify extension’s options like name, actionsBlacklist, actionsCreators or immutablejs support
+        // Specify extension’s options like name, actionsBlacklist, actionsCreators or immutablejs support if needed
       }) : compose;
 
   const enhancer = composeEnhancers(
@@ -125,14 +125,24 @@
   import { composeWithDevTools } from 'redux-devtools-extension';
 
   const composeEnhancers = composeWithDevTools({
-    // Specify here name, actionsBlacklist, actionsCreators and other options
+    // Specify here name, actionsBlacklist, actionsCreators and other options if needed
   });
-  const store = createStore(reducer, composeEnhancers(
+  const store = createStore(reducer, /* preloadedState, */ composeEnhancers(
     applyMiddleware(...middleware),
     // other store enhancers if any
   ));
   ```  
   There’re just [few lines of code](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/npm-package/index.js). If you don’t want to allow the extension in production, just use ‘redux-devtools-extension/developmentOnly’ instead of ‘redux-devtools-extension’.
+
+  In case you don't have other enhancers and middlewares, use `devToolsEnhancer`:
+  ```js
+  import { createStore } from 'redux';
+  import { devToolsEnhancer } from 'redux-devtools-extension';
+
+  const store = createStore(reducer, /* preloadedState, */ devToolsEnhancer(
+    // Specify here name, actionsBlacklist, actionsCreators and other options if needed
+  ));
+  ```    
 
 #### 1.5 For React Native, hybrid, desktop and server side Redux apps
   Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools)'s store enhancer, and from the extension's context menu choose 'Open Remote DevTools' or press Alt+Shift+arrow up for remote monitoring.
