@@ -37,7 +37,7 @@ class App extends Component {
       monitor, position, togglePersist,
       dispatcherIsOpen, sliderIsOpen, options, liftedState
     } = this.props;
-    const isRedux = options.lib === 'redux';
+    const features = options.features || {};
     return (
       <div style={styles.container}>
         <div style={styles.buttonBar}>
@@ -49,10 +49,10 @@ class App extends Component {
           liftedState={liftedState}
           monitorState={this.props.monitorState}
           dispatch={this.props.liftedDispatch}
-          lib={options.lib}
+          lib={options.lib || options.explicitLib}
         />
         <Notification />
-        {sliderIsOpen && options.connectionId &&
+        {sliderIsOpen && options.connectionId && options.features.jump &&
           <SliderMonitor
             monitor="SliderMonitor"
             liftedState={liftedState}
@@ -64,7 +64,7 @@ class App extends Component {
             fillColor="rgb(120, 144, 156)"
           />
         }
-        {dispatcherIsOpen && options.connectionId &&
+        {dispatcherIsOpen && options.connectionId && options.features.dispatch &&
           <Dispatcher options={options} />
         }
         <div style={styles.buttonBar}>
@@ -86,19 +86,27 @@ class App extends Component {
             onClick={() => { this.openWindow('bottom'); }}
           />
           }
-          {isRedux &&
+          {features.record &&
             <RecordButton paused={liftedState.isPaused} />
           }
-          {isRedux &&
+          {features.lock &&
             <LockButton locked={liftedState.isLocked} />
           }
-          <Button
-            Icon={PersistIcon}
-            onClick={togglePersist}
-          >Persist</Button>
-          <DispatcherButton dispatcherIsOpen={dispatcherIsOpen} />
-          <SliderButton isOpen={sliderIsOpen} />
-          <ImportButton />
+          {features.persist &&
+            <Button
+              Icon={PersistIcon}
+              onClick={togglePersist}
+            >Persist</Button>
+          }
+          {features.dispatch &&
+            <DispatcherButton dispatcherIsOpen={dispatcherIsOpen}/>
+          }
+          {features.jump &&
+            <SliderButton isOpen={sliderIsOpen}/>
+          }
+          {features.import &&
+            <ImportButton />
+          }
           <ExportButton />
           {position && (position !== '#popup' || navigator.userAgent.indexOf('Firefox') !== -1) &&
             <PrintButton />

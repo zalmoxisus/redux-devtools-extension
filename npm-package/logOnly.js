@@ -5,6 +5,9 @@ var compose = require('redux').compose;
 
 function enhancer() {
   var config = arguments[0] || {};
+  config.features = { test: true };
+  config.type = 'redux';
+
   return function(createStore) {
     return function(reducer, preloadedState, enhancer) {
       var store = createStore(reducer, preloadedState, enhancer);

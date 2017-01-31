@@ -176,6 +176,7 @@ export function connect(preConfig) {
     } else {
       message.libConfig = {
         name: config.name || document.title,
+        features: config.features,
         serialize: !!config.serialize,
         type: config.type
       };
