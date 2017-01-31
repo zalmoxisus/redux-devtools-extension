@@ -1,5 +1,6 @@
 import jsan from 'jsan';
 import seralizeImmutable from 'remotedev-serialize/immutable/serialize';
+import { getLocalFilter, isFiltered } from './filters';
 import importState from './importState';
 import generateId from './generateInstanceId';
 
@@ -133,6 +134,8 @@ export function connect(preConfig) {
   if (!config.instanceId) config.instanceId = id;
   if (!config.name) config.name = document.title && id === 1 ? document.title : `Instance ${id}`;
   if (config.serialize) config.serialize = getSeralizeParameter(config);
+  const predicate = config.predicate;
+  const localFilter = getLocalFilter(config);
 
   const subscribe = (listener) => {
     if (!listener) return undefined;
@@ -151,6 +154,7 @@ export function connect(preConfig) {
   };
 
   const send = (action, state) => {
+    if (isFiltered(action, localFilter) || predicate && !predicate(state, action)) return;
     sendMessage(action, state, config);
   };
 
