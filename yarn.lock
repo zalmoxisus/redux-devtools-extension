@@ -783,6 +783,12 @@ babel-plugin-transform-regenerator@^6.16.0:
   dependencies:
     regenerator-transform "0.9.8"
 
+babel-plugin-transform-runtime@^6.7.5:
+  version "6.15.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-runtime/-/babel-plugin-transform-runtime-6.15.0.tgz#3d75b4d949ad81af157570273846fb59aeb0d57c"
+  dependencies:
+    babel-runtime "^6.9.0"
+
 babel-plugin-transform-strict-mode@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-strict-mode/-/babel-plugin-transform-strict-mode-6.18.0.tgz#df7cf2991fe046f44163dcd110d5ca43bc652b9d"
@@ -4422,10 +4428,11 @@ react-icons@^2.2.1:
   dependencies:
     react-icon-base "2.0.4"
 
-react-json-tree@^0.10.0:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/react-json-tree/-/react-json-tree-0.10.1.tgz#7f9eab36abf8adf329c7e5ad4091f5987bcbd5de"
+react-json-tree@0.10.0, react-json-tree@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/react-json-tree/-/react-json-tree-0.10.0.tgz#92d5c223fc7718614a906591cd916127ce2b6033"
   dependencies:
+    babel-plugin-transform-runtime "^6.7.5"
     babel-runtime "^6.6.1"
     react-base16-styling "^0.4.1"
     react-pure-render "^1.0.2"
