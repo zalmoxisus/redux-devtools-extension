@@ -85,7 +85,12 @@ export function sendMessage(action, state, config, instanceId, name) {
       if (typeof action === 'string') message.action = { type: action };
       else if (!action.type) message.action = { type: 'update' };
       else if (action.action) message.action = action;
-      else message.action = { action };
+      else {
+        message.action = {
+          action: config.serialize ? action :
+            { ...action, type: action.type.toString() }
+        };
+      }
     }
   } else {
     message.type = 'STATE';
