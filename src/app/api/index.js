@@ -89,7 +89,7 @@ export function sendMessage(action, state, config, instanceId, name) {
   } else {
     message.type = 'STATE';
   }
-  toContentScript(message);
+  toContentScript(message, config.serialize, config.serialize);
 }
 
 function handleMessages(event) {
@@ -132,6 +132,7 @@ export function connect(preConfig) {
   const id = generateId(config.instanceId);
   if (!config.instanceId) config.instanceId = id;
   if (!config.name) config.name = document.title && id === 1 ? document.title : `Instance ${id}`;
+  if (config.serialize) config.serialize = getSeralizeParameter(config);
 
   const subscribe = (listener) => {
     if (!listener) return undefined;
@@ -153,17 +154,25 @@ export function connect(preConfig) {
     sendMessage(action, state, config);
   };
 
-  const init = (state, action) => {
-    post(
-      {
-        type: 'INIT',
-        payload: stringify(state),
-        action: stringify(action || {}),
-        instanceId: id,
-        name: config.name,
-        source
-      }
-    );
+  const init = (state, libConfig) => {
+    const message = {
+      type: 'INIT',
+      payload: stringify(state),
+      instanceId: id,
+      source
+    };
+    if (libConfig && Array.isArray(libConfig)) { // Legacy
+      message.action = stringify(libConfig);
+      message.name = config.name;
+    } else {
+      message.libConfig = {
+        name: config.name || document.title,
+        serialize: !!config.serialize,
+        type: config.type
+      };
+      // TODO: add actionCreators
+    }
+    post(message);
   };
 
   const error = (payload) => {
