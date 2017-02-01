@@ -142,9 +142,14 @@ export function connect(preConfig) {
   if (config.serialize) config.serialize = getSeralizeParameter(config);
   const predicate = config.predicate;
   const localFilter = getLocalFilter(config);
-  let isPaused;
+  const autoPause = config.autoPause;
+  let isPaused = autoPause;
 
   const rootListiner = action => {
+    if (autoPause) {
+      if (action.type === 'START') isPaused = false;
+      else if (action.type === 'STOP') isPaused = true;
+    }
     if (action.type === 'DISPATCH') {
       const payload = action.payload;
       if (payload.type === 'PAUSE_RECORDING') {

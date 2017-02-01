@@ -7,6 +7,7 @@ function enhancer() {
   var config = arguments[0] || {};
   config.features = { pause: true, export: true, test: true };
   config.type = 'redux';
+  if (config.autoPause === undefined) config.autoPause = true;
 
   return function(createStore) {
     return function(reducer, preloadedState, enhancer) {
@@ -14,7 +15,7 @@ function enhancer() {
       var origDispatch = store.dispatch;
 
       var devTools = window.__REDUX_DEVTOOLS_EXTENSION__.connect(config);
-      devTools.init(store.getState(), { isPaused: true });
+      devTools.init(store.getState());
 
       var dispatch = function(action) {
         var r = origDispatch(action);
