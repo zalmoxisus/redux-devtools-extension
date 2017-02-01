@@ -107,7 +107,9 @@ class App extends Component {
           {features.import &&
             <ImportButton />
           }
-          <ExportButton />
+          {features.export &&
+            <ExportButton />
+          }
           {position && (position !== '#popup' || navigator.userAgent.indexOf('Firefox') !== -1) &&
             <PrintButton />
           }
