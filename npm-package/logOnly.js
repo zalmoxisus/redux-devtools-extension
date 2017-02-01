@@ -8,6 +8,7 @@ function enhancer() {
   config.features = { pause: true, export: true, test: true };
   config.type = 'redux';
   if (config.autoPause === undefined) config.autoPause = true;
+  if (config.latency === undefined) config.latency = 500;
 
   return function(createStore) {
     return function(reducer, preloadedState, enhancer) {

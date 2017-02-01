@@ -1,4 +1,5 @@
 import jsan from 'jsan';
+import throttle from 'lodash/throttle';
 import seralizeImmutable from 'remotedev-serialize/immutable/serialize';
 import { getLocalFilter, isFiltered } from './filters';
 import importState from './importState';
@@ -81,16 +82,20 @@ export function sendMessage(action, state, config, instanceId, name) {
   };
   if (action) {
     message.type = 'ACTION';
-    if (config.getActionType) message.action = config.getActionType(action);
-    else {
-      if (typeof action === 'string') message.action = { type: action };
-      else if (!action.type) message.action = { type: 'update' };
-      else if (action.action) message.action = action;
+    if (Array.isArray(action)) {
+      message.action = action;
+    } else {
+      if (config.getActionType) message.action = config.getActionType(action);
       else {
-        message.action = {
-          action: config.serialize ? action :
+        if (typeof action === 'string') message.action = { type: action };
+        else if (!action.type) message.action = { type: 'update' };
+        else if (action.action) message.action = action;
+        else {
+          message.action = {
+            action: config.serialize ? action :
             { ...action, type: action.type.toString() }
-        };
+          };
+        }
       }
     }
   } else {
@@ -140,10 +145,13 @@ export function connect(preConfig) {
   if (!config.instanceId) config.instanceId = id;
   if (!config.name) config.name = document.title && id === 1 ? document.title : `Instance ${id}`;
   if (config.serialize) config.serialize = getSeralizeParameter(config);
+  const latency = config.latency;
   const predicate = config.predicate;
   const localFilter = getLocalFilter(config);
   const autoPause = config.autoPause;
   let isPaused = autoPause;
+  let delayedActions = [];
+  let delayedStates = [];
 
   const rootListiner = action => {
     if (autoPause) {
@@ -181,11 +189,22 @@ export function connect(preConfig) {
     delete listeners[id];
   };
 
+  const sendDelayed = throttle(() => {
+    sendMessage(delayedActions, delayedStates, config);
+    delayedActions = [];
+    delayedStates = [];
+  }, latency);
+
   const send = (action, state) => {
     if (isPaused || isFiltered(action, localFilter) || predicate && !predicate(state, action)) {
       return;
     }
-    sendMessage(action, state, config);
+    if (latency && action) {
+      delayedActions.push(action);
+      delayedStates.push(state);
+      sendDelayed();
+    }
+    else sendMessage(action, state, config);
   };
 
   const init = (state, liftedData) => {
