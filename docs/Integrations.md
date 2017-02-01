@@ -17,7 +17,7 @@ In progress:
 
 
 ### [Mobx](https://github.com/mobxjs/mobx)
-#### [`mobx-remotedev`](https://github.com/toranb/ember-redux)
+#### [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev)
 ```js
 import remotedev from 'mobx-remotedev';
 // or import remotedev from 'mobx-remotedev/lib/dev'
