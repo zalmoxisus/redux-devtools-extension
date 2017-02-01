@@ -74,6 +74,7 @@ export function sendMessage(action, state, config, instanceId, name) {
   if (typeof config !== 'object') config = {}; // eslint-disable-line no-param-reassign
   const message = {
     payload: state,
+    maxAge: config.maxAge,
     source,
     name: config.name || name,
     instanceId: config.instanceId || instanceId || 1
