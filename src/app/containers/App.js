@@ -86,7 +86,7 @@ class App extends Component {
             onClick={() => { this.openWindow('bottom'); }}
           />
           }
-          {features.record &&
+          {features.pause &&
             <RecordButton paused={liftedState.isPaused} />
           }
           {features.lock &&

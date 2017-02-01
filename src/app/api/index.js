@@ -141,10 +141,27 @@ export function connect(preConfig) {
   if (config.serialize) config.serialize = getSeralizeParameter(config);
   const predicate = config.predicate;
   const localFilter = getLocalFilter(config);
+  let isPaused;
+
+  const rootListiner = action => {
+    if (action.type === 'DISPATCH') {
+      const payload = action.payload;
+      if (payload.type === 'PAUSE_RECORDING') {
+        isPaused = payload.status;
+        toContentScript({
+          type: 'LIFTED',
+          liftedState: { isPaused },
+          instanceId: id,
+          source
+        });
+      }
+    }
+  };
+
+  listeners[id] = [rootListiner];
 
   const subscribe = (listener) => {
     if (!listener) return undefined;
-    if (!listeners[id]) listeners[id] = [];
     const liftedListener = liftListener(listener, config);
     listeners[id].push(liftedListener);
 
@@ -159,21 +176,27 @@ export function connect(preConfig) {
   };
 
   const send = (action, state) => {
-    if (isFiltered(action, localFilter) || predicate && !predicate(state, action)) return;
+    if (isPaused || isFiltered(action, localFilter) || predicate && !predicate(state, action)) {
+      return;
+    }
     sendMessage(action, state, config);
   };
 
-  const init = (state, libConfig) => {
+  const init = (state, liftedData) => {
     const message = {
       type: 'INIT',
       payload: stringify(state),
       instanceId: id,
       source
     };
-    if (libConfig && Array.isArray(libConfig)) { // Legacy
-      message.action = stringify(libConfig);
+    if (liftedData && Array.isArray(liftedData)) { // Legacy
+      message.action = stringify(liftedData);
       message.name = config.name;
     } else {
+      if (liftedData) {
+        message.liftedState = liftedData;
+        if (liftedData.isPaused) isPaused = true;
+      }
       message.libConfig = {
         name: config.name || document.title,
         features: config.features,

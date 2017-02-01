@@ -5,7 +5,7 @@ var compose = require('redux').compose;
 
 function enhancer() {
   var config = arguments[0] || {};
-  config.features = { test: true };
+  config.features = { pause: true, export: true, test: true };
   config.type = 'redux';
 
   return function(createStore) {
@@ -14,7 +14,7 @@ function enhancer() {
       var origDispatch = store.dispatch;
 
       var devTools = window.__REDUX_DEVTOOLS_EXTENSION__.connect(config);
-      devTools.init(store.getState());
+      devTools.init(store.getState(), { isPaused: true });
 
       var dispatch = function(action) {
         var r = origDispatch(action);
