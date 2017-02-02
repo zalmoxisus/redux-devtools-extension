@@ -204,6 +204,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
         relayState(undefined, {
           name: config.name || document.title,
           actionCreators: JSON.stringify(actionCreators),
+          features: config.features,
           serialize: !!config.serialize,
           type: 'redux'
         });
