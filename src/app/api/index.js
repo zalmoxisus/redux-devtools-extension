@@ -29,6 +29,7 @@ function stringify(obj, serialize) {
 export function getSeralizeParameter(config, param) {
   const serialize = config.serialize;
   if (serialize) {
+    if (serialize === true) return { options: true };
     if (serialize.immutable) {
       return {
         replacer: seralizeImmutable(serialize.immutable, serialize.refs).replacer,
