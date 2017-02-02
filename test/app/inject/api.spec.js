@@ -33,24 +33,12 @@ describe('API', () => {
     });
     expect(message).toInclude({
       type: 'ACTION',
-      action: '{"type":"hi"}',
       payload: undefined,
       instanceId: 1,
       name: undefined,
       source: '@devtools-page'
     });
-
-    message = await listenMessage(() => {
-      window.devToolsExtension.send({ type: 'hi' }, { counter: 1 }, 1);
-    });
-    expect(message).toInclude({
-      type: 'ACTION',
-      action: '{"action":{"type":"hi"}}',
-      payload: '{"counter":1}',
-      instanceId: 1,
-      name: undefined,
-      source: '@devtools-page'
-    });
+    expect(message.action).toMatch(/{"action":{"type":"hi"},"timestamp":\d+}/);
 
     message = await listenMessage(() => {
       window.devToolsExtension.send({ type: 'hi' }, { counter: 1 }, 1);
@@ -62,18 +50,32 @@ describe('API', () => {
       name: undefined,
       source: '@devtools-page'
     });
-    expect(message.action).toBe('{"action":{"type":"hi"}}');
+    expect(message.action).toMatch(/{"action":{"type":"hi"},"timestamp":\d+}/);
+
+    message = await listenMessage(() => {
+      window.devToolsExtension.send({ type: 'hi' }, { counter: 1 }, 1);
+    });
+    expect(message).toInclude({
+      type: 'ACTION',
+      payload: '{"counter":1}',
+      instanceId: 1,
+      name: undefined,
+      source: '@devtools-page'
+    });
+    expect(message.action).toMatch(/{"action":{"type":"hi"},"timestamp":\d+}/);
 
     message = await listenMessage(() => {
       window.devToolsExtension.send(undefined, { counter: 1 }, 1);
     });
     expect(message).toEqual({
+      action: undefined,
       type: 'STATE',
       payload: { counter: 1 },
       actionsById: undefined,
       computedStates: undefined,
       committedState: false,
       instanceId: 1,
+      maxAge: undefined,
       name: undefined,
       source: '@devtools-page'
     });

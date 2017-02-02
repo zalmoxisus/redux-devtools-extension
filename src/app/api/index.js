@@ -52,6 +52,16 @@ function post(message) {
   window.postMessage(message, '*');
 }
 
+function amendActionType(action, serialize) {
+  if (typeof action === 'string') return { action: { type: action }, timestamp: Date.now() };
+  if (!action.type) return { action: { type: 'update' }, timestamp: Date.now() };
+  if (action.action) return action;
+  return {
+    action: serialize ? action : { ...action, type: action.type.toString() },
+    timestamp: Date.now()
+  };
+}
+
 export function toContentScript(message, serializeState, serializeAction) {
   if (message.type === 'ACTION') {
     message.action = stringify(message.action, serializeAction);
@@ -72,35 +82,21 @@ export function toContentScript(message, serializeState, serializeAction) {
 }
 
 export function sendMessage(action, state, config, instanceId, name) {
-  if (typeof config !== 'object') config = {}; // eslint-disable-line no-param-reassign
+  let amendedAction = action;
+  if (typeof config !== 'object') {
+    // Legacy: sending actions not from connected part
+    config = {}; // eslint-disable-line no-param-reassign
+    if (action) amendedAction = amendActionType(action);
+  }
   const message = {
+    type: action ? 'ACTION' : 'STATE',
+    action: amendedAction,
     payload: state,
     maxAge: config.maxAge,
     source,
     name: config.name || name,
     instanceId: config.instanceId || instanceId || 1
   };
-  if (action) {
-    message.type = 'ACTION';
-    if (Array.isArray(action)) {
-      message.action = action;
-    } else {
-      if (config.getActionType) message.action = config.getActionType(action);
-      else {
-        if (typeof action === 'string') message.action = { type: action };
-        else if (!action.type) message.action = { type: 'update' };
-        else if (action.action) message.action = action;
-        else {
-          message.action = {
-            action: config.serialize ? action :
-            { ...action, type: action.type.toString() }
-          };
-        }
-      }
-    }
-  } else {
-    message.type = 'STATE';
-  }
   toContentScript(message, config.serialize, config.serialize);
 }
 
@@ -199,12 +195,26 @@ export function connect(preConfig) {
     if (isPaused || isFiltered(action, localFilter) || predicate && !predicate(state, action)) {
       return;
     }
-    if (latency && action) {
-      delayedActions.push(action);
-      delayedStates.push(state);
-      sendDelayed();
+
+    let amendedAction = action;
+    const amendedState = config.stateSanitizer ? config.stateSanitizer(state) : state;
+    if (action) {
+      if (config.getActionType) {
+        amendedAction = config.getActionType(action);
+        if (typeof amendedAction !== 'object') {
+          amendedAction = { action: { type: amendedAction }, timestamp: Date.now() };
+        }
+      }
+      else if (config.actionSanitizer) amendedAction = config.actionSanitizer(action);
+      amendedAction = amendActionType(amendedAction, config.serialize);
+      if (latency) {
+        delayedActions.push(amendedAction);
+        delayedStates.push(amendedState);
+        sendDelayed();
+        return;
+      }
     }
-    else sendMessage(action, state, config);
+    sendMessage(amendedAction, amendedState, config);
   };
 
   const init = (state, liftedData) => {
