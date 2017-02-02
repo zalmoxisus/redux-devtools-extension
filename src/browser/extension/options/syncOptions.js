@@ -73,9 +73,11 @@ export const injectOptions = newOptions => {
 };
 
 export const getOptionsFromBg = () => {
-  chrome.runtime.sendMessage({ type: 'GET_OPTIONS' }, response => {
+/*  chrome.runtime.sendMessage({ type: 'GET_OPTIONS' }, response => {
     if (response && response.options) injectOptions(response.options);
   });
+*/
+  get(newOptions => { injectOptions(newOptions); }); // Legacy
 };
 
 export const isAllowed = (localOptions = options) => (
