@@ -1,6 +1,6 @@
 {
-  "name": "redux-devtools-extension",
   "version": "2.12.1",
+  "name": "remotedev-redux-devtools-extension",
   "description": "DevTools extension for Redux",
   "scripts": {
     "start": "gulp",
