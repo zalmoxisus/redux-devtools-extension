@@ -149,6 +149,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   }, latency);
 
   function dispatchRemotely(action) {
+    if (config.features && !config.features.dispatch) return;
     try {
       const result = evalAction(action, actionCreators);
       (store.initialDispatch || store.dispatch)(result);
@@ -158,6 +159,7 @@ const devToolsExtension = function(reducer, preloadedState, config) {
   }
 
   function importPayloadFrom(state) {
+    if (config.features && !config.features.import) return;
     try {
       const nextLiftedState = importState(state, config);
       if (!nextLiftedState) return;
@@ -169,6 +171,15 @@ const devToolsExtension = function(reducer, preloadedState, config) {
 
   function dispatchMonitorAction(action) {
     const type = action.type;
+    const features = config.features;
+    if (features) {
+      if (!features.jump && (type === 'JUMP_TO_STATE' || type === 'JUMP_TO_ACTION')) return;
+      if (!features.skip && type === 'TOGGLE_ACTION') return;
+      if (!features.reorder && type === 'REORDER_ACTION') return;
+      if (!features.import && type === 'IMPORT_STATE') return;
+      if (!features.lock && type === 'LOCK_CHANGES') return;
+      if (!features.pause && type === 'PAUSE_RECORDING') return;
+    }
     if (type === 'JUMP_TO_STATE') {
       const liftedState = store.liftedStore.getState();
       const index = liftedState.stagedActionIds.indexOf(action.actionId);
