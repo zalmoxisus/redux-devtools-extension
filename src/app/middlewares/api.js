@@ -76,8 +76,9 @@ function togglePersist() {
 
 // Receive messages from content scripts
 function messaging(request, sender, sendResponse) {
-  const tabId = getId(sender);
+  let tabId = getId(sender);
   if (!tabId) return;
+  if (sender.frameId) tabId = `${tabId}-${sender.frameId}`;
 
   if (request.type === 'STOP') {
     if (!Object.keys(window.store.getState().instances.connections).length) {
@@ -159,6 +160,7 @@ function onConnect(port) {
 
   if (port.name === 'tab') {
     id = getId(port.sender);
+    if (port.sender.frameId) id = `${id}-${port.sender.frameId}`;
     connections.tab[id] = port;
     listener = msg => {
       if (msg.name === 'INIT_INSTANCE') {
