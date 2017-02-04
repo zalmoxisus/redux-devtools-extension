@@ -2,13 +2,11 @@
 
 ## Table of Contents
 - [How to get it work](#how-to-get-it-work)
-- [How to filter actions](#how-to-filter-actions)
 - [How to disable/enable it in production](#how-to-disableenable-it-in-production)
 - [How to persist debug sessions across page reloads](#how-to-persist-debug-sessions-across-page-reloads)
 - [How to include it in chrome apps and extensions](#how-to-include-it-in-chrome-apps-and-extensions)
 - [How to open DevTools programmatically](#how-to-open-devtools-programmatically)
 - [How to keep DevTools window focused all the time in a chrome panel](#how-to-open-devtools-programmatically)
-- [How to include DevTools in the page](#how-to-include-devtools-in-the-page)
 - [How to enable/disable errors notifying](#how-to-enabledisable-errors-notifying)
 - [How to get it work with WebWorkers, React Native, hybrid, desktop and server side apps](#how-to-get-it-work-with-webworkers-react-native-hybrid-desktop-and-server-side-apps)
 - [Keyboard shortcuts](#keyboard-shortcuts)
@@ -19,33 +17,10 @@
 - Reload the extension on the extensions page (`chrome://extensions/`).
 - If something goes wrong, [open an issue](https://github.com/zalmoxisus/redux-devtools-extension/issues) or tweet me: [@mdiordiev](https://twitter.com/mdiordiev).
 
-#### How to filter actions
-On the options page you may enable actions filtering and specify either actions to be hidden or shown in DevTools. If the latter is specified, other than those actions will be hidden.
-You can overwrite these settings for an individual project using `actionsBlacklist` and `actionsWhitelist` [config options](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md#windowdevtoolsextensionconfig).
-#### How to disable/enable it in production
-A good practice (for other libraries as React as well) is to have a global variable set in webpack config, which indicates the environment like
-```js
-globals: {
-    'process.env': {
-      NODE_ENV: '"production"'
-    }
-  }
-```
-
-and add `process.env.NODE_ENV !== 'production' && ` before `window.__REDUX_DEVTOOLS_EXTENSION__` or `window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__`
-and you can use the extension as follows:
-```js
-export default function configureStore(preloadedState) {
-  const store = createStore(reducer, preloadedState,
-    process.env.NODE_ENV !== 'production' &&
-    typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION__()
-  );
-  return store;
-}
-```
+#### How to disable it in production
+Usually you don't have to. See [the article for details on how to include it in production](https://medium.com/@zalmoxis/using-redux-devtools-in-production-4c5b56c5600f). 
 #### How to persist debug sessions across page reloads
-Just add `?debug_session=<session_name>` to the url.
+Just click the `Persist` button or add `?debug_session=<session_name>` to the url.
 #### How to include it in chrome apps and extensions
 Unlike web apps, Chrome extension doesn't inject anything in other chrome extensions or apps, so you have to do it by yourself to allow debugging. Just add:
 ```
@@ -56,14 +31,12 @@ To include it in a chrome extension's content script follow [the example](https:
 ```js
 window.__REDUX_DEVTOOLS_EXTENSION__.open();
 ```
-See the [API details](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Methods.md#windowdevtoolsextensionopenposition).
+Make sure to have it conditionally. Auto opening windows is a bad DX. See the [API](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Methods.md#open) for details.
 #### How to keep DevTools window focused all the time in a chrome panel
-To enable chrome panels feature in Chrome, type in `chrome://flags/#enable-panels` in the url bar and click on "enable" under "enable panels". Make sure to click on "relaunch now " at the bottom of the page, to take effect.
-#### How to include DevTools in the page
-You can open DevTools in a new window (by opening context menu with right mouse click), from popup (clicking on the browser action button) or from Chrome dev panel. If you still, for some reason, want to include it directly in your page, load the following url in iframe: `chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/window.html`. You'd probably include it in a docker or in a resizeable component.
+To enable chrome panels feature in Chrome, type in `chrome://flags/#enable-panels` in the url bar and click on "enable" under "enable panels". Make sure to click on "relaunch now " at the bottom of the page, to take effect. After that click `Open in a panel` from our context menu.
 #### How to enable/disable errors notifying
-Just find `Redux DevTools` on the extensions page (`chrome://extensions/`) and click the `Options` link to customize everything. The errors notifying is enabled by default, but it works only when the store enhancer is called (in order not to show notifications for any sites you visit). In case you want notifications for a non-redux app, init it explicitly by calling `window.__REDUX_DEVTOOLS_EXTENSION__.notifyErrors()` (probably you'll check if `window.__REDUX_DEVTOOLS_EXTENSION__` exists before calling it).
+Just find `Redux DevTools` on the extensions page (`chrome://extensions/`) and click the `Options` link to customize everything. The errors notifying is disabled by default. If enabled, it works only when the store enhancer is called (in order not to show notifications for any sites you visit). In case you want notifications for a non-redux app, init it explicitly by calling `window.__REDUX_DEVTOOLS_EXTENSION__.notifyErrors()` (probably you'll check if `window.__REDUX_DEVTOOLS_EXTENSION__` exists before calling it).
 #### How to get it work with WebWorkers, React Native, hybrid, desktop and server side apps
-Of course, it is not possible to inject extension's script there and to communicate directly. To solve this we use [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools). Just find `Remote` button or press `Alt`+`Shift`+`arrow up` for remote monitoring. 
+It is not possible to inject extension's script there and to communicate directly. To solve this, use [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools). After including it inside the app, click `Remote` button for remote monitoring. 
 #### Keyboard shortcuts
 To set/change the keyboard shortcuts, click "Keyboard shortcuts" button on the bottom of the extensions page (`chrome://extensions/`). By default only `Cmd` (`Ctrl`) + `Shift` + `E` is available, which will open the extension popup (only when the Redux store is available in the current page).

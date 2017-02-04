@@ -1,3 +1,5 @@
+## Create Redux store for debugging
+
 ### `window.__REDUX_DEVTOOLS_EXTENSION__(reducer, [preloadedState, config])`
 > Note: This is not intended to replace Redux' `createStore`. Use this approach only when you want to inspect changes outside of Redux or when not using Redux inside your application.
 
