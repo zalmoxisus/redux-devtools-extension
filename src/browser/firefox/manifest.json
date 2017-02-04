@@ -1,8 +1,8 @@
 {
-  "version": "2.11.1",
+  "version": "2.13.0",
   "name": "Redux DevTools",
   "manifest_version": 2,
-  "description": "DevTools for Redux with actions history, undo and replay.",
+  "description": "Redux Developer Tools for debugging application state changes.",
   "homepage_url": "https://github.com/zalmoxisus/redux-devtools-extension",
   "applications": {
     "gecko": {
