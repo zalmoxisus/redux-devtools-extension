@@ -85,12 +85,12 @@ export class AppModule { }
 [`Example of integration`](https://github.com/ngrx/example-app) ([live demo](http://ngrx.github.io/example-app)).
 
 ### [Ember](http://emberjs.com/)
-#### [`ember-redux`](https://github.com/toranb/ember-redux)
+#### [`ember-redux`](https://github.com/ember-redux/ember-redux)
 ```js
 //app/enhancers/index.js
-import redux from 'npm:redux';
-var devtools = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : noop => noop;
-export default redux.compose(devtools);
+import { compose } from 'redux';
+var devtools = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
+export default compose(devtools);
 ```
 
 ### [Cycle](https://github.com/cyclejs/cyclejs)
@@ -133,7 +133,7 @@ supportChromeExtension( State );
 const horizon = Horizon();
 
 // ...
-// Specify the horizon instance to monitor 
+// Specify the horizon instance to monitor
 hzRemotedev(horizon("react_messages"))
 ```
 
