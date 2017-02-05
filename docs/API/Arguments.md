@@ -32,18 +32,6 @@ The `options` object is optional, and can include any of the following.
 ### `serialize`
 *boolean* or *object* which contains:
 
-- **replacer** `function(key, value)` - [JSON `replacer` function](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#The_replacer_parameter) used for both actions and states stringify.
-
-  Example of usage with [mori data structures](https://github.com/swannodette/mori):
-  ```js
-  const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
-    serialize: {
-      replacer: (key, value) => value && mori.isMap(value) ? mori.toJs(value) : value
-    }
-  }));
-  ```    
-- **reviver** `function(key, value)` - [JSON `reviver` function](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#Using_the_reviver_parameter) used for parsing the imported actions and states. See [`remotedev-serialize`](https://github.com/zalmoxisus/remotedev-serialize/blob/master/immutable/serialize.js#L8-L41) as an example on how to serialize special data types and get them back.
-
 - **options** `object or boolean`:
    - `undefined` - will use regular `JSON.stringify` to send data (it's the fast mode).
    - `false` - will handle also circular references.
@@ -60,6 +48,47 @@ The `options` object is optional, and can include any of the following.
        }
      }));
      ```
+
+- **replacer** `function(key, value)` - [JSON `replacer` function](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#The_replacer_parameter) used for both actions and states stringify.
+
+  Example of usage with [mori data structures](https://github.com/swannodette/mori):
+  ```js
+  const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
+    serialize: {
+      replacer: (key, value) => value && mori.isMap(value) ? mori.toJs(value) : value
+    }
+  }));
+  ```
+  In addition, you can specify a data type by adding a [`__serializedType__`](https://github.com/zalmoxisus/remotedev-serialize/blob/master/helpers/index.js#L4) key. So you can deserialize it back while importing or persisting data. Moreover, it will also [show a nice preview showing the provided custom type](https://cloud.githubusercontent.com/assets/7957859/21814330/a17d556a-d761-11e6-85ef-159dd12f36c5.png):
+  ```js
+  const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
+    serialize: {
+      replacer: (key, value) => {
+        if (Immutable.List.isList(value)) { // use your custom data type checker
+          return {
+            data: value.toArray(), // ImmutableJS custom method to get JS data as array
+            __serializedType__: 'ImmutableList' // mark you custom data type to show and retrieve back
+          }
+        }
+      }
+    }
+  }));
+  ```
+- **reviver** `function(key, value)` - [JSON `reviver` function](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#Using_the_reviver_parameter) used for parsing the imported actions and states. See [`remotedev-serialize`](https://github.com/zalmoxisus/remotedev-serialize/blob/master/immutable/serialize.js#L8-L41) as an example on how to serialize special data types and get them back:
+  ```js
+  const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
+    serialize: {
+      reviver: (key, value) => {
+        if (typeof value === 'object' && value !== null && '__serializedType__'  in value) {
+          switch (value.__serializedType__) {
+            case 'ImmutableList': return Immutable.List(value.data);
+          }
+        }
+      }
+    }
+  }));
+  ```
+
 - **immutable** `object` - automatically serialize/deserialize immutablejs via [remotedev-serialize](https://github.com/zalmoxisus/remotedev-serialize). Just pass the Immutable library like so:
 
   ```js
