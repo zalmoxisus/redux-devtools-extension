@@ -58,7 +58,8 @@ function amendActionType(action, serialize) {
   if (!action.type) return { action: { type: 'update' }, timestamp: Date.now() };
   if (action.action) return action;
   return {
-    action: serialize ? action : { ...action, type: action.type.toString() },
+    action: !serialize && typeof action.type === 'symbol' ?
+      { ...action, type: action.type.toString() } : action,
     timestamp: Date.now()
   };
 }
