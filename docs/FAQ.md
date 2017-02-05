@@ -4,7 +4,6 @@
 - [How to get it work](#how-to-get-it-work)
 - [How to disable/enable it in production](#how-to-disableenable-it-in-production)
 - [How to persist debug sessions across page reloads](#how-to-persist-debug-sessions-across-page-reloads)
-- [How to include it in chrome apps and extensions](#how-to-include-it-in-chrome-apps-and-extensions)
 - [How to open DevTools programmatically](#how-to-open-devtools-programmatically)
 - [How to keep DevTools window focused all the time in a chrome panel](#how-to-open-devtools-programmatically)
 - [How to enable/disable errors notifying](#how-to-enabledisable-errors-notifying)
@@ -21,12 +20,6 @@
 Usually you don't have to. See [the article for details on how to include it in production](https://medium.com/@zalmoxis/using-redux-devtools-in-production-4c5b56c5600f). 
 #### How to persist debug sessions across page reloads
 Just click the `Persist` button or add `?debug_session=<session_name>` to the url.
-#### How to include it in chrome apps and extensions
-Unlike web apps, Chrome extension doesn't inject anything in other chrome extensions or apps, so you have to do it by yourself to allow debugging. Just add:
-```
-<script src="chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/js/redux-devtools-extension.js"></script>
-```
-To include it in a chrome extension's content script follow [the example](https://github.com/zalmoxisus/browser-redux/commit/df2db9ee11f2d197c4329b2c8a6e197da1edffd4). 
 #### How to open DevTools programmatically
 ```js
 window.__REDUX_DEVTOOLS_EXTENSION__.open();

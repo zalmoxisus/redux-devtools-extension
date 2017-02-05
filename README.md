@@ -130,7 +130,9 @@ const store = createStore(reducer, /* preloadedState, */ devToolsEnhancer(
 ```    
 
 ### 1.5 Using in production
-It's useful to include the extension in production as well. Just restrict it there:
+It's useful to include the extension in production as well. Usually you [can use it as for development](https://medium.com/@zalmoxis/using-redux-devtools-in-production-4c5b56c5600f). 
+
+If you want to restrict it there, use `redux-devtools-extension/logOnlyInProduction`:
 ```js
 import { createStore } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension/logOnlyInProduction';
@@ -154,6 +156,8 @@ or with middlewares and enhancers:
  ```
 >  You'll have to add `'process.env.NODE_ENV': JSON.stringify('production')` in your Webpack config for the production bundle ([to envify](https://github.com/gaearon/redux-devtools/blob/master/docs/Walkthrough.md#exclude-devtools-from-production-builds)). If you use `react-create-app`, it already does it for you.
 
+ If you're already checking `process.env.NODE_ENV` when creating the store, include `redux-devtools-extension/logOnly` for production enviroment.
+
  If you don’t want to allow the extension in production, just use `redux-devtools-extension/developmentOnly`.
 
 > See [the article](https://medium.com/@zalmoxis/using-redux-devtools-in-production-4c5b56c5600f) for more details. 
@@ -165,7 +169,7 @@ Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-dev
 See [integrations](docs/Integrations.md) and [the blog post](https://medium.com/@zalmoxis/redux-devtools-without-redux-or-how-to-have-a-predictable-state-with-any-architecture-61c5f5a7716f) for more details on how to use the extension with any architecture.
   
 ## Docs
-  - [Parameters (options)](docs/API/Arguments.md)
+  - [Options (arguments)](docs/API/Arguments.md)
   - [Methods (advanced API)](docs/API/Methods.md)
   - [Create Redux store for debugging](docs/API/Methods.md).
   - [FAQ](docs/FAQ.md)
@@ -175,12 +179,13 @@ See [integrations](docs/Integrations.md) and [the blog post](https://medium.com/
   - [Feedback](docs/Feedback.md)
 
 ## Demo
-Open these urls to test the extension:
+Live demos to use the extension with:
 
  - [Counter](http://zalmoxisus.github.io/examples/counter/)
  - [TodoMVC](http://zalmoxisus.github.io/examples/todomvc/)
- - [Redux Form](http://erikras.github.io/redux-form/#/examples/simple)
- - [Tetris](https://chvin.github.io/react-tetris/?lan=en)
+ - [Redux Form](http://redux-form.com/6.5.0/examples/simple/)
+ - [React Tetris](https://chvin.github.io/react-tetris/?lan=en)
+ - [Book Collection (Angular ngrx store)](http://ngrx.github.io/example-app/)
 
 Also see [`./examples` folder](https://github.com/zalmoxisus/redux-devtools-extension/tree/master/examples).
 
