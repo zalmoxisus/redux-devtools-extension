@@ -18,7 +18,7 @@ Most likely you mutate the state. Check it by [adding `redux-immutable-state-inv
 
 ### It doesn't work with other store enhancers 
 
-Usually the extension's store enhancer should be last in the compose. When you're using `window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__` or `composeWithDevTools` helper you don't have to worry about the enhancers order. However some enhancers ([like `redux-batched-subscribe`](https://github.com/zalmoxisus/redux-devtools-extension/issues/261)) also have this requirement to be the last in the compose. In this case you can use it like so:
+Usually the extension's store enhancer should be last in the compose. When you're using [`window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__`](/README.md#12-advanced-store-setup) or [`composeWithDevTools`](/README.md#13-use-redux-devtools-extension-package-from-npm) helper you don't have to worry about the enhancers order. However some enhancers ([like `redux-batched-subscribe`](https://github.com/zalmoxisus/redux-devtools-extension/issues/261)) also have this requirement to be the last in the compose. In this case you can use it like so:
 
 ```js
 const store = createStore(reducer, preloadedState, compose(
@@ -76,12 +76,10 @@ React synthetic event cannot be reused for performance reason. So, it's not poss
 
 ### Symbols or other unserializable data not shown 
 
-To get data which cannot be serialized by `JSON.stringify`, use `serialize` parameter, setting `options` to `true`:
+To get data which cannot be serialized by `JSON.stringify`, set [`serialize` parameter](/docs/API/Arguments.md#serialize):
 ```js
 const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
-   serialize: { 
-     options: true
-  }
+   serialize: true
 }));
 ```
 

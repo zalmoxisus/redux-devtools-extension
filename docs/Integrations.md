@@ -1,4 +1,4 @@
-# Integrations for different languages and frameworks
+# Integrations for js and non-js frameworks
 
 Mostly functional:
 - [Angular](#angular)

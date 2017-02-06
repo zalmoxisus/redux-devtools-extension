@@ -56,7 +56,7 @@ Send a new action and state manually to be shown on the monitor. It's recommende
 - `action` *String* (action type) or *Object* with required `type` key.
 - `state` *any* - usually object to expand. 
 - [`options`] *Object* - [see the available options](Arguments.md).
-- [`instanceId`] *String* - instance id for which to include the log.  
+- [`instanceId`] *String* - instance id for which to include the log. If not specified and not present in the `options` object, will be the first available instance.
 
 <a id="listen"></a>
 ### listen(onMessage, instanceId)

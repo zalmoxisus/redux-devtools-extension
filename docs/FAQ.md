@@ -2,14 +2,13 @@
 
 ## Table of Contents
 - [How to get it work](#how-to-get-it-work)
-- [How to disable/enable it in production](#how-to-disableenable-it-in-production)
+- [How to disable/enable it in production](#how-to-disable-it-in-production)
 - [How to persist debug sessions across page reloads](#how-to-persist-debug-sessions-across-page-reloads)
 - [How to open DevTools programmatically](#how-to-open-devtools-programmatically)
-- [How to keep DevTools window focused all the time in a chrome panel](#how-to-open-devtools-programmatically)
+- [How to keep DevTools window focused all the time in a chrome panel](#how-to-keep-devtools-window-focused-all-the-time-in-a-chrome-panel)
 - [How to enable/disable errors notifying](#how-to-enabledisable-errors-notifying)
 - [How to get it work with WebWorkers, React Native, hybrid, desktop and server side apps](#how-to-get-it-work-with-webworkers-react-native-hybrid-desktop-and-server-side-apps)
 - [Keyboard shortcuts](#keyboard-shortcuts)
-- [How to change keyboard shortcuts](#how-to-change-keyboard-shortcuts)
 
 #### How to get it work
 - Check the extension with [Counter](http://zalmoxisus.github.io/examples/counter/) or [TodoMVC](http://zalmoxisus.github.io/examples/todomvc/) demo.
