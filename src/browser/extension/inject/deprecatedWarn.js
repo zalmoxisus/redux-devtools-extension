@@ -1,8 +1,7 @@
 // Deprecated warning for inject.bundle.js
-const prefix = `chrome-extension://${window.devToolsExtensionID}/js/`;
 /* eslint-disable no-console */
 console.warn(
-  `Using '${prefix}inject.bundle.js' is deprecated. ` +
-  `Please use '${prefix}redux-devtools-extension.js' instead.`
+  'Using Redux DevTools inside extensions is deprecated and won\'t be supported in the next major version. ' +
+  'Please use https://github.com/zalmoxisus/remote-redux-devtools instead.'
 );
 /* eslint-enable no-console */
