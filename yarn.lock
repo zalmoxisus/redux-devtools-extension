@@ -5299,15 +5299,15 @@ redux-devtools-chart-monitor@^1.6.1:
     redux-devtools-themes "^1.0.0"
 
 redux-devtools-instrument@^1.0.1:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/redux-devtools-instrument/-/redux-devtools-instrument-1.7.0.tgz#0b8cdd3f7731dcf4ca6146950cc4966c78a91de5"
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/redux-devtools-instrument/-/redux-devtools-instrument-1.7.1.tgz#30a28b76ac7fcfd0b8d4295ab6178cfc85088f6c"
   dependencies:
     lodash "^4.2.0"
     symbol-observable "^1.0.2"
 
-redux-devtools-instrument@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/redux-devtools-instrument/-/redux-devtools-instrument-1.7.1.tgz#30a28b76ac7fcfd0b8d4295ab6178cfc85088f6c"
+redux-devtools-instrument@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/redux-devtools-instrument/-/redux-devtools-instrument-1.8.0.tgz#db1840ed3d8152af6792913698e3424c119de9aa"
   dependencies:
     lodash "^4.2.0"
     symbol-observable "^1.0.2"
@@ -5405,9 +5405,9 @@ regjsparser@^0.1.4:
   dependencies:
     jsesc "~0.5.0"
 
-remotedev-app@^0.10.6:
-  version "0.10.6"
-  resolved "https://registry.yarnpkg.com/remotedev-app/-/remotedev-app-0.10.6.tgz#1658e7e73ef4d8a5dd7bd8b991817f34a5731751"
+remotedev-app@^0.10.7:
+  version "0.10.7"
+  resolved "https://registry.yarnpkg.com/remotedev-app/-/remotedev-app-0.10.7.tgz#f5b646851d317b62bce0a890546af556da48cf64"
   dependencies:
     chrome-storage-local "^0.1.6"
     d3-state-visualizer "^1.3.1"
@@ -5426,15 +5426,15 @@ remotedev-app@^0.10.6:
     redux-devtools-log-monitor "^1.2.0"
     redux-devtools-test-generator "^0.4.0"
     redux-devtools-themes "^1.0.0"
-    remotedev-inspector-monitor "^0.10.0"
+    remotedev-inspector-monitor "^0.10.2"
     remotedev-monitor-components "^0.0.5"
     remotedev-slider "1.1.3"
     socketcluster-client "^5.0.0"
     styled-components "^1.1.1"
 
-remotedev-inspector-monitor@^0.10.0:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/remotedev-inspector-monitor/-/remotedev-inspector-monitor-0.10.1.tgz#fa2d3dd87328a2d4147c006b48ffa540f46faa20"
+remotedev-inspector-monitor@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/remotedev-inspector-monitor/-/remotedev-inspector-monitor-0.10.2.tgz#2f6618fc2a2d5aa9d57e97baa21b9cb4f330f638"
   dependencies:
     babel-runtime "^6.3.19"
     dateformat "^1.0.12"
@@ -5448,20 +5448,13 @@ remotedev-inspector-monitor@^0.10.0:
     lodash.debounce "^4.0.3"
     react-base16-styling "^0.4.1"
     react-dragula "^1.1.17"
-    react-json-tree "^0.10.0"
+    react-json-tree "0.10.0"
     react-pure-render "^1.0.2"
     redux-devtools-themes "^1.0.0"
 
 remotedev-monitor-components@^0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/remotedev-monitor-components/-/remotedev-monitor-components-0.0.2.tgz#96c1e14f7b7fd25d8fc0fd954e2311d00cbb7b56"
-  dependencies:
-    codemirror "^5.21.0"
-    styled-components "^1.1.1"
-
-remotedev-monitor-components@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/remotedev-monitor-components/-/remotedev-monitor-components-0.0.4.tgz#b782c3992c89367f04af5ca1fc63b81b582c761a"
   dependencies:
     codemirror "^5.21.0"
     styled-components "^1.1.1"
