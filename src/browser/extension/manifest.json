@@ -1,8 +1,8 @@
 {
-  "version": "2.13.0",
+  "version": "2.13.2",
   "name": "Redux DevTools",
   "short_name": "Redux DevTools",
-  "description": "Redux Developer Tools for debugging application state changes.",
+  "description": "Redux DevTools for debugging application's state changes.",
   "homepage_url": "https://github.com/zalmoxisus/redux-devtools-extension",
   "manifest_version": 2,
   "page_action": {
