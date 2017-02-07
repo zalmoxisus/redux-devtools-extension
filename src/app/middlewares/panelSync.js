@@ -7,7 +7,7 @@ function panelDispatcher(bgConnection) {
 
   return store => next => action => {
     const result = next(action);
-    if (!autoselected && action.type === UPDATE_STATE) {
+    if (!autoselected && action.type === UPDATE_STATE && tabId) {
       autoselected = true;
       const connections = store.getState()
         .instances.connections[tabId];
@@ -18,7 +18,8 @@ function panelDispatcher(bgConnection) {
     if (action.type === LIFTED_ACTION || action.type === 'TOGGLE_PERSIST') {
       const instances = store.getState().instances;
       const instanceId = getActiveInstance(instances);
-      bgConnection.postMessage({ ...action, instanceId, id: tabId });
+      const id = instances.options[instanceId].connectionId;
+      bgConnection.postMessage({ ...action, instanceId, id });
     }
     return result;
   };

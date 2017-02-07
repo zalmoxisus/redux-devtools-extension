@@ -61,7 +61,7 @@ function renderNA() {
 
 function init(id) {
   renderNA();
-  bgConnection = chrome.runtime.connect({ name: id.toString() });
+  bgConnection = chrome.runtime.connect({ name: id ? id.toString() : undefined });
   bgConnection.onMessage.addListener(message => {
     if (message.type === 'NA') {
       if (message.id === id) renderNA();
@@ -73,12 +73,4 @@ function init(id) {
   });
 }
 
-if (chrome.devtools.inspectedWindow.tabId) {
-  init(chrome.devtools.inspectedWindow.tabId);
-} else {
-  // If there's no tabId it means we're inspecting an extension background script and will use its id
-  chrome.devtools.inspectedWindow.eval('chrome.runtime.id',
-    function(result, isException) {
-      if (!isException && result) init(result);
-    });
-}
+init(chrome.devtools.inspectedWindow.tabId);
