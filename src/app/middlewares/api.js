@@ -192,10 +192,10 @@ function onConnect(port) {
     monitorInstances(true);
     monitors++;
     port.onDisconnect.addListener(disconnect('monitor', id));
-  } else {
-    id = port.name;
+  } else { // devpanel
+    id = port.name || port.sender.frameId;
     connections.panel[id] = port;
-    monitorInstances(true, id);
+    monitorInstances(true, port.name);
     monitors++;
     listener = msg => {
       window.store.dispatch(msg);
