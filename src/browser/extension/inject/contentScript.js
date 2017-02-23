@@ -1,9 +1,7 @@
-import { getOptionsFromBg, injectOptions, isAllowed } from '../options/syncOptions';
+import { injectOptions, isAllowed } from '../options/syncOptions';
 const source = '@devtools-extension';
 let connected = false;
 let bg;
-
-if (!window.devToolsOptions) getOptionsFromBg();
 
 function connect() {
   // Connect to the background script
