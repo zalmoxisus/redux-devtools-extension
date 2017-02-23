@@ -83,4 +83,4 @@ const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && 
 }));
 ```
 
-It will handle dates, regexes, undefined, error objects, symbols and functions.
+It will handle also date, regex, undefined, error objects, symbols, maps, sets and functions.
