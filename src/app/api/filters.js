@@ -18,7 +18,8 @@ export function getLocalFilter(config) {
 
 export function isFiltered(action, localFilter) {
   if (
-    !localFilter && window.devToolsOptions.filter === FilterState.DO_NOT_FILTER ||
+    !localFilter || window.devToolsOptions &&
+    window.devToolsOptions.filter === FilterState.DO_NOT_FILTER ||
     typeof action.type.match !== 'function'
   ) return false;
 
@@ -47,7 +48,10 @@ export function filterState(state, type, localFilter, stateSanitizer, actionSani
   if (type === 'ACTION') return !stateSanitizer ? state : stateSanitizer(state, nextActionId - 1);
   else if (type !== 'STATE') return state;
 
-  if (predicate || localFilter || window.devToolsOptions.filter !== FilterState.DO_NOT_FILTER) {
+  if (
+    predicate || localFilter || window.devToolsOptions &&
+    window.devToolsOptions.filter !== FilterState.DO_NOT_FILTER
+  ) {
     const filteredStagedActionIds = [];
     const filteredComputedStates = [];
     const sanitizedActionsById = actionSanitizer && {};
