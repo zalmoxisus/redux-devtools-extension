@@ -5,7 +5,6 @@
 - [How to disable/enable it in production](#how-to-disable-it-in-production)
 - [How to persist debug sessions across page reloads](#how-to-persist-debug-sessions-across-page-reloads)
 - [How to open DevTools programmatically](#how-to-open-devtools-programmatically)
-- [How to keep DevTools window focused all the time in a chrome panel](#how-to-keep-devtools-window-focused-all-the-time-in-a-chrome-panel)
 - [How to enable/disable errors notifying](#how-to-enabledisable-errors-notifying)
 - [How to get it work with WebWorkers, React Native, hybrid, desktop and server side apps](#how-to-get-it-work-with-webworkers-react-native-hybrid-desktop-and-server-side-apps)
 - [Keyboard shortcuts](#keyboard-shortcuts)
@@ -24,8 +23,6 @@ Just click the `Persist` button or add `?debug_session=<session_name>` to the ur
 window.__REDUX_DEVTOOLS_EXTENSION__.open();
 ```
 Make sure to have it conditionally. Auto opening windows is a bad DX. See the [API](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Methods.md#open) for details.
-#### How to keep DevTools window focused all the time in a chrome panel
-To enable chrome panels feature in Chrome, type in `chrome://flags/#enable-panels` in the url bar and click on "enable" under "enable panels". Make sure to click on "relaunch now " at the bottom of the page, to take effect. After that click `Open in a panel` from our context menu.
 #### How to enable/disable errors notifying
 Just find `Redux DevTools` on the extensions page (`chrome://extensions/`) and click the `Options` link to customize everything. The errors notifying is disabled by default. If enabled, it works only when the store enhancer is called (in order not to show notifications for any sites you visit). In case you want notifications for a non-redux app, init it explicitly by calling `window.__REDUX_DEVTOOLS_EXTENSION__.notifyErrors()` (probably you'll check if `window.__REDUX_DEVTOOLS_EXTENSION__` exists before calling it).
 #### How to get it work with WebWorkers, React Native, hybrid, desktop and server side apps
