@@ -50,7 +50,7 @@ export function filterState(state, type, localFilter, stateSanitizer, actionSani
 
   if (
     predicate || localFilter || window.devToolsOptions &&
-    window.devToolsOptions.filter !== FilterState.DO_NOT_FILTER
+    window.devToolsOptions.filter && window.devToolsOptions.filter !== FilterState.DO_NOT_FILTER
   ) {
     const filteredStagedActionIds = [];
     const filteredComputedStates = [];
@@ -60,6 +60,7 @@ export function filterState(state, type, localFilter, stateSanitizer, actionSani
 
     state.stagedActionIds.forEach((id, idx) => {
       const liftedAction = actionsById[id];
+      if (!liftedAction) return;
       const currAction = liftedAction.action;
       const liftedState = computedStates[idx];
       const currState = liftedState.state;
