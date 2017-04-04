@@ -218,7 +218,7 @@ export function connect(preConfig) {
   const init = (state, liftedData) => {
     const message = {
       type: 'INIT',
-      payload: stringify(state),
+      payload: stringify(state, config),
       instanceId: id,
       source
     };
