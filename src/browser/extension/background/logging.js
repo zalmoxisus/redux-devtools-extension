@@ -21,7 +21,7 @@ export function getReport(reportId, tabId, instanceId) {
         message: 'IMPORT',
         state: JSON.stringify({ payload, preloadedState }),
         id: tabId,
-        instanceId
+        instanceId: `${tabId}/${instanceId}`
       });
     }).catch(function(err) {
       /* eslint-disable no-console */
