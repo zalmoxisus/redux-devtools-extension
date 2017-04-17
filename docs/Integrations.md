@@ -170,5 +170,15 @@ Program.mkProgram init update view
 [WIP](https://github.com/zalmoxisus/remotedev-server/issues/34)
 
 ### [Swift](https://github.com/apple/swift)
-#### [`katana-swift`](https://github.com/BendingSpoons/katana-swift)
-[WIP](https://github.com/zalmoxisus/redux-devtools-extension/issues/288)
+#### [`katanaMonitor`](https://github.com/bolismauro/katanaMonitor-lib-swift) for [`katana-swift`](https://github.com/BendingSpoons/katana-swift)
+```swift
+import KatanaMonitor
+
+var middleware: [StoreMiddleware] = [
+// other middleware
+]
+
+#if DEBUG
+middleware.append(MonitorMiddleware.create(using: .defaultConfiguration))
+#endif
+```
