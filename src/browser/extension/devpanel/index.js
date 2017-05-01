@@ -16,7 +16,7 @@ let bgConnection;
 let naTimeout;
 let preloadedState;
 
-const isChrome = typeof browser === undefined; // only Firefox 'defines the browser'
+const isChrome = navigator.userAgent.indexOf('Firefox') === -1;
 
 getPreloadedState(position, state => { preloadedState = state; });
 
