@@ -15,6 +15,9 @@ let store;
 let bgConnection;
 let naTimeout;
 let preloadedState;
+
+const isChrome = typeof browser === undefined; // only Firefox 'defines the browser'
+
 getPreloadedState(position, state => { preloadedState = state; });
 
 function renderDevTools() {
@@ -35,27 +38,32 @@ function renderNA() {
   if (rendered === false) return;
   rendered = false;
   naTimeout = setTimeout(() => {
-    chrome.devtools.inspectedWindow.getResources(resources => {
-      let message;
-      if (resources[0].url.substr(0, 4) === 'file') {
-        message = (
-          <div style={messageStyle}>
-            No store found. Most likely you didn't allow access to file URLs. <a href="https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/Troubleshooting.md#access-file-url-file" target="_blank">See details</a>.
-          </div>
-        );
-      } else {
-        message = (
-          <div style={messageStyle}>
-            No store found. Make sure to follow <a href="https://github.com/zalmoxisus/redux-devtools-extension#usage" target="_blank">the instructions</a>.
-          </div>
-        );
-      }
+    let message = (
+      <div style={messageStyle}>
+        No store found. Make sure to follow <a href="https://github.com/zalmoxisus/redux-devtools-extension#usage" target="_blank">the instructions</a>.
+      </div>
+    );
+    if (isChrome) {
+      chrome.devtools.inspectedWindow.getResources(resources => {
+        if (resources[0].url.substr(0, 4) === 'file') {
+          message = (
+            <div style={messageStyle}>
+              No store found. Most likely you did not allow access to file URLs. <a href="https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/Troubleshooting.md#access-file-url-file" target="_blank">See details</a>.
+            </div>
+          );
+        }
 
+        const node = document.getElementById('root');
+        unmountComponentAtNode(node);
+        render(message, node);
+        store = undefined;
+      });
+    } else {
       const node = document.getElementById('root');
       unmountComponentAtNode(node);
       render(message, node);
       store = undefined;
-    });
+    }
   }, 3500);
 }
 
