@@ -35,8 +35,8 @@ The `options` object is optional, and can include any of the following.
 - **options** `object or boolean`:
    - `undefined` - will use regular `JSON.stringify` to send data (it's the fast mode).
    - `false` - will handle also circular references.
-   - `true` - will handle also date, regex, undefined, error objects, symbols, maps, sets and functions.
-   - object, which contains `date`, `regex`, `undefined`, `error`, `symbol`, `map`, `set` and `function` keys. For each of them you can indicate if to include (by setting as `true`). For `function` key you can also specify a custom function which handles serialization. See [`jsan`](https://github.com/kolodny/jsan) for more details. Example:
+   - `true` - will handle also date, regex, undefined, primitives, error objects, symbols, maps, sets and functions.
+   - object, which contains `date`, `regex`, `undefined`, `nan`, `infinity`, `error`, `symbol`, `map`, `set` and `function` keys. For each of them you can indicate if to include (by setting as `true`). For `function` key you can also specify a custom function which handles serialization. See [`jsan`](https://github.com/kolodny/jsan) for more details. Example:
 
      ```js
      const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
