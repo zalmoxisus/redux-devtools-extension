@@ -15,7 +15,7 @@ function tryCatchStringify(obj) {
     /* eslint-disable no-console */
     if (process.env.NODE_ENV !== 'production') console.log('Failed to stringify', err);
     /* eslint-enable no-console */
-    return jsan.stringify(obj, null, null, { circular: '[CIRCULAR]' });
+    return jsan.stringify(obj, null, null, { circular: '[CIRCULAR]', date: true });
   }
 }
 
