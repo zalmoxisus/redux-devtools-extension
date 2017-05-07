@@ -31,13 +31,15 @@ export function getSeralizeParameter(config, param) {
   if (serialize) {
     if (serialize === true) return { options: true };
     if (serialize.immutable) {
+      const immutableSerializer = seralizeImmutable(serialize.immutable, serialize.refs);
       return {
-        replacer: seralizeImmutable(serialize.immutable, serialize.refs).replacer,
+        replacer: immutableSerializer.replacer,
+        reviver: immutableSerializer.reviver,
         options: serialize.options || true
       };
     }
-    if (!serialize.replacer) return { options: serialize.options };
-    return { replacer: serialize.replacer, options: serialize.options || true };
+    if (!serialize.replacer && !serialize.reviver) return { options: serialize.options };
+    return { replacer: serialize.replacer, reviver: serialize.reviver, options: serialize.options || true };
   }
 
   const value = config[param];
