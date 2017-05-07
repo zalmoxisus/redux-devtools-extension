@@ -41,11 +41,11 @@ describe('DevTools panel for Electron', function() {
         if (attempts === 0) {
           return callback('Redux panel not found');
         }
-        const tabs = WebInspector.inspectorView._tabbedPane._tabs;
+        const tabs = UI.inspectorView._tabbedPane._tabs;
         const idList = tabs.map(tab => tab.id);
         const reduxPanelId = 'chrome-extension://redux-devtoolsRedux';
         if (idList.indexOf(reduxPanelId) !== -1) {
-          WebInspector.inspectorView.showPanel(reduxPanelId);
+          UI.inspectorView.showPanel(reduxPanelId);
           return callback(reduxPanelId);
         }
         attempts--;
@@ -68,8 +68,12 @@ describe('DevTools panel for Electron', function() {
   });
 
   it('should contain INIT action', async () => {
-    const val = await this.driver.findElement(webdriver.By.xpath('//div[contains(@class, "actionListRows-")]'))
-      .getText();
+    const element = await this.driver.wait(
+      webdriver.until.elementLocated(webdriver.By.xpath('//div[contains(@class, "actionListRows-")]')),
+      5000,
+      'Element not found'
+    );
+    const val = await element.getText();
     expect(val).toMatch(/@@INIT/);
   });
 

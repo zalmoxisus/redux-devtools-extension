@@ -46,7 +46,7 @@
     "chromedriver": "^2.27.2",
     "co-mocha": "^1.1.3",
     "cross-env": "^1.0.8",
-    "electron": "^1.4.4",
+    "electron": "^1.6.6",
     "enzyme": "^2.3.0",
     "eslint": "^1.7.1",
     "eslint-config-airbnb": "^0.1.0",
