@@ -3,7 +3,7 @@
     "mocha": true
   },
   "globals": {
-    "WebInspector": true
+    "UI": true
   },
   "rules": {
     "no-unused-expressions": 0
