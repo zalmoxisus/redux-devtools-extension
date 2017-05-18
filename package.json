@@ -82,7 +82,7 @@
     "redux": "^3.5.2",
     "redux-devtools": "^3.4.0",
     "redux-devtools-instrument": "^1.8.1",
-    "remotedev-app": "^0.10.7",
+    "remotedev-app": "^0.10.8",
     "remotedev-monitor-components": "^0.0.5",
     "remotedev-serialize": "^0.1.0",
     "remotedev-slider": "^1.1.1",
