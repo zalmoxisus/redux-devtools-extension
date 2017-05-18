@@ -71,18 +71,21 @@ class App extends Component {
           {!window.isElectron && position !== '#left' &&
           <Button
             Icon={LeftIcon}
+            title="Open the panel in a new popup window that is placed at the left of the screen."
             onClick={() => { this.openWindow('left'); }}
           />
           }
           {!window.isElectron && position !== '#right' &&
           <Button
             Icon={RightIcon}
+            title="Open the panel in a new popup window that is placed at the right of the screen."
             onClick={() => { this.openWindow('right'); }}
           />
           }
           {!window.isElectron && position !== '#bottom' &&
           <Button
             Icon={BottomIcon}
+            title="Open the panel in a new popup window that is placed at the bottom of the screen."
             onClick={() => { this.openWindow('bottom'); }}
           />
           }
