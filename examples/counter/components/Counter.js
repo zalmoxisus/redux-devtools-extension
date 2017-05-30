@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { isMonitorAction } from '../store/configureStore';
 
+
 class Counter extends Component {
   render() {
     const { increment, autoIncrement, incrementAsync, decrement, counter } = this.props;
