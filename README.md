@@ -35,7 +35,7 @@ For a basic [Redux store](http://redux.js.org/docs/api/createStore.html) simply 
 ```diff
  const store = createStore(
    reducer, /* preloadedState, */
-+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
++  window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
  );
 ```
 
@@ -48,7 +48,7 @@ In case ESLint is configured to not allow using the underscore dangle, wrap it l
 + /* eslint-disable no-underscore-dangle */
   const store = createStore(
    reducer, /* preloadedState, */
-   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+   window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
   );
 + /* eslint-enable */
 ```
