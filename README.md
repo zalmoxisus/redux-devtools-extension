@@ -110,7 +110,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 const composeEnhancers = composeWithDevTools({
-  // Specify here name, actionsBlacklist, actionsCreators and other options if needed
+  // Specify name here, actionsBlacklist, actionsCreators and other options if needed
 });
 const store = createStore(reducer, /* preloadedState, */ composeEnhancers(
   applyMiddleware(...middleware),
@@ -125,7 +125,7 @@ import { createStore } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 
 const store = createStore(reducer, /* preloadedState, */ devToolsEnhancer(
-  // Specify here name, actionsBlacklist, actionsCreators and other options if needed
+  // Specify name here, actionsBlacklist, actionsCreators and other options if needed
 ));
 ```    
 
