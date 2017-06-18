@@ -129,7 +129,7 @@ const store = createStore(reducer, /* preloadedState, */ devToolsEnhancer(
 ));
 ```    
 
-### 1.5 Using in production
+### 1.4 Using in production
 It's useful to include the extension in production as well. Usually you [can use it as for development](https://medium.com/@zalmoxis/using-redux-devtools-in-production-4c5b56c5600f). 
 
 If you want to restrict it there, use `redux-devtools-extension/logOnlyInProduction`:
@@ -162,7 +162,7 @@ or with middlewares and enhancers:
 
 > See [the article](https://medium.com/@zalmoxis/using-redux-devtools-in-production-4c5b56c5600f) for more details. 
 
-### 1.6 For React Native, hybrid, desktop and server side Redux apps
+### 1.5 For React Native, hybrid, desktop and server side Redux apps
 Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools)'s store enhancer, and from the extension's context menu choose 'Open Remote DevTools' for remote monitoring.
 
 ## 2. Without Redux
