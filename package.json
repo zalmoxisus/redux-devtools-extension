@@ -34,7 +34,7 @@
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.0",
-    "babel-loader": "^6.2.10",
+    "babel-loader": "^7.1.1",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-react-transform": "^2.0.2",
     "babel-plugin-transform-decorators-legacy": "^1.2.0",
@@ -68,8 +68,8 @@
     "rimraf": "^2.5.3",
     "selenium-webdriver": "^3.0.1",
     "sinon-chrome": "^1.1.2",
-    "style-loader": "^0.12.4",
-    "webpack": "^1.13.3"
+    "style-loader": "^0.18.2",
+    "webpack": "^3.1.0"
   },
   "dependencies": {
     "jsan": "^3.1.9",
