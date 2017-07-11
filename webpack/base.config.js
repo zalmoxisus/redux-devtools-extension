@@ -27,8 +27,8 @@ const baseConfig = (params) => ({
     new webpack.DefinePlugin(params.globals),
     ...(params.plugins ? params.plugins :
       [
+        new webpack.optimize.ModuleConcatenationPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
           comments: false,
           compressor: {
@@ -46,18 +46,18 @@ const baseConfig = (params) => ({
       app: path.join(__dirname, '../src/app'),
       tmp: path.join(__dirname, '../build/tmp')
     },
-    extensions: ['', '.js']
+    extensions: ['.js']
   },
   module: {
-    loaders: [
+    rules: [
       ...(params.loaders ? params.loaders : [{
         test: /\.js$/,
-        loader: 'babel',
+        use: 'babel-loader',
         exclude: /(node_modules|tmp\/page\.bundle)/
       }]),
       {
         test: /\.css?$/,
-        loaders: ['style', 'raw']
+        use: ['style-loader', 'raw-loader'],
       }
     ]
   }
