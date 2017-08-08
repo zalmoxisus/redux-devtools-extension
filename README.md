@@ -130,7 +130,7 @@ const store = createStore(reducer, /* preloadedState, */ devToolsEnhancer(
 ```    
 
 ### 1.4 Using in production
-It's useful to include the extension in production as well. Usually you [can use it as for development](https://medium.com/@zalmoxis/using-redux-devtools-in-production-4c5b56c5600f). 
+It's useful to include the extension in production as well. Usually you [can use it for development](https://medium.com/@zalmoxis/using-redux-devtools-in-production-4c5b56c5600f). 
 
 If you want to restrict it there, use `redux-devtools-extension/logOnlyInProduction`:
 ```js
