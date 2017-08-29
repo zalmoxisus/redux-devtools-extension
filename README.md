@@ -163,7 +163,9 @@ or with middlewares and enhancers:
 > See [the article](https://medium.com/@zalmoxis/using-redux-devtools-in-production-4c5b56c5600f) for more details. 
 
 ### 1.5 For React Native, hybrid, desktop and server side Redux apps
-Include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools)'s store enhancer, and from the extension's context menu choose 'Open Remote DevTools' for remote monitoring.
+For React Native we can use [`react-native-debugger`](https://github.com/jhen0409/react-native-debugger), which already included [the same API](https://github.com/jhen0409/react-native-debugger/blob/master/docs/redux-devtools-integration.md) with Redux DevTools Extension.
+
+For most platforms, include [`Remote Redux DevTools`](https://github.com/zalmoxisus/remote-redux-devtools)'s store enhancer, and from the extension's context menu choose 'Open Remote DevTools' for remote monitoring.
 
 ## 2. Without Redux
 See [integrations](docs/Integrations.md) and [the blog post](https://medium.com/@zalmoxis/redux-devtools-without-redux-or-how-to-have-a-predictable-state-with-any-architecture-61c5f5a7716f) for more details on how to use the extension with any architecture.
