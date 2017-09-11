@@ -92,7 +92,7 @@ const store = createStore(reducer, enhancer);
 
 To make things easier, there's an npm package to install:
 ```
-npm install --save redux-devtools-extension
+npm install --save-dev redux-devtools-extension
 ```
 and to use like so:
 ```js
