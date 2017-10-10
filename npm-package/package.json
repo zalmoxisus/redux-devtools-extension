@@ -3,6 +3,10 @@
   "version": "2.13.2",
   "description": "Wrappers for Redux DevTools Extension.",
   "main": "index.js",
+  "browser": {
+      "./developmentOnly.js": "./developmentOnly.browser.js",
+      "./index.js": "./index.browser.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/zalmoxisus/redux-devtools-extension"
