@@ -8,6 +8,13 @@ import generateId from './generateInstanceId';
 const listeners = {};
 export const source = '@devtools-page';
 
+function windowReplacer(key, value) {
+  if (value && value.window === value) {
+    return '[WINDOW]';
+  }
+  return value;
+}
+
 function tryCatchStringify(obj) {
   try {
     return JSON.stringify(obj);
@@ -15,7 +22,7 @@ function tryCatchStringify(obj) {
     /* eslint-disable no-console */
     if (process.env.NODE_ENV !== 'production') console.log('Failed to stringify', err);
     /* eslint-enable no-console */
-    return jsan.stringify(obj, null, null, { circular: '[CIRCULAR]', date: true });
+    return jsan.stringify(obj, windowReplacer, null, { circular: '[CIRCULAR]', date: true });
   }
 }
 
