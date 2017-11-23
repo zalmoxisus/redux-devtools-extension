@@ -138,7 +138,7 @@ hzRemotedev(horizon("react_messages"))
 ```
 
 ### [Fable](https://github.com/fable-compiler/Fable)
-#### [`purescript-react-redux`](fable-elmish)
+#### [`fable-elmish/debugger`](https://github.com/fable-elmish/debugger)
 ```fsharp
 open Elmish.Debug
 
