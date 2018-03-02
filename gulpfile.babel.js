@@ -105,8 +105,7 @@ gulp.task('copy:build:extension', () => {
 
 gulp.task('copy:build:firefox', ['build:extension'], () => {
   gulp.src([
-    './build/extension/**', '!./build/extension/devpanel.html', '!./build/extension/devtools.html',
-    '!./build/extension/js/devpanel.bundle.js', '!./build/extension/js/devtools.bundle.js'
+    './build/extension/**', '!./build/extension/devtools.html'
   ])
     .pipe(gulp.dest('./build/firefox'))
     .on('finish', function() {

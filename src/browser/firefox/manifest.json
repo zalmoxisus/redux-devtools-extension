@@ -1,5 +1,5 @@
 {
-  "version": "2.13.0",
+  "version": "2.15.2",
   "name": "Redux DevTools",
   "manifest_version": 2,
   "description": "Redux Developer Tools for debugging application state changes.",
@@ -7,7 +7,7 @@
   "applications": {
     "gecko": {
       "id": "extension@redux.devtools",
-      "strict_min_version": "48.0"
+      "strict_min_version": "54.0"
     }
   },
   "page_action": {
@@ -65,11 +65,12 @@
       "all_frames": true
     }
   ],
+  "devtools_page": "devtools.html",
   "web_accessible_resources": [
     "js/page.bundle.js",
     "js/inject.bundle.js",
     "js/redux-devtools-extension.js"
   ],
   "permissions": ["notifications", "contextMenus", "tabs", "storage", "<all_urls>"],
-  "content_security_policy": "script-src 'self'; object-src 'self'; style-src * 'unsafe-inline'; img-src 'self' data:;"
+  "content_security_policy": "script-src 'self'; object-src 'self'; img-src 'self' data:;"
 }
