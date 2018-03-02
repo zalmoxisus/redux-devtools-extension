@@ -43,7 +43,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "babel-register": "^6.18.0",
-    "chromedriver": "^2.27.2",
+    "chromedriver": "^2.35.0",
     "co-mocha": "^1.1.3",
     "cross-env": "^1.0.8",
     "electron": "^1.6.6",
@@ -81,10 +81,10 @@
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-devtools": "^3.4.0",
-    "redux-devtools-instrument": "^1.8.1",
-    "remotedev-app": "^0.10.7",
+    "redux-devtools-instrument": "^1.8.3",
+    "remotedev-app": "^0.10.8",
     "remotedev-monitor-components": "^0.0.5",
-    "remotedev-serialize": "^0.1.0",
+    "remotedev-serialize": "^0.1.1",
     "remotedev-slider": "^1.1.1",
     "remotedev-utils": "0.0.1"
   }
