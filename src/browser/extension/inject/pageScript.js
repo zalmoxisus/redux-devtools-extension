@@ -312,8 +312,8 @@ const preEnhancer = instanceId => next =>
 
     return {
       ...store,
-      dispatch: (action) => (
-        window.__REDUX_DEVTOOLS_EXTENSION_LOCKED__ ? action : store.dispatch(action)
+      dispatch: (...args) => (
+        window.__REDUX_DEVTOOLS_EXTENSION_LOCKED__ && store.dispatch(...args)
       )
     };
   };
