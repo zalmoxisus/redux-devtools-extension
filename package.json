@@ -89,8 +89,7 @@
     "remotedev-utils": "0.0.1"
   },
   "peerDependencies": {
-    "react": ">=15.0.0",
-    "react-dom": ">=15.0.0",
+    "react": "^15.0.0 || ^16.0.0",
     "react-redux": "^4.0.0 || ^5.0.0",
     "redux": "^3.0.0 || ^4.0.0"
   }
