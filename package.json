@@ -62,13 +62,9 @@
     "jsdom": "^9.8.3",
     "mocha": "^3.1.2",
     "raw-loader": "^0.5.1",
-    "react": "^15.4.1",
     "react-addons-test-utils": "^15.4.1",
-    "react-dom": "^15.4.1",
-    "react-redux": "^4.4.5",
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.1",
-    "redux": "^3.5.2",
     "rimraf": "^2.5.3",
     "selenium-webdriver": "^3.0.1",
     "sinon-chrome": "^1.1.2",
@@ -78,8 +74,12 @@
   "dependencies": {
     "jsan": "^3.1.9",
     "lodash": "^4.17.2",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
     "react-icons": "^2.2.1",
     "react-json-tree": "^0.10.9",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
     "redux-devtools": "^3.4.0",
     "redux-devtools-instrument": "^1.8.3",
     "remotedev-app": "^0.10.8",
@@ -87,11 +87,5 @@
     "remotedev-serialize": "^0.1.1",
     "remotedev-slider": "^1.1.1",
     "remotedev-utils": "0.0.1"
-  },
-  "peerDependencies": {
-    "react": "^15.0.0 || ^16.0.0",
-    "react-dom": "^15.0.0 || ^16.0.0",
-    "react-redux": "^4.0.0 || ^5.0.0",
-    "redux": "^3.0.0 || ^4.0.0"
   }
 }
