@@ -1,4 +1,4 @@
-import {Action, ActionCreator, GenericStoreEnhancer, compose} from "redux";
+import {Action, ActionCreator, StoreEnhancer, compose} from "redux";
 
 export interface EnhancerOptions {
   /**
@@ -156,6 +156,6 @@ export interface EnhancerOptions {
   };
 }
 
-export function composeWithDevTools(...funcs: Function[]): GenericStoreEnhancer;
+export function composeWithDevTools(...funcs: Function[]): StoreEnhancer;
 export function composeWithDevTools(options: EnhancerOptions): typeof compose;
-export function devToolsEnhancer(options: EnhancerOptions): GenericStoreEnhancer;
+export function devToolsEnhancer(options: EnhancerOptions): StoreEnhancer;
