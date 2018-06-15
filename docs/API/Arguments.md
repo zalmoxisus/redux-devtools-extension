@@ -18,7 +18,7 @@ Use with
 The `options` object is optional, and can include any of the following.
 
 ### `name`
-*string* - the instance name to be showed on the monitor page. Default value is `document.title`. If not specified and there's no document title, it will consist of `tabId` and `instanceId`.
+*string* - the instance name to be shown on the monitor page. Default value is `document.title`. If not specified and there's no document title, it will consist of `tabId` and `instanceId`.
   
 ### `actionCreators`
 *array* or *object* - action creators functions to be available in the Dispatcher. See [the example](https://github.com/zalmoxisus/redux-devtools-extension/commit/477e69d8649dfcdc9bf84dd45605dab7d9775c03).
