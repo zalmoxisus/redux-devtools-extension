@@ -72,7 +72,7 @@
     "webpack": "^3.1.0"
   },
   "dependencies": {
-    "jsan": "^3.1.9",
+    "jsan": "^3.1.10",
     "lodash": "^4.17.2",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
