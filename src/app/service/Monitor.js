@@ -23,7 +23,7 @@ export default class Monitor {
     this.active = false;
     clearTimeout(this.waitingTimeout);
   };
-  isHotReloaded = () => this.lastAction === '@@redux/INIT';
+  isHotReloaded = () => this.lastAction.indexOf('@@redux/INIT') === 0;
   isMonitorAction = () => this.lastAction && this.lastAction !== 'PERFORM_ACTION';
   isTimeTraveling = () => this.lastAction === 'JUMP_TO_STATE';
   isPaused = () => {
