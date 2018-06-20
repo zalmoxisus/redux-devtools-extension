@@ -156,6 +156,6 @@ export interface EnhancerOptions {
   };
 }
 
-export function composeWithDevTools(...funcs: Function[]): StoreEnhancer;
+export function composeWithDevTools(...funcs: Function[]): StoreEnhancer<any>;
 export function composeWithDevTools(options: EnhancerOptions): typeof compose;
-export function devToolsEnhancer(options: EnhancerOptions): StoreEnhancer;
+export function devToolsEnhancer(options: EnhancerOptions): StoreEnhancer<any>;
