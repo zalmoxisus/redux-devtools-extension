@@ -11,7 +11,7 @@ describe('DevTools panel for Electron', function() {
   this.timeout(10000);
 
   before(async () => {
-    delay(1000);
+    await delay(1000);
     this.driver = new webdriver.Builder()
       .usingServer(`http://localhost:${port}`)
       .withCapabilities({

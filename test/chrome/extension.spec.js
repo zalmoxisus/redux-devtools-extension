@@ -12,7 +12,7 @@ describe('Chrome extension', function() {
   this.timeout(20000);
 
   before(async () => {
-    delay(2000);
+    await delay(2000);
     this.driver = new webdriver.Builder()
       .usingServer(`http://localhost:${port}`)
       .withCapabilities({
@@ -55,12 +55,22 @@ describe('Chrome extension', function() {
   );
 
   it('should get actions list', async () => {
-    this.driver.executeScript('window.open(\'http://zalmoxisus.github.io/examples/router/\')');
+    const url = 'http://zalmoxisus.github.io/examples/router/';
+    await this.driver.executeScript(`window.open('${url}')`);
 
-    await this.driver.wait(this.driver
+    const tabs = await this.driver.getAllWindowHandles();
+
+    await this.driver.switchTo().window(tabs[1]);
+    expect(await this.driver.getCurrentUrl()).toMatch(url);
+    await this.driver.manage().timeouts().pageLoadTimeout(5000);
+
+    await this.driver.switchTo().window(tabs[0]);
+
+    const result = await this.driver.wait(this.driver
       .findElement(webdriver.By.xpath('//div[contains(@class, "actionListRows-")]'))
       .getText().then((val) => {
         return actionsPattern.test(val);
       }), 15000, 'it doesn\'t match actions pattern');
+    expect(result).toBeTruthy();
   });
 });
