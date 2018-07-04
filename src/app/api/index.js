@@ -1,6 +1,7 @@
 import jsan from 'jsan';
 import throttle from 'lodash/throttle';
 import seralizeImmutable from 'remotedev-serialize/immutable/serialize';
+import { getActionsArray } from 'remotedev-utils';
 import { getLocalFilter, isFiltered } from './filters';
 import importState from './importState';
 import generateId from './generateInstanceId';
@@ -148,6 +149,7 @@ export function connect(preConfig) {
   if (!config.instanceId) config.instanceId = id;
   if (!config.name) config.name = document.title && id === 1 ? document.title : `Instance ${id}`;
   if (config.serialize) config.serialize = getSeralizeParameter(config);
+  const actionCreators = config.actionCreators || {};
   const latency = config.latency;
   const predicate = config.predicate;
   const localFilter = getLocalFilter(config);
@@ -240,12 +242,12 @@ export function connect(preConfig) {
         if (liftedData.isPaused) isPaused = true;
       }
       message.libConfig = {
+        actionCreators: JSON.stringify(getActionsArray(actionCreators)),
         name: config.name || document.title,
         features: config.features,
         serialize: !!config.serialize,
         type: config.type
       };
-      // TODO: add actionCreators
     }
     post(message);
   };
