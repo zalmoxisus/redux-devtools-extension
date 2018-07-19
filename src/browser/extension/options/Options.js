@@ -2,6 +2,7 @@ import React from 'react';
 import FilterGroup from './FilterGroup';
 import AllowToRunGroup from './AllowToRunGroup';
 import MiscellaneousGroup from './MiscellaneousGroup';
+import ContextMenuGroup from './ContextMenuGroup';
 
 export default (props) => (
   <div>
@@ -9,5 +10,6 @@ export default (props) => (
     <FilterGroup {...props} />
     <AllowToRunGroup {...props} />
     <MiscellaneousGroup {...props} />
+    <ContextMenuGroup {...props} />
   </div>
 );
