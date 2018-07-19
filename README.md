@@ -173,7 +173,7 @@ See [integrations](docs/Integrations.md) and [the blog post](https://medium.com/
 ## Docs
   - [Options (arguments)](docs/API/Arguments.md)
   - [Methods (advanced API)](docs/API/Methods.md)
-  - [Create Redux store for debugging](docs/API/Methods.md).
+  - [Create Redux store for debugging](docs/API/CreateStore.md)
   - [FAQ](docs/FAQ.md)
   - [Troubleshooting](docs/Troubleshooting.md)
   - [Articles](docs/Articles.md)
