@@ -72,12 +72,9 @@ If you setup your store with [middleware and enhancers](http://redux.js.org/docs
   
 To specify [extension’s options](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md), use it like so:
 ```js
-const composeEnhancers =
-  typeof window === 'object' &&
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-    }) : compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+  // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+}) || compose;
 
 const enhancer = composeEnhancers(
   applyMiddleware(...middleware),
