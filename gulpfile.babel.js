@@ -105,7 +105,7 @@ gulp.task('copy:build:extension', () => {
 
 gulp.task('copy:build:firefox', ['build:extension'], () => {
   gulp.src([
-    './build/extension/**', '!./build/extension/devtools.html'
+    './build/extension/**', '!./build/extension/js/redux-devtools-extension.js'
   ])
     .pipe(gulp.dest('./build/firefox'))
     .on('finish', function() {
