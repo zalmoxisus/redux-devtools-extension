@@ -11,6 +11,7 @@
 * [Integrations](/docs/Integrations.md)
 * [FAQ](/docs/FAQ.md)
 * [Troubleshooting](/docs/Troubleshooting.md)
+* [Recipes](/docs/Recipes.md)
 * [Articles](/docs/Articles.md)
 * [Videos](/docs/Videos.md)
 * [Credits](/docs/Credits.md)
