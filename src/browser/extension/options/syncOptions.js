@@ -39,7 +39,8 @@ const get = callback => {
       blacklist: '',
       shouldCatchErrors: false,
       inject: true,
-      urls: '^https?://localhost|0\\.0\\.0\\.0:\\d+\n^https?://.+\\.github\\.io'
+      urls: '^https?://localhost|0\\.0\\.0\\.0:\\d+\n^https?://.+\\.github\\.io',
+      showContextMenus: true
     }, function(items) {
       options = migrateOldOptions(items);
       callback(options);

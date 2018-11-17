@@ -1,6 +1,6 @@
 import openDevToolsWindow from './openWindow';
 
-export default function createMenu() {
+export function createMenu() {
   const menus = [
     { id: 'devtools-left', title: 'To left' },
     { id: 'devtools-right', title: 'To right' },
@@ -23,6 +23,10 @@ export default function createMenu() {
       });
     });
   });
+}
+
+export function removeMenu() {
+  chrome.contextMenus.removeAll();
 }
 
 chrome.contextMenus.onClicked.addListener(({ menuItemId }) => {
