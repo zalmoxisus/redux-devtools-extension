@@ -51,7 +51,7 @@ const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && wi
 }));
 ```
 
-Here's a more advanced [example on how to implement that for `ui-router`](https://github.com/zalmoxisus/redux-devtools-extension/issues/455).
+There's a more advanced [example on how to implement that for `ui-router`](https://github.com/zalmoxisus/redux-devtools-extension/issues/455#issuecomment-404538385).
 
 The extension is in different process and cannot access the store object directly, unlike vanilla [`redux-devtools`](https://github.com/reduxjs/redux-devtools) which doesn't have this issue. In case sanitizing doesn't fit your use case, you might consider including it directly as a react component, so there will be no need to serialize the data, but it would add some complexity.
 
