@@ -27,11 +27,19 @@ function tryCatchStringify(obj) {
   }
 }
 
+let stringifyWarned;
 function stringify(obj, serialize) {
-  if (typeof serialize === 'undefined') {
-    return tryCatchStringify(obj);
+  const str = typeof serialize === 'undefined' ? tryCatchStringify(obj) :
+    jsan.stringify(obj, serialize.replacer, null, serialize.options);
+
+  if (!stringifyWarned && str.length > 16 * 1024 * 1024) { // 16 MB
+    /* eslint-disable no-console */
+    console.warn('Application state or actions payloads are too large making Redux DevTools serialization slow and consuming a lot of memory. See https://git.io/fpcP5 on how to configure it.');
+    /* eslint-enable no-console */
+    stringifyWarned = true;
   }
-  return jsan.stringify(obj, serialize.replacer, null, serialize.options);
+
+  return str;
 }
 
 export function getSeralizeParameter(config, param) {
