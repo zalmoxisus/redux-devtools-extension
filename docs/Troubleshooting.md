@@ -37,7 +37,23 @@ Where `batchedSubscribe` is `redux-batched-subscribe` store enhancer.
 ### Excessive use of memory and CPU
 
 That is happening due to serialization of some huge objects included in the state or action. The solution is to [sanitize them](/docs/API/Arguments.md#actionsanitizer--statesanitizer).
-Here's an [example on how to implement that for `ui-router`](https://github.com/zalmoxisus/redux-devtools-extension/issues/455).
+
+You can do that by including/omitting data containing specific values, having specific types... In the example bellow we're omitting parts of action and state objects with the key `data` (in case of action only when was dispatched action `FILE_DOWNLOAD_SUCCESS`):
+
+```js
+const actionSanitizer = (action) => (
+  action.type === 'FILE_DOWNLOAD_SUCCESS' && action.data ?
+  { ...action, data: '<<LONG_BLOB>>' } : action
+);
+const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
+  actionSanitizer,
+  stateSanitizer: (state) => state.data ? { ...state, data: '<<LONG_BLOB>>' } : state
+}));
+```
+
+Here's a more advanced [example on how to implement that for `ui-router`](https://github.com/zalmoxisus/redux-devtools-extension/issues/455).
+
+The extension is in different process and cannot access the store object directly, unlike vanilla [`redux-devtools`](https://github.com/reduxjs/redux-devtools) which doesn't have this issue. In case sanitizing doesn't fit your use case, you might consider including it directly as a react component, so there will be no need to serialize the data, but it would add some complexity.
 
 ### It fails to serialize data when [passing synthetic events](https://github.com/zalmoxisus/redux-devtools-extension/issues/275) or [calling an action directly with `redux-actions`](https://github.com/zalmoxisus/redux-devtools-extension/issues/287)
 
