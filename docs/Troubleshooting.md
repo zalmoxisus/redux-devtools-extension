@@ -34,6 +34,11 @@ const store = createStore(reducer, preloadedState, compose(
 
 Where `batchedSubscribe` is `redux-batched-subscribe` store enhancer.
 
+### Excessive use of memory and CPU
+
+That is happening due to serialization of some huge objects included in the state or action. The solution is to [sanitize them](/docs/API/Arguments.md#actionsanitizer--statesanitizer).
+Here's an [example on how to implement that for `ui-router`](https://github.com/zalmoxisus/redux-devtools-extension/issues/455).
+
 ### It fails to serialize data when [passing synthetic events](https://github.com/zalmoxisus/redux-devtools-extension/issues/275) or [calling an action directly with `redux-actions`](https://github.com/zalmoxisus/redux-devtools-extension/issues/287)
 
 React synthetic event cannot be reused for performance reason. So, it's not possible to serialize event objects you pass to action payloads.
