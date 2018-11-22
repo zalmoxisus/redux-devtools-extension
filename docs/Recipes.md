@@ -19,3 +19,25 @@ store.liftedStore.getState()
 ```
 
 The extension is not sharing `store` object, so you should take care of that.
+
+### Applying multiple times with different sets of options
+
+We're [not allowing that from instrumentation part](https://github.com/zalmoxisus/redux-devtools-instrument/blob/master/src/instrument.js#L676), because that would re-dispatch every app action in case we'd have many liftedStores, but there's [a helper for logging only](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/npm-package/logOnly.js), which can be used it like so:
+
+```js
+import { createStore, compose } from 'redux';
+import { devToolsEnhancer } from 'redux-devtools-extension/logOnly';
+
+const store = createStore(reducer, /* preloadedState, */ compose(
+devToolsEnhancer({
+  instaceID: 1,
+  name: 'Blacklisted',
+  actionsBlacklist: '...'
+}),
+devToolsEnhancer({
+  instaceID: 2,
+  name: 'Whitelisted',
+  actionsWhitelist: '...'
+})
+));
+```
