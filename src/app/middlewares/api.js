@@ -15,7 +15,7 @@ const connections = {
 let monitors = 0;
 let isMonitored = false;
 
-const getId = sender => sender.tab ? sender.tab.id : sender.id;
+const getId = (sender, name) => sender.tab ? sender.tab.id : name || sender.id;
 
 function toMonitors(action, tabId, verbose) {
   Object.keys(connections.monitor).forEach(id => {
@@ -138,7 +138,7 @@ function disconnect(type, id, listener) {
   return function disconnectListener() {
     const p = connections[type][id];
     if (listener) p.onMessage.removeListener(listener);
-    p.onDisconnect.removeListener(disconnectListener);
+    if (p) p.onDisconnect.removeListener(disconnectListener);
     delete connections[type][id];
     if (type === 'tab') {
       if (!window.store.getState().persistStates) {
@@ -186,8 +186,8 @@ function onConnect(port) {
     };
     port.onMessage.addListener(listener);
     port.onDisconnect.addListener(disconnect('tab', id, listener));
-  } else if (port.name === 'monitor') {
-    id = getId(port.sender);
+  } else if (port.name && port.name.indexOf('monitor') === 0) {
+    id = getId(port.sender, port.name);
     connections.monitor[id] = port;
     monitorInstances(true);
     monitors++;
