@@ -137,7 +137,7 @@ function messaging(request, sender, sendResponse) {
 function disconnect(type, id, listener) {
   return function disconnectListener() {
     const p = connections[type][id];
-    if (listener) p.onMessage.removeListener(listener);
+    if (listener && p) p.onMessage.removeListener(listener);
     if (p) p.onDisconnect.removeListener(disconnectListener);
     delete connections[type][id];
     if (type === 'tab') {
