@@ -1,7 +1,8 @@
 import { injectOptions, isAllowed } from '../options/syncOptions';
 const source = '@devtools-extension';
 const pageSource = '@devtools-page';
-const maxChromeMsgSize = 32 * 1024 * 1024 - 1048576; // 32 - 1 MB (1 MB reserved for other object's parts)
+// Chrome message limit is 64 MB, but we're using 32 MB to include other object's parts
+const maxChromeMsgSize = 32 * 1024 * 1024;
 let connected = false;
 let bg;
 
