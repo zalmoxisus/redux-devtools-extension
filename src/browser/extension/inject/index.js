@@ -12,5 +12,5 @@ chrome.runtime.sendMessage(window.devToolsExtensionID, { type: 'GET_OPTIONS' }, 
   }
 
   window.devToolsOptions = response.options;
-  window.devToolsExtension.notifyErrors();
+  window.__REDUX_DEVTOOLS_EXTENSION__.notifyErrors();
 });

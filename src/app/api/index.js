@@ -280,7 +280,7 @@ export function connect(preConfig) {
 export function updateStore(stores) {
   return function(newStore, instanceId) {
     /* eslint-disable no-console */
-    console.warn('`devToolsExtension.updateStore` is deprecated, remove it and just use ' +
+    console.warn('`__REDUX_DEVTOOLS_EXTENSION__.updateStore` is deprecated, remove it and just use ' +
       '`__REDUX_DEVTOOLS_EXTENSION_COMPOSE__` instead of the extension\'s store enhancer: ' +
       'https://github.com/zalmoxisus/redux-devtools-extension#12-advanced-store-setup');
     /* eslint-enable no-console */

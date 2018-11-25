@@ -16,7 +16,7 @@ export default function configureStore(baseStore, position, preloadedState) {
   } else {
     enhancer = compose(
       applyMiddleware(...middlewares),
-      window.devToolsExtension ? window.devToolsExtension() : noop => noop
+      window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : noop => noop
     );
   }
   const store = createStore(rootReducer, preloadedState, enhancer);

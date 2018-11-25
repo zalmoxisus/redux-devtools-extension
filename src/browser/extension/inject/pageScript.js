@@ -24,7 +24,7 @@ function deprecateParam(oldParam, newParam) {
   /* eslint-enable no-console */
 }
 
-const devToolsExtension = function(reducer, preloadedState, config) {
+const __REDUX_DEVTOOLS_EXTENSION__ = function(reducer, preloadedState, config) {
   /* eslint-disable no-param-reassign */
   if (typeof reducer === 'object') {
     config = reducer; reducer = undefined;
@@ -288,16 +288,56 @@ const devToolsExtension = function(reducer, preloadedState, config) {
 };
 
 // noinspection JSAnnotator
-window.devToolsExtension = devToolsExtension;
-window.devToolsExtension.open = openWindow;
-window.devToolsExtension.updateStore = updateStore(stores);
-window.devToolsExtension.notifyErrors = notifyErrors;
-window.devToolsExtension.send = sendMessage;
-window.devToolsExtension.listen = setListener;
-window.devToolsExtension.connect = connect;
-window.devToolsExtension.disconnect = disconnect;
+window.__REDUX_DEVTOOLS_EXTENSION__ = __REDUX_DEVTOOLS_EXTENSION__;
+window.__REDUX_DEVTOOLS_EXTENSION__.open = openWindow;
+window.__REDUX_DEVTOOLS_EXTENSION__.updateStore = updateStore(stores);
+window.__REDUX_DEVTOOLS_EXTENSION__.notifyErrors = notifyErrors;
+window.__REDUX_DEVTOOLS_EXTENSION__.send = sendMessage;
+window.__REDUX_DEVTOOLS_EXTENSION__.listen = setListener;
+window.__REDUX_DEVTOOLS_EXTENSION__.connect = connect;
+window.__REDUX_DEVTOOLS_EXTENSION__.disconnect = disconnect;
 
-window.__REDUX_DEVTOOLS_EXTENSION__ = window.devToolsExtension;
+// Deprecated
+/* eslint-disable no-console */
+let varNameDeprecatedWarned;
+const varNameDeprecatedWarn = () => {
+  if (varNameDeprecatedWarned) return;
+  console.warn('`window.devToolsExtension` is deprecated in favor of `window.__REDUX_DEVTOOLS_EXTENSION__`, and will be removed in next version of Redux DevTools: https://git.io/fpEJZ');
+  varNameDeprecatedWarned = true;
+};
+/* eslint-enable no-console */
+window.devToolsExtension = (...args) => {
+  varNameDeprecatedWarn();
+  return __REDUX_DEVTOOLS_EXTENSION__.apply(null, args);
+};
+window.devToolsExtension.open = (...args) => {
+  varNameDeprecatedWarn();
+  return openWindow.apply(null, args);
+};
+window.devToolsExtension.updateStore = (...args) => {
+  varNameDeprecatedWarn();
+  return updateStore(stores).apply(null, args);
+};
+window.devToolsExtension.notifyErrors = (...args) => {
+  varNameDeprecatedWarn();
+  return notifyErrors.apply(null, args);
+};
+window.devToolsExtension.send = (...args) => {
+  varNameDeprecatedWarn();
+  return sendMessage.apply(null, args);
+};
+window.devToolsExtension.listen = (...args) => {
+  varNameDeprecatedWarn();
+  return setListener.apply(null, args);
+};
+window.devToolsExtension.connect = (...args) => {
+  varNameDeprecatedWarn();
+  return connect.apply(null, args);
+};
+window.devToolsExtension.disconnect = (...args) => {
+  varNameDeprecatedWarn();
+  return disconnect.apply(null, args);
+};
 
 const preEnhancer = instanceId => next =>
   (reducer, preloadedState, enhancer) => {
@@ -322,14 +362,14 @@ const extensionCompose = (config) => (...funcs) => {
   return (...args) => {
     const instanceId = generateId(config.instanceId);
     return [preEnhancer(instanceId), ...funcs].reduceRight(
-      (composed, f) => f(composed), devToolsExtension({ ...config, instanceId })(...args)
+      (composed, f) => f(composed), __REDUX_DEVTOOLS_EXTENSION__({ ...config, instanceId })(...args)
     );
   };
 };
 
 window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = (...funcs) => {
   if (funcs.length === 0) {
-    return devToolsExtension();
+    return __REDUX_DEVTOOLS_EXTENSION__();
   }
   if (funcs.length === 1 && typeof funcs[0] === 'object') {
     return extensionCompose(funcs[0]);
