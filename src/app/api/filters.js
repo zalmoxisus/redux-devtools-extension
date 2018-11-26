@@ -18,7 +18,7 @@ export function getLocalFilter(config) {
 
 export function isFiltered(action, localFilter) {
   if (
-    !localFilter || window.devToolsOptions &&
+    !localFilter && window.devToolsOptions &&
     window.devToolsOptions.filter === FilterState.DO_NOT_FILTER ||
     typeof action.type.match !== 'function'
   ) return false;
