@@ -4529,12 +4529,12 @@ js-yaml@3.4.5:
     argparse "^1.0.2"
     esprima "^2.6.0"
 
-jsan@^3.1.11:
-  version "3.1.11"
-  resolved "https://registry.yarnpkg.com/jsan/-/jsan-3.1.11.tgz#9ab1807e5e77ba691e92f90c29a0a6002d1259db"
-  integrity sha512-8KtxvhQhAUKMQF+S/jer33XZKujglnicpCeMnVaJN5iZJ1q5zCLoX1p8awG1SgnMELX9o36LF5uUUmN5HPIqSA==
+jsan@3.1.9:
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/jsan/-/jsan-3.1.9.tgz#2705676c1058f0a7d9ac266ad036a5769cfa7c96"
+  integrity sha1-JwVnbBBY8KfZrCZq0Daldpz6fJY=
 
-jsan@^3.1.2, jsan@^3.1.3:
+jsan@^3.1.3:
   version "3.1.10"
   resolved "https://registry.yarnpkg.com/jsan/-/jsan-3.1.10.tgz#ba9917b864defff567e0c990a34ae7a8d5eb1d90"
   integrity sha512-Rpme/mJFG3BlIM8/9L+0qAIGccx6dyYEODdkZUHYKyJI3NIl6d13buXa7aE3lO1kZAGMalG0/6QzalXdDdUc4g==
@@ -7462,15 +7462,15 @@ regjsparser@^0.1.4:
   dependencies:
     jsesc "~0.5.0"
 
-remotedev-app@^0.10.8:
-  version "0.10.8"
-  resolved "https://registry.yarnpkg.com/remotedev-app/-/remotedev-app-0.10.8.tgz#7cca9be39674993b81dd400fc094ff85c361c64e"
-  integrity sha1-fMqb45Z0mTuB3UAPwJT/hcNhxk4=
+remotedev-app@^0.10.9:
+  version "0.10.9"
+  resolved "https://registry.yarnpkg.com/remotedev-app/-/remotedev-app-0.10.9.tgz#415e0bfa7328a9e8f47a2a9fc86595738fbb4484"
+  integrity sha512-m/NfJ3t50XgIwFO2Z0+Wv2xzZ1jyH7U0eUBe/k/wtwJTU6UHdARwKeZPJ43wotqWFB1QOPBe/8k9V/uAOI4bKw==
   dependencies:
     chrome-storage-local "^0.1.6"
     d3-state-visualizer "^1.3.1"
     javascript-stringify "^1.5.0"
-    jsan "^3.1.2"
+    jsan "3.1.9"
     jsondiffpatch "^0.2.4"
     lodash "^4.0.0"
     material-ui "0.16.4"
@@ -7527,12 +7527,12 @@ remotedev-monitor-components@^0.0.5:
     codemirror "^5.21.0"
     styled-components "^1.1.1"
 
-remotedev-serialize@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/remotedev-serialize/-/remotedev-serialize-0.1.2.tgz#2dd6bcd9af57bd1dc4fb720d3364ac531c7c1e91"
-  integrity sha512-oFUMLf92AjR/StREwTpmMTYcZ4q1+T0jviEiWf36BEb8nBnZh6Cx94j6I/qeOhWN/JFN3Jo5QyJ43Nu/OxGC7g==
+remotedev-serialize@0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/remotedev-serialize/-/remotedev-serialize-0.1.4.tgz#2a15e4e514fd393c20328ef978504b4fc272e367"
+  integrity sha512-xFUjsHi/qY14uJmyk1uZynRJli5j5JdTE8Qm2jNCHMQVRSdKRqGh2vqQh6eoOiRX4K8yxjEXqtcxd4Oj2dmK4Q==
   dependencies:
-    jsan "^3.1.11"
+    jsan "3.1.9"
 
 remotedev-slider@1.1.3, remotedev-slider@^1.1.1:
   version "1.1.3"
