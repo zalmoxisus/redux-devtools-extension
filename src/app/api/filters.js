@@ -9,8 +9,8 @@ export const FilterState = {
 export function getLocalFilter(config) {
   if (config.actionsBlacklist || config.actionsWhitelist) {
     return {
-      whitelist: config.actionsWhitelist && config.actionsWhitelist.join('|'),
-      blacklist: config.actionsBlacklist && config.actionsBlacklist.join('|')
+      whitelist: typeof config.actionsWhitelist === 'object' ? config.actionsWhitelist.join('|') : config.actionsWhitelist,
+      blacklist: typeof config.actionsBlacklist === 'object' ? config.actionsBlacklist.join('|') : config.actionsBlacklist
     };
   }
   return undefined;
