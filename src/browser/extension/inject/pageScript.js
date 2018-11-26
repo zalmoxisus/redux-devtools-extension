@@ -34,7 +34,7 @@ const __REDUX_DEVTOOLS_EXTENSION__ = function(reducer, preloadedState, config) {
 
   let store;
   let errorOccurred = false;
-  let maxAge;
+  let maxAge = config.maxAge;
   let actionCreators;
   let sendingActionId = 1;
   const instanceId = generateId(config.instanceId);
@@ -91,7 +91,7 @@ const __REDUX_DEVTOOLS_EXTENSION__ = function(reducer, preloadedState, config) {
 
     if (type === 'ACTION') {
       message.action = !actionSanitizer ? action : actionSanitizer(action.action, nextActionId - 1);
-      message.maxAge = maxAge;
+      message.maxAge = getMaxAge();
       message.nextActionId = nextActionId;
     } else if (libConfig) {
       message.libConfig = libConfig;
@@ -144,7 +144,7 @@ const __REDUX_DEVTOOLS_EXTENSION__ = function(reducer, preloadedState, config) {
       payload,
       source,
       instanceId,
-      maxAge
+      maxAge: getMaxAge()
     }, serializeState, serializeAction);
   }, latency);
 
@@ -233,9 +233,9 @@ const __REDUX_DEVTOOLS_EXTENSION__ = function(reducer, preloadedState, config) {
     }
   }
 
-  function init() {
-    maxAge = config.maxAge || window.devToolsOptions.maxAge || 50;
+  const getMaxAge = () => maxAge || window.devToolsOptions.maxAge || 50;
 
+  function init() {
     setListener(onMessage, instanceId);
     notifyErrors(() => {
       errorOccurred = true;
@@ -274,7 +274,7 @@ const __REDUX_DEVTOOLS_EXTENSION__ = function(reducer, preloadedState, config) {
       if (!isAllowed(window.devToolsOptions)) return next(reducer_, initialState_, enhancer_);
 
       store = stores[instanceId] =
-        configureStore(next, monitor.reducer, config)(reducer_, initialState_, enhancer_);
+        configureStore(next, monitor.reducer, { ...config, maxAge: getMaxAge })(reducer_, initialState_, enhancer_);
 
       if (isInIframe()) setTimeout(init, 3000);
       else init();

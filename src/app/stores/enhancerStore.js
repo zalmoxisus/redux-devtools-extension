@@ -12,7 +12,7 @@ export default function configureStore(next, monitorReducer, config) {
     instrument(
       monitorReducer,
       {
-        maxAge: config.maxAge || window.devToolsOptions.maxAge || 50,
+        maxAge: config.maxAge,
         shouldCatchErrors: config.shouldCatchErrors || window.shouldCatchErrors,
         shouldHotReload: config.shouldHotReload,
         shouldRecordChanges: config.shouldRecordChanges,

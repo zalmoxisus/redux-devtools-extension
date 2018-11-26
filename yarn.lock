@@ -7341,10 +7341,18 @@ redux-devtools-chart-monitor@^1.6.1:
     react-pure-render "^1.0.2"
     redux-devtools-themes "^1.0.0"
 
-redux-devtools-instrument@^1.0.1, redux-devtools-instrument@^1.9.0:
+redux-devtools-instrument@^1.0.1:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/redux-devtools-instrument/-/redux-devtools-instrument-1.9.0.tgz#2faed9ac3292c783284b21843edfaa0567764a0c"
   integrity sha512-pLFQoja1ojpsSRTWbC9yyc/a+z8uwOD7FPKLp+Abs7qjsah6khA5o8HBE2wa0VipE5vniYINdkNyxV/2iWADKg==
+  dependencies:
+    lodash "^4.2.0"
+    symbol-observable "^1.0.2"
+
+redux-devtools-instrument@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/redux-devtools-instrument/-/redux-devtools-instrument-1.9.2.tgz#c8bb81f295c60f1629164391c9c8552346d551c0"
+  integrity sha512-6ydVkHuAWPDRmEoVjPyJNF60y5pT6nIVyDXpTz2klGHu7oR+j3QJRMvRyyPYZMThePd8JIkh8/6L4zDXKED6aA==
   dependencies:
     lodash "^4.2.0"
     symbol-observable "^1.0.2"
@@ -7462,10 +7470,10 @@ regjsparser@^0.1.4:
   dependencies:
     jsesc "~0.5.0"
 
-remotedev-app@^0.10.9:
-  version "0.10.9"
-  resolved "https://registry.yarnpkg.com/remotedev-app/-/remotedev-app-0.10.9.tgz#415e0bfa7328a9e8f47a2a9fc86595738fbb4484"
-  integrity sha512-m/NfJ3t50XgIwFO2Z0+Wv2xzZ1jyH7U0eUBe/k/wtwJTU6UHdARwKeZPJ43wotqWFB1QOPBe/8k9V/uAOI4bKw==
+remotedev-app@^0.10.10:
+  version "0.10.10"
+  resolved "https://registry.yarnpkg.com/remotedev-app/-/remotedev-app-0.10.10.tgz#846572cc08bcaaa80d53390dfba97eb7a020ef63"
+  integrity sha512-ChmS1Z+TWX+HNIuO5GPi+Gdd2JKVvUeEyB2rIxUliOx8Y127T9vqBqbASBc8S+t43S7QdWCHt1nbI/0iPyErZA==
   dependencies:
     chrome-storage-local "^0.1.6"
     d3-state-visualizer "^1.3.1"

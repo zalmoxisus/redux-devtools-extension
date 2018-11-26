@@ -1,4 +1,4 @@
-import { injectOptions, isAllowed } from '../options/syncOptions';
+import { injectOptions, getOptionsFromBg, isAllowed } from '../options/syncOptions';
 const source = '@devtools-extension';
 let connected = false;
 let bg;
@@ -58,6 +58,7 @@ function tryCatch(fn, args) {
 function send(message) {
   if (!connected) connect();
   if (message.type === 'INIT_INSTANCE') {
+    getOptionsFromBg();
     bg.postMessage({ name: 'INIT_INSTANCE', instanceId: message.instanceId });
   } else {
     bg.postMessage({ name: 'RELAY', message });
