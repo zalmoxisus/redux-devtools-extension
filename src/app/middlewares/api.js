@@ -12,6 +12,7 @@ const connections = {
   panel: {},
   monitor: {}
 };
+const chunks = {};
 let monitors = 0;
 let isMonitored = false;
 
@@ -122,8 +123,21 @@ function messaging(request, sender, sendResponse) {
   }
 
   const action = { type: UPDATE_STATE, request, id: tabId };
+  const instanceId = `${tabId}/${request.instanceId}`;
+  if (request.split) {
+    if (request.split === 'start') {
+      chunks[instanceId] = request;
+      return;
+    }
+    if (request.split === 'chunk') {
+      chunks[instanceId][request.chunk[0]] = (chunks[instanceId][request.chunk[0]] || '') + request.chunk[1];
+      return;
+    }
+    action.request = chunks[instanceId];
+    delete chunks[instanceId];
+  }
   if (request.instanceId) {
-    action.request.instanceId = `${tabId}/${request.instanceId}`;
+    action.request.instanceId = instanceId;
   }
   window.store.dispatch(action);
 
