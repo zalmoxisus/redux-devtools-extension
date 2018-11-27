@@ -16,12 +16,14 @@ export function getLocalFilter(config) {
   return undefined;
 }
 
+export const noFiltersApplied = (localFilter) => (
+  // predicate ||
+  !localFilter && window.devToolsOptions &&
+  window.devToolsOptions.filter === FilterState.DO_NOT_FILTER
+);
+
 export function isFiltered(action, localFilter) {
-  if (
-    !localFilter && window.devToolsOptions &&
-    window.devToolsOptions.filter === FilterState.DO_NOT_FILTER ||
-    typeof action.type.match !== 'function'
-  ) return false;
+  if (noFiltersApplied(localFilter) || typeof action.type.match !== 'function') return false;
 
   const { whitelist, blacklist } = localFilter || window.devToolsOptions;
   return (
