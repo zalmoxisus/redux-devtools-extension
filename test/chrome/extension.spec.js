@@ -28,9 +28,9 @@ describe('Chrome extension', function() {
   });
 
   it('should open extension\'s window', async () => {
-    await this.driver.get(`chrome-extension://${extensionId}/window.html`);
+    await this.driver.get(`chrome-extension://${extensionId}/window.html#left`);
     const url = await this.driver.getCurrentUrl();
-    expect(url).toBe(`chrome-extension://${extensionId}/window.html`);
+    expect(url).toBe(`chrome-extension://${extensionId}/window.html#left`);
   });
 
   it('should match document title', async () => {

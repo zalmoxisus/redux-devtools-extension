@@ -13,7 +13,9 @@ getPreloadedState(position, state => { preloadedState = state; });
 
 chrome.runtime.getBackgroundPage(({ store }) => {
   const localStore = configureStore(store, position, preloadedState);
-  const bg = chrome.runtime.connect({ name: 'monitor' });
+  let name = 'monitor';
+  if (chrome && chrome.devtools && chrome.devtools.inspectedWindow) name += chrome.devtools.inspectedWindow.tabId;
+  const bg = chrome.runtime.connect({ name });
   const update = action => { localStore.dispatch(action || { type: UPDATE_STATE }); };
   bg.onMessage.addListener(update);
   update();

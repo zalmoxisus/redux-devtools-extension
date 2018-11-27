@@ -37,6 +37,13 @@ class App extends Component {
       monitor, position, togglePersist,
       dispatcherIsOpen, sliderIsOpen, options, liftedState
     } = this.props;
+    if (!position && (!options || !options.features)) {
+      return (
+        <div style={{ padding: '20px', width: '100%', textAlign: 'center' }}>
+          No store found. Make sure to follow <a href="https://github.com/zalmoxisus/redux-devtools-extension#usage" target="_blank">the instructions</a>.
+        </div>
+      );
+    }
     const features = options.features || {};
     return (
       <div style={styles.container}>
