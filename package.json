@@ -81,7 +81,7 @@
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-devtools": "^3.4.1",
-    "redux-devtools-instrument": "^1.9.2",
+    "redux-devtools-instrument": "^1.9.3",
     "remotedev-app": "^0.10.10",
     "remotedev-monitor-components": "^0.0.5",
     "remotedev-serialize": "0.1.4",

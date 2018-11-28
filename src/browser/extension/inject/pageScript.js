@@ -236,7 +236,7 @@ const __REDUX_DEVTOOLS_EXTENSION__ = function(reducer, preloadedState, config) {
   }
 
   const filteredActionIds = []; // simple circular buffer of non-excluded actions with fixed maxAge-1 length
-  const getMaxAge = (liftedAction) => {
+  const getMaxAge = (liftedAction, liftedState) => {
     let m = config && config.maxAge || window.devToolsOptions.maxAge || 50;
     if (!liftedAction || noFiltersApplied(localFilter) || !liftedAction.action) return m;
     if (!maxAge || maxAge < m) maxAge = m; // it can be modified in process on options page
@@ -244,9 +244,9 @@ const __REDUX_DEVTOOLS_EXTENSION__ = function(reducer, preloadedState, config) {
       // TODO: check also predicate && !predicate(state, action) with current state
       maxAge++;
     } else {
-      filteredActionIds.push(store.liftedStore.getState().nextActionId);
+      filteredActionIds.push(liftedState.nextActionId);
       if (filteredActionIds.length >= m) {
-        const stagedActionIds = store.liftedStore.getState().stagedActionIds;
+        const stagedActionIds = liftedState.stagedActionIds;
         let i = 1;
         while (maxAge > m && filteredActionIds.indexOf(stagedActionIds[i]) === -1) {
           maxAge--; i++;

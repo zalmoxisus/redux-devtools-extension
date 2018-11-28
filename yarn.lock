@@ -7349,10 +7349,10 @@ redux-devtools-instrument@^1.0.1:
     lodash "^4.2.0"
     symbol-observable "^1.0.2"
 
-redux-devtools-instrument@^1.9.2:
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/redux-devtools-instrument/-/redux-devtools-instrument-1.9.2.tgz#c8bb81f295c60f1629164391c9c8552346d551c0"
-  integrity sha512-6ydVkHuAWPDRmEoVjPyJNF60y5pT6nIVyDXpTz2klGHu7oR+j3QJRMvRyyPYZMThePd8JIkh8/6L4zDXKED6aA==
+redux-devtools-instrument@^1.9.3:
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/redux-devtools-instrument/-/redux-devtools-instrument-1.9.3.tgz#37b229f3a64a404d7d2c43489ef91cae8f712a4b"
+  integrity sha512-rt1pcRlu6QMTyvQdCDFm+5FGNfI3NdGVL/rKxBuTHbnn+y3x3x6zzh/ssAQmr2WqogTDG4Ero1tzfqANkaWhHg==
   dependencies:
     lodash "^4.2.0"
     symbol-observable "^1.0.2"
