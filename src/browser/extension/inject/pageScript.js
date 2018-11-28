@@ -235,7 +235,7 @@ const __REDUX_DEVTOOLS_EXTENSION__ = function(reducer, preloadedState, config) {
   }
 
   const getMaxAge = () => {
-    return config && config.maxAge || window.devToolsOptions.maxAge || 50;
+    return config && config.maxAge || window.devToolsOptions && window.devToolsOptions.maxAge || 50;
   };
 
   function init() {
