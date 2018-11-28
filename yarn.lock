@@ -1033,13 +1033,6 @@ babel-plugin-transform-regenerator@^6.16.0:
   dependencies:
     regenerator-transform "0.9.8"
 
-babel-plugin-transform-runtime@^6.7.5:
-  version "6.15.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-runtime/-/babel-plugin-transform-runtime-6.15.0.tgz#3d75b4d949ad81af157570273846fb59aeb0d57c"
-  integrity sha1-PXW02Umtga8VdXAnOEb7Wa6w1Xw=
-  dependencies:
-    babel-runtime "^6.9.0"
-
 babel-plugin-transform-strict-mode@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-strict-mode/-/babel-plugin-transform-strict-mode-6.18.0.tgz#df7cf2991fe046f44163dcd110d5ca43bc652b9d"
@@ -7030,17 +7023,7 @@ react-icons@^2.2.1:
   dependencies:
     react-icon-base "2.0.4"
 
-react-json-tree@0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/react-json-tree/-/react-json-tree-0.10.0.tgz#92d5c223fc7718614a906591cd916127ce2b6033"
-  integrity sha1-ktXCI/x3GGFKkGWRzZFhJ84rYDM=
-  dependencies:
-    babel-plugin-transform-runtime "^6.7.5"
-    babel-runtime "^6.6.1"
-    react-base16-styling "^0.4.1"
-    react-pure-render "^1.0.2"
-
-react-json-tree@^0.10.0, react-json-tree@^0.10.9:
+react-json-tree@^0.10.0, react-json-tree@^0.10.7, react-json-tree@^0.10.9:
   version "0.10.9"
   resolved "https://registry.yarnpkg.com/react-json-tree/-/react-json-tree-0.10.9.tgz#7263173a2cc8bf05eac63b0419c3ce75b232e284"
   integrity sha1-cmMXOizIvwXqxjsEGcPOdbIy4oQ=
@@ -7470,10 +7453,10 @@ regjsparser@^0.1.4:
   dependencies:
     jsesc "~0.5.0"
 
-remotedev-app@^0.10.10:
-  version "0.10.10"
-  resolved "https://registry.yarnpkg.com/remotedev-app/-/remotedev-app-0.10.10.tgz#846572cc08bcaaa80d53390dfba97eb7a020ef63"
-  integrity sha512-ChmS1Z+TWX+HNIuO5GPi+Gdd2JKVvUeEyB2rIxUliOx8Y127T9vqBqbASBc8S+t43S7QdWCHt1nbI/0iPyErZA==
+remotedev-app@^0.10.11:
+  version "0.10.11"
+  resolved "https://registry.yarnpkg.com/remotedev-app/-/remotedev-app-0.10.11.tgz#93499e304116fc35333a1f1c53637ee837b3335c"
+  integrity sha512-ZLZbGdSZejNeCYeYao+Xmxu6ocrvde5UIzVkC538KakLTPfk5Puz5F/POxhjD9u/xhfnYhv6tyVBTZL1pA5B9g==
   dependencies:
     chrome-storage-local "^0.1.6"
     d3-state-visualizer "^1.3.1"
@@ -7492,16 +7475,16 @@ remotedev-app@^0.10.10:
     redux-devtools-log-monitor "^1.2.0"
     redux-devtools-test-generator "^0.4.0"
     redux-devtools-themes "^1.0.0"
-    remotedev-inspector-monitor "^0.10.2"
+    remotedev-inspector-monitor "^0.11.0"
     remotedev-monitor-components "^0.0.5"
     remotedev-slider "1.1.3"
     socketcluster-client "^5.5.0"
     styled-components "^1.1.1"
 
-remotedev-inspector-monitor@^0.10.2:
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/remotedev-inspector-monitor/-/remotedev-inspector-monitor-0.10.2.tgz#2f6618fc2a2d5aa9d57e97baa21b9cb4f330f638"
-  integrity sha1-L2YY/CotWqnVfpe6ohuctPMw9jg=
+remotedev-inspector-monitor@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/remotedev-inspector-monitor/-/remotedev-inspector-monitor-0.11.0.tgz#552dbc3736e6d898a783b51cfd7d20b875620d5f"
+  integrity sha1-VS28Nzbm2Jing7Uc/X0guHViDV8=
   dependencies:
     babel-runtime "^6.3.19"
     dateformat "^1.0.12"
@@ -7515,7 +7498,7 @@ remotedev-inspector-monitor@^0.10.2:
     lodash.debounce "^4.0.3"
     react-base16-styling "^0.4.1"
     react-dragula "^1.1.17"
-    react-json-tree "0.10.0"
+    react-json-tree "^0.10.7"
     react-pure-render "^1.0.2"
     redux-devtools-themes "^1.0.0"
 
