@@ -23,12 +23,16 @@ export const noFiltersApplied = (localFilter) => (
 );
 
 export function isFiltered(action, localFilter) {
-  if (noFiltersApplied(localFilter) || typeof action.type.match !== 'function') return false;
+  if (
+    noFiltersApplied(localFilter) ||
+    typeof action !== 'string' && typeof action.type.match !== 'function'
+  ) return false;
 
   const { whitelist, blacklist } = localFilter || window.devToolsOptions || {};
+  const actionType = action.type || action;
   return (
-    whitelist && !action.type.match(whitelist) ||
-    blacklist && action.type.match(blacklist)
+    whitelist && !actionType.match(whitelist) ||
+    blacklist && actionType.match(blacklist)
   );
 }
 
