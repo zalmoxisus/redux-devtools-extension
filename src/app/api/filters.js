@@ -24,8 +24,8 @@ export const noFiltersApplied = (localFilter) => (
 
 export function isFiltered(action, localFilter) {
   if (noFiltersApplied(localFilter) || typeof action.type.match !== 'function') return false;
-
-  const { whitelist, blacklist } = localFilter || window.devToolsOptions;
+  const { whitelist = false, blacklist = false } = localFilter || window.devToolsOptions;
+  if (!(whitelist && blacklist)) return false;
   return (
     whitelist && !action.type.match(whitelist) ||
     blacklist && action.type.match(blacklist)
