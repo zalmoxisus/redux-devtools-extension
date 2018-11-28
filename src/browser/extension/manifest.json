@@ -1,5 +1,5 @@
 {
-  "version": "2.15.4",
+  "version": "2.16.0",
   "name": "Redux DevTools",
   "short_name": "Redux DevTools",
   "description": "Redux DevTools for debugging application's state changes.",
