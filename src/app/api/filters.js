@@ -17,9 +17,9 @@ export function getLocalFilter(config) {
 }
 
 export const noFiltersApplied = (localFilter) => (
-  // predicate ||
-  !localFilter && window.devToolsOptions &&
-  window.devToolsOptions.filter === FilterState.DO_NOT_FILTER
+  // !predicate &&
+  !localFilter && (!window.devToolsOptions || !window.devToolsOptions.filter ||
+  window.devToolsOptions.filter === FilterState.DO_NOT_FILTER)
 );
 
 export function isFiltered(action, localFilter) {
@@ -50,10 +50,7 @@ export function filterState(state, type, localFilter, stateSanitizer, actionSani
   if (type === 'ACTION') return !stateSanitizer ? state : stateSanitizer(state, nextActionId - 1);
   else if (type !== 'STATE') return state;
 
-  if (
-    predicate || localFilter || window.devToolsOptions &&
-    window.devToolsOptions.filter && window.devToolsOptions.filter !== FilterState.DO_NOT_FILTER
-  ) {
+  if (predicate || !noFiltersApplied(localFilter)) {
     const filteredStagedActionIds = [];
     const filteredComputedStates = [];
     const sanitizedActionsById = actionSanitizer && {};
@@ -106,8 +103,7 @@ export function startingFrom(
   const index = stagedActionIds.indexOf(sendingActionId);
   if (index === -1) return state;
 
-  const shouldFilter = predicate || localFilter ||
-    window.devToolsOptions.filter !== FilterState.DO_NOT_FILTER;
+  const shouldFilter = predicate || !noFiltersApplied(localFilter);
   const filteredStagedActionIds = shouldFilter ? [0] : stagedActionIds;
   const actionsById = state.actionsById;
   const computedStates = state.computedStates;
