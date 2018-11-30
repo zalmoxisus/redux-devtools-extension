@@ -31,14 +31,24 @@
 
 ## 1. With Redux
 ### 1.1 Basic store
-  
 For a basic [Redux store](http://redux.js.org/docs/api/createStore.html) simply add:
+
+#### JavaScript  
 ```diff
  const store = createStore(
    reducer, /* preloadedState, */
 +  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
  );
 ```
+
+#### TypeScript
+```diff
+ const store = createStore(
+   reducer, /* preloadedState, */
++  (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+ );
+```
+
 
 Note that [`preloadedState`](http://redux.js.org/docs/api/createStore.html) argument is optional in Redux' [`createStore`](http://redux.js.org/docs/api/createStore.html).
 
