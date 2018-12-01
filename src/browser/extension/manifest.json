@@ -6,7 +6,7 @@
   "homepage_url": "https://github.com/zalmoxisus/redux-devtools-extension",
   "manifest_version": 2,
   "page_action": {
-    "default_icon": "img/logo/38x38.png",
+    "default_icon": "img/logo/gray.png",
     "default_title": "Redux DevTools",
     "default_popup": "window.html#popup"
   },

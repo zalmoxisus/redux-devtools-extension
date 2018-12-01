@@ -178,7 +178,10 @@ function onConnect(port) {
     connections.tab[id] = port;
     listener = msg => {
       if (msg.name === 'INIT_INSTANCE') {
-        if (typeof id === 'number') chrome.pageAction.show(id);
+        if (typeof id === 'number') {
+          chrome.pageAction.show(id);
+          chrome.pageAction.setIcon({tabId: id, path: 'img/logo/38x38.png'});
+        }
         if (isMonitored) port.postMessage({ type: 'START' });
 
         const state = window.store.getState();
