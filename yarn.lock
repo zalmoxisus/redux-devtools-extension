@@ -4522,10 +4522,10 @@ js-yaml@3.4.5:
     argparse "^1.0.2"
     esprima "^2.6.0"
 
-jsan@3.1.9:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/jsan/-/jsan-3.1.9.tgz#2705676c1058f0a7d9ac266ad036a5769cfa7c96"
-  integrity sha1-JwVnbBBY8KfZrCZq0Daldpz6fJY=
+jsan@^3.1.11, jsan@^3.1.12:
+  version "3.1.12"
+  resolved "https://registry.yarnpkg.com/jsan/-/jsan-3.1.12.tgz#e784ce5ab533ee41f868bb054d74769365c80be5"
+  integrity sha512-EDJhJdWGP++Qh5TGfsdc3k2hFjr1/4Q3nVX6MPkTYlqqj3Xv9erXnBRZEBmuGR2IpfARdm0Ivj5EBSvhFylWRA==
 
 jsan@^3.1.3:
   version "3.1.10"
@@ -7453,15 +7453,15 @@ regjsparser@^0.1.4:
   dependencies:
     jsesc "~0.5.0"
 
-remotedev-app@^0.10.11:
-  version "0.10.11"
-  resolved "https://registry.yarnpkg.com/remotedev-app/-/remotedev-app-0.10.11.tgz#93499e304116fc35333a1f1c53637ee837b3335c"
-  integrity sha512-ZLZbGdSZejNeCYeYao+Xmxu6ocrvde5UIzVkC538KakLTPfk5Puz5F/POxhjD9u/xhfnYhv6tyVBTZL1pA5B9g==
+remotedev-app@^0.10.12:
+  version "0.10.12"
+  resolved "https://registry.yarnpkg.com/remotedev-app/-/remotedev-app-0.10.12.tgz#0f46847635c4cade6b925749fcf6c3c5d4f050c9"
+  integrity sha512-hwgL0ik5La9Ct2Juwgej9xixuT1VBLEosWih68zzipatN4K6Pw5PEJ9cSCdrGzbHjETzejisRE615xtm337T4Q==
   dependencies:
     chrome-storage-local "^0.1.6"
     d3-state-visualizer "^1.3.1"
     javascript-stringify "^1.5.0"
-    jsan "3.1.9"
+    jsan "^3.1.12"
     jsondiffpatch "^0.2.4"
     lodash "^4.0.0"
     material-ui "0.16.4"
@@ -7518,12 +7518,12 @@ remotedev-monitor-components@^0.0.5:
     codemirror "^5.21.0"
     styled-components "^1.1.1"
 
-remotedev-serialize@0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/remotedev-serialize/-/remotedev-serialize-0.1.4.tgz#2a15e4e514fd393c20328ef978504b4fc272e367"
-  integrity sha512-xFUjsHi/qY14uJmyk1uZynRJli5j5JdTE8Qm2jNCHMQVRSdKRqGh2vqQh6eoOiRX4K8yxjEXqtcxd4Oj2dmK4Q==
+remotedev-serialize@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/remotedev-serialize/-/remotedev-serialize-0.1.5.tgz#26ae46fcefb7cdf6cb282a9a7c717c2d3d26972e"
+  integrity sha512-ed5rQ3Q78s8r2+iL9KjsFQfVWySnoFYxgyo6g2/4T74PpKOVW3M13t4Ahzds+EvIN9EHGypx+6LesgTyHgjI9Q==
   dependencies:
-    jsan "3.1.9"
+    jsan "^3.1.11"
 
 remotedev-slider@1.1.3, remotedev-slider@^1.1.1:
   version "1.1.3"
