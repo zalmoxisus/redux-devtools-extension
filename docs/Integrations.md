@@ -1,6 +1,7 @@
 # Integrations for js and non-js frameworks
 
 Mostly functional:
+- [React](#react)
 - [Angular](#angular)
 - [Cycle](#cycle)
 - [Ember](#ember)
@@ -15,6 +16,40 @@ In progress:
 - [Python](#python)
 - [Swift](#swift)
 
+### [React](https://github.com/facebook/react)
+#### Inspect React props
+##### [`react-inspect-props`](https://github.com/lucasconstantino/react-inspect-props)
+```js
+import { compose, withState } from 'recompose'
+import { inspectProps } from 'react-inspect-props'
+
+compose(
+  withState('count', 'setCount', 0),
+  inspectProps('Counter inspector')
+)(Counter)
+```
+
+#### Inspect React states
+##### [`remotedev-react-state`](https://github.com/jhen0409/remotedev-react-state)
+```js
+import connectToDevTools from 'remotedev-react-state'
+
+componentWillMount() {
+    // Connect to devtools after setup initial state
+    connectToDevTools(this/*, options */)
+  }
+```
+
+#### Inspect React hooks (useState and useReducer)
+##### [`reinspect`](https://github.com/troch/reinspect)
+```js
+import { useState } from 'reinspect'
+
+export function CounterWithUseState({ id }) {
+    const [count, setCount] = useState(0, id)
+    // ...
+}
+```
 
 ### [Mobx](https://github.com/mobxjs/mobx)
 #### [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev)
