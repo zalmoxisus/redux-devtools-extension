@@ -72,7 +72,7 @@
     "webpack": "^3.1.0"
   },
   "dependencies": {
-    "jsan": "^3.1.12",
+    "jsan": "^3.1.13",
     "lodash": "^4.17.2",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
@@ -84,7 +84,7 @@
     "redux-devtools-instrument": "^1.9.3",
     "remotedev-app": "^0.10.12",
     "remotedev-monitor-components": "^0.0.5",
-    "remotedev-serialize": "^0.1.5",
+    "remotedev-serialize": "^0.1.7",
     "remotedev-slider": "^1.1.1",
     "remotedev-utils": "0.0.1"
   }

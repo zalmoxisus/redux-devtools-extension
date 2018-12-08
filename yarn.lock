@@ -4522,10 +4522,15 @@ js-yaml@3.4.5:
     argparse "^1.0.2"
     esprima "^2.6.0"
 
-jsan@^3.1.11, jsan@^3.1.12:
+jsan@^3.1.12:
   version "3.1.12"
   resolved "https://registry.yarnpkg.com/jsan/-/jsan-3.1.12.tgz#e784ce5ab533ee41f868bb054d74769365c80be5"
   integrity sha512-EDJhJdWGP++Qh5TGfsdc3k2hFjr1/4Q3nVX6MPkTYlqqj3Xv9erXnBRZEBmuGR2IpfARdm0Ivj5EBSvhFylWRA==
+
+jsan@^3.1.13:
+  version "3.1.13"
+  resolved "https://registry.yarnpkg.com/jsan/-/jsan-3.1.13.tgz#4de8c7bf8d1cfcd020c313d438f930cec4b91d86"
+  integrity sha512-9kGpCsGHifmw6oJet+y8HaCl14y7qgAsxVdV3pCHDySNR3BfDC30zgkssd7x5LRVAT22dnpbe9JdzzmXZnq9/g==
 
 jsan@^3.1.3:
   version "3.1.10"
@@ -7518,12 +7523,12 @@ remotedev-monitor-components@^0.0.5:
     codemirror "^5.21.0"
     styled-components "^1.1.1"
 
-remotedev-serialize@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/remotedev-serialize/-/remotedev-serialize-0.1.5.tgz#26ae46fcefb7cdf6cb282a9a7c717c2d3d26972e"
-  integrity sha512-ed5rQ3Q78s8r2+iL9KjsFQfVWySnoFYxgyo6g2/4T74PpKOVW3M13t4Ahzds+EvIN9EHGypx+6LesgTyHgjI9Q==
+remotedev-serialize@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/remotedev-serialize/-/remotedev-serialize-0.1.7.tgz#744182d1d42c557207495a438442f18152933ec3"
+  integrity sha512-iTWTPjxazpwRHDqrfR0Vaxnq1XdW3TOAuClowoj6DYu3z0iQmd812tvrmA96TswZv22gIkwx9eEhz7vOQOEIgw==
   dependencies:
-    jsan "^3.1.11"
+    jsan "^3.1.13"
 
 remotedev-slider@1.1.3, remotedev-slider@^1.1.1:
   version "1.1.3"

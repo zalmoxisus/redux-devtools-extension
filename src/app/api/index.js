@@ -51,7 +51,8 @@ export function getSeralizeParameter(config, param) {
       return {
         replacer: immutableSerializer.replacer,
         reviver: immutableSerializer.reviver,
-        options: serialize.options || true
+        options: typeof serialize.options === 'object' ?
+          { ...immutableSerializer.options, ...serialize.options } : immutableSerializer.options
       };
     }
     if (!serialize.replacer && !serialize.reviver) return { options: serialize.options };
