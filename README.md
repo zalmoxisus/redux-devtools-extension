@@ -44,6 +44,8 @@ Note that [`preloadedState`](http://redux.js.org/docs/api/createStore.html) argu
 
 > For universal ("isomorphic") apps, prefix it with `typeof window !== 'undefined' &&`.
 
+> For TypeScript use [`redux-devtools-extension` npm package](#13-use-redux-devtools-extension-package-from-npm), which contains all the definitions, or just use `(window as any)` (see [Recipes](/docs/Recipes.md#using-in-a-typescript-project) for an example).
+
 In case ESLint is configured to not allow using the underscore dangle, wrap it like so:
 ```diff
 + /* eslint-disable no-underscore-dangle */

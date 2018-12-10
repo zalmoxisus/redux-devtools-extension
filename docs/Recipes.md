@@ -2,6 +2,8 @@
 
 ### Using in a typescript project
 
+The recommended way is to use [`redux-devtools-extension` npm package](/README.md#13-use-redux-devtools-extension-package-from-npm), which contains all typescript definitions. Or you can just use `window as any`:
+
 ```js
 const store = createStore(
   rootReducer,
