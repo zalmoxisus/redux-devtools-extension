@@ -13,6 +13,8 @@ export default function configureStore(next, monitorReducer, config) {
       monitorReducer,
       {
         maxAge: config.maxAge,
+        trace: config.trace,
+        traceLimit: config.traceLimit,
         shouldCatchErrors: config.shouldCatchErrors || window.shouldCatchErrors,
         shouldHotReload: config.shouldHotReload,
         shouldRecordChanges: config.shouldRecordChanges,
