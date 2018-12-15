@@ -17,7 +17,11 @@ export default ({ options, saveOption }) => {
                type="radio"
                checked={options.useEditor === EditorState.BROWSER}
                onChange={() => saveOption('useEditor', EditorState.BROWSER)}/>
-        <label className="option__label" htmlFor="editor-browser">Use browser's debugger (from Chrome devpanel only)</label>
+        <label className="option__label" htmlFor="editor-browser">{
+          navigator.userAgent.indexOf('Firefox') !== -1 ?
+            'Don\'t open in external editor' :
+            'Use browser\'s debugger (from Chrome devpanel only)'
+        }</label>
       </div>
 
       <div className="option option_type_radio" style={{ display: 'flex', alignItems: 'center' }}>
@@ -48,7 +52,7 @@ export default ({ options, saveOption }) => {
                   value={options.projectPath}
                   disabled={options.useEditor !== EditorState.EXTERNAL}
                   onChange={(e) => saveOption('projectPath', e.target.value.replace('\n', ''))} />
-        <div className="option__hint">Use `pwd` in your project root directory (according to sourcemaps)</div>
+        <div className="option__hint">Run `pwd` in your project root directory to get it</div>
       </div>
     </fieldset>
   );
