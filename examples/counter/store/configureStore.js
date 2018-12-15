@@ -7,7 +7,7 @@ import * as actionCreators from '../actions/counter';
 
 export let isMonitorAction;
 export default function configureStore(preloadedState) {
-  const composeEnhancers = composeWithDevTools({ actionCreators });
+  const composeEnhancers = composeWithDevTools({ actionCreators, trace: true, traceLimit: 25 });
   const store = createStore(reducer, preloadedState, composeEnhancers(
     applyMiddleware(invariant(), thunk)
   ));
