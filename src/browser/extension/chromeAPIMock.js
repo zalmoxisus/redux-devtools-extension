@@ -3,11 +3,13 @@
 window.isElectron = window.navigator &&
   window.navigator.userAgent.indexOf('Electron') !== -1;
 
+const isFirefox = navigator.userAgent.indexOf('Firefox') !== -1;
+
 // Background page only
 if (
   window.isElectron &&
   location.pathname === '/_generated_background_page.html' ||
-  navigator.userAgent.indexOf('Firefox') !== -1
+  isFirefox
 ) {
   chrome.runtime.onConnectExternal = {
     addListener() {}
@@ -83,4 +85,8 @@ if (window.isElectron) {
     }
     return originSendMessage(...arguments);
   };
+}
+
+if (isFirefox) {
+  chrome.storage.sync = chrome.storage.local;
 }

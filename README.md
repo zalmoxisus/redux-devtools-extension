@@ -178,6 +178,8 @@ See [integrations](docs/Integrations.md) and [the blog post](https://medium.com/
   - [Methods (advanced API)](docs/API/Methods.md)
   - [Create Redux store for debugging](docs/API/CreateStore.md)
   - [FAQ](docs/FAQ.md)
+  - Features
+    - [Trace actions calls](/docs/Features/Trace.md)
   - [Troubleshooting](docs/Troubleshooting.md)
   - [Articles](docs/Articles.md)
   - [Videos](docs/Videos.md)
