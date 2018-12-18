@@ -14,6 +14,10 @@ app.get("/", function(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get("/multiple", function(req, res) {
+  res.sendFile(__dirname + '/multiple.html');
+});
+
 app.listen(port, function(error) {
   if (error) {
     console.error(error);
