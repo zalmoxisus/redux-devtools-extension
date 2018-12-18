@@ -1,10 +1,13 @@
 import path from 'path';
 import webpack from 'webpack';
+import TerserPlugin from 'terser-webpack-plugin';
 
 const extpath = path.join(__dirname, '../src/browser/extension/');
 const mock = `${extpath}chromeAPIMock.js`;
 
 const baseConfig = (params) => ({
+  // devtool: 'source-map',
+  mode: 'production',
   entry: params.input || {
     background: [ mock, `${extpath}background/index` ],
     options: [ mock, `${extpath}options/index` ],
@@ -28,19 +31,26 @@ const baseConfig = (params) => ({
     ...(params.plugins ? params.plugins :
       [
         new webpack.optimize.ModuleConcatenationPlugin(),
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-          comments: false,
-          compressor: {
-            warnings: false
-          },
-          mangle: {
-            screw_ie8: true,
-            keep_fnames: true
-          }
-        })
+        new webpack.optimize.OccurrenceOrderPlugin()
       ])
   ],
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          output: {
+            comments: false
+          }
+        },
+        // sourceMap: true,
+        cache: true,
+        parallel: true
+      })
+    ]
+  },
+  performance: {
+    hints: false
+  },
   resolve: {
     alias: {
       app: path.join(__dirname, '../src/app'),
