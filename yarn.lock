@@ -7979,10 +7979,10 @@ remotedev-monitor-components@^0.0.5:
     codemirror "^5.21.0"
     styled-components "^1.1.1"
 
-remotedev-serialize@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/remotedev-serialize/-/remotedev-serialize-0.1.7.tgz#744182d1d42c557207495a438442f18152933ec3"
-  integrity sha512-iTWTPjxazpwRHDqrfR0Vaxnq1XdW3TOAuClowoj6DYu3z0iQmd812tvrmA96TswZv22gIkwx9eEhz7vOQOEIgw==
+remotedev-serialize@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/remotedev-serialize/-/remotedev-serialize-0.1.8.tgz#c99cb184e7f71a906162abc404be8ce33810205f"
+  integrity sha512-3YG/FDcOmiK22bl5oMRM8RRnbGrFEuPGjbcDG+z2xi5aQaNQNZ8lqoRnZTwXVfaZtutXuiAQOgPRrogzQk8edg==
   dependencies:
     jsan "^3.1.13"
 

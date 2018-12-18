@@ -47,7 +47,9 @@ export function getSeralizeParameter(config, param) {
   if (serialize) {
     if (serialize === true) return { options: true };
     if (serialize.immutable) {
-      const immutableSerializer = seralizeImmutable(serialize.immutable, serialize.refs);
+      const immutableSerializer = seralizeImmutable(
+        serialize.immutable, serialize.refs, serialize.replacer, serialize.reviver
+      );
       return {
         replacer: immutableSerializer.replacer,
         reviver: immutableSerializer.reviver,
