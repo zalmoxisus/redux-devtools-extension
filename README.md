@@ -176,7 +176,6 @@ See [integrations](docs/Integrations.md) and [the blog post](https://medium.com/
 ## Docs
   - [Options (arguments)](docs/API/Arguments.md)
   - [Methods (advanced API)](docs/API/Methods.md)
-  - [Create Redux store for debugging](docs/API/CreateStore.md)
   - [FAQ](docs/FAQ.md)
   - Features
     - [Trace actions calls](/docs/Features/Trace.md)

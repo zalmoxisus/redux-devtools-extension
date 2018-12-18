@@ -306,6 +306,9 @@ const __REDUX_DEVTOOLS_EXTENSION__ = function(reducer, preloadedState, config) {
   };
 
   if (!reducer) return enhance();
+  /* eslint-disable no-console */
+  console.warn('Creating a Redux store directly from DevTools extension is discouraged and will not be supported in future major version. For more details see: https://git.io/fphCe');
+  /* eslint-enable no-console */
   return createStore(reducer, preloadedState, enhance);
 };
 

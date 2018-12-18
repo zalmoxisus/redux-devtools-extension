@@ -7,7 +7,6 @@
 * [API Reference](/docs/API/README.md)
   * [Options (arguments)](/docs/API/Arguments.md)
   * [Methods (advanced API)](/docs/API/Methods.md)
-  * [Create Redux store for debugging](/docs/API/CreateStore.md)
 * Features
   * [Trace actions calls](/docs/Features/Trace.md)
 * [Integrations](/docs/Integrations.md)
