@@ -72,11 +72,42 @@ function post(message) {
   window.postMessage(message, '*');
 }
 
-function amendActionType(action) {
-  if (typeof action === 'string') return { action: { type: action }, timestamp: Date.now() };
-  if (!action.type) return { action: { type: 'update' }, timestamp: Date.now() };
-  if (action.action) return action;
-  return { action, timestamp: Date.now() };
+function getStackTrace(config, toExcludeFromTrace) {
+  if (!config.trace) return undefined;
+  if (typeof config.trace === 'function') return config.trace();
+
+  let stack;
+  let extraFrames = 0;
+  let prevStackTraceLimit;
+  const traceLimit = config.traceLimit;
+  const error = Error();
+  if (Error.captureStackTrace) {
+    if (Error.stackTraceLimit < traceLimit) {
+      prevStackTraceLimit = Error.stackTraceLimit;
+      Error.stackTraceLimit = traceLimit;
+    }
+    Error.captureStackTrace(error, toExcludeFromTrace);
+  } else {
+    extraFrames = 3;
+  }
+  stack = error.stack;
+  if (prevStackTraceLimit) Error.stackTraceLimit = prevStackTraceLimit;
+  if (extraFrames || typeof Error.stackTraceLimit !== 'number' || Error.stackTraceLimit > traceLimit) {
+    const frames = stack.split('\n');
+    if (frames.length > traceLimit) {
+      stack = frames.slice(0, traceLimit + extraFrames + (frames[0] === 'Error' ? 1 : 0)).join('\n');
+    }
+  }
+  return stack;
+}
+
+function amendActionType(action, config, toExcludeFromTrace) {
+  let timestamp = Date.now();
+  let stack = getStackTrace(config, toExcludeFromTrace);
+  if (typeof action === 'string') return { action: { type: action }, timestamp, stack };
+  if (!action.type) return { action: { type: 'update' }, timestamp, stack };
+  if (action.action) return stack ? { stack, ...action } : action;
+  return { action, timestamp, stack };
 }
 
 export function toContentScript(message, serializeState, serializeAction) {
@@ -103,7 +134,7 @@ export function sendMessage(action, state, config, instanceId, name) {
   if (typeof config !== 'object') {
     // Legacy: sending actions not from connected part
     config = {}; // eslint-disable-line no-param-reassign
-    if (action) amendedAction = amendActionType(action);
+    if (action) amendedAction = amendActionType(action, config, sendMessage);
   }
   const message = {
     type: action ? 'ACTION' : 'STATE',
@@ -224,7 +255,7 @@ export function connect(preConfig) {
         }
       }
       else if (config.actionSanitizer) amendedAction = config.actionSanitizer(action);
-      amendedAction = amendActionType(amendedAction);
+      amendedAction = amendActionType(amendedAction, config, send);
       if (latency) {
         delayedActions.push(amendedAction);
         delayedStates.push(amendedState);
