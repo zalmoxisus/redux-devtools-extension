@@ -1,5 +1,5 @@
 {
-  "version": "2.16.5",
+  "version": "2.17.0",
   "name": "remotedev-redux-devtools-extension",
   "description": "Redux Developer Tools for debugging application state changes.",
   "scripts": {
