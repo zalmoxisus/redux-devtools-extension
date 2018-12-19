@@ -1,0 +1,576 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Troubleshooting · Redux DevTools Extension</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="Recipes.html" />
+    
+    
+    <link rel="prev" href="FAQ.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Extension
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1.1" data-path="../">
+            
+                <a href="../#installation">
+            
+                    
+                    Installation
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.2" data-path="../">
+            
+                <a href="../#usage">
+            
+                    
+                    Usage
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.3" data-path="../">
+            
+                <a href="../#demo">
+            
+                    
+                    Demo
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="API/">
+            
+                <a href="API/">
+            
+                    
+                    API Reference
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="API/Arguments.html">
+            
+                <a href="API/Arguments.html">
+            
+                    
+                    Options (arguments)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="API/Methods.html">
+            
+                <a href="API/Methods.html">
+            
+                    
+                    Methods (advanced API)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    Features
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="Features/Trace.html">
+            
+                <a href="Features/Trace.html">
+            
+                    
+                    Trace actions calls
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="Integrations.html">
+            
+                <a href="Integrations.html">
+            
+                    
+                    Integrations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="FAQ.html">
+            
+                <a href="FAQ.html">
+            
+                    
+                    FAQ
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.6" data-path="Troubleshooting.html">
+            
+                <a href="Troubleshooting.html">
+            
+                    
+                    Troubleshooting
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="Recipes.html">
+            
+                <a href="Recipes.html">
+            
+                    
+                    Recipes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="Articles.html">
+            
+                <a href="Articles.html">
+            
+                    
+                    Articles
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="Videos.html">
+            
+                <a href="Videos.html">
+            
+                    
+                    Videos
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="Credits.html">
+            
+                <a href="Credits.html">
+            
+                    
+                    Credits
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" data-path="../">
+            
+                <a href="../#backers">
+            
+                    
+                    Support us
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" data-path="Feedback.html">
+            
+                <a href="Feedback.html">
+            
+                    
+                    Feedback
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" >
+            
+                <a target="_blank" href="https://github.com/zalmoxisus/redux-devtools-extension/releases">
+            
+                    
+                    Change Log
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Troubleshooting</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="troubleshooting">Troubleshooting</h1>
+<h3 id="i-just-see-empty-log-or-no-store-found">I just see empty log or &quot;No store found&quot;</h3>
+<p>Make sure you <a href="https://github.com/zalmoxisus/redux-devtools-extension#2-use-with-redux" target="_blank">applied the enhancer</a>. Note that passing enhancer as last argument requires redux@&gt;=3.1.0. For older versions apply it like <a href="https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/todomvc/store/configureStore.js" target="_blank">here</a> or <a href="https://github.com/zalmoxisus/redux-devtools-extension/blob/v0.4.2/examples/counter/store/configureStore.js#L7-L12" target="_blank">here</a>.</p>
+<p>Don&apos;t mix the old Redux API with the new one. Pass enhancers and applyMiddleware as last createStore argument.</p>
+<h3 id="access-file-url-file">Access file url (<code>file:///</code>)</h3>
+<p>If you develop on your local filesystem, make sure to allow Redux DevTools access to <code>file:///</code> URLs in the settings of this extension:</p>
+<p><img width="746" alt="extensions" src="https://cloud.githubusercontent.com/assets/7957859/19075220/a0fad99e-8a4c-11e6-8b87-757f2dc179cb.png"></p>
+<h3 id="it-shows-only-the-init-action-or-moving-back-and-forth-doesnt-update-the-state">It shows only the <code>@@INIT</code> action or moving back and forth doesn&apos;t update the state</h3>
+<p>Most likely you mutate the state. Check it by <a href="https://github.com/zalmoxisus/redux-devtools-extension/blob/master/examples/counter/store/configureStore.js#L3" target="_blank">adding <code>redux-immutable-state-invariant</code> middleware</a>.</p>
+<h3 id="init-or-replace-action-resets-the-state-of-the-app-or-last-actions-re-applied">@@INIT or REPLACE action resets the state of the app or last actions RE-APPLIED</h3>
+<p><code>@@redux/REPLACE</code> (or <code>@@INIT</code>) is used internally when the application is hot reloaded. When you use <code>store.replaceReducer</code> the effect will be the same as for hot-reloading, where the extension is recomputing all the history again. To avoid that set <a href="API/Arguments.html#shouldhotreload"><code>shouldHotReload</code></a> parameter to <code>false</code>. </p>
+<h3 id="it-doesnt-work-with-other-store-enhancers">It doesn&apos;t work with other store enhancers</h3>
+<p>Usually the extension&apos;s store enhancer should be last in the compose. When you&apos;re using <a href="../#12-advanced-store-setup"><code>window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__</code></a> or <a href="../#13-use-redux-devtools-extension-package-from-npm"><code>composeWithDevTools</code></a> helper you don&apos;t have to worry about the enhancers order. However some enhancers (<a href="https://github.com/zalmoxisus/redux-devtools-extension/issues/261" target="_blank">like <code>redux-batched-subscribe</code></a>) also have this requirement to be the last in the compose. In this case you can use it like so:</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> store <span class="token operator">=</span> <span class="token function">createStore</span><span class="token punctuation">(</span>reducer<span class="token punctuation">,</span> preloadedState<span class="token punctuation">,</span> <span class="token function">compose</span><span class="token punctuation">(</span>
+  <span class="token comment">// applyMiddleware(thunk),</span>
+  window<span class="token punctuation">.</span>__REDUX_DEVTOOLS_EXTENSION__ <span class="token operator">?</span> window<span class="token punctuation">.</span><span class="token function">__REDUX_DEVTOOLS_EXTENSION__</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> noop <span class="token operator">=&gt;</span> noop<span class="token punctuation">,</span>
+  <span class="token function">batchedSubscribe</span><span class="token punctuation">(</span><span class="token comment">/* ... */</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Where <code>batchedSubscribe</code> is <code>redux-batched-subscribe</code> store enhancer.</p>
+<h3 id="excessive-use-of-memory-and-cpu">Excessive use of memory and CPU</h3>
+<p>That is happening due to serialization of some huge objects included in the state or action. The solution is to <a href="API/Arguments.html#actionsanitizer--statesanitizer">sanitize them</a>.</p>
+<p>You can do that by including/omitting data containing specific values, having specific types... In the example bellow we&apos;re omitting parts of action and state objects with the key <code>data</code> (in case of action only when was dispatched action <code>FILE_DOWNLOAD_SUCCESS</code>):</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> <span class="token function-variable function">actionSanitizer</span> <span class="token operator">=</span> <span class="token punctuation">(</span>action<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">(</span>
+  action<span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token string">&apos;FILE_DOWNLOAD_SUCCESS&apos;</span> <span class="token operator">&amp;&amp;</span> action<span class="token punctuation">.</span>data <span class="token operator">?</span>
+  <span class="token punctuation">{</span> <span class="token operator">...</span>action<span class="token punctuation">,</span> data<span class="token punctuation">:</span> <span class="token string">&apos;&lt;&lt;LONG_BLOB&gt;&gt;&apos;</span> <span class="token punctuation">}</span> <span class="token punctuation">:</span> action
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> store <span class="token operator">=</span> <span class="token function">createStore</span><span class="token punctuation">(</span>rootReducer<span class="token punctuation">,</span> window<span class="token punctuation">.</span>__REDUX_DEVTOOLS_EXTENSION__ <span class="token operator">&amp;&amp;</span> window<span class="token punctuation">.</span><span class="token function">__REDUX_DEVTOOLS_EXTENSION__</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  actionSanitizer<span class="token punctuation">,</span>
+  stateSanitizer<span class="token punctuation">:</span> <span class="token punctuation">(</span>state<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> state<span class="token punctuation">.</span>data <span class="token operator">?</span> <span class="token punctuation">{</span> <span class="token operator">...</span>state<span class="token punctuation">,</span> data<span class="token punctuation">:</span> <span class="token string">&apos;&lt;&lt;LONG_BLOB&gt;&gt;&apos;</span> <span class="token punctuation">}</span> <span class="token punctuation">:</span> state
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>There&apos;s a more advanced <a href="https://github.com/zalmoxisus/redux-devtools-extension/issues/455#issuecomment-404538385" target="_blank">example on how to implement that for <code>ui-router</code></a>.</p>
+<p>The extension is in different process and cannot access the store object directly, unlike vanilla <a href="https://github.com/reduxjs/redux-devtools" target="_blank"><code>redux-devtools</code></a> which doesn&apos;t have this issue. In case sanitizing doesn&apos;t fit your use case, you might consider including it directly as a react component, so there will be no need to serialize the data, but it would add some complexity.</p>
+<h3 id="it-fails-to-serialize-data-when-passing-synthetic-events-or-calling-an-action-directly-with-redux-actions">It fails to serialize data when <a href="https://github.com/zalmoxisus/redux-devtools-extension/issues/275" target="_blank">passing synthetic events</a> or <a href="https://github.com/zalmoxisus/redux-devtools-extension/issues/287" target="_blank">calling an action directly with <code>redux-actions</code></a></h3>
+<p>React synthetic event cannot be reused for performance reason. So, it&apos;s not possible to serialize event objects you pass to action payloads.</p>
+<ol>
+<li><p>The best solution is <strong>not to pass the whole event object to reducers, but the data you need</strong>:</p>
+<pre class="language-"><code class="lang-diff">function click(event) {
+ return {
+   type: ELEMENT_CLICKED,
+<span class="token deleted">-    event: event</span>
+<span class="token inserted">+    value: event.target.value</span>
+ };
+}
+</code></pre>
+</li>
+<li><p>If you cannot pick data from the event object or, for some reason, you need the whole object, use <code>event.persist()</code> as suggested in <a href="https://facebook.github.io/react/docs/events.html#event-pooling" target="_blank">React Docs</a>, but it will consume RAM while not needed.</p>
+<pre class="language-"><code class="lang-diff">function increment(event) {
+<span class="token inserted">+ event.persist();</span>
+  return {
+    type: ELEMENT_CLICKED,
+    event: event,
+  };
+}
+</code></pre>
+</li>
+<li><p>A workaround, to pass the whole object and at the same time not to persist it, is to override this key of the stringified payload in your action creator. Add a custom <code>toJSON</code> function right in the action object (which will be called by the extension before accessing the object):</p>
+<pre class="language-"><code class="lang-diff">function increment(event) {
+  return {
+    type: ELEMENT_CLICKED,
+    event: event,
+<span class="token inserted">+   toJSON: function (){</span>
+<span class="token inserted">+     return { ...this, event: &apos;[Event]&apos; };</span>
+<span class="token inserted">+   }</span>
+  };
+}
+</code></pre>
+<p>Note that it shouldn&apos;t be arrow function as we want to have access to the function&apos;s <code>this</code>.</p>
+<p>As we don&apos;t have access to the original object, skipping and recomputing actions during hot reloading will not work in this case. We recommend to use the first solution whenever possible.</p>
+</li>
+</ol>
+<h3 id="symbols-or-other-unserializable-data-not-shown">Symbols or other unserializable data not shown</h3>
+<p>To get data which cannot be serialized by <code>JSON.stringify</code>, set <a href="API/Arguments.html#serialize"><code>serialize</code> parameter</a>:</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> store <span class="token operator">=</span> Redux<span class="token punctuation">.</span><span class="token function">createStore</span><span class="token punctuation">(</span>reducer<span class="token punctuation">,</span> window<span class="token punctuation">.</span>__REDUX_DEVTOOLS_EXTENSION__ <span class="token operator">&amp;&amp;</span> window<span class="token punctuation">.</span><span class="token function">__REDUX_DEVTOOLS_EXTENSION__</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+   serialize<span class="token punctuation">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>It will handle also date, regex, undefined, error objects, symbols, maps, sets and functions.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="FAQ.html" class="navigation navigation-prev " aria-label="Previous page: FAQ">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="Recipes.html" class="navigation navigation-next " aria-label="Next page: Recipes">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Troubleshooting","level":"1.6","depth":1,"next":{"title":"Recipes","level":"1.7","depth":1,"path":"docs/Recipes.md","ref":"docs/Recipes.md","articles":[]},"previous":{"title":"FAQ","level":"1.5","depth":1,"path":"docs/FAQ.md","ref":"docs/FAQ.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/zalmoxisus/redux-devtools-extension/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/zalmoxisus/redux-devtools-extension/tree/master"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Redux DevTools Extension","gitbook":"3.2.2"},"file":{"path":"docs/Troubleshooting.md","mtime":"2018-11-27T21:57:43.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2018-12-19T15:45:50.344Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-edit-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-anchorjs/anchor.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-anchorjs/anchor-style.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

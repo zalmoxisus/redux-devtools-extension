@@ -1,0 +1,701 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Options (arguments) · Redux DevTools Extension</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-prism/prism.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="Methods.html" />
+    
+    
+    <link rel="prev" href="./" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    Extension
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1.1" data-path="../../">
+            
+                <a href="../../#installation">
+            
+                    
+                    Installation
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.2" data-path="../../">
+            
+                <a href="../../#usage">
+            
+                    
+                    Usage
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.3" data-path="../../">
+            
+                <a href="../../#demo">
+            
+                    
+                    Demo
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    API Reference
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter active" data-level="1.2.1" data-path="Arguments.html">
+            
+                <a href="Arguments.html">
+            
+                    
+                    Options (arguments)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="Methods.html">
+            
+                <a href="Methods.html">
+            
+                    
+                    Methods (advanced API)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    Features
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../Features/Trace.html">
+            
+                <a href="../Features/Trace.html">
+            
+                    
+                    Trace actions calls
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../Integrations.html">
+            
+                <a href="../Integrations.html">
+            
+                    
+                    Integrations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../FAQ.html">
+            
+                <a href="../FAQ.html">
+            
+                    
+                    FAQ
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../Troubleshooting.html">
+            
+                <a href="../Troubleshooting.html">
+            
+                    
+                    Troubleshooting
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="../Recipes.html">
+            
+                <a href="../Recipes.html">
+            
+                    
+                    Recipes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="../Articles.html">
+            
+                <a href="../Articles.html">
+            
+                    
+                    Articles
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="../Videos.html">
+            
+                <a href="../Videos.html">
+            
+                    
+                    Videos
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="../Credits.html">
+            
+                <a href="../Credits.html">
+            
+                    
+                    Credits
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" data-path="../../">
+            
+                <a href="../../#backers">
+            
+                    
+                    Support us
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" data-path="../Feedback.html">
+            
+                <a href="../Feedback.html">
+            
+                    
+                    Feedback
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" >
+            
+                <a target="_blank" href="https://github.com/zalmoxisus/redux-devtools-extension/releases">
+            
+                    
+                    Change Log
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >Options (arguments)</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="options">Options</h1>
+<p>Use with</p>
+<ul>
+<li><code>window.__REDUX_DEVTOOLS_EXTENSION__([options])</code></li>
+<li><code>window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__([options])()</code></li>
+<li><code>window.__REDUX_DEVTOOLS_EXTENSION__.connect([options])</code></li>
+<li><p><code>redux-devtools-extension</code> npm package:</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">import</span> <span class="token punctuation">{</span> composeWithDevTools <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;redux-devtools-extension&apos;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> composeEnhancers <span class="token operator">=</span> <span class="token function">composeWithDevTools</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> store <span class="token operator">=</span> <span class="token function">createStore</span><span class="token punctuation">(</span>reducer<span class="token punctuation">,</span> <span class="token comment">/* preloadedState, */</span> <span class="token function">composeEnhancers</span><span class="token punctuation">(</span>
+ <span class="token function">applyMiddleware</span><span class="token punctuation">(</span><span class="token operator">...</span>middleware<span class="token punctuation">)</span><span class="token punctuation">,</span>
+ <span class="token comment">// other store enhancers if any</span>
+<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+</ul>
+<p>The <code>options</code> object is optional, and can include any of the following.</p>
+<h3 id="name"><code>name</code></h3>
+<p><em>string</em> - the instance name to be shown on the monitor page. Default value is <code>document.title</code>. If not specified and there&apos;s no document title, it will consist of <code>tabId</code> and <code>instanceId</code>.</p>
+<h3 id="actioncreators"><code>actionCreators</code></h3>
+<p><em>array</em> or <em>object</em> - action creators functions to be available in the Dispatcher. See <a href="https://github.com/zalmoxisus/redux-devtools-extension/commit/477e69d8649dfcdc9bf84dd45605dab7d9775c03" target="_blank">the example</a>.</p>
+<h3 id="latency"><code>latency</code></h3>
+<p><em>number (in ms)</em> - if more than one action is dispatched in the indicated interval, all new actions will be collected and sent at once. It is the joint between performance and speed. When set to <code>0</code>, all actions will be sent instantly. Set it to a higher value when experiencing perf issues (also <code>maxAge</code> to a lower value). Default is <code>500 ms</code>.</p>
+<h3 id="maxage"><code>maxAge</code></h3>
+<p><em>number</em> (&gt;1) - maximum allowed actions to be stored in the history tree. The oldest actions are removed once maxAge is reached. It&apos;s critical for performance. Default is <code>50</code>.</p>
+<h3 id="trace"><code>trace</code></h3>
+<p><em>boolean</em> or <em>function</em> - if set to <code>true</code>, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code (<a href="../Features/Trace.html">more details</a>). You can use a function (with action object as argument) which should return <code>new Error().stack</code> string, getting the stack outside of reducers. Default to <code>false</code>.</p>
+<h3 id="tracelimit"><code>traceLimit</code></h3>
+<p><em>number</em> - maximum stack trace frames to be stored (in case <code>trace</code> option was provided as <code>true</code>). By default it&apos;s <code>10</code>. Note that, because extension&apos;s calls are excluded, the resulted frames could be 1 less. If <code>trace</code> option is a function, <code>traceLimit</code> will have no effect, as it&apos;s supposed to be handled there.</p>
+<h3 id="serialize"><code>serialize</code></h3>
+<p><em>boolean</em> or <em>object</em> which contains:</p>
+<ul>
+<li><p><strong>options</strong> <code>object or boolean</code>:</p>
+<ul>
+<li><code>undefined</code> - will use regular <code>JSON.stringify</code> to send data (it&apos;s the fast mode).</li>
+<li><code>false</code> - will handle also circular references.</li>
+<li><code>true</code> - will handle also date, regex, undefined, primitives, error objects, symbols, maps, sets and functions.</li>
+<li><p>object, which contains <code>date</code>, <code>regex</code>, <code>undefined</code>, <code>nan</code>, <code>infinity</code>, <code>error</code>, <code>symbol</code>, <code>map</code>, <code>set</code> and <code>function</code> keys. For each of them you can indicate if to include (by setting as <code>true</code>). For <code>function</code> key you can also specify a custom function which handles serialization. See <a href="https://github.com/kolodny/jsan" target="_blank"><code>jsan</code></a> for more details. Example:</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> store <span class="token operator">=</span> Redux<span class="token punctuation">.</span><span class="token function">createStore</span><span class="token punctuation">(</span>reducer<span class="token punctuation">,</span> window<span class="token punctuation">.</span>__REDUX_DEVTOOLS_EXTENSION__ <span class="token operator">&amp;&amp;</span> window<span class="token punctuation">.</span><span class="token function">__REDUX_DEVTOOLS_EXTENSION__</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  serialize<span class="token punctuation">:</span> <span class="token punctuation">{</span> 
+    options<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+     undefined<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+     <span class="token keyword">function</span><span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> fn<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p><strong>replacer</strong> <code>function(key, value)</code> - <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#The_replacer_parameter" target="_blank">JSON <code>replacer</code> function</a> used for both actions and states stringify.</p>
+<p>Example of usage with <a href="https://github.com/swannodette/mori" target="_blank">mori data structures</a>:</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> store <span class="token operator">=</span> Redux<span class="token punctuation">.</span><span class="token function">createStore</span><span class="token punctuation">(</span>reducer<span class="token punctuation">,</span> window<span class="token punctuation">.</span>__REDUX_DEVTOOLS_EXTENSION__ <span class="token operator">&amp;&amp;</span> window<span class="token punctuation">.</span><span class="token function">__REDUX_DEVTOOLS_EXTENSION__</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  serialize<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    replacer<span class="token punctuation">:</span> <span class="token punctuation">(</span>key<span class="token punctuation">,</span> value<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> value <span class="token operator">&amp;&amp;</span> mori<span class="token punctuation">.</span><span class="token function">isMap</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token operator">?</span> mori<span class="token punctuation">.</span><span class="token function">toJs</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">:</span> value
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>In addition, you can specify a data type by adding a <a href="https://github.com/zalmoxisus/remotedev-serialize/blob/master/helpers/index.js#L4" target="_blank"><code>__serializedType__</code></a> key. So you can deserialize it back while importing or persisting data. Moreover, it will also <a href="https://cloud.githubusercontent.com/assets/7957859/21814330/a17d556a-d761-11e6-85ef-159dd12f36c5.png" target="_blank">show a nice preview showing the provided custom type</a>:</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> store <span class="token operator">=</span> Redux<span class="token punctuation">.</span><span class="token function">createStore</span><span class="token punctuation">(</span>reducer<span class="token punctuation">,</span> window<span class="token punctuation">.</span>__REDUX_DEVTOOLS_EXTENSION__ <span class="token operator">&amp;&amp;</span> window<span class="token punctuation">.</span><span class="token function">__REDUX_DEVTOOLS_EXTENSION__</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  serialize<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    replacer<span class="token punctuation">:</span> <span class="token punctuation">(</span>key<span class="token punctuation">,</span> value<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>Immutable<span class="token punctuation">.</span>List<span class="token punctuation">.</span><span class="token function">isList</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// use your custom data type checker</span>
+        <span class="token keyword">return</span> <span class="token punctuation">{</span>
+          data<span class="token punctuation">:</span> value<span class="token punctuation">.</span><span class="token function">toArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// ImmutableJS custom method to get JS data as array</span>
+          __serializedType__<span class="token punctuation">:</span> <span class="token string">&apos;ImmutableList&apos;</span> <span class="token comment">// mark you custom data type to show and retrieve back</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li><p><strong>reviver</strong> <code>function(key, value)</code> - <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#Using_the_reviver_parameter" target="_blank">JSON <code>reviver</code> function</a> used for parsing the imported actions and states. See <a href="https://github.com/zalmoxisus/remotedev-serialize/blob/master/immutable/serialize.js#L8-L41" target="_blank"><code>remotedev-serialize</code></a> as an example on how to serialize special data types and get them back:</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> store <span class="token operator">=</span> Redux<span class="token punctuation">.</span><span class="token function">createStore</span><span class="token punctuation">(</span>reducer<span class="token punctuation">,</span> window<span class="token punctuation">.</span>__REDUX_DEVTOOLS_EXTENSION__ <span class="token operator">&amp;&amp;</span> window<span class="token punctuation">.</span><span class="token function">__REDUX_DEVTOOLS_EXTENSION__</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  serialize<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    reviver<span class="token punctuation">:</span> <span class="token punctuation">(</span>key<span class="token punctuation">,</span> value<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> value <span class="token operator">===</span> <span class="token string">&apos;object&apos;</span> <span class="token operator">&amp;&amp;</span> value <span class="token operator">!==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token string">&apos;__serializedType__&apos;</span>  <span class="token keyword">in</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>value<span class="token punctuation">.</span>__serializedType__<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">case</span> <span class="token string">&apos;ImmutableList&apos;</span><span class="token punctuation">:</span> <span class="token keyword">return</span> Immutable<span class="token punctuation">.</span><span class="token function">List</span><span class="token punctuation">(</span>value<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li><p><strong>immutable</strong> <code>object</code> - automatically serialize/deserialize immutablejs via <a href="https://github.com/zalmoxisus/remotedev-serialize" target="_blank">remotedev-serialize</a>. Just pass the Immutable library like so:</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">import</span> Immutable <span class="token keyword">from</span> <span class="token string">&apos;immutable&apos;</span><span class="token punctuation">;</span> <span class="token comment">// https://facebook.github.io/immutable-js/</span>
+<span class="token comment">// ...</span>
+<span class="token comment">// Like above, only showing off compose this time. Reminder you might not want this in prod.</span>
+<span class="token keyword">const</span> composeEnhancers <span class="token operator">=</span> <span class="token keyword">typeof</span> window <span class="token operator">===</span> <span class="token string">&apos;object&apos;</span> <span class="token operator">&amp;&amp;</span> <span class="token keyword">typeof</span> window<span class="token punctuation">.</span>__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ <span class="token operator">!==</span> <span class="token string">&apos;undefined&apos;</span> <span class="token operator">?</span>
+ window<span class="token punctuation">.</span><span class="token function">__REDUX_DEVTOOLS_EXTENSION_COMPOSE__</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+   serialize<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+     immutable<span class="token punctuation">:</span> Immutable
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> compose<span class="token punctuation">;</span>
+</code></pre>
+<p>It will support all ImmutableJS structures. You can even export them into a file and get them back. The only exception is <code>Record</code> class, for which you should pass in addition the references to your classes in <code>refs</code>.</p>
+</li>
+<li><p><strong>refs</strong> <code>array</code> - ImmutableJS <code>Record</code> classes used to make possible restore its instances back when importing, persisting... Example of usage:</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">import</span> Immutable <span class="token keyword">from</span> <span class="token string">&apos;immutable&apos;</span><span class="token punctuation">;</span>
+<span class="token comment">// ...</span>
+
+<span class="token keyword">const</span> ABRecord <span class="token operator">=</span> Immutable<span class="token punctuation">.</span><span class="token function">Record</span><span class="token punctuation">(</span><span class="token punctuation">{</span> a<span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">,</span> b<span class="token punctuation">:</span><span class="token number">2</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> myRecord <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ABRecord</span><span class="token punctuation">(</span><span class="token punctuation">{</span> b<span class="token punctuation">:</span><span class="token number">3</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// used in the reducers</span>
+
+<span class="token keyword">const</span> store <span class="token operator">=</span> <span class="token function">createStore</span><span class="token punctuation">(</span>rootReducer<span class="token punctuation">,</span> window<span class="token punctuation">.</span>__REDUX_DEVTOOLS_EXTENSION__ <span class="token operator">&amp;&amp;</span> window<span class="token punctuation">.</span><span class="token function">__REDUX_DEVTOOLS_EXTENSION__</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  serialize<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    immutable<span class="token punctuation">:</span> Immutable<span class="token punctuation">,</span>
+    refs<span class="token punctuation">:</span> <span class="token punctuation">[</span>ABRecord<span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+</ul>
+<p>Also you can specify alternative values right in the state object (in the initial state of the reducer) by adding <code>toJSON</code> function:</p>
+<p>In the example bellow it will always send <code>{ component: &apos;[React]&apos; }</code>, regardless of the state&apos;s <code>component</code> value (useful when you don&apos;t want to send lots of unnecessary data):</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">function</span> <span class="token function">component</span><span class="token punctuation">(</span>
+  state <span class="token operator">=</span> <span class="token punctuation">{</span> component<span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span> toJSON<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> component<span class="token punctuation">:</span> <span class="token string">&apos;[React]&apos;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> 
+  action
+<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">switch</span> <span class="token punctuation">(</span>action<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token string">&apos;ADD_COMPONENT&apos;</span><span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token punctuation">{</span> component<span class="token punctuation">:</span> action<span class="token punctuation">.</span>component <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span> <span class="token keyword">return</span> state<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>You could also alter the value. For example when state is <code>{ count: 1 }</code>, we&apos;ll send <code>{ counter: 10 }</code> (notice we don&apos;t have an arrow function this time to use the object&apos;s <code>this</code>):  </p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">function</span> <span class="token function">counter</span><span class="token punctuation">(</span>
+  state <span class="token operator">=</span> <span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> toJSON<span class="token punctuation">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token punctuation">{</span> conter<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>count <span class="token operator">*</span> <span class="token number">10</span> <span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  action
+<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">switch</span> <span class="token punctuation">(</span>action<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token string">&apos;INCREMENT&apos;</span><span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token punctuation">{</span> count<span class="token punctuation">:</span> state<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span> <span class="token keyword">return</span> state<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="actionsanitizer--statesanitizer"><code>actionSanitizer</code> / <code>stateSanitizer</code></h3>
+<ul>
+<li><strong>actionSanitizer</strong> (<em>function</em>) - function which takes <code>action</code> object and id number as arguments, and should return <code>action</code> object back. See the example bellow.</li>
+<li><strong>stateSanitizer</strong> (<em>function</em>) - function which takes <code>state</code> object and index as arguments, and should return <code>state</code> object back.</li>
+</ul>
+<p>Example of usage:</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> <span class="token function-variable function">actionSanitizer</span> <span class="token operator">=</span> <span class="token punctuation">(</span>action<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">(</span>
+  action<span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token string">&apos;FILE_DOWNLOAD_SUCCESS&apos;</span> <span class="token operator">&amp;&amp;</span> action<span class="token punctuation">.</span>data <span class="token operator">?</span>
+  <span class="token punctuation">{</span> <span class="token operator">...</span>action<span class="token punctuation">,</span> data<span class="token punctuation">:</span> <span class="token string">&apos;&lt;&lt;LONG_BLOB&gt;&gt;&apos;</span> <span class="token punctuation">}</span> <span class="token punctuation">:</span> action
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> store <span class="token operator">=</span> <span class="token function">createStore</span><span class="token punctuation">(</span>rootReducer<span class="token punctuation">,</span> window<span class="token punctuation">.</span>__REDUX_DEVTOOLS_EXTENSION__ <span class="token operator">&amp;&amp;</span> window<span class="token punctuation">.</span><span class="token function">__REDUX_DEVTOOLS_EXTENSION__</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  actionSanitizer<span class="token punctuation">,</span>
+  stateSanitizer<span class="token punctuation">:</span> <span class="token punctuation">(</span>state<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> state<span class="token punctuation">.</span>data <span class="token operator">?</span> <span class="token punctuation">{</span> <span class="token operator">...</span>state<span class="token punctuation">,</span> data<span class="token punctuation">:</span> <span class="token string">&apos;&lt;&lt;LONG_BLOB&gt;&gt;&apos;</span> <span class="token punctuation">}</span> <span class="token punctuation">:</span> state
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="actionsblacklist--actionswhitelist"><code>actionsBlacklist</code> / <code>actionsWhitelist</code></h3>
+<p><em>string or array of strings as regex</em> - actions types to be hidden / shown in the monitors (while passed to the reducers). If <code>actionsWhitelist</code> specified, <code>actionsBlacklist</code> is ignored.</p>
+<p>Example:</p>
+<pre class="language-"><code class="lang-js"><span class="token function">createStore</span><span class="token punctuation">(</span>reducer<span class="token punctuation">,</span> <span class="token function">remotedev</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  sendTo<span class="token punctuation">:</span> <span class="token string">&apos;http://localhost:8000&apos;</span><span class="token punctuation">,</span>
+  actionsBlacklist<span class="token punctuation">:</span> <span class="token string">&apos;SOME_ACTION&apos;</span>
+  <span class="token comment">// or actionsBlacklist: [&apos;SOME_ACTION&apos;, &apos;SOME_OTHER_ACTION&apos;]</span>
+  <span class="token comment">// or just actionsBlacklist: &apos;SOME_&apos; to omit both</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<h3 id="predicate"><code>predicate</code></h3>
+<p><em>function</em> - called for every action before sending, takes <code>state</code> and <code>action</code> object, and returns <code>true</code> in case it allows sending the current data to the monitor. Use it as a more advanced version of <code>actionsBlacklist</code>/<code>actionsWhitelist</code> parameters.
+Example of usage:</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> store <span class="token operator">=</span> <span class="token function">createStore</span><span class="token punctuation">(</span>rootReducer<span class="token punctuation">,</span> window<span class="token punctuation">.</span>__REDUX_DEVTOOLS_EXTENSION__ <span class="token operator">&amp;&amp;</span> window<span class="token punctuation">.</span><span class="token function">__REDUX_DEVTOOLS_EXTENSION__</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  predicate<span class="token punctuation">:</span> <span class="token punctuation">(</span>state<span class="token punctuation">,</span> action<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> state<span class="token punctuation">.</span>dev<span class="token punctuation">.</span>logLevel <span class="token operator">===</span> <span class="token constant">VERBOSE</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>action<span class="token punctuation">.</span>forwarded
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="shouldrecordchanges"><code>shouldRecordChanges</code></h3>
+<p><em>boolean</em> - if specified as <code>false</code>, it will not record the changes till clicking on <code>Start recording</code> button. Default is <code>true</code>. Available only for Redux enhancer, for others use <code>autoPause</code>.</p>
+<h3 id="pauseactiontype"><code>pauseActionType</code></h3>
+<p><em>string</em> - if specified, whenever clicking on <code>Pause recording</code> button and there are actions in the history log, will add this action type. If not specified, will commit when paused. Available only for Redux enhancer. Default is <code>@@PAUSED</code>.</p>
+<h3 id="autopause"><code>autoPause</code></h3>
+<p><em>boolean</em> - auto pauses when the extension&#x2019;s window is not opened, and so has zero impact on your app when not in use. Not available for Redux enhancer (as it already does it but storing the data to be sent). Default is <code>false</code>.</p>
+<h3 id="shouldstartlocked"><code>shouldStartLocked</code></h3>
+<p><em>boolean</em> - if specified as <code>true</code>, it will not allow any non-monitor actions to be dispatched till clicking on <code>Unlock changes</code> button. Available only for Redux enhancer. Default is <code>false</code>.</p>
+<h3 id="shouldhotreload"><code>shouldHotReload</code></h3>
+<p><em>boolean</em> - if set to <code>false</code>, will not recompute the states on hot reloading (or on replacing the reducers). Available only for Redux enhancer. Default to <code>true</code>.</p>
+<h3 id="shouldcatcherrors"><code>shouldCatchErrors</code></h3>
+<p><em>boolean</em> - if specified as <code>true</code>, whenever there&apos;s an exception in reducers, the monitors will show the error message, and next actions will not be dispatched.</p>
+<h3 id="features"><code>features</code></h3>
+<p>If you want to restrict the extension, just specify the features you allow:</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> composeEnhancers <span class="token operator">=</span> <span class="token function">composeWithDevTools</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  features<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    pause<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// start/pause recording of dispatched actions</span>
+    lock<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// lock/unlock dispatching actions and side effects    </span>
+    persist<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// persist states on page reloading</span>
+    <span class="token keyword">export</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// export history of actions in a file</span>
+    <span class="token keyword">import</span><span class="token punctuation">:</span> <span class="token string">&apos;custom&apos;</span><span class="token punctuation">,</span> <span class="token comment">// import history of actions from a file</span>
+    jump<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// jump back and forth (time travelling)</span>
+    skip<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// skip (cancel) actions</span>
+    reorder<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// drag and drop actions in the history list </span>
+    dispatch<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// dispatch custom actions or action creators</span>
+    test<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token comment">// generate tests for the selected actions</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token comment">// other options like actionSanitizer, stateSanitizer</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>If not specified, all of the features are enabled. When set as an object, only those included as <code>true</code> will be allowed.
+Note that except <code>true</code>/<code>false</code>, <code>import</code> and <code>export</code> can be set as <code>custom</code> (which is by default for Redux enhancer), meaning that the importing/exporting occurs on the client side. Otherwise, you&apos;ll get/set the data right from the monitor part.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: API Reference">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="Methods.html" class="navigation navigation-next " aria-label="Next page: Methods (advanced API)">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Options (arguments)","level":"1.2.1","depth":2,"next":{"title":"Methods (advanced API)","level":"1.2.2","depth":2,"path":"docs/API/Methods.md","ref":"docs/API/Methods.md","articles":[]},"previous":{"title":"API Reference","level":"1.2","depth":1,"path":"docs/API/README.md","ref":"docs/API/README.md","articles":[{"title":"Options (arguments)","level":"1.2.1","depth":2,"path":"docs/API/Arguments.md","ref":"docs/API/Arguments.md","articles":[]},{"title":"Methods (advanced API)","level":"1.2.2","depth":2,"path":"docs/API/Methods.md","ref":"docs/API/Methods.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/zalmoxisus/redux-devtools-extension/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/zalmoxisus/redux-devtools-extension/tree/master"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Redux DevTools Extension","gitbook":"3.2.2"},"file":{"path":"docs/API/Arguments.md","mtime":"2018-12-18T18:42:31.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2018-12-19T15:45:50.344Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-edit-link/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-anchorjs/anchor.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-anchorjs/anchor-style.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
