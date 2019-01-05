@@ -2,9 +2,9 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
+  mode: 'development',
+  devtool: 'source-map',
   entry: [
-    'webpack-hot-middleware/client',
     './index'
   ],
   output: {
@@ -12,17 +12,14 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: '/static/'
   },
-  plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
-  ],
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
-      loaders: ['babel'],
-      exclude: /node_modules/,
-      include: __dirname
+      loaders: ['babel-loader'],
+      exclude: /node_modules/
     }]
+  },
+  devServer: {
+    port: 4004
   }
 };

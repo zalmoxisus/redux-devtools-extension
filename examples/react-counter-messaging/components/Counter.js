@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 
 const withDevTools = (
   // process.env.NODE_ENV === 'development' &&
-  typeof window !== 'undefined' && window.devToolsExtension
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
 );
 
 class Counter extends Component {
@@ -16,7 +16,7 @@ class Counter extends Component {
 
   componentWillMount() {
     if (withDevTools) {
-      this.devTools = window.devToolsExtension.connect();
+      this.devTools = window.__REDUX_DEVTOOLS_EXTENSION__.connect();
       this.unsubscribe = this.devTools.subscribe((message) => {
         // Implement monitors actions.
         // For example time traveling:
@@ -30,7 +30,7 @@ class Counter extends Component {
   componentWillUnmount() {
     if (withDevTools) {
       this.unsubscribe(); // Use if you have other subscribers from other components.
-      window.devToolsExtension.disconnect(); // If there aren't other subscribers.
+      window.__REDUX_DEVTOOLS_EXTENSION__.disconnect(); // If there aren't other subscribers.
     }
   }
 
