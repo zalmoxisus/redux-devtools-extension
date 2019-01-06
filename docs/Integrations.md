@@ -101,15 +101,15 @@ import { NgReduxModule, NgRedux, DevToolsExtension } from 'ng2-redux';
 ```
 For Angular 1 see [ng-redux](https://github.com/angular-redux/ng-redux).
 
-#### [Angular @ngrx/store](https://github.com/ngrx/store) + [`@ngrx/store-devtools`](https://github.com/ngrx/store-devtools)
+#### [Angular @ngrx/store](https://ngrx.io/) + [`@ngrx/store-devtools`](https://ngrx.io/guide/store-devtools)
 ```js
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   imports: [
-    StoreModule.provideStore(rootReducer),
-    // Note that you must instrument after importing StoreModule
-    StoreDevtoolsModule.instrumentOnlyWithExtension({
+    StoreModule.forRoot(rootReducer),
+    // Instrumentation must be imported after importing StoreModule (config is optional)
+    StoreDevtoolsModule.instrument({
       maxAge: 5
     })
   ]
@@ -117,7 +117,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 export class AppModule { }
 ```
 
-[`Example of integration`](https://github.com/ngrx/example-app) ([live demo](http://ngrx.github.io/example-app)).
+[`Example of integration`](https://github.com/ngrx/platform/tree/master/projects/example-app/) ([live demo](http://ngrx.github.io/example-app)).
 
 ### [Ember](http://emberjs.com/)
 #### [`ember-redux`](https://github.com/ember-redux/ember-redux)
