@@ -117,7 +117,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 export class AppModule { }
 ```
 
-[`Example of integration`](https://github.com/ngrx/platform/tree/master/projects/example-app/) ([live demo](http://ngrx.github.io/example-app)).
+[`Example of integration`](https://github.com/ngrx/platform/tree/master/projects/example-app/) ([live demo](https://ngrx.github.io/platform/example-app/)).
 
 ### [Ember](http://emberjs.com/)
 #### [`ember-redux`](https://github.com/ember-redux/ember-redux)
