@@ -154,6 +154,15 @@ export interface EnhancerOptions {
      */
     test?: boolean;
   };
+  /**
+   * Set to true or a stacktrace-returning function to record call stack traces for dispatched actions.
+   * Defaults to false.
+   */
+  trace?: boolean | (<A extends Action>(action: A) => string);
+  /**
+   * The maximum number of stack trace entries to record per action. Defaults to 10.
+   */
+  traceLimit?: number;
 }
 
 export function composeWithDevTools<StoreExt, StateExt>(...funcs: Array<StoreEnhancer<StoreExt>>): StoreEnhancer<StoreExt>;
