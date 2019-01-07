@@ -191,7 +191,7 @@ Live demos to use the extension with:
  - [TodoMVC](http://zalmoxisus.github.io/examples/todomvc/)
  - [Redux Form](http://redux-form.com/6.5.0/examples/simple/)
  - [React Tetris](https://chvin.github.io/react-tetris/?lan=en)
- - [Book Collection (Angular ngrx store)](http://ngrx.github.io/example-app/)
+ - [Book Collection (Angular ngrx store)](https://ngrx.github.io/platform/example-app/)
 
 Also see [`./examples` folder](https://github.com/zalmoxisus/redux-devtools-extension/tree/master/examples).
 
