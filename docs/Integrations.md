@@ -9,6 +9,7 @@ Mostly functional:
 - [Freezer](#freezer)
 - [Mobx](#mobx)
 - [PureScript](#purescript)
+- [Reductive](#reductive)
 
 In progress:
 - [ClojureScript](#clojurescript)
@@ -216,4 +217,17 @@ var middleware: [StoreMiddleware] = [
 #if DEBUG
 middleware.append(MonitorMiddleware.create(using: .defaultConfiguration))
 #endif
+```
+
+### [Reductive](https://github.com/reasonml-community/reductive)
+#### [`reductive-dev-tools`](https://github.com/ambientlight/reductive-dev-tools)
+```reason
+let storeEnhancer =
+  ReductiveDevTools.(
+    Connectors.reductiveEnhancer(
+      Extension.enhancerOptions(~name="MyApp", ()),
+    )
+  );
+  
+let storeCreator = storeEnhancer @@ Reductive.Store.create;
 ```
