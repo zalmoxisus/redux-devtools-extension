@@ -10,6 +10,7 @@ Mostly functional:
 - [Mobx](#mobx)
 - [PureScript](#purescript)
 - [Reductive](#reductive)
+- [Aurelia](#aurelia)
 
 In progress:
 - [ClojureScript](#clojurescript)
@@ -230,4 +231,28 @@ let storeEnhancer =
   );
   
 let storeCreator = storeEnhancer @@ Reductive.Store.create;
+```
+
+### [Aurelia](http://aurelia.io)
+#### [`aurelia-store`](https://aurelia.io/docs/plugins/store)
+```ts
+import {Aurelia} from 'aurelia-framework';
+import {initialState} from './state';
+  
+export function configure(aurelia: Aurelia) {
+  aurelia.use
+    .standardConfiguration()
+    .feature('resources');
+  
+    ...
+  
+  aurelia.use.plugin('aurelia-store', {
+    initialState,
+    devToolsOptions: { // optional
+      ... // see https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md
+    },
+  });
+  
+  aurelia.start().then(() => aurelia.setRoot());
+}
 ```
