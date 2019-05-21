@@ -21,7 +21,7 @@ Use the following methods of `window.__REDUX_DEVTOOLS_EXTENSION__`:
 ##### Returns
 *Object* containing the following methods:
 
-- `subscribe(listener)` - adds a change listener. It will be called any time an action is dispatched form the monitor. Returns a function to unsubscribe the current listener. 
+- `subscribe(listener)` - adds a change listener. It will be called any time an action is dispatched from the monitor. Returns a function to unsubscribe the current listener. 
 - `unsubscribe()` - unsubscribes all listeners.
 - `send(action, state)` - sends a new action and state manually to be shown on the monitor. If action is `null` then we suppose we send `liftedState`. 
 - `init(state)` - sends the initial state to the monitor.
@@ -40,11 +40,11 @@ devTools.init({ value: 'initial state' });
 devTools.send('change state', { value: 'state changed' })
 ```
 
-See [redux enhancer's examle](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/npm-package/logOnly.js), [react example](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/examples/react-counter-messaging/components/Counter.js) and [blog post](https://medium.com/@zalmoxis/redux-devtools-without-redux-or-how-to-have-a-predictable-state-with-any-architecture-61c5f5a7716f) for more details.
+See [redux enhancer's example](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/npm-package/logOnly.js), [react example](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/examples/react-counter-messaging/components/Counter.js) and [blog post](https://medium.com/@zalmoxis/redux-devtools-without-redux-or-how-to-have-a-predictable-state-with-any-architecture-61c5f5a7716f) for more details.
 
 ### disconnect()
 
-Remove extensions listener and disconnect extensions background script connection. Usually just unsubscribing the listiner inside the `connect` is enough.  
+Remove extensions listener and disconnect extensions background script connection. Usually just unsubscribing the listener inside the `connect` is enough.  
 
 <a id="send"></a>
 ### send(action, state, [options, instanceId])
@@ -61,11 +61,11 @@ Send a new action and state manually to be shown on the monitor. It's recommende
 <a id="listen"></a>
 ### listen(onMessage, instanceId)
 
-Listen for messages dispatched for specific `instanceId`. For most of cases it's better to use `subcribe` inside the [`connect`](connect).
+Listen for messages dispatched for specific `instanceId`. For most cases it's better to use `subcribe` inside the [`connect`](connect).
 
 ##### Arguments
 
-- `onMessage` *Function* to call when there's an action form the monitor.
+- `onMessage` *Function* to call when there's an action from the monitor.
 - `instanceId` *String* - instance id for which to handle actions.  
 
 <a id="open"></a>
@@ -80,7 +80,7 @@ Open the extension's window. This should be conditional (usually you don't need 
 <a id="notifyErrors"></a>
 ### notifyErrors([onError])
 
-When called, the extension will listen for uncaught exceptions on the page, and, if any, will show native notifications. Optionally, you can provide a function to be called when and exception occurs.
+When called, the extension will listen for uncaught exceptions on the page, and, if any, will show native notifications. Optionally, you can provide a function to be called when an exception occurs.
 
 ##### Arguments
 
