@@ -159,7 +159,7 @@ or with middlewares and enhancers:
  ```
 >  You'll have to add `'process.env.NODE_ENV': JSON.stringify('production')` in your Webpack config for the production bundle ([to envify](https://github.com/gaearon/redux-devtools/blob/master/docs/Walkthrough.md#exclude-devtools-from-production-builds)). If you use `create-react-app`, [it already does it for you.](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/config/webpack.config.prod.js#L253-L257)
 
- If you're already checking `process.env.NODE_ENV` when creating the store, include `redux-devtools-extension/logOnly` for production enviroment.
+ If you're already checking `process.env.NODE_ENV` when creating the store, include `redux-devtools-extension/logOnly` for production environment.
 
  If you don’t want to allow the extension in production, just use `redux-devtools-extension/developmentOnly`.
 
