@@ -40,7 +40,7 @@ For a basic [Redux store](http://redux.js.org/docs/api/createStore.html) simply 
  );
 ```
 
-Note that [`preloadedState`](http://redux.js.org/docs/api/createStore.html) argument is optional in Redux' [`createStore`](http://redux.js.org/docs/api/createStore.html).
+Note that [`preloadedState`](http://redux.js.org/docs/api/createStore.html) argument is optional in Redux's [`createStore`](http://redux.js.org/docs/api/createStore.html).
 
 > For universal ("isomorphic") apps, prefix it with `typeof window !== 'undefined' &&`.
 
