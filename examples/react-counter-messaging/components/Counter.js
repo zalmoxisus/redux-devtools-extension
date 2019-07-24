@@ -5,13 +5,7 @@ const withDevTools =
   typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__;
 
 class Counter extends Component {
-  constructor() {
-    super();
-    this.state = { counter: 0 };
-
-    this.increment = this.increment.bind(this);
-    this.decrement = this.decrement.bind(this);
-  }
+  state = { counter: 0 };
 
   componentDidMount() {
     if (withDevTools) {
@@ -36,17 +30,17 @@ class Counter extends Component {
     }
   }
 
-  increment() {
+  increment = () => {
     const state = { counter: this.state.counter + 1 };
     if (withDevTools) this.devTools.send('increment', state);
     this.setState(state);
-  }
+  };
 
-  decrement() {
+  decrement = () => {
     const state = { counter: this.state.counter - 1 };
     if (withDevTools) this.devTools.send('decrement', state);
     this.setState(state);
-  }
+  };
 
   render() {
     const { counter } = this.state;
