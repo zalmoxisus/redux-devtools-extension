@@ -1,26 +1,28 @@
 import React, { Component } from 'react';
 
-const withDevTools = (
+const withDevTools =
   // process.env.NODE_ENV === 'development' &&
-  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
-);
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__;
 
 class Counter extends Component {
   constructor() {
     super();
     this.state = { counter: 0 };
-    
+
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (withDevTools) {
       this.devTools = window.__REDUX_DEVTOOLS_EXTENSION__.connect();
-      this.unsubscribe = this.devTools.subscribe((message) => {
+      this.unsubscribe = this.devTools.subscribe(message => {
         // Implement monitors actions.
         // For example time traveling:
-        if (message.type === 'DISPATCH' && message.payload.type === 'JUMP_TO_STATE') {
+        if (
+          message.type === 'DISPATCH' &&
+          message.payload.type === 'JUMP_TO_STATE'
+        ) {
           this.setState(message.state);
         }
       });
@@ -50,10 +52,7 @@ class Counter extends Component {
     const { counter } = this.state;
     return (
       <p>
-        Clicked: {counter} times
-        {' '}
-        <button onClick={this.increment}>+</button>
-        {' '}
+        Clicked: {counter} times <button onClick={this.increment}>+</button>{' '}
         <button onClick={this.decrement}>-</button>
       </p>
     );
