@@ -14,6 +14,31 @@ const store = createStore(
 ```
 Note that you many need to set `no-any` to false in your `tslint.json` file.
 
+Alternatively you can use typeguard in order to avoid 
+casting to any.
+
+```typescript
+import { createStore, StoreEnhancer } from "redux";
+
+// ... 
+
+type WindowWithDevTools = Window & {
+ __REDUX_DEVTOOLS_EXTENSION__: () => StoreEnhancer<unknown, {}>
+}
+
+const isReduxDevtoolsExtenstionExist = 
+(arg: Window | WindowWithDevTools): 
+  arg is WindowWithDevTools  => {
+    return  '__REDUX_DEVTOOLS_EXTENSION__' in arg;
+}
+
+// ...
+
+const store = createStore(rootReducer, initialState,
+  isReduxDevtoolsExtenstionExist(window) ? 
+  window.__REDUX_DEVTOOLS_EXTENSION__() : undefined)
+```
+
 ### Export from browser console or from application
 
 ```js
