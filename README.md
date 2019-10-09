@@ -43,8 +43,14 @@ For a basic [Redux store](http://redux.js.org/docs/api/createStore.html) simply 
 Note that [`preloadedState`](http://redux.js.org/docs/api/createStore.html) argument is optional in Redux's [`createStore`](http://redux.js.org/docs/api/createStore.html).
 
 > For universal ("isomorphic") apps, prefix it with `typeof window !== 'undefined' &&`.
+```js
+const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
+```
 
 > For TypeScript use [`redux-devtools-extension` npm package](#13-use-redux-devtools-extension-package-from-npm), which contains all the definitions, or just use `(window as any)` (see [Recipes](/docs/Recipes.md#using-in-a-typescript-project) for an example).
+```js
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+```
 
 In case ESLint is configured to not allow using the underscore dangle, wrap it like so:
 ```diff
