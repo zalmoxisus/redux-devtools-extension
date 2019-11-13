@@ -1,5 +1,5 @@
 import { createStore } from 'redux';
 
-export default function configureStore(reducer, initialState, enhance) {
+export default (reducer, initialState, enhance)=> {
   return createStore(reducer, initialState, enhance());
 }
