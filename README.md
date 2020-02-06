@@ -32,7 +32,7 @@
 ## 1. With Redux
 ### 1.1 Basic store
   
-For a basic [Redux store](http://redux.js.org/docs/api/createStore.html) simply add:
+For a basic [Redux store](https://redux.js.org/api/createstore#createstorereducer-preloadedstate-enhancer) simply add:
 ```diff
  const store = createStore(
    reducer, /* preloadedState, */
@@ -40,7 +40,7 @@ For a basic [Redux store](http://redux.js.org/docs/api/createStore.html) simply 
  );
 ```
 
-Note that [`preloadedState`](http://redux.js.org/docs/api/createStore.html) argument is optional in Redux's [`createStore`](http://redux.js.org/docs/api/createStore.html).
+Note that [`preloadedState`](https://redux.js.org/api/createstore#createstorereducer-preloadedstate-enhancer) argument is optional in Redux's [`createStore`](https://redux.js.org/api/createstore#createstorereducer-preloadedstate-enhancer).
 
 > For universal ("isomorphic") apps, prefix it with `typeof window !== 'undefined' &&`.
 ```js
