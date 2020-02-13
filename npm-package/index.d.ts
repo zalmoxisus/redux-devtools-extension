@@ -1,6 +1,6 @@
 import {Action, ActionCreator, StoreEnhancer, compose} from "redux";
 
-export interface EnhancerOptions {
+export interface EnhancerOptions<S> {
   /**
    * the instance name to be showed on the monitor page. Default value is `document.title`.
    * If not specified and there's no document title, it will consist of `tabId` and `instanceId`.
@@ -50,7 +50,7 @@ export interface EnhancerOptions {
   /**
    * function which takes `state` object and index as arguments, and should return `state` object back.
    */
-  stateSanitizer?: <S>(state: S, index: number) => S;
+  stateSanitizer?: (state: S, index: number) => S;
   /**
    * *string or array of strings as regex* - actions types to be hidden / shown in the monitors (while passed to the reducers).
    * If `actionsWhitelist` specified, `actionsBlacklist` is ignored.
@@ -65,7 +65,7 @@ export interface EnhancerOptions {
    * called for every action before sending, takes `state` and `action` object, and returns `true` in case it allows sending the current data to the monitor.
    * Use it as a more advanced version of `actionsBlacklist`/`actionsWhitelist` parameters.
    */
-  predicate?: <S, A extends Action>(state: S, action: A) => boolean;
+  predicate?: <A extends Action>(state: S, action: A) => boolean;
   /**
    * if specified as `false`, it will not record the changes till clicking on `Start recording` button.
    * Available only for Redux enhancer, for others use `autoPause`.
@@ -166,5 +166,5 @@ export interface EnhancerOptions {
 }
 
 export function composeWithDevTools<StoreExt, StateExt>(...funcs: Array<StoreEnhancer<StoreExt>>): StoreEnhancer<StoreExt>;
-export function composeWithDevTools(options: EnhancerOptions): typeof compose;
-export function devToolsEnhancer(options: EnhancerOptions): StoreEnhancer<any>;
+export function composeWithDevTools<S>(options: EnhancerOptions<S>): typeof compose;
+export function devToolsEnhancer<S>(options: EnhancerOptions<S>): StoreEnhancer<any>;
