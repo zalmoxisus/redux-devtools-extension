@@ -165,6 +165,6 @@ export interface EnhancerOptions<S> {
   traceLimit?: number;
 }
 
-export function composeWithDevTools<StoreExt, StateExt>(...funcs: Array<StoreEnhancer<StoreExt, StateExt>>): StoreEnhancer<StoreExt, StateExt>;
+export function composeWithDevTools<StoreExt, S>(...funcs: Array<StoreEnhancer<StoreExt, S>>): StoreEnhancer<StoreExt, S>;
 export function composeWithDevTools<S>(options: EnhancerOptions<S>): typeof compose;
 export function devToolsEnhancer<S>(options: EnhancerOptions<S>): StoreEnhancer<any>;
