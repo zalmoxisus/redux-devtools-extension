@@ -6,6 +6,7 @@ import { getLocalFilter, isFiltered } from './filters';
 import importState from './importState';
 import generateId from './generateInstanceId';
 
+let hasSetMessageListener = false;
 const listeners = {};
 export const source = '@devtools-page';
 
@@ -163,7 +164,11 @@ function handleMessages(event) {
 
 export function setListener(onMessage, instanceId) {
   listeners[instanceId] = onMessage;
-  window.addEventListener('message', handleMessages, false);
+
+  if (!hasSetMessageListener) {
+    window.addEventListener('message', handleMessages, false);
+    hasSetMessageListener = true;
+  }
 }
 
 const liftListener = (listener, config) => message => {
