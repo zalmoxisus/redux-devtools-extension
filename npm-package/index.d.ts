@@ -25,23 +25,44 @@ export interface EnhancerOptions {
    */
   maxAge?: number;
   /**
-   * - `undefined` - will use regular `JSON.stringify` to send data (it's the fast mode).
-   * - `false` - will handle also circular references.
-   * - `true` - will handle also date, regex, undefined, error objects, symbols, maps, sets and functions.
-   * - object, which contains `date`, `regex`, `undefined`, `error`, `symbol`, `map`, `set` and `function` keys.
-   *   For each of them you can indicate if to include (by setting as `true`).
-   *   For `function` key you can also specify a custom function which handles serialization.
-   *   See [`jsan`](https://github.com/kolodny/jsan) for more details.
+   * options for serialize
    */
   serialize?: boolean | {
-  date?: boolean;
-  regex?: boolean;
-  undefined?: boolean;
-  error?: boolean;
-  symbol?: boolean;
-  map?: boolean;
-  set?: boolean;
-  function?: boolean | Function;
+    /**
+     * - `undefined` - will use regular `JSON.stringify` to send data (it's the fast mode).
+     * - `false` - will handle also circular references.
+     * - `true` - will handle also date, regex, undefined, error objects, symbols, maps, sets and functions.
+     * - object, which contains `date`, `regex`, `undefined`, `error`, `symbol`, `map`, `set` and `function` keys.
+     *   For each of them you can indicate if to include (by setting as `true`).
+     *   For `function` key you can also specify a custom function which handles serialization.
+     *   See [`jsan`](https://github.com/kolodny/jsan) for more details.
+     */
+    options?: boolean | {
+      date?: boolean;
+      regex?: boolean;
+      undefined?: boolean;
+      error?: boolean;
+      symbol?: boolean;
+      map?: boolean;
+      set?: boolean;
+      function?: boolean | Function;
+    };
+    /**
+     * JSON replacer function used for both actions and states stringify.
+     */
+    replacer?: (key: string, value: any) => any;
+    /**
+     * JSON reviver function used for parsing the imported actions and states.
+     */
+    reviver?: (key: string, value: any) => any;
+    /**
+     * automatically serialize/deserialize immutablejs via remotedev-serialize.
+     */
+    immutable?: object;
+    /**
+     * ImmutableJS Record classes used to make possible restore its instances back when importing, persisting...
+     */
+    refs?: any[];
   };
   /**
    * function which takes `action` object and id number as arguments, and should return `action` object back.
