@@ -165,17 +165,15 @@ export interface EnhancerOptions {
   traceLimit?: number;
 }
 
-type Composed<T, U extends any[]> = {
-  0: T;
-  1: ((...t: U) => any) extends ((head: infer Head, ...tail: infer Tail) => any)
-    ? Composed<Omit<T, keyof Head> & Head, Tail>
+type Composed<T extends any[], U = {}> = {
+  0: U;
+  1: ((...t: T) => any) extends ((head: infer Head, ...tail: infer Tail) => any)
+    ? Composed<Tail, Omit<U, keyof Head> & Head>
     : never;
-}[U['length'] extends 0 ? 0 : 1];
+}[T['length'] extends 0 ? 0 : 1];
 
-export function composeWithDevTools<StoreExtHead, StoreExtTail extends any[], StateExt>(
-    head: StoreEnhancer<StoreExtHead>,
-    ...tail: { [I in keyof StoreExtTail]: StoreEnhancer<StoreExtTail[I]> }
-): StoreEnhancer<Composed<StoreExtHead, StoreExtTail>>;
-export function composeWithDevTools(): StoreEnhancer;
+export function composeWithDevTools<StoreExts extends any[], StateExt>(
+  ...func: { [I in keyof StoreExts]: StoreEnhancer<StoreExts[I]> }
+): StoreEnhancer<Composed<StoreExts>>;
 export function composeWithDevTools(options: EnhancerOptions): typeof compose;
 export function devToolsEnhancer(options: EnhancerOptions): StoreEnhancer<any>;
