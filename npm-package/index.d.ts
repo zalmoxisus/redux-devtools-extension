@@ -1,6 +1,6 @@
 import {Action, ActionCreator, StoreEnhancer, compose} from "redux";
 
-export interface EnhancerOptions {
+export interface EnhancerOptions<S, A extends Action> {
   /**
    * the instance name to be showed on the monitor page. Default value is `document.title`.
    * If not specified and there's no document title, it will consist of `tabId` and `instanceId`.
@@ -46,11 +46,11 @@ export interface EnhancerOptions {
   /**
    * function which takes `action` object and id number as arguments, and should return `action` object back.
    */
-  actionSanitizer?: <A extends Action>(action: A, id: number) => A;
+  actionSanitizer?: (action: A, id: number) => A;
   /**
    * function which takes `state` object and index as arguments, and should return `state` object back.
    */
-  stateSanitizer?: <S>(state: S, index: number) => S;
+  stateSanitizer?: (state: S, index: number) => S;
   /**
    * *string or array of strings as regex* - actions types to be hidden / shown in the monitors (while passed to the reducers).
    * If `actionsWhitelist` specified, `actionsBlacklist` is ignored.
@@ -65,7 +65,7 @@ export interface EnhancerOptions {
    * called for every action before sending, takes `state` and `action` object, and returns `true` in case it allows sending the current data to the monitor.
    * Use it as a more advanced version of `actionsBlacklist`/`actionsWhitelist` parameters.
    */
-  predicate?: <S, A extends Action>(state: S, action: A) => boolean;
+  predicate?: (state: S, action: A) => boolean;
   /**
    * if specified as `false`, it will not record the changes till clicking on `Start recording` button.
    * Available only for Redux enhancer, for others use `autoPause`.
@@ -158,13 +158,13 @@ export interface EnhancerOptions {
    * Set to true or a stacktrace-returning function to record call stack traces for dispatched actions.
    * Defaults to false.
    */
-  trace?: boolean | (<A extends Action>(action: A) => string);
+  trace?: boolean | ((action: A) => string);
   /**
    * The maximum number of stack trace entries to record per action. Defaults to 10.
    */
   traceLimit?: number;
 }
 
-export function composeWithDevTools<StoreExt, StateExt>(...funcs: Array<StoreEnhancer<StoreExt>>): StoreEnhancer<StoreExt>;
-export function composeWithDevTools(options: EnhancerOptions): typeof compose;
-export function devToolsEnhancer(options: EnhancerOptions): StoreEnhancer<any>;
+export function composeWithDevTools<S>(...funcs: Array<StoreEnhancer<S>>): StoreEnhancer<S>;
+export function composeWithDevTools<S, A extends Action>(options: EnhancerOptions<S, A>): typeof compose;
+export function devToolsEnhancer<S, A extends Action>(options: EnhancerOptions<S, A>): StoreEnhancer<any>;
