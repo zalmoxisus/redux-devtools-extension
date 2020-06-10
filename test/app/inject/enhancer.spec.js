@@ -148,7 +148,7 @@ describe('Redux enhancer', () => {
   it('should create the store with config parameters', async () => {
     const message = await listenMessage(() => {
       window.store = createStore(counter, window.__REDUX_DEVTOOLS_EXTENSION__({
-        actionsBlacklist: ['SOME_ACTION'],
+        actionsBlockList: ['SOME_ACTION'],
         statesFilter: state => state,
         serializeState: (key, value) => value
       }));

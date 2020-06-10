@@ -170,21 +170,21 @@ const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && wi
 }));
 ```
 
-### `actionsBlacklist` / `actionsWhitelist`
-*string or array of strings as regex* - actions types to be hidden / shown in the monitors (while passed to the reducers). If `actionsWhitelist` specified, `actionsBlacklist` is ignored.
+### `actionsBlockList` / `actionsAllowList`
+*string or array of strings as regex* - actions types to be hidden / shown in the monitors (while passed to the reducers). If `actionsAllowList` specified, `actionsBlockList` is ignored.
 
 Example:
 ```js
 createStore(reducer, remotedev({
   sendTo: 'http://localhost:8000',
-  actionsBlacklist: 'SOME_ACTION'
-  // or actionsBlacklist: ['SOME_ACTION', 'SOME_OTHER_ACTION']
-  // or just actionsBlacklist: 'SOME_' to omit both
+  actionsBlockList: 'SOME_ACTION'
+  // or actionsBlockList: ['SOME_ACTION', 'SOME_OTHER_ACTION']
+  // or just actionsBlockList: 'SOME_' to omit both
 }))
 ```
 
 ### `predicate`
-*function* - called for every action before sending, takes `state` and `action` object, and returns `true` in case it allows sending the current data to the monitor. Use it as a more advanced version of `actionsBlacklist`/`actionsWhitelist` parameters.
+*function* - called for every action before sending, takes `state` and `action` object, and returns `true` in case it allows sending the current data to the monitor. Use it as a more advanced version of `actionsBlockList`/`actionsAllowList` parameters.
 Example of usage:
 
 ```js

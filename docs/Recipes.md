@@ -58,13 +58,13 @@ import { devToolsEnhancer } from 'redux-devtools-extension/logOnly';
 const store = createStore(reducer, /* preloadedState, */ compose(
 devToolsEnhancer({
   instaceID: 1,
-  name: 'Blacklisted',
-  actionsBlacklist: '...'
+  name: 'BlockListed',
+  actionsBlockList: '...'
 }),
 devToolsEnhancer({
   instaceID: 2,
-  name: 'Whitelisted',
-  actionsWhitelist: '...'
+  name: 'AllowListed',
+  actionsAllowList: '...'
 })
 ));
 ```
