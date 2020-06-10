@@ -17,10 +17,10 @@ const migrateOldOptions = (oldOptions) => {
 
   // Migrate the old `filter` option from 2.2.1
   if (typeof oldOptions.filter === 'boolean') {
-    if (oldOptions.filter && oldOptions.whitelist.length > 0) {
-      newOptions.filter = FilterState.WHITELIST_SPECIFIC;
+    if (oldOptions.filter && oldOptions.allowList.length > 0) {
+      newOptions.filter = FilterState.ALLOW_LIST_SPECIFIC;
     } else if (oldOptions.filter) {
-      newOptions.filter = FilterState.BLACKLIST_SPECIFIC;
+      newOptions.filter = FilterState.BLOCK_LIST_SPECIFIC;
     } else {
       newOptions.filter = FilterState.DO_NOT_FILTER;
     }
@@ -38,8 +38,8 @@ const get = callback => {
       projectPath: '',
       maxAge: 50,
       filter: FilterState.DO_NOT_FILTER,
-      whitelist: '',
-      blacklist: '',
+      allowList: '',
+      blockList: '',
       shouldCatchErrors: false,
       inject: true,
       urls: '^https?://localhost|0\\.0\\.0\\.0:\\d+\n^https?://.+\\.github\\.io',
@@ -62,8 +62,8 @@ const toReg = str => (
 export const injectOptions = newOptions => {
   if (!newOptions) return;
   if (newOptions.filter !== FilterState.DO_NOT_FILTER) {
-    newOptions.whitelist = toReg(newOptions.whitelist);
-    newOptions.blacklist = toReg(newOptions.blacklist);
+    newOptions.allowList = toReg(newOptions.allowList);
+    newOptions.blockList = toReg(newOptions.blockList);
   }
 
   options = newOptions;

@@ -53,17 +53,17 @@ export interface EnhancerOptions {
   stateSanitizer?: <S>(state: S, index: number) => S;
   /**
    * *string or array of strings as regex* - actions types to be hidden / shown in the monitors (while passed to the reducers).
-   * If `actionsWhitelist` specified, `actionsBlacklist` is ignored.
+   * If `actionsAllowList` specified, `actionsBlockList` is ignored.
    */
-  actionsBlacklist?: string | string[];
+  actionsBlockList?: string | string[];
   /**
    * *string or array of strings as regex* - actions types to be hidden / shown in the monitors (while passed to the reducers).
-   * If `actionsWhitelist` specified, `actionsBlacklist` is ignored.
+   * If `actionsAllowList` specified, `actionsBlockList` is ignored.
    */
-  actionsWhitelist?: string | string[];
+  actionsAllowList?: string | string[];
   /**
    * called for every action before sending, takes `state` and `action` object, and returns `true` in case it allows sending the current data to the monitor.
-   * Use it as a more advanced version of `actionsBlacklist`/`actionsWhitelist` parameters.
+   * Use it as a more advanced version of `actionsBlockList`/`actionsAllowList` parameters.
    */
   predicate?: <S, A extends Action>(state: S, action: A) => boolean;
   /**

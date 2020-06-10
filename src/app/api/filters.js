@@ -2,15 +2,15 @@ import mapValues from 'lodash/mapValues';
 
 export const FilterState = {
   DO_NOT_FILTER: 'DO_NOT_FILTER',
-  BLACKLIST_SPECIFIC: 'BLACKLIST_SPECIFIC',
-  WHITELIST_SPECIFIC: 'WHITELIST_SPECIFIC'
+  BLOCK_LIST_SPECIFIC: 'BLOCK_LIST_SPECIFIC',
+  ALLOW_LIST_SPECIFIC: 'ALLOW_LIST_SPECIFIC'
 };
 
 export function getLocalFilter(config) {
-  if (config.actionsBlacklist || config.actionsWhitelist) {
+  if (config.actionsBlockList || config.actionsAllowList) {
     return {
-      whitelist: Array.isArray(config.actionsWhitelist) ? config.actionsWhitelist.join('|') : config.actionsWhitelist,
-      blacklist: Array.isArray(config.actionsBlacklist) ? config.actionsBlacklist.join('|') : config.actionsBlacklist
+      allowList: Array.isArray(config.actionsAllowList) ? config.actionsAllowList.join('|') : config.actionsAllowList,
+      blockList: Array.isArray(config.actionsBlockList) ? config.actionsBlockList.join('|') : config.actionsBlockList
     };
   }
   return undefined;
@@ -28,11 +28,11 @@ export function isFiltered(action, localFilter) {
     typeof action !== 'string' && typeof action.type.match !== 'function'
   ) return false;
 
-  const { whitelist, blacklist } = localFilter || window.devToolsOptions || {};
+  const { allowList, blockList } = localFilter || window.devToolsOptions || {};
   const actionType = action.type || action;
   return (
-    whitelist && !actionType.match(whitelist) ||
-    blacklist && actionType.match(blacklist)
+    allowList && !actionType.match(allowList) ||
+    blockList && actionType.match(blockList)
   );
 }
 
