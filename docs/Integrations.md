@@ -11,6 +11,7 @@ Mostly functional:
 - [PureScript](#purescript)
 - [Reductive](#reductive)
 - [Aurelia](#aurelia)
+- [VanillaJS](#vanillajs)
 
 In progress:
 - [ClojureScript](#clojurescript)
@@ -51,6 +52,24 @@ export function CounterWithUseState({ id }) {
     const [count, setCount] = useState(0, id)
     // ...
 }
+```
+
+#### Inspect useReducer
+##### [`reduce-devtools-extension`](https://github.com/pacobabs/reduce-devtools-extension)
+```js
+import { wrapWithDevtools, initDevtools } from "reduce-devtools-extension";
+
+// wrap your root reducer
+const rootReducer = wrapWithDevtools((state, action) => {
+  switch (action.type) {
+    // ...
+  }
+});
+
+const [state, dispatch] = useReducer(rootReducer, initialState);
+
+// init the devtools
+initDevtools(initialState, dispatch);
 ```
 
 ### [Mobx](https://github.com/mobxjs/mobx)
@@ -255,4 +274,20 @@ export function configure(aurelia: Aurelia) {
   
   aurelia.start().then(() => aurelia.setRoot());
 }
+```
+
+### [VanillaJS](http://vanilla-js.com)
+#### [`reduce-devtools-extension`](https://github.com/pacobabs/reduce-devtools-extension)
+```js
+  import { wrapWithDevtools, initDevtools } from 'reduce-devtools-extension';
+
+  // Wrap your root reducer
+  const rootReducer = wrapWithDevtools((state, action) => {
+    switch (action.type) {
+      // as usual
+    }
+  });
+
+  // Init the devtools with your initial state and dispatch function
+  initDevtools(initialState, dispatch, options);
 ```
