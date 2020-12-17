@@ -38,7 +38,7 @@ Where `batchedSubscribe` is `redux-batched-subscribe` store enhancer.
 
 That is happening due to serialization of some huge objects included in the state or action. The solution is to [sanitize them](/docs/API/Arguments.md#actionsanitizer--statesanitizer).
 
-You can do that by including/omitting data containing specific values, having specific types... In the example below we're omitting parts of action and state objects with the key `data` (in case of action only when was dispatched action `FILE_DOWNLOAD_SUCCESS`):
+You can do that by including/omitting data containing specific values or having specific types. In the example below we're omitting parts of action and state objects specifically for the `FILE_DOWNLOAD_SUCCESS` action when it has a `data` key, as well as for any state that has the `data` key.
 
 ```js
 const actionSanitizer = (action) => (
@@ -52,6 +52,30 @@ const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && wi
 ```
 
 There's a more advanced [example on how to implement that for `ui-router`](https://github.com/zalmoxisus/redux-devtools-extension/issues/455#issuecomment-404538385).
+
+Note that the action and the state above do not have to have the same key. As another example -- and this one also shows how to write it strongly typed in TypeScript-- the `UPDATE_SIDEBARS` action has a large `payload` property, so that is being pruned in the `actionSanitizer`. The corresponding portion of the state is `state.layout.sidebars`, so the `stateSanitizer` is blanking out that entire nested object.
+(In this example, `UpdateSidebars` happens to be the name of the `Action` corresponding to the `UPDATE_SIDEBARS` type and `NgrxStateAtom` happens to be the interface definition of the entire state. This was pulled from real code, which you can see introduced in [this pull request](https://github.com/chef/automate/pull/4484).)
+
+```TypeScript
+export const actionSanitizer = (action: Action): Action =>
+  action.type === 'UPDATE_SIDEBARS' && (action as UpdateSidebars).payload
+    ? { ...action, payload: '<<LONG_BLOB>>' } as UpdateSidebars
+    : action;
+
+export const stateSanitizer = (state: NgrxStateAtom): NgrxStateAtom =>
+  state?.layout?.sidebars
+    ? {
+      ...state,
+      layout: {
+        ...state.layout,
+        sidebars: {}
+      }
+    }
+    : state;
+```
+
+One more important note:
+If you are wiring up your store with `StoreModule` rather than the `createStore` call shown above, you add the sanitizers via a `StoreDevtoolsModule.instrument()` call in your `app.module.ts` file. The [@ngrx/store-devtools page](https://ngrx.io/guide/store-devtools) shows the skeleton. You pass your `actionSanitizer` and `stateSanitizer` as additional arguments to the `instrument()` call, as detailed on the [StoreDevtoolsConfig page](https://ngrx.io/api/store-devtools/StoreDevtoolsConfig).
 
 The extension is in different process and cannot access the store object directly, unlike vanilla [`redux-devtools`](https://github.com/reduxjs/redux-devtools) which doesn't have this issue. In case sanitizing doesn't fit your use case, you might consider including it directly as a react component, so there will be no need to serialize the data, but it would add some complexity.
 
