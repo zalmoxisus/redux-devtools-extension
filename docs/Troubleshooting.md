@@ -125,4 +125,4 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, /* preloadedState, */, composeEnhancers(...)
 ```
 
-See #320 for discussion.
+See https://github.com/zalmoxisus/redux-devtools-extension/issues/320 for discussion.
