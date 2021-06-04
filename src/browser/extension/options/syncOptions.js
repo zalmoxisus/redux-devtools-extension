@@ -32,22 +32,24 @@ const migrateOldOptions = (oldOptions) => {
 const get = callback => {
   if (options) callback(options);
   else {
-    chrome.storage.sync.get({
-      useEditor: 0,
-      editor: '',
-      projectPath: '',
-      maxAge: 50,
-      filter: FilterState.DO_NOT_FILTER,
-      whitelist: '',
-      blacklist: '',
-      shouldCatchErrors: false,
-      inject: true,
-      urls: '^https?://localhost|0\\.0\\.0\\.0:\\d+\n^https?://.+\\.github\\.io',
-      showContextMenus: true
-    }, function(items) {
-      options = migrateOldOptions(items);
-      callback(options);
-    });
+    try {
+      chrome.storage.sync.get({
+        useEditor: 0,
+        editor: '',
+        projectPath: '',
+        maxAge: 50,
+        filter: FilterState.DO_NOT_FILTER,
+        whitelist: '',
+        blacklist: '',
+        shouldCatchErrors: false,
+        inject: true,
+        urls: '^https?://localhost|0\\.0\\.0\\.0:\\d+\n^https?://.+\\.github\\.io',
+        showContextMenus: true
+      }, function(items) {
+        options = migrateOldOptions(items);
+        callback(options);
+      });
+    } catch (err) {}; // Fixes issue #767
   }
 };
 
