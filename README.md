@@ -1,3 +1,7 @@
+⚠️⚠️⚠️🚨🚨🚨⚠️⚠️⚠️
+## This repo is no longer the home of the redux-devtools-extension. The new home is https://github.com/reduxjs/redux-devtools. Please file your issues and PRs there. 
+⚠️⚠️⚠️🚨🚨🚨⚠️⚠️⚠️
+
 # Redux DevTools Extension
 
 [![Join the chat at https://gitter.im/zalmoxisus/redux-devtools-extension](https://badges.gitter.im/zalmoxisus/redux-devtools-extension.svg)](https://gitter.im/zalmoxisus/redux-devtools-extension?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
