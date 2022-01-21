@@ -121,6 +121,25 @@ export class AppModule { }
 
 [`Example of integration`](https://github.com/ngrx/platform/tree/master/projects/example-app/) ([live demo](https://ngrx.github.io/platform/example-app/)).
 
+#### [Angular @ngxs/store](https://www.ngxs.io/) + [`@ngxs/devtools-plugin`](https://www.ngxs.io/plugins/devtools)
+```js
+import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+
+@NgModule({
+  imports: [
+    NgxsModule.forRoot(rootReducer, {
+      developmentMode: !environment.production,
+    }),
+    NgxsReduxDevtoolsPluginModule.forRoot({
+      name: 'Example name',
+      maxAge: 5,
+    }),
+  ]
+})
+export class AppModule { }
+```
+
 ### [Ember](http://emberjs.com/)
 #### [`ember-redux`](https://github.com/ember-redux/ember-redux)
 ```js
