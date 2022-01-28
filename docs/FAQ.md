@@ -22,7 +22,7 @@ Just click the `Persist` button or add `?debug_session=<session_name>` to the ur
 ```js
 window.__REDUX_DEVTOOLS_EXTENSION__.open();
 ```
-Make sure to have it conditionally. Auto opening windows is a bad DX. See the [API](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Methods.md#open) for details.
+Make sure to have it conditionally. Auto opening windows is a bad DX. See the [API](/docs/API/Methods.md#open) for details.
 #### How to enable/disable errors notifying
 Just find `Redux DevTools` on the extensions page (`chrome://extensions/`) and click the `Options` link to customize everything. The errors notifying is disabled by default. If enabled, it works only when the store enhancer is called (in order not to show notifications for any sites you visit). In case you want notifications for a non-redux app, init it explicitly by calling `window.__REDUX_DEVTOOLS_EXTENSION__.notifyErrors()` (probably you'll check if `window.__REDUX_DEVTOOLS_EXTENSION__` exists before calling it).
 #### How to get it work with WebWorkers, React Native, hybrid, desktop and server side apps
