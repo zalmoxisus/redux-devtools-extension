@@ -109,3 +109,20 @@ const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && 
 ```
 
 It will handle also date, regex, undefined, error objects, symbols, maps, sets and functions.
+
+### Without browser extension installed, app fails to load
+
+If your app fails to load without the browser extension installed, you are likely including your `window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()` in a `Redux.compose(...)`.
+
+`__REDUX_DEVTOOLS_EXTENSION__` should be used only when it's the only enhancer, not to be included in the compose.
+
+You should use `window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose` instead. Reference the [Advanced store setup](README.md#12-advanced-store-setup):
+
+```
+import { createStore, applyMiddleware, compose } from 'redux';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducer, /* preloadedState, */, composeEnhancers(...)
+```
+
+See https://github.com/zalmoxisus/redux-devtools-extension/issues/320 for discussion.
