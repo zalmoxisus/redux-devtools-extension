@@ -26,7 +26,7 @@ type WindowWithDevTools = Window & {
  __REDUX_DEVTOOLS_EXTENSION__: () => StoreEnhancer<unknown, {}>
 }
 
-const isReduxDevtoolsExtenstionExist = 
+const isReduxDevtoolsExtensionExist = 
 (arg: Window | WindowWithDevTools): 
   arg is WindowWithDevTools  => {
     return  '__REDUX_DEVTOOLS_EXTENSION__' in arg;
