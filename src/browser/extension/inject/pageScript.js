@@ -192,6 +192,25 @@ const __REDUX_DEVTOOLS_EXTENSION__ = function(reducer, preloadedState, config) {
     store.liftedStore.dispatch(action);
   }
 
+  function showInConsole(payload) {
+    /* eslint-disable no-console */
+    if (!Array.isArray(payload)) {
+      if (process.env.NODE_ENV !== 'production') console.error('Invalid payload for CONSOLE action');
+      return;
+    }
+    payload.forEach(data => {
+      if (data.groupLabel) console.group(data.groupLabel);
+      if (data.label) {
+        console.log(`%c${data.label}`, 'color: #9E9E9E; font-weight: bold', data.value);
+      } else {
+        console.log(data.value);
+      }
+      if (data.children) showInConsole(data.children);
+      if (data.groupLabel) console.groupEnd();
+    });
+    /* eslint-enable no-console */
+  }
+
   function onMessage(message) {
     switch (message.type) {
       case 'DISPATCH':
@@ -208,6 +227,9 @@ const __REDUX_DEVTOOLS_EXTENSION__ = function(reducer, preloadedState, config) {
         return;
       case 'UPDATE':
         relayState();
+        return;
+      case 'CONSOLE':
+        showInConsole(message.payload);
         return;
       case 'START':
         monitor.start(true);
