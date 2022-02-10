@@ -71,7 +71,7 @@ In case ESLint is configured to not allow using the underscore dangle, wrap it l
 > You don't need to npm install [`redux-devtools`](https://github.com/gaearon/redux-devtools) when using the extension (that's a different lib).
 
 ### 1.2 Advanced store setup
-If you setup your store with [middleware and enhancers](http://redux.js.org/docs/api/applyMiddleware.html), change:
+If you setup your store with [middleware and enhancers](https://redux.js.org/api/applymiddleware/), change:
 ```diff
   import { createStore, applyMiddleware, compose } from 'redux';
 
