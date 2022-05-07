@@ -40,7 +40,7 @@ For a basic [Redux store](https://redux.js.org/api/createstore#createstorereduce
 ```diff
  const store = createStore(
    reducer, /* preloadedState, */
-+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
  );
 ```
 
