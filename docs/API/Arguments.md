@@ -127,7 +127,7 @@ The `options` object is optional, and can include any of the following.
   
 Also you can specify alternative values right in the state object (in the initial state of the reducer) by adding `toJSON` function:
 
-In the example bellow it will always send `{ component: '[React]' }`, regardless of the state's `component` value (useful when you don't want to send lots of unnecessary data):
+In the example below it will always send `{ component: '[React]' }`, regardless of the state's `component` value (useful when you don't want to send lots of unnecessary data):
 ```js
 function component(
   state = { component: null, toJSON: () => ({ component: '[React]' }) }, 
@@ -143,7 +143,7 @@ function component(
 You could also alter the value. For example when state is `{ count: 1 }`, we'll send `{ counter: 10 }` (notice we don't have an arrow function this time to use the object's `this`):  
 ```js
 function counter(
-  state = { count: 0, toJSON: function (){ return { conter: this.count * 10 }; } },
+  state = { count: 0, toJSON: function (){ return { counter: this.count * 10 }; } },
   action
 ) {
   switch (action.type) {
@@ -154,7 +154,7 @@ function counter(
 ```
 
 ### `actionSanitizer` / `stateSanitizer`
-- **actionSanitizer** (*function*) - function which takes `action` object and id number as arguments, and should return `action` object back. See the example bellow.
+- **actionSanitizer** (*function*) - function which takes `action` object and id number as arguments, and should return `action` object back. See the example below.
 - **stateSanitizer** (*function*) - function which takes `state` object and index as arguments, and should return `state` object back.
 
 Example of usage:
@@ -221,7 +221,7 @@ const composeEnhancers = composeWithDevTools({
     persist: true, // persist states on page reloading
     export: true, // export history of actions in a file
     import: 'custom', // import history of actions from a file
-    jump: true, // jump back and forth (time travelling)
+    jump: true, // jump back and forth (time traveling)
     skip: true, // skip (cancel) actions
     reorder: true, // drag and drop actions in the history list 
     dispatch: true, // dispatch custom actions or action creators
