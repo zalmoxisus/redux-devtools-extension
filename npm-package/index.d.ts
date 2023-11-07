@@ -167,4 +167,4 @@ export interface EnhancerOptions {
 
 export function composeWithDevTools<StoreExt, StateExt>(...funcs: Array<StoreEnhancer<StoreExt>>): StoreEnhancer<StoreExt>;
 export function composeWithDevTools(options: EnhancerOptions): typeof compose;
-export function devToolsEnhancer(options: EnhancerOptions): StoreEnhancer<any>;
+export function devToolsEnhancer(options: EnhancerOptions): StoreEnhancer;
