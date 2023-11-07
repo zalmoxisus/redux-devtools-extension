@@ -1,3 +1,7 @@
+⚠️⚠️⚠️🚨🚨🚨⚠️⚠️⚠️
+## This repo is no longer the home of the redux-devtools-extension. The new home is https://github.com/reduxjs/redux-devtools. Please file your issues and PRs there. 
+⚠️⚠️⚠️🚨🚨🚨⚠️⚠️⚠️
+
 # Redux DevTools Extension
 
 [![Join the chat at https://gitter.im/zalmoxisus/redux-devtools-extension](https://badges.gitter.im/zalmoxisus/redux-devtools-extension.svg)](https://gitter.im/zalmoxisus/redux-devtools-extension?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -11,12 +15,12 @@
 
 ### 1. For Chrome
  - from [Chrome Web Store](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd);
- - download `extension.zip` from [last releases](https://github.com/zalmoxisus/redux-devtools-extension/releases), unzip, open `chrome://extensions` url and turn on developer mode from top left and then click; on `Load Unpacked` and select the extracted folder for use
+ - or download `extension.zip` from [last releases](https://github.com/zalmoxisus/redux-devtools-extension/releases), unzip, open `chrome://extensions` url and turn on developer mode from top left and then click; on `Load Unpacked` and select the extracted folder for use
  - or build it with `npm i && npm run build:extension` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./build/extension`;
  - or run it in dev mode with `npm i && npm start` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./dev`.
 
 ### 2. For Firefox
- - from [Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/remotedev/);
+ - from [Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/reduxdevtools/);
  - or build it with `npm i && npm run build:firefox` and [load the extension's folder](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Temporary_Installation_in_Firefox) `./build/firefox` (just select a file from inside the dir).
 
 ### 3. For Electron
@@ -32,7 +36,7 @@
 ## 1. With Redux
 ### 1.1 Basic store
   
-For a basic [Redux store](http://redux.js.org/docs/api/createStore.html) simply add:
+For a basic [Redux store](https://redux.js.org/api/createstore#createstorereducer-preloadedstate-enhancer) simply add:
 ```diff
  const store = createStore(
    reducer, /* preloadedState, */
@@ -40,9 +44,17 @@ For a basic [Redux store](http://redux.js.org/docs/api/createStore.html) simply 
  );
 ```
 
-Note that [`preloadedState`](http://redux.js.org/docs/api/createStore.html) argument is optional in Redux' [`createStore`](http://redux.js.org/docs/api/createStore.html).
+Note that [`preloadedState`](https://redux.js.org/api/createstore#createstorereducer-preloadedstate-enhancer) argument is optional in Redux's [`createStore`](https://redux.js.org/api/createstore#createstorereducer-preloadedstate-enhancer).
 
 > For universal ("isomorphic") apps, prefix it with `typeof window !== 'undefined' &&`.
+```js
+const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
+```
+
+> For TypeScript use [`redux-devtools-extension` npm package](#13-use-redux-devtools-extension-package-from-npm), which contains all the definitions, or just use `(window as any)` (see [Recipes](/docs/Recipes.md#using-in-a-typescript-project) for an example).
+```js
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+```
 
 In case ESLint is configured to not allow using the underscore dangle, wrap it like so:
 ```diff
@@ -93,7 +105,7 @@ const store = createStore(reducer, enhancer);
 
 To make things easier, there's an npm package to install:
 ```
-npm install --save-dev redux-devtools-extension
+npm install --save redux-devtools-extension
 ```
 and to use like so:
 ```js
@@ -157,7 +169,7 @@ or with middlewares and enhancers:
  ```
 >  You'll have to add `'process.env.NODE_ENV': JSON.stringify('production')` in your Webpack config for the production bundle ([to envify](https://github.com/gaearon/redux-devtools/blob/master/docs/Walkthrough.md#exclude-devtools-from-production-builds)). If you use `create-react-app`, [it already does it for you.](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/config/webpack.config.prod.js#L253-L257)
 
- If you're already checking `process.env.NODE_ENV` when creating the store, include `redux-devtools-extension/logOnly` for production enviroment.
+ If you're already checking `process.env.NODE_ENV` when creating the store, include `redux-devtools-extension/logOnly` for production environment.
 
  If you don’t want to allow the extension in production, just use `redux-devtools-extension/developmentOnly`.
 
@@ -174,8 +186,9 @@ See [integrations](docs/Integrations.md) and [the blog post](https://medium.com/
 ## Docs
   - [Options (arguments)](docs/API/Arguments.md)
   - [Methods (advanced API)](docs/API/Methods.md)
-  - [Create Redux store for debugging](docs/API/CreateStore.md)
   - [FAQ](docs/FAQ.md)
+  - Features
+    - [Trace actions calls](/docs/Features/Trace.md)
   - [Troubleshooting](docs/Troubleshooting.md)
   - [Articles](docs/Articles.md)
   - [Videos](docs/Videos.md)
@@ -188,7 +201,7 @@ Live demos to use the extension with:
  - [TodoMVC](http://zalmoxisus.github.io/examples/todomvc/)
  - [Redux Form](http://redux-form.com/6.5.0/examples/simple/)
  - [React Tetris](https://chvin.github.io/react-tetris/?lan=en)
- - [Book Collection (Angular ngrx store)](http://ngrx.github.io/example-app/)
+ - [Book Collection (Angular ngrx store)](https://ngrx.github.io/platform/example-app/)
 
 Also see [`./examples` folder](https://github.com/zalmoxisus/redux-devtools-extension/tree/master/examples).
 

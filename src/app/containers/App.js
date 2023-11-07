@@ -31,6 +31,13 @@ class App extends Component {
   openWindow = (position) => {
     chrome.runtime.sendMessage({ type: 'OPEN', position });
   };
+  openOptionsPage = () => {
+    if (navigator.userAgent.indexOf('Firefox') !== -1) {
+      chrome.runtime.sendMessage({ type: 'OPEN_OPTIONS' });
+    } else {
+      chrome.runtime.openOptionsPage();
+    }
+  };
 
   render() {
     const {
@@ -126,10 +133,10 @@ class App extends Component {
             onClick={() => { this.openWindow('remote'); }}
           >Remote</Button>
           }
-          {chrome.runtime.openOptionsPage &&
+          {(chrome.runtime.openOptionsPage || navigator.userAgent.indexOf('Firefox') !== -1) &&
           <Button
             Icon={SettingsIcon}
-            onClick={() => { chrome.runtime.openOptionsPage(); }}
+            onClick={this.openOptionsPage}
           >Settings</Button>
           }
         </div>

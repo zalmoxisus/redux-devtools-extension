@@ -87,6 +87,10 @@ function messaging(request, sender, sendResponse) {
     }
     return;
   }
+  if (request.type === 'OPEN_OPTIONS') {
+    chrome.runtime.openOptionsPage();
+    return;
+  }
   if (request.type === 'GET_OPTIONS') {
     window.syncOptions.get(options => {
       sendResponse({ options });

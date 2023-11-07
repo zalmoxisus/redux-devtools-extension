@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { isMonitorAction } from '../store/configureStore';
 
 class Counter extends Component {
   render() {

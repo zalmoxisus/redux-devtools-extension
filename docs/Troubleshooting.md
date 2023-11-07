@@ -38,7 +38,7 @@ Where `batchedSubscribe` is `redux-batched-subscribe` store enhancer.
 
 That is happening due to serialization of some huge objects included in the state or action. The solution is to [sanitize them](/docs/API/Arguments.md#actionsanitizer--statesanitizer).
 
-You can do that by including/omitting data containing specific values, having specific types... In the example bellow we're omitting parts of action and state objects with the key `data` (in case of action only when was dispatched action `FILE_DOWNLOAD_SUCCESS`):
+You can do that by including/omitting data containing specific values, having specific types... In the example below we're omitting parts of action and state objects with the key `data` (in case of action only when was dispatched action `FILE_DOWNLOAD_SUCCESS`):
 
 ```js
 const actionSanitizer = (action) => (

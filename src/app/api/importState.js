@@ -11,7 +11,9 @@ export default function importState(state, { deserializeState, deserializeAction
   let parse = jsan.parse;
   if (serialize) {
     if (serialize.immutable) {
-      parse = v => jsan.parse(v, seralizeImmutable(serialize.immutable, serialize.refs).reviver);
+      parse = v => jsan.parse(v, seralizeImmutable(
+        serialize.immutable, serialize.refs, serialize.replacer, serialize.reviver
+      ).reviver);
     } else if (serialize.reviver) {
       parse = v => jsan.parse(v, serialize.reviver);
     }

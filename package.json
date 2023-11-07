@@ -1,5 +1,5 @@
 {
-  "version": "2.16.5",
+  "version": "2.17.1",
   "name": "remotedev-redux-devtools-extension",
   "description": "Redux Developer Tools for debugging application state changes.",
   "scripts": {
@@ -69,7 +69,7 @@
     "selenium-webdriver": "^3.0.1",
     "sinon-chrome": "^1.1.2",
     "style-loader": "^0.18.2",
-    "webpack": "^3.1.0"
+    "webpack": "^4.27.1"
   },
   "dependencies": {
     "jsan": "^3.1.13",
@@ -81,11 +81,12 @@
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-devtools": "^3.4.1",
-    "redux-devtools-instrument": "^1.9.3",
-    "remotedev-app": "^0.10.12",
+    "redux-devtools-instrument": "^1.9.6",
+    "remotedev-app": "^0.10.13-beta",
     "remotedev-monitor-components": "^0.0.5",
-    "remotedev-serialize": "^0.1.7",
+    "remotedev-serialize": "^0.1.8",
     "remotedev-slider": "^1.1.1",
-    "remotedev-utils": "0.0.1"
+    "remotedev-utils": "0.0.1",
+    "terser-webpack-plugin": "^1.1.0"
   }
 }

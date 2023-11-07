@@ -33,6 +33,9 @@ const get = callback => {
   if (options) callback(options);
   else {
     chrome.storage.sync.get({
+      useEditor: 0,
+      editor: '',
+      projectPath: '',
       maxAge: 50,
       filter: FilterState.DO_NOT_FILTER,
       whitelist: '',

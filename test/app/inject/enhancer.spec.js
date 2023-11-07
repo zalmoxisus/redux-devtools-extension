@@ -15,7 +15,7 @@ function counter(state = 0, action) {
 describe('Redux enhancer', () => {
   it('should create the store', async () => {
     const message = await listenMessage(() => {
-      window.store = createStore(counter, window.devToolsExtension());
+      window.store = createStore(counter, window.__REDUX_DEVTOOLS_EXTENSION__());
       expect(window.store).toBeA('object');
     });
     expect(message.type).toBe('INIT_INSTANCE');
@@ -147,7 +147,7 @@ describe('Redux enhancer', () => {
 
   it('should create the store with config parameters', async () => {
     const message = await listenMessage(() => {
-      window.store = createStore(counter, window.devToolsExtension({
+      window.store = createStore(counter, window.__REDUX_DEVTOOLS_EXTENSION__({
         actionsBlacklist: ['SOME_ACTION'],
         statesFilter: state => state,
         serializeState: (key, value) => value
@@ -159,7 +159,7 @@ describe('Redux enhancer', () => {
 
   it('should create the store using old Redux api', async () => {
     const message = await listenMessage(() => {
-      window.store = window.devToolsExtension()(createStore)(counter);
+      window.store = window.__REDUX_DEVTOOLS_EXTENSION__()(createStore)(counter);
       expect(window.store).toBeA('object');
     });
     expect(message.type).toBe('INIT_INSTANCE');
@@ -171,7 +171,7 @@ describe('Redux enhancer', () => {
     const message = await listenMessage(() => {
       window.store = createStore(counter, compose(
         testEnhancer,
-        window.devToolsExtension())
+        window.__REDUX_DEVTOOLS_EXTENSION__())
       );
       expect(window.store).toBeA('object');
     });

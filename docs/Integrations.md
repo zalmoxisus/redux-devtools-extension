@@ -9,6 +9,8 @@ Mostly functional:
 - [Freezer](#freezer)
 - [Mobx](#mobx)
 - [PureScript](#purescript)
+- [Reductive](#reductive)
+- [Aurelia](#aurelia)
 
 In progress:
 - [ClojureScript](#clojurescript)
@@ -101,15 +103,15 @@ import { NgReduxModule, NgRedux, DevToolsExtension } from 'ng2-redux';
 ```
 For Angular 1 see [ng-redux](https://github.com/angular-redux/ng-redux).
 
-#### [Angular @ngrx/store](https://github.com/ngrx/store) + [`@ngrx/store-devtools`](https://github.com/ngrx/store-devtools)
+#### [Angular @ngrx/store](https://ngrx.io/) + [`@ngrx/store-devtools`](https://ngrx.io/guide/store-devtools)
 ```js
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   imports: [
-    StoreModule.provideStore(rootReducer),
-    // Note that you must instrument after importing StoreModule
-    StoreDevtoolsModule.instrumentOnlyWithExtension({
+    StoreModule.forRoot(rootReducer),
+    // Instrumentation must be imported after importing StoreModule (config is optional)
+    StoreDevtoolsModule.instrument({
       maxAge: 5
     })
   ]
@@ -117,7 +119,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 export class AppModule { }
 ```
 
-[`Example of integration`](https://github.com/ngrx/example-app) ([live demo](http://ngrx.github.io/example-app)).
+[`Example of integration`](https://github.com/ngrx/platform/tree/master/projects/example-app/) ([live demo](https://ngrx.github.io/platform/example-app/)).
 
 ### [Ember](http://emberjs.com/)
 #### [`ember-redux`](https://github.com/ember-redux/ember-redux)
@@ -216,4 +218,41 @@ var middleware: [StoreMiddleware] = [
 #if DEBUG
 middleware.append(MonitorMiddleware.create(using: .defaultConfiguration))
 #endif
+```
+
+### [Reductive](https://github.com/reasonml-community/reductive)
+#### [`reductive-dev-tools`](https://github.com/ambientlight/reductive-dev-tools)
+```reason
+let storeEnhancer =
+  ReductiveDevTools.(
+    Connectors.reductiveEnhancer(
+      Extension.enhancerOptions(~name="MyApp", ()),
+    )
+  );
+  
+let storeCreator = storeEnhancer @@ Reductive.Store.create;
+```
+
+### [Aurelia](http://aurelia.io)
+#### [`aurelia-store`](https://aurelia.io/docs/plugins/store)
+```ts
+import {Aurelia} from 'aurelia-framework';
+import {initialState} from './state';
+  
+export function configure(aurelia: Aurelia) {
+  aurelia.use
+    .standardConfiguration()
+    .feature('resources');
+  
+    ...
+  
+  aurelia.use.plugin('aurelia-store', {
+    initialState,
+    devToolsOptions: { // optional
+      ... // see https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md
+    },
+  });
+  
+  aurelia.start().then(() => aurelia.setRoot());
+}
 ```

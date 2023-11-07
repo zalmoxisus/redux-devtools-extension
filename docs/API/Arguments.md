@@ -29,6 +29,12 @@ The `options` object is optional, and can include any of the following.
 ### `maxAge`
 *number* (>1) - maximum allowed actions to be stored in the history tree. The oldest actions are removed once maxAge is reached. It's critical for performance. Default is `50`.
 
+### `trace`
+*boolean* or *function* - if set to `true`, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code ([more details](../Features/Trace.md)). You can use a function (with action object as argument) which should return `new Error().stack` string, getting the stack outside of reducers. Default to `false`.
+
+### `traceLimit`
+*number* - maximum stack trace frames to be stored (in case `trace` option was provided as `true`). By default it's `10`. Note that, because extension's calls are excluded, the resulted frames could be 1 less. If `trace` option is a function, `traceLimit` will have no effect, as it's supposed to be handled there.
+
 ### `serialize`
 *boolean* or *object* which contains:
 

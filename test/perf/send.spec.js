@@ -8,7 +8,7 @@ function test(title, data, maxTime = 100) {
   it('should send ' + title, async() => {
     const start = new Date();
     await listenMessage(() => {
-      window.devToolsExtension.send({ type: 'TEST_ACTION', data }, data);
+      window.__REDUX_DEVTOOLS_EXTENSION__.send({ type: 'TEST_ACTION', data }, data);
     });
     const ms = new Date() - start;
     // console.log(ms);

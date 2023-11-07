@@ -5,9 +5,8 @@ import invariant from 'redux-immutable-state-invariant';
 import reducer from '../reducers';
 import * as actionCreators from '../actions/counter'; 
 
-export let isMonitorAction;
 export default function configureStore(preloadedState) {
-  const composeEnhancers = composeWithDevTools({ actionCreators });
+  const composeEnhancers = composeWithDevTools({ actionCreators, trace: true, traceLimit: 25 });
   const store = createStore(reducer, preloadedState, composeEnhancers(
     applyMiddleware(invariant(), thunk)
   ));
@@ -15,8 +14,7 @@ export default function configureStore(preloadedState) {
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('../reducers', () => {
-      const nextReducer = require('../reducers');
-      store.replaceReducer(nextReducer);
+      store.replaceReducer(require('../reducers').default)
     });
   }
 
